@@ -1,0 +1,209 @@
+.dining-section {
+    background-color: #0f1624;
+    color: #ffffff;
+}
+
+.dining-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* 1. Banner Tràn Viền và KHÔNG CẮT ẢNH */
+.dining-banner {
+    width: 100%;
+    position: relative;
+    display: block;
+}
+
+.dining-banner img.main-banner {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.banner-content {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    text-align: center;
+    color: #ffffff;
+    width: 90%;
+    max-width: 1000px;
+}
+
+.banner-subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #C5A059;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+.banner-subtitle::before,
+.banner-subtitle::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background-color: #C5A059;
+}
+
+.banner-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 30px;
+    letter-spacing: -2px;
+}
+
+.banner-desc {
+    font-size: 1rem;
+    color: #ffffff;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.banner-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-luxury-gold {
+    background-color: #C5A059;
+    color: #0f1624;
+    padding: 14px 40px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-luxury-outline {
+    border: 1px solid #C5A059;
+    color: #ffffff;
+    padding: 14px 40px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* 2. Seasonal Creations Section (Nền Đen) */
+.seasonal-section {
+    background-color: #000000;
+    padding: 120px 0;
+}
+
+.seasonal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.seasonal-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.seasonal-info p {
+    color: #94a3b8;
+    line-height: 1.7;
+    margin-bottom: 40px;
+}
+
+.seasonal-image-wrapper {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.seasonal-image-wrapper img {
+    width: 100%;
+    display: block;
+}
+
+.chef-overlay {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+}
+
+.chef-subtitle {
+    color: #C5A059;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.chef-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+/* 3. Tasting Menu List */
+.menu-header-gold {
+    color: #C5A059;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 40px;
+    display: inline-block;
+    border-bottom: 1px solid #C5A059;
+    padding-bottom: 5px;
+}
+
+.menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-item-info h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.menu-item-info p {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.menu-item-price {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: #C5A059;
+}
+
+/* Mobile */
+@media (max-width: 992px) {
+    .seasonal-grid { grid-template-columns: 1fr; }
+    .seasonal-info h2 { font-size: 2.5rem; }
+    .banner-title { font-size: 4rem; }
+}

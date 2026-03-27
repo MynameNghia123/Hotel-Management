@@ -1,0 +1,133 @@
+/* Đặt nền tối đồng bộ cho toàn bộ Section để không bị lộ nền trắng khi hover */
+.gallery-section {
+    background-color: #0f1624; /* Biến --nav-bg từ style.css */
+    color: #ffffff;
+    padding-bottom: 120px; /* Thêm khoảng cách lớn cách Footer */
+}
+
+/* Gióng hàng đồng bộ với Header/Footer (1100px) */
+.gallery-grid-container, 
+.gallery-header-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0; /* Khớp với .nav-container */
+}
+
+/* Header Section */
+.gallery-header-container {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.gallery-header-container .text-wrapper {
+    font-size: 2.75rem; /* Giảm nhẹ để không chiếm quá nhiều chỗ */
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    line-height: 1.2;
+}
+
+.gallery-header-container .text {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    max-width: 550px;
+    margin: 0;
+}
+
+.filter-group {
+    display: flex;
+    gap: 15px; /* Tăng khoảng cách chút cho thoáng */
+    flex-wrap: nowrap; /* Chống rớt nút xuống dòng */
+}
+
+.filter-btn {
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    white-space: nowrap; /* Chống rớt chữ trong nút */
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background-color: #ffffff; /* Nền trắng */
+    color: #0f1624; /* Chữ xanh đen */
+    border-color: #ffffff;
+    transform: translateY(-2px); /* Nhô lên nhẹ cho sang */
+}
+
+/* Grid Layout */
+.gallery-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+   
+}
+
+.gallery-col {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #1a1f2b;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Xử lý lỗi ảnh bị mờ khi dùng transform */
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    transform: translateZ(0);
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.h-small { height: 300px; }
+.h-medium { height: 480px; }
+
+/* Responsive */
+@media (max-width: 992px) {
+    .gallery-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 20px;
+        padding-right: 20px;
+        gap: 30px;
+    }
+    .gallery-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 20px;
+    }
+    .mt-md-5 { margin-top: 0 !important; }
+}
+
+@media (max-width: 576px) {
+    .gallery-grid-container {
+        grid-template-columns: 1fr;
+    }
+    .filter-group {
+        flex-wrap: wrap;
+    }
+}

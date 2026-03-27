@@ -16,15 +16,15 @@
         <!-- Links -->
         <ul class="nav-links">
             <li><a href="#">Phòng Nghỉ</a></li>
-            <li><a href="#">Tiện Ích</a></li>
-            <li><a href="#">Ẩm Thực</a></li>
-            <li><a href="#">Thiết Kế</a></li>
+            <li><a href="{{ route('amenities') }}">Tiện Ích</a></li>
+            <li><a href="{{ route('dining') }}">Ẩm Thực</a></li>
+            <li><a href="{{ route('gallery') }}">Bộ Sưu Tập</a></li>
         </ul>
 
         <!-- Right actions -->
         <div class="nav-actions">
-            <a href="#" class="sign-in-link">Đăng Nhập / Đăng Ký</a>
-            <a href="#" class="btn btn-primary">Đặt Phòng Ngay</a>
+            <a href="{{ route('login') }}" class="sign-in-link">Đăng Nhập</a>
+            <a href="{{ route('register') }}" class="btn btn-primary">Đăng Ký Ngay</a>
         </div>
     </div>
 </header>
