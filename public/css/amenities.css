@@ -1,0 +1,70 @@
+/* Gióng hàng đồng bộ 1100px */
+.amenities-section {
+    background-color: #0f1624;
+    color: #ffffff;
+    padding-bottom: 120px;
+    padding-top: 0;
+}
+
+.amenities-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Header Image chuẩn 1100px */
+.amenities-header-img {
+    width: 100%;
+    display: block;
+    margin-bottom: 50px;
+    border-radius: 12px;
+}
+
+/* 4-Grid Layout chuẩn như Homepage */
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+}
+
+/* Card chuẩn như Homepage */
+.amenity-card {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.amenity-card img {
+    width: 100%;
+    height: 400px;
+    /* Chiều cao chuẩn từ style.css */
+    display: block;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+}
+
+/* Hover chuẩn như Homepage */
+.amenity-card:hover img {
+    transform: translateY(-8px);
+    filter: brightness(1.15);
+    /* Làm ảnh lấp lánh nhẹ sang trọng */
+}
+
+/* Responsive cho màn hình bé */
+@media (max-width: 992px) {
+    .amenities-container {
+        padding: 0 20px;
+    }
+
+    .amenities-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .amenity-card img {
+        height: 300px;
+        /* Nhỏ lại chút trên mobile */
+    }
+}

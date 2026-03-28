@@ -1,0 +1,754 @@
+/* Typography & Reset */
+:root {
+    --nav-bg: #0f1624;
+    /* Màu nền rất tối cho Header giống ảnh */
+    --primary: #2563eb;
+    /* Xanh dương nhạt nổi bật của nút Book now */
+    --primary-hover: #1d4ed8;
+    --text-white: #ffffff;
+    --text-light: #94a3b8;
+    /* Màu xám sáng cho description và nav link */
+    --text-muted: #64748b;
+    /* Xám sậm cho các Lable CHECK IN */
+    --widget-bg: rgba(27, 34, 48, 0.95);
+    /* Khung mờ mờ booking form */
+    --input-bg: rgba(14, 19, 31, 1);
+    /* Nền rất tối của các Input */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--nav-bg);
+    color: var(--text-white);
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+button,
+input {
+    font-family: 'Inter', sans-serif;
+    border: none;
+    outline: none;
+}
+
+/* Các Cấu Trúc Khung Hiển Thị Chính */
+.nav-container,
+.hero-container,
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0; /* Removing padding for perfect edge-to-edge alignment */
+    width: 100%;
+}
+
+/* --- Header / Navbar --- */
+.navbar {
+    background-color: var(--nav-bg);
+    height: 85px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 50;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-white);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.2px;
+}
+
+.logo-icon {
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+.nav-links a:hover {
+    color: var(--text-white);
+}
+
+/* Right Nav Buttons */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.sign-in-link {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+.sign-in-link:hover {
+    color: var(--text-white);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+/* --- Hero Banner --- */
+.hero {
+    position: relative;
+    height: calc(100vh - 85px);
+    min-height: 800px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    /* Hiệu ứng bóng đen từ phía bên trái tràn vào như trong thiết kế */
+    background: linear-gradient(90deg, rgba(15, 22, 36, 0.9) 0%, rgba(15, 22, 36, 0.6) 35%, rgba(15, 22, 36, 0) 100%);
+    z-index: 10;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    margin-top: -80px;
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+/* Hero Badge - NOW OPEN IN DOWNTOWN */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.55rem;
+    /* "nhỏ nhiều nhé" */
+    font-weight: 500;
+    color: var(--text-white);
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+}
+
+.hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--primary);
+}
+
+/* Hero Typography */
+.hero-title {
+    font-size: 2.5rem;
+    /* Giảm mạnh từ 5rem -> 2.5rem */
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+}
+
+.hero-description {
+    font-size: 0.85rem;
+    /* Giảm xuống nhỏ gọn */
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 50px;
+}
+
+/* --- Booking Form Widget --- */
+.booking-widget {
+    background-color: var(--widget-bg);
+    padding: 24px;
+    padding-bottom: 28px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    width: 100%;
+    margin: 30px auto 0;
+    /* Cho "form ở giữa" màn hình */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.booking-form {
+    display: grid;
+    /* Theo như ảnh, 3 field ngày, người lớn sẽ bằng nhau, nút check sẽ to hơn một chút hoặc linh động */
+    grid-template-columns: 1.5fr 1.5fr 1.5fr 1.8fr;
+    gap: 20px;
+    align-items: end;
+    /* Đẩy input vào dưới đít */
+}
+
+/* Các Labels Dotted Mờ */
+.form-group label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding-left: 5px;
+}
+
+/* Bao ngoài các Input Box */
+.input-wrapper {
+    position: relative;
+    background-color: var(--input-bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 52px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.input-wrapper:hover {
+    border-color: rgba(255, 255, 255, 0.08);
+    /* Viền sáng lên nhẹ khi hover */
+}
+
+.input-wrapper .icon {
+    color: var(--text-muted);
+    margin-right: 14px;
+    flex-shrink: 0;
+}
+
+.input-wrapper .icon-right {
+    color: var(--text-muted);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* Cấu Hình Input Text */
+.input-field {
+    background: transparent;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-weight: 400;
+    width: 100%;
+    cursor: default;
+}
+
+.input-field::placeholder {
+    color: var(--text-muted);
+}
+
+.input-field:focus {
+    color: var(--text-white);
+}
+
+/* Button Nút Check */
+.submit-group {
+    height: 52px;
+    /* Set chiều cao bằng với input wrapper */
+}
+
+.submit-btn {
+    width: 100%;
+    height: 52px;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn .icon-search {
+    margin-right: 4px;
+    flex-shrink: 0;
+}
+
+/* --- Amenities Section (Dark section) --- */
+.amenities-section {
+    background-color: var(--nav-bg);
+    color: var(--text-white);
+    padding: 100px 0 120px 0;
+    width: 100%;
+}
+
+.section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Adjust matching view */
+    margin-bottom: 50px;
+}
+
+.section-intro {
+    max-width: 600px;
+}
+
+.subtitle-gold {
+    display: inline-block;
+    color: #eab308;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.section-desc {
+    font-size: 1rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+/* Ensure section grid and header align with the widget boxes above */
+.amenities-grid, .section-header-row {
+     width: 100%;
+     margin-left: 0;
+     margin-right: 0;
+}
+
+/* Nút bấm Explore All -> Dạng Pill viền mỏng kính */
+.btn-explore {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    color: var(--text-white);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-explore:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+}
+
+.amenity-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.amenity-card img {
+    width: 100%;
+    height: 400px; /* To lên khá nhiều */
+    display: block;
+    object-fit: cover; /* Đảm bảo lấp đầy và gióng hàng tốt */
+    border-radius: 12px; /* Thêm chút bo góc cho sang trọng */
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+}
+
+.amenity-card:hover img {
+    transform: translateY(-8px);
+    filter: brightness(1.15);
+    /* Làm ảnh bật sáng lấp lánh nhẹ rất sang trọng */
+}
+
+/* Response cho màn hình bé */
+@media (max-width: 992px) {
+    .nav-container,
+    .hero-container,
+    .container {
+        padding: 0 20px;
+    }
+
+    .amenities-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .stays-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Stays Section --- */
+.stays-section {
+    padding: 80px 0;
+    background-color: var(--nav-bg);
+}
+
+.section-header {
+    margin-bottom: 40px;
+}
+
+.section-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Rất mờ cho phong cách sang trọng */
+    margin: 0;
+}
+
+/* --- Testimonial Section --- */
+.testimonial-section {
+    padding: 120px 0;
+    text-align: center;
+    background-image: linear-gradient(rgba(15, 22, 36, 0.92), rgba(15, 22, 36, 0.92)), url('../img/Section.png');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+.testimonial-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.quote-icon {
+    margin-bottom: 30px;
+}
+
+.testimonial-quote {
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--text-white);
+    margin-bottom: 40px;
+    letter-spacing: -0.5px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.author-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.author-info {
+    text-align: left;
+}
+
+.author-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+.author-title {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+/* --- Footer Section --- */
+.main-footer {
+    padding: 100px 0 40px;
+    background-color: #0c121e;
+    color: var(--text-white);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr;
+    gap: 60px;
+    margin-bottom: 80px;
+}
+
+.footer-col h4 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.footer-address {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-top: 30px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--text-white);
+}
+
+.subscribe-text {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 24px;
+}
+
+.subscribe-input-wrapper {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 4px;
+    height: 48px;
+}
+
+.subscribe-input {
+    background: transparent;
+    color: var(--text-white);
+    padding: 0 16px;
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.subscribe-btn {
+    background-color: var(--primary);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.subscribe-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.footer-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 30px;
+}
+
+.copyright {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+@media (max-width: 992px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stays-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.stay-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stay-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.stay-image {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+}
+
+.stay-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.top-pick-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+
+.stay-content {
+    padding: 24px;
+}
+
+.stay-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.category-blue {
+    color: #3b82f6;
+}
+
+.stay-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 12px;
+}
+
+.stay-description {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    height: 4.8em; /* Force height for alignment */
+    overflow: hidden;
+}
+
+.stay-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 20px;
+}
+
+.stay-price-wrapper {
+     color: var(--text-light);
+     font-size: 0.85rem;
+}
+
+.price-amount {
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0 4px;
+}
+
+.btn-book-ghost {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-white);
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-book-ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--text-white);
+}
+
+.btn-book-solid {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
