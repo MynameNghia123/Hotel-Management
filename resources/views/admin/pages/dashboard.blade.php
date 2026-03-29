@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.layouts.master')
 
 @section('title', 'Đăng nhập hệ thống - Urban Luxe')
 

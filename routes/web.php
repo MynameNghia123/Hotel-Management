@@ -55,7 +55,7 @@ Route::get('/forgot-password', function() {
 })->name('forgot_password');
 
 Route::get('/admin', function () {
-    return view('admin.dashboard');
+    return view('admin.pages.dashboard');
 })->name('admin.dashboard');
 
 Route::get('/welcome', function () {
