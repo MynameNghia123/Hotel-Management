@@ -1,0 +1,279 @@
+/* --- PAYMENT STEP 3 - SYNCED WITH CHECKOUT --- */
+.payment-page {
+    background-color: #f8fafc;
+    padding-bottom: 120px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header Section Sync */
+.payment-header {
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0 80px;
+    color: white;
+    text-align: center;
+}
+
+.step-indicator {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.payment-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.payment-header p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Main Grid Layout */
+.payment-content-grid {
+    max-width: 1250px;
+    margin: 60px auto 0; /* Dịch xuống dưới giống checkout */
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 40px;
+    padding: 0 30px;
+}
+
+/* Options Card */
+.payment-option-card {
+    background: white;
+    padding: 45px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 35px;
+}
+
+/* Method List */
+.payment-methods-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.method-item { cursor: pointer; }
+.method-item input { display: none; }
+
+.method-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.method-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.method-main i { font-size: 1.25rem; }
+
+.method-item.active .method-box {
+    border-color: #2563eb;
+    background: rgba(37, 99, 235, 0.02);
+}
+
+.method-item.active .method-main { color: #2563eb; }
+
+.card-icons i {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin-left: 10px;
+}
+
+/* Card Form Details */
+.card-details-section {
+    padding-top: 30px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.card-details-section label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.card-details-section label span { color: #ef4444; }
+
+.form-control-luxe {
+    width: 100%;
+    padding: 14px 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.form-row-payment {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon i {
+    position: absolute;
+    right: 20px;
+    color: #94a3b8;
+}
+
+/* Sidebar Styles (Synced from Checkout) */
+.stay-summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.summary-title { font-weight: 800; color: #0f172a; }
+.link-edit { color: #2563eb; font-size: 0.85rem; text-decoration: none; font-weight: 600; }
+
+.summary-rooms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-room-item {
+    display: flex;
+    gap: 15px;
+}
+
+.room-mini-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.room-item-details { flex: 1; }
+
+.room-item-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1e293b;
+    display: flex;
+    justify-content: space-between;
+}
+
+.room-item-meta { font-size: 0.75rem; color: #94a3b8; margin: 4px 0; }
+
+/* Date Box */
+.stay-dates-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.date-label { font-size: 0.65rem; color: #94a3b8; font-weight: 700; margin-bottom: 5px; display: block; }
+.date-val { font-weight: 700; color: #0f172a; font-size: 1.1rem; }
+
+/* Pricing Breakdown */
+.pricing-breakdown {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 25px;
+    margin-top: 25px;
+}
+
+.p-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.total-amount-val { font-size: 1.5rem; font-weight: 800; color: #2563eb; }
+
+
+/* Pay Now Button */
+.btn-pay-now {
+    width: 100%;
+    background: #0f172a;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: all 0.3s;
+}
+
+.btn-pay-now:hover {
+    background: #1e293b;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.secure-text {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 992px) {
+    .payment-content-grid { grid-template-columns: 1fr; }
+}

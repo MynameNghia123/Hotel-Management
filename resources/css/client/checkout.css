@@ -1,0 +1,287 @@
+/* --- CHECKOUT / GUEST INFO - PREMIUM DESIGN --- */
+.guest-info-page {
+    background-color: #f8fafc;
+    padding-bottom: 120px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header Section */
+.guest-header {
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0 80px;
+    color: white;
+    text-align: center;
+}
+
+.step-indicator {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.guest-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.guest-header p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Main Grid Layout */
+.guest-content-grid {
+    max-width: 1250px;
+    margin: 60px auto 0; /* Dịch xuống dưới banner */
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 40px;
+    padding: 0 30px;
+}
+
+/* Left: Details Form */
+.details-form-card {
+    background: white;
+    padding: 45px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.required-note {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #94a3b8;
+}
+
+/* Verify Email Box */
+.verify-email-box {
+    background: #f1f5f9;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.verify-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 15px;
+}
+
+.input-with-button {
+    display: flex;
+    gap: 15px;
+}
+
+.form-control-custom {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.btn-verify {
+    background: #0f172a;
+    color: white;
+    padding: 0 30px;
+    border-radius: 6px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.verify-note {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Row & Column Controls */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.details-form-card label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.details-form-card label span { color: #ef4444; }
+
+.form-group-full { margin-bottom: 30px; }
+
+.phone-input-group {
+    display: flex;
+    gap: 15px;
+}
+
+.phone-input-group select { width: 120px; }
+
+/* Right: Stay Summary Sidebar */
+.stay-summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+    /* Đã bỏ sticky để nằm cố định dưới banner */
+}
+
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.summary-title { font-weight: 800; color: #0f172a; }
+.link-edit { color: #2563eb; font-size: 0.85rem; text-decoration: none; font-weight: 600; }
+
+/* Room List in Summary */
+.summary-rooms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-room-item {
+    display: flex;
+    gap: 15px;
+}
+
+.room-mini-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.room-item-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1e293b;
+    display: flex;
+    justify-content: space-between;
+}
+
+.room-item-meta { font-size: 0.75rem; color: #94a3b8; margin: 4px 0; }
+.room-tag-green { font-size: 0.65rem; font-weight: 700; color: #16a34a; text-transform: uppercase; }
+
+/* Date Box */
+.stay-dates-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.date-label { font-size: 0.65rem; color: #94a3b8; font-weight: 700; margin-bottom: 5px; display: block; }
+.date-val { font-weight: 700; color: #0f172a; font-size: 1.1rem; }
+
+/* Pricing Breakdown */
+.pricing-breakdown {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 25px;
+    margin-top: 25px;
+}
+
+.p-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.total-amount-val { font-size: 1.5rem; font-weight: 800; color: #2563eb; }
+
+/* Button Long */
+.btn-continue-long {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: all 0.3s;
+}
+
+.btn-continue-long:hover { background: #1d4ed8; }
+
+.security-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.assistance-card {
+    margin-top: 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    gap: 20px;
+    border: 1px solid #f1f5f9;
+}
+
+.assistance-icon { color: #2563eb; font-size: 1.5rem; }
+.assistance-text { font-size: 0.8rem; color: #64748b; line-height: 1.6; }
+
+/* Mobile Adjustments */
+@media (max-width: 992px) {
+    .guest-content-grid { grid-template-columns: 1fr; }
+    .stay-summary-card { position: static; }
+}

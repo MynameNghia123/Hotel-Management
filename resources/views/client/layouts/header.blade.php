@@ -15,7 +15,7 @@
 
         <!-- Links -->
         <ul class="nav-links">
-            <li><a href="#">Phòng Nghỉ</a></li>
+            <li><a href="{{ route('room') }}">Phòng Nghỉ</a></li>
             <li><a href="{{ route('amenities') }}">Tiện Ích</a></li>
             <li><a href="{{ route('dining') }}">Ẩm Thực</a></li>
             <li><a href="{{ route('gallery') }}">Bộ Sưu Tập</a></li>
@@ -24,7 +24,9 @@
         <!-- Right actions -->
         <div class="nav-actions">
             <a href="{{ route('login') }}" class="sign-in-link">Đăng Nhập</a>
-            <a href="{{ route('register') }}" class="btn btn-primary">Đăng Ký Ngay</a>
+            <span style="color: rgba(255,255,255,0.2)">/</span>
+            <a href="{{ route('register') }}" class="sign-in-link">Đăng Ký</a>
+            <a href="#" class="btn btn-primary" style="margin-left: 10px;">Đặt Phòng Ngay</a>
         </div>
     </div>
 </header>

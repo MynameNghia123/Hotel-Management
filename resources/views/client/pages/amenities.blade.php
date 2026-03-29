@@ -1,7 +1,8 @@
 @extends('client.layouts.master')
-
+@section('title', 'Tiện Ích Cao Cấp | Urban Luxe Hotel')
+@section('meta_description', 'Trải nghiệm hệ thống tiện ích đẳng cấp tại Urban Luxe: Hồ bơi vô cực, Spa thư giãn, phòng Gym hiện đại và dịch vụ quản gia 24/7.')
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/amenities.css') }}">
+@vite(['resources/css/client/amenities.css'])
 @endpush
 
 @section('content')

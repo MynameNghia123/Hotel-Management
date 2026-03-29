@@ -1,7 +1,10 @@
 @extends('client.layouts.master')
 
+@section('title', 'Nhà Hàng & Ẩm Thực | Urban Luxe Hotel')
+@section('meta_description', 'Khám phá tinh hoa ẩm thực tại nhà hàng của Urban Luxe. Thực đơn phong phú từ các đầu bếp hàng đầu trong không gian sang trọng.')
+
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/dining.css') }}">
+@vite(['resources/css/client/dining.css'])
 @endpush
 
 @section('content')

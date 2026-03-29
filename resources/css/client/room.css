@@ -1,0 +1,431 @@
+/* --- ROOMS HERO --- */
+.rooms-hero {
+    position: relative;
+    padding: 200px 0 140px;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Hiệu ứng Parallax nhẹ */
+    text-align: center;
+    color: white;
+}
+
+.rooms-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 5.5rem;
+    font-weight: 700;
+    font-style: italic;
+    margin-bottom: 30px;
+    letter-spacing: -1px;
+    text-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.rooms-hero p {
+    font-size: 1.1rem;
+    color: #cbd5e1;
+    max-width: 650px;
+    margin: 0 auto;
+    letter-spacing: 1px;
+    font-weight: 300;
+    line-height: 1.8;
+}
+
+/* --- PREMIUM 5-STAR ROOM CARD REMAKE --- */
+.rooms-section {
+    background-color: #0b0f1a;
+    padding: 120px 0;
+}
+
+.room-card-large {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    background: linear-gradient(145deg, #161e2e, #0f172a);
+    border-radius: 2px; /* Góc nhọn trông sang hơn góc bo tròn quá đà */
+    overflow: hidden;
+    margin-bottom: 80px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.room-card-large:hover {
+    border-color: rgba(234, 179, 8, 0.2); /* Ánh gold nhẹ */
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+    transform: translateY(-5px);
+}
+
+/* Image side */
+.room-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 520px;
+}
+
+.room-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s ease;
+}
+
+.room-card-large:hover .room-image-wrapper img {
+    transform: scale(1.08);
+}
+
+.room-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 50%, rgba(15, 23, 42, 0.4));
+}
+
+.room-code-badge {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    color: #eab308;
+    padding: 8px 20px;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+/* Info side */
+.room-info-content {
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.room-category {
+    color: #eab308;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.room-category::after {
+    content: '';
+    height: 1px;
+    width: 40px;
+    background: #eab308;
+}
+
+.room-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 25px;
+    line-height: 1.1;
+    font-weight: 600;
+}
+
+.room-description {
+    color: #94a3b8;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    font-size: 0.95rem;
+    font-weight: 300;
+}
+
+/* Premium Icons List */
+.room-amenities-list {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 50px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.amenity-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: white;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.room-card-large:hover .amenity-item {
+    opacity: 1;
+}
+
+.amenity-item svg {
+    color: #eab308;
+    width: 20px;
+    height: 20px;
+}
+
+/* Footer: Price & Actions */
+.room-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 30px;
+    margin-top: auto;
+}
+
+.room-price {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.price-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #64748b;
+    margin-bottom: 5px;
+}
+
+.price-val {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+.price-unit {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.room-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-room-detail {
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-room-detail:hover {
+    color: #eab308;
+    text-underline-offset: 12px;
+}
+
+.btn-room-book {
+    padding: 16px 40px;
+    background: transparent;
+    color: #eab308;
+    border: 1px solid #eab308;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    transition: all 0.4s ease;
+}
+
+.btn-room-book:hover {
+    background: #eab308;
+    color: #0b0f1a;
+    box-shadow: 0 10px 30px rgba(234, 179, 8, 0.3);
+}
+
+/* Alternating */
+.room-card-large:nth-child(even) {
+    grid-template-columns: 1fr 1.3fr;
+}
+
+.room-card-large:nth-child(even) .room-image-wrapper {
+    order: 2;
+}
+
+.room-card-large:nth-child(even) .room-image-overlay {
+    background: linear-gradient(to left, transparent 50%, rgba(15, 23, 42, 0.4));
+}
+
+/* Filter Box - FULL RESTORE & PREMIUM SYNC */
+.rooms-filter-section {
+    background: #0b0f1a;
+    padding-bottom: 60px;
+}
+
+.filter-toggle-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.filter-suggestion {
+    color: #64748b;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-btn-toggle {
+    background: transparent;
+    color: white;
+    padding: 10px 28px;
+    border-radius: 2px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.filter-btn-toggle:hover {
+    border-color: #eab308;
+    color: #eab308;
+}
+
+.filter-expandable-box {
+    max-width: 1100px;
+    margin: 30px auto 0;
+    background: #111827;
+    border-radius: 4px;
+    padding: 40px;
+    display: none;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.filter-expandable-box.active {
+    display: block;
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+}
+
+.filter-group-title {
+    color: #eab308;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.filter-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.filter-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.filter-checkbox-item:hover {
+    color: white;
+}
+
+.filter-checkbox-item input {
+    accent-color: #eab308;
+    width: 16px;
+    height: 16px;
+}
+
+.price-range-inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-mini-input {
+    width: 100%;
+    background: #0b0f1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    padding: 10px 12px;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.filter-mini-input:focus {
+    border-color: #eab308;
+    outline: none;
+}
+
+.filter-actions {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+}
+
+.btn-reset-filter {
+    color: #64748b;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-apply-filter {
+    background: #eab308;
+    color: #0b0f1a;
+    padding: 12px 30px;
+    border-radius: 2px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: none;
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .room-card-large {
+        grid-template-columns: 1fr !important;
+    }
+    .room-image-wrapper {
+        height: 350px;
+    }
+    .room-info-content {
+        padding: 40px;
+    }
+    .room-title {
+        font-size: 2.2rem;
+    }
+}

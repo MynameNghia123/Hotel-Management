@@ -14,9 +14,6 @@ body, html {
 .login-section {
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(rgba(15, 22, 36, 0.7), rgba(15, 22, 36, 0.9)), url('../img/backgroundhomepage.png');
-    background-size: cover;
-    background-position: center;
     display: flex;
     flex-direction: column;
     align-items: center;

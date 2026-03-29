@@ -1,0 +1,247 @@
+/* --- Profile Page Styles --- */
+.profile-hero {
+    position: relative;
+    padding: 100px 0;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: white;
+}
+
+.member-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.member-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #2563eb;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #2563eb;
+}
+
+.profile-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.profile-hero p {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+/* Layout */
+.profile-content {
+    background-color: #f8fafc;
+    padding: 80px 0;
+}
+
+.profile-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+}
+
+/* Sidebar */
+.profile-sidebar {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    height: fit-content;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.sidebar-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: 10px;
+    color: #64748b;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar-nav-item:hover {
+    background: #f1f5f9;
+}
+
+.sidebar-nav-item.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* Main Form Card */
+.profile-card {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.card-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.required-text {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+/* Form Styles */
+.profile-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+.form-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group label span {
+    color: #ef4444;
+}
+
+.profile-input {
+    height: 52px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background: white;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.profile-input:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+
+.phone-input-group {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.country-code {
+    border: none;
+    border-right: 1px solid #e2e8f0;
+    background: #f8fafc;
+    padding: 0 12px;
+    font-size: 0.95rem;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.phone-number {
+    border: none;
+    padding: 0 16px;
+    height: 52px;
+    font-size: 0.95rem;
+}
+
+.input-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+/* Save Button */
+.btn-save {
+    margin-top: 40px;
+    width: 100%;
+    height: 56px;
+    background: #2563eb;
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-save:hover {
+    background: #1d4ed8;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .profile-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-sidebar {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .profile-form-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+}

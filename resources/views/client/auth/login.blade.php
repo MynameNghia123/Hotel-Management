@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập | Urban Luxe</title>
+    <title>Đăng nhập | Urban Luxe Hotel</title>
+    <meta name="description" content="Đăng nhập vào tài khoản Urban Luxe để quản lý đặt phòng và nhận các ưu đãi đặc quyền.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}?v={{ time() }}">
+    @vite(['resources/css/client/login.css'])
 </head>
 <body>
 
-    <section class="login-section">
+    <section class="login-section" style="background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('{{ asset('img/backgroundhomepage.png') }}'); background-size: cover; background-position: center;">
         
         <!-- Branding -->
         <div class="auth-brand">

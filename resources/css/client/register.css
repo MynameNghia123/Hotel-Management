@@ -16,10 +16,6 @@ body, html {
 .register-section {
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(rgba(15, 22, 36, 0.6), rgba(15, 22, 36, 0.8)), url('../img/backgroundhomepage.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;

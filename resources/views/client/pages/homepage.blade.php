@@ -1,5 +1,8 @@
 @extends('client.layouts.master')
 
+@section('title', 'Urban Luxe | Khách sạn Nghỉ dưỡng Sang trọng Trung tâm Thành phố')
+@section('meta_description', 'Khám phá Urban Luxe - Khách sạn 5 sao với thiết kế thanh lịch, tiện nghi đẳng cấp và dịch vụ nghỉ dưỡng thượng lưu ngay tại trung tâm thành phố.')
+
 @section('content')
 <section class="hero" style="background-image: url('{{ asset('img/backgroundhomepage.png') }}');">
     <!-- Lớp phủ tối cho phần ảnh nền từ bên trái mờ dần -->

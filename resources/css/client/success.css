@@ -1,0 +1,246 @@
+/* --- BOOKING SUCCESS PAGE STYLING --- */
+.success-page {
+    background-color: #f1f5f9;
+    padding-bottom: 120px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header Section with Dark Overlay */
+.success-header {
+    background-size: cover;
+    background-position: center;
+    padding: 120px 0 100px;
+    text-align: center;
+    color: white;
+}
+
+.check-icon-wrapper {
+    width: 70px;
+    height: 70px;
+    background: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    font-size: 2rem;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+}
+
+.success-header h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+
+.success-header p {
+    color: #94a3b8;
+    max-width: 500px;
+    margin: 0 auto 35px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.booking-id-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+}
+
+.booking-id-pill b { color: white; }
+
+/* Main Summary Card */
+.summary-main-card {
+    max-width: 900px;
+    margin: -160px auto 0;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
+}
+
+.card-top-actions {
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.summary-title-main {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.summary-email-note {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.action-buttons-group {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-mini-action {
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* Info Grid Section */
+.reservation-info-grid {
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.info-box-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.info-box-val {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    display: block;
+}
+
+.info-box-sub {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 4px;
+    display: block;
+}
+
+.status-pill {
+    background: #dcfce7;
+    color: #166534;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Room Details Block */
+.room-details-block {
+    padding: 40px;
+}
+
+.rd-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.rd-title { font-weight: 800; color: #0f172a; }
+.view-policy-link { color: #2563eb; font-size: 0.8rem; font-weight: 700; text-decoration: none; }
+
+.room-main-summary-row {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+.rd-thumb-large { width: 140px; height: 100px; border-radius: 8px; object-fit: cover; }
+
+.rd-main-info { flex: 1; }
+.rd-main-info h4 { font-size: 1.1rem; font-weight: 800; color: #0f172a; }
+.rd-main-info p { font-size: 0.85rem; color: #64748b; margin: 4px 0 15px; }
+
+.sub-rooms-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.sub-room-card {
+    background: white;
+    border: 1px solid #f1f5f9;
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.src-key { font-size: 0.85rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 10px; }
+.src-key i { color: #2563eb; font-size: 0.7rem; }
+.src-tag { font-size: 0.65rem; color: #94a3b8; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; }
+
+.rd-total-price { font-size: 1.4rem; font-weight: 800; color: #0f172a; }
+
+/* Final Actions Area */
+.final-actions-row {
+    padding: 0 40px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-success-main {
+    padding: 15px 35px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+}
+
+.btn-primary-blue { background: #2563eb; color: white; border: none; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
+.btn-primary-blue:hover { background: #1d4ed8; }
+
+.btn-outline-gray { background: white; border: 1px solid #e2e8f0; color: #1e293b; }
+
+.security-footer-small {
+    text-align: center;
+    padding-bottom: 40px;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .reservation-info-grid { grid-template-columns: 1fr 1fr; }
+    .room-main-summary-row { flex-direction: column; }
+    .sub-rooms-grid { grid-template-columns: 1fr; }
+    .success-header h1 { font-size: 2.5rem; }
+}

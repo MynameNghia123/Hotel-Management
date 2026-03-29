@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký | Urban Luxe</title>
+    <title>Đăng ký thành viên | Urban Luxe Hotel</title>
+    <meta name="description" content="Tham gia cộng đồng Urban Luxe để nhận ưu đãi đặt phòng tốt nhất và trải nghiệm dịch vụ khách sạn 5 sao đẳng cấp.">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Link CSS Tĩnh -->
-    <link rel="stylesheet" href="{{ asset('css/register.css') }}?v={{ time() }}">
+    @vite(['resources/css/client/register.css'])
 </head>
 <body>
 
-    <section class="register-section">
+    <section class="register-section" style="background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('{{ asset('img/backgroundhomepage.png') }}'); background-size: cover; background-position: center;">
         
         <!-- Brand Logo Area -->
         <div class="auth-brand">

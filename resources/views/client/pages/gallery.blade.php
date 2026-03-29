@@ -1,7 +1,10 @@
 @extends('client.layouts.master')
 
+@section('title', 'Bộ Sưu Tập Hình Ảnh | Urban Luxe Hotel')
+@section('meta_description', 'Khám phá không gian sang trọng và hiện đại của Urban Luxe qua bộ sưu tập hình ảnh về phòng nghỉ, ẩm thực và tiện ích đẳng cấp.')
+
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
+@vite(['resources/css/client/gallery.css'])
 @endpush
 
 @section('content')
