@@ -1,0 +1,91 @@
+/* ==========================================================================
+   URBAN LUXE ADMIN - ROOMS MANAGEMENT (INDEX LIST)
+   ========================================================================== */
+
+.rt-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f3f7;
+    margin-bottom: 24px;
+}
+
+.rt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.rt-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.5px;
+}
+
+.rt-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+.rt-btn-primary {
+    background: #2a3f8a;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(42, 63, 138, 0.2);
+}
+
+.rt-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+.rt-search-wrapper { position: relative; flex: 1; max-width: 400px; }
+.rt-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+.rt-search-input { width: 100%; padding: 12px 12px 12px 42px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; font-size: 14px; outline: none; }
+
+.rt-filters { display: flex; gap: 12px; }
+.rt-select { padding: 10px 16px; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; font-size: 14px; color: #475569; outline: none; min-width: 160px; }
+.rt-btn-filter { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; color: #64748b; cursor: pointer; }
+
+.rt-table-wrapper { overflow-x: auto; margin-bottom: 24px; }
+.rt-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+.rt-table th { text-align: left; padding: 16px; background: #f8fafc; color: #64748b; font-size: 12px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #f1f3f7; }
+.rt-table td { padding: 18px 16px; border-bottom: 1px solid #f1f3f7; font-size: 14px; color: #334155; }
+
+.rt-type-info { display: flex; flex-direction: column; gap: 4px; }
+.rt-name { font-weight: 700; color: #1e293b; font-size: 15px; }
+.rt-code { font-size: 11px; color: #94a3b8; font-weight: 600; }
+.rt-beds { display: flex; align-items: center; gap: 12px; color: #64748b; }
+.rt-bed-item { display: flex; align-items: center; gap: 6px; }
+.rt-price-hour { color: #2563eb; font-weight: 700; }
+.rt-price-day { color: #059669; font-weight: 700; }
+.rt-quantity { font-weight: 700; color: #1e293b; text-align: center; }
+
+.rt-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.rt-btn-action { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s; background: transparent; }
+.rt-btn-action.view { color: #3b82f6; }
+.rt-btn-action.edit { color: #f59e0b; }
+.rt-btn-action.delete { color: #ef4444; }
+
+.rt-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.rt-info { font-size: 13px; color: #64748b; }
+.rt-pagination { display: flex; gap: 6px; }
+.rt-page-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; font-size: 14px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s; }
+.rt-page-btn.active { background: #2a3f8a; color: #fff; border-color: #2a3f8a; }

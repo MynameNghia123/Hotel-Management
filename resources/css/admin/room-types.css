@@ -1,0 +1,115 @@
+/* ==========================================================================
+   URBAN LUXE ADMIN - ROOM TYPES DETAIL (FIGMA MATCH)
+   ========================================================================== */
+
+.admin-layout { display: flex; height: 100vh; background: #f4f7fa; font-family: 'Inter', sans-serif; }
+.admin-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.admin-header { height: 70px; background: #fff; border-bottom: 2px solid #eef2f6; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+
+.work-date { font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+.header-right { display: flex; align-items: center; gap: 20px; }
+.notif-btn { position: relative; border: none; background: #f8fafc; color: #94a3b8; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; border: 1px solid #eef2f6; }
+.user-profile img { width: 40px; height: 40px; border-radius: 12px; border: 2px solid #eef2f6; }
+
+.admin-content { flex: 1; overflow-y: auto; padding: 31px 40px; background: #f8fafc; }
+
+.page-actions-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+.back-text { display: flex; align-items: center; gap: 8px; color: #64748b; font-size: 13px; margin-bottom: 12px; text-decoration: none; font-weight: 500; }
+.main-title { font-size: 28px; font-weight: 850; color: #1e293b; margin: 0; letter-spacing: -0.8px; }
+
+.right-badges { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+.view-only-badge { 
+    background: #fdfae6; 
+    color: #b45309; 
+    padding: 10px 18px; 
+    border-radius: 10px; 
+    font-size: 13px; 
+    font-weight: 700; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    border: 1px solid #fde68a;
+    white-space: nowrap; /* Khóa không cho xuống dòng */
+}
+.btn-cancel { 
+    background: #fff; 
+    color: #64748b; 
+    border: 1px solid #e2e8f0; 
+    padding: 12px 24px; 
+    border-radius: 10px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    font-size: 14px;
+    white-space: nowrap;
+}
+.btn-primary-blue { 
+    background: #2a3f8a; 
+    color: #fff; 
+    border: none; 
+    padding: 12px 28px; 
+    border-radius: 10px; 
+    font-weight: 700; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    cursor: pointer; 
+    font-size: 14px; 
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(42,63,138,0.2); 
+}
+
+.details-grid-layout { display: grid; grid-template-columns: 1.85fr 1.15fr; gap: 28px; }
+.details-card { background: #fff; border-radius: 14px; padding: 28px; border: 1px solid #f1f3f7; margin-bottom: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+.card-section-title { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 850; color: #334155; margin: 0 0 24px 0; letter-spacing: 0.8px; }
+.card-section-title svg { color: #2a3f8a; }
+
+.info-split { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.info-block label { display: block; font-size: 11px; color: #94a3b8; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
+.info-block strong { font-size: 17px; color: #1e293b; font-weight: 800; }
+.status-pill-green { background: #ecfdf5; color: #059669; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 750; }
+.desc-content-box { background: #f8fafc; padding: 18px; border-radius: 12px; font-size: 14px; color: #475569; line-height: 1.8; border: 1px solid #f1f3f7; }
+
+.pricing-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.dimension-box { background: #f8fafc; border: 1px solid #f1f3f7; border-radius: 12px; padding: 20px; }
+.dim-flex { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+.dim-item { font-size: 12px; color: #64748b; line-height: 1.6; }
+.dim-item strong { font-size: 18px; color: #1e293b; font-weight: 850; }
+.dim-divider { width: 1px; height: 35px; background: #e2e8f0; }
+
+.price-side { display: flex; flex-direction: column; gap: 20px; }
+.price-row { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 12px; border-bottom: 2px dashed #f1f3f7; }
+.price-val { font-size: 20px; font-weight: 850; color: #2a3f8a; }
+.price-val small { font-size: 11px; color: #94a3b8; }
+
+.capacity-cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.cap-card { 
+    background: #f8fafc; 
+    border: 1px solid #f1f3f7; 
+    border-radius: 12px; 
+    padding: 24px 12px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Khoảng cách giữa icon - chữ - số */
+    transition: all 0.2s;
+}
+.cap-card:hover { transform: translateY(-3px); border-color: #2a3f8a; background: #fff; }
+.cap-card svg { color: #94a3b8; }
+.cap-card span { font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; }
+.cap-card strong { display: block; font-size: 24px; color: #1e293b; font-weight: 850; line-height: 1; }
+
+.media-item { display: flex; align-items: center; gap: 14px; padding: 12px; border: 1px solid #f1f3f7; border-radius: 12px; margin-bottom: 14px; }
+.media-item img { width: 75px; height: 55px; border-radius: 8px; object-fit: cover; }
+.border-left-active { border-left: 4px solid #2a3f8a; }
+.media-info strong { display: block; font-size: 13px; color: #1e293b; font-weight: 800; }
+.media-info span { font-size: 11px; color: #94a3b8; font-weight: 600; }
+
+.amenities-flex { display: flex; flex-wrap: wrap; gap: 10px; }
+.amenity-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #f8fafc; border: 1px solid #e1e9f1; border-radius: 12px; font-size: 12.5px; font-weight: 750; color: #475569; }
+.amenity-pill svg { width: 14px; color: #2a3f8a; }
+
+.equip-table { width: 100%; border-collapse: collapse; }
+.equip-table th { text-align: left; font-size: 11px; color: #94a3b8; padding-bottom: 16px; }
+.equip-table td { padding: 15px 0; border-bottom: 1.5px solid #f8fafc; font-size: 14px; font-weight: 750; color: #1e293b; }
+.qty-num { text-align: right; color: #1e293b; }

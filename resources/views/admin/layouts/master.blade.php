@@ -7,7 +7,7 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Cấu hình Vite -->
-    @vite(['resources/css/admin/app.css', 'resources/js/admin/app.js'])
+    @vite(['resources/css/admin/app.css', 'resources/css/admin/sidebar.css', 'resources/js/admin/app.js'])
     @stack('styles')
 </head>
 <body class="bg-gray-50 font-['Inter']">

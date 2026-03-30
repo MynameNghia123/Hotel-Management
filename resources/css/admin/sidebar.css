@@ -1,9 +1,4 @@
-/* ============================================================
-   ADMIN SIDEBAR — resources/css/admin/sidebar.css
-   Urban Luxe Hotel Management System
-   ============================================================ */
 
-/* ===== SIDEBAR ===== */
 .sb {
     width: 270px;
     min-width: 270px;
@@ -17,7 +12,6 @@
     z-index: 30;
 }
 
-/* Logo */
 .sb-logo {
     height: 68px;
     display: flex;
@@ -122,11 +116,11 @@
     flex-shrink: 0;
 }
 .sb-item:hover {
-    background: #2a3f8a;
-    color: #fff;
-    box-shadow: 0 3px 12px rgba(42,63,138,.22);
+   
+    
+  
 }
-.sb-item:hover svg { color: #fff; }
+
 
 .sb-item.active {
     background: #2a3f8a;

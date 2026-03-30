@@ -6,6 +6,7 @@
 <div style="display:flex; height:100vh; background:#f5f6fa;">
 
     {{-- SIDEBAR --}}
+    
     @include('admin.layouts.sidebar')
 
     {{-- CONTENT --}}

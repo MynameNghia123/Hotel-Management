@@ -23,6 +23,9 @@ export default defineConfig({
                  'resources/js/client/app.js',
                 // import css admin
                 'resources/css/admin/app.css',
+                'resources/css/admin/rooms.css',
+                'resources/css/admin/room-types.css',
+                'resources/css/admin/bookings.css',
                 'resources/css/admin/sidebar.css',
                 'resources/css/admin/login.css',
                 'resources/css/admin/dashboard.css',
