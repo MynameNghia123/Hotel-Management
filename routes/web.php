@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+//client
 Route::get('/', function () {
     return view('client.pages.homepage');
 })->name('home');
@@ -53,8 +53,13 @@ Route::get('/login', function () {
 Route::get('/forgot-password', function() {
     return view('client.auth.forgot_password');
 })->name('forgot_password');
+//admin
 
 Route::get('/admin', function () {
+    return view('admin.auth.login');
+})->name('admin.login');
+
+Route::get('/admin/dashboard', function () {
     return view('admin.pages.dashboard');
 })->name('admin.dashboard');
 

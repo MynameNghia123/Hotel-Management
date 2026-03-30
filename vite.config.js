@@ -6,6 +6,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
+                // import css client
                 'resources/css/client/app.css',
                 'resources/css/client/amenities.css',
                 'resources/css/client/dining.css',
@@ -19,8 +20,13 @@ export default defineConfig({
                 'resources/css/client/checkout.css',
                 'resources/css/client/forgot_password.css',
                 'resources/css/client/success.css',
+                 'resources/js/client/app.js',
+                // import css admin
                 'resources/css/admin/app.css',
-                'resources/js/client/app.js',
+                'resources/css/admin/sidebar.css',
+                'resources/css/admin/login.css',
+                'resources/css/admin/dashboard.css',
+                'resources/css/admin/footer.css',
                 'resources/js/admin/app.js'
             ],
             refresh: true,

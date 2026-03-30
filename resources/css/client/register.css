@@ -14,6 +14,7 @@ body, html {
 
 /* Trang đăng ký tràn màn hình với ảnh nền thành phố */
 .register-section {
+    position: relative;
     width: 100%;
     min-height: 100vh;
     display: flex;
@@ -21,6 +22,50 @@ body, html {
     align-items: center;
     justify-content: flex-start; /* Nhấc lên phía trên */
     padding: 40px 20px 200px 20px; /* Thêm padding trên để cân đối và padding dưới lớn */
+}
+
+/* Back to Home Link */
+.back-home-link {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    z-index: 100;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.back-home-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-5px);
+}
+
+.back-home-link svg {
+    transition: transform 0.3s ease;
+}
+
+.back-home-link:hover svg {
+    transform: translateX(-3px);
+}
+
+@media (max-width: 768px) {
+    .back-home-link {
+        top: 1rem;
+        left: 1rem;
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
 }
 
 /* Logo & Motto */

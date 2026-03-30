@@ -1,0 +1,226 @@
+/* ============================================================
+   ADMIN SIDEBAR — resources/css/admin/sidebar.css
+   Urban Luxe Hotel Management System
+   ============================================================ */
+
+/* ===== SIDEBAR ===== */
+.sb {
+    width: 270px;
+    min-width: 270px;
+    height: 100vh;
+    background: #fff;
+    border-right: 1px solid #e8eaf0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    z-index: 30;
+}
+
+/* Logo */
+.sb-logo {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid #f1f3f7;
+    flex-shrink: 0;
+    gap: 12px;
+    text-decoration: none;
+}
+.sb-logo-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: linear-gradient(135deg, #2a3f8a 0%, #1a2d7a 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(42,63,138,.3);
+    transition: transform .2s, box-shadow .2s;
+}
+.sb-logo:hover .sb-logo-icon {
+    transform: scale(1.07);
+    box-shadow: 0 6px 20px rgba(42,63,138,.4);
+}
+.sb-logo-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: #0f1c2e;
+    letter-spacing: -.3px;
+    line-height: 1.15;
+    display: block;
+}
+.sb-logo-sub {
+    font-size: 9px;
+    font-weight: 700;
+    color: #2a3f8a;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 1px;
+}
+
+/* Nav scroll */
+.sb-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 12px 20px;
+    display: flex;
+    flex-direction: column;
+}
+.sb-nav::-webkit-scrollbar { width: 3px; }
+.sb-nav::-webkit-scrollbar-track { background: transparent; }
+.sb-nav::-webkit-scrollbar-thumb { background: #e2e5ec; border-radius: 99px; }
+
+/* Section group & label */
+.sb-group {
+    margin-top: 18px;
+}
+.sb-group:first-child { margin-top: 0; }
+
+.sb-label {
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #a5acbc;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    padding: 0 12px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Nav items */
+.sb-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sb-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #636d82;
+    text-decoration: none;
+    transition: background .15s, color .15s, box-shadow .15s;
+    cursor: pointer;
+    position: relative;
+}
+.sb-item svg {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    color: #a5acbc;
+    transition: color .15s;
+    flex-shrink: 0;
+}
+.sb-item:hover {
+    background: #2a3f8a;
+    color: #fff;
+    box-shadow: 0 3px 12px rgba(42,63,138,.22);
+}
+.sb-item:hover svg { color: #fff; }
+
+.sb-item.active {
+    background: #2a3f8a;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 4px 16px rgba(42,63,138,.25);
+}
+.sb-item.active svg { color: #fff; }
+
+/* Badge */
+.sb-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    line-height: 1.4;
+    flex-shrink: 0;
+    transition: background .15s, color .15s;
+}
+.sb-badge-blue { background: #dbeafe; color: #1e40af; }
+.sb-badge-orange { background: #ffedd5; color: #c2410c; }
+.sb-item:hover .sb-badge,
+.sb-item.active .sb-badge {
+    background: rgba(255,255,255,.22);
+    color: #fff;
+}
+
+/* Footer widget */
+.sb-footer {
+    margin: 16px 12px 0;
+    padding: 14px;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+    border: 1px solid #c7d7fd;
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+.sb-footer::after {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 70px; height: 70px;
+    background: rgba(42,63,138,.08);
+    border-radius: 50%;
+}
+.sb-footer-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+.sb-footer-icon {
+    width: 28px; height: 28px;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2a3f8a;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    flex-shrink: 0;
+}
+.sb-footer-head strong {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #1e293b;
+}
+.sb-footer p {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.55;
+    margin: 0 0 10px;
+}
+.sb-footer-btn {
+    display: block;
+    width: 100%;
+    padding: 7px;
+    background: #2a3f8a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: .02em;
+    transition: background .15s, transform .12s;
+    position: relative;
+    z-index: 1;
+}
+.sb-footer-btn:hover {
+    background: #1e2f6a;
+    transform: translateY(-1px);
+}
