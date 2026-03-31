@@ -37,7 +37,7 @@ export default defineConfig({
                 'resources/css/admin/amenities.css',
                 'resources/css/admin/staff-roles.css',
                 'resources/css/admin/statistical.css',
-                'resources/css/admin/staff.css',
+                'resources/css/admin/roles.css',
                 'resources/css/admin/equipment.css',
                 'resources/css/admin/dashboard.css',
                 'resources/js/admin/app.js'

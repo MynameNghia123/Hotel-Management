@@ -112,9 +112,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     })->name('amenities');
 
     // Hệ thống
-    Route::get('/staff', function () {
-        return view('admin.staff.index');
-    })->name('staff');
+    Route::get('/roles', function () {
+        return view('admin.roles.index');
+    })->name('roles');
 // vai tro
     Route::get('/staff-roles', function () {
         return view('admin.staff-roles.index');
