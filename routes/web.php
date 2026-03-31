@@ -88,12 +88,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/equipment', function () {
         return view('admin.equipment.index');
     })->name('equipment.index');
-    Route::get('/asset-groups', function () {
-        return view('admin.asset-groups.index');
-    })->name('asset-groups.index');
-    Route::get('/repairs', function () {
-        return view('admin.repairs.index');
-    })->name('repairs.index');
+    Route::get('/equipment-types', function () {
+        return view('admin.equipment-types.index');
+    })->name('equipment-types.index');
+    Route::get('/repair-ticket', function () {
+        return view('admin.repair-ticket.index');
+    })->name('repair-ticket.index');
 
     // Khách hàng
     Route::get('/customers', function () {
@@ -115,16 +115,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/staff', function () {
         return view('admin.staff.index');
     })->name('staff');
-
+// vai tro
     Route::get('/staff-roles', function () {
         return view('admin.staff-roles.index');
     })->name('staff-roles.index');
     Route::get('/settings', function () {
         return view('admin.settings.index');
     })->name('settings');
-    Route::get('/reports', function () {
-        return view('admin.reports.index');
-    })->name('reports');
+    Route::get('/statistical', function () {
+        return view('admin.statistical.index');
+    })->name('statistical');
 });
 
 Route::get('/welcome', function () {

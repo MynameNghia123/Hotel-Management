@@ -1,0 +1,239 @@
+/* resources/css/admin/staff-roles.css */
+.sr-container {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+}
+
+.sr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+}
+
+.sr-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+}
+
+.sr-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+.sr-btn-primary {
+    background: #1e3a8a;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+}
+
+.sr-btn-primary:hover {
+    background: #1e3271;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(30, 58, 138, 0.3);
+}
+
+.sr-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 16px;
+}
+
+.sr-search-wrapper {
+    position: relative;
+    width: 380px;
+}
+
+.sr-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+.sr-search-input {
+    width: 100%;
+    padding: 10px 14px 10px 40px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1e293b;
+    background: #f8fafc;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.sr-btn-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.sr-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 24px;
+}
+
+.sr-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+}
+
+.sr-table th {
+    padding: 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.sr-table td {
+    padding: 24px 16px;
+    font-size: 14px;
+    color: #1e293b;
+    border-bottom: 1px solid #f8fafc;
+    vertical-align: middle;
+}
+
+.sr-id {
+    font-weight: 700;
+    color: #1e3a8a;
+    font-size: 14px;
+}
+
+.sr-role-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sr-role-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.sr-role-name {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.sr-staff-count {
+    color: #64748b;
+}
+
+.sr-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #dcfce7;
+}
+
+.sr-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.sr-btn-action {
+    background: transparent;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sr-btn-action.permissions { color: #1e3a8a; }
+.sr-btn-action.edit { color: #f59e0b; }
+.sr-btn-action.delete { color: #f43f5e; }
+
+.sr-btn-action:hover { background: #f1f5f9; }
+
+.sr-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 24px;
+}
+
+.sr-info {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.sr-pagination {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sr-page-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sr-page-btn.active {
+    background: #1e3a8a;
+    color: #ffffff;
+    border-color: #1e3a8a;
+}

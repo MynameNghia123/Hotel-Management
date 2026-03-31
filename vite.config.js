@@ -27,10 +27,22 @@ export default defineConfig({
                 'resources/css/admin/room-types.css',
                 'resources/css/admin/bookings.css',
                 'resources/css/admin/sidebar.css',
+                'resources/css/admin/equipment-types.css',
                 'resources/css/admin/footer.css',
                 'resources/css/admin/login.css',
+                'resources/css/admin/repair-ticket.css',
+                'resources/css/admin/customers.css',
+                'resources/css/admin/services.css',
+                'resources/css/admin/service-types.css',
+                'resources/css/admin/amenities.css',
+                'resources/css/admin/staff-roles.css',
+                'resources/css/admin/statistical.css',
+                'resources/css/admin/staff.css',
+                'resources/css/admin/equipment.css',
                 'resources/css/admin/dashboard.css',
                 'resources/js/admin/app.js'
+
+             
             ],
             refresh: true,
         }),

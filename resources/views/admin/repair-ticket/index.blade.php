@@ -1,9 +1,9 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Quản lý dịch vụ | Urban Luxe Admin')
+@section('title', 'Quản lý phiếu sửa chữa | Urban Luxe Admin')
 
 @push('styles')
-    @vite('resources/css/admin/services.css')
+    @vite('resources/css/admin/repair-ticket.css')
 @endpush
 
 @section('content')
@@ -40,75 +40,87 @@
         {{-- MAIN CONTENT --}}
         <div style="flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; background:#f8fafc;">
             
-            <div class="sv-container">
-                <div class="sv-header">
+            <div class="rp-container">
+                <div class="rp-header">
                     <div>
-                        <h1 class="sv-title">Quản lý dịch vụ</h1>
-                        <p class="sv-subtitle">Hệ thống quản trị khách sạn Urban Luxe - Quản lý danh mục dịch vụ dựa trên mô hình dữ liệu.</p>
+                        <h1 class="rp-title">Quản lý phiếu sửa chữa</h1>
+                        <p class="rp-subtitle">Hệ thống quản trị khách sạn Urban Luxe - Quản lý phiếu sửa chữa thiết bị.</p>
                     </div>
-                    <button class="sv-btn-primary">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                        Thêm dịch vụ mới
+                    <button class="rp-btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Tạo phiếu sửa chữa mới
                     </button>
                 </div>
 
-                <div class="sv-toolbar">
-                    <div class="sv-search-wrapper">
-                        <div class="sv-search-icon">
+                <div class="rp-toolbar">
+                    <div class="rp-search-wrapper">
+                        <div class="rp-search-icon">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </div>
-                        <input type="text" class="sv-search-input" placeholder="Tìm tên dịch vụ...">
+                        <input type="text" class="rp-search-input" placeholder="Tìm theo số phòng/thiết bị...">
                     </div>
                     
-                    <div class="sv-filters">
-                        <select class="sv-select">
-                            <option>Nhóm dịch vụ (Tất cả)</option>
-                            <option>Dịch vụ ăn uống</option>
-                            <option>Spa & Wellness</option>
-                            <option>Giặt ủi</option>
+                    <div class="rp-filters">
+                        <select class="rp-select">
+                            <option>Trạng thái (Tất cả)</option>
+                            <option>Đang chờ xử lý</option>
+                            <option>Đang sửa chữa</option>
+                            <option>Đã hoàn thành</option>
+                            <option>Đã hủy</option>
                         </select>
-                        <button class="sv-btn-action" style="color: #94a3b8;">
+                        <button class="rp-btn-action" style="color: #94a3b8;">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                         </button>
                     </div>
                 </div>
 
-                <div class="sv-table-wrapper">
-                    <table class="sv-table">
+                <div class="rp-table-wrapper">
+                    <table class="rp-table">
                         <thead>
                             <tr>
-                                <th>MÃ DỊCH VỤ (ID)</th>
-                                <th>TÊN DỊCH VỤ (NAME)</th>
-                                <th>NHÓM DỊCH VỤ (SERVICE NAME)</th>
-                                <th>ĐƠN GIÁ (UNIT PRICE)</th>
-                                <th>ĐƠN VỊ TÍNH (UNIT)</th>
+                                <th>MÃ PHIẾU</th>
+                                <th>PHÒNG</th>
+                                <th>TÊN THIẾT BỊ</th>
+                                <th>NGÀY BÁO CÁO</th>
+                                <th>CHI PHÍ DỰ KIẾN (VNĐ)</th>
+                                <th>TRẠNG THÁI</th>
                                 <th style="text-align: right;">THAO TÁC</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
-                                $services = [
-                                    ['id' => 'SRV-1001', 'name' => 'Buffet Sáng Cao Cấp', 'group' => 'Dịch vụ ăn uống', 'price' => '450.000 VNĐ', 'unit' => 'Người'],
-                                    ['id' => 'SRV-1002', 'name' => 'Massage Toàn Thân Thụy Điển', 'group' => 'Spa & Wellness', 'price' => '1.200.000 VNĐ', 'unit' => 'Lượt'],
-                                    ['id' => 'SRV-1003', 'name' => 'Giặt Khô Vesti/Váy Cưới', 'group' => 'Dịch vụ giặt ủi', 'price' => '150.000 VNĐ', 'unit' => 'Bộ'],
-                                    ['id' => 'SRV-1004', 'name' => 'Đưa Đón Sân Bay (Limousine)', 'group' => 'Dịch vụ lữ hành', 'price' => '800.000 VNĐ', 'unit' => 'Chuyến'],
-                                    ['id' => 'SRV-1005', 'name' => 'Trà Chiều Hoàng Gia', 'group' => 'Dịch vụ ăn uống', 'price' => '350.000 VNĐ', 'unit' => 'Set'],
+                                $repairs = [
+                                    ['id' => 'REP-2024-001', 'room' => 'P.301', 'device' => 'Điều hòa Daikin Inverter', 'date' => '24/05/2024', 'cost' => '450.000đ', 'status' => 'waiting', 'label' => 'ĐANG CHỜ XỬ LÝ'],
+                                    ['id' => 'REP-2024-002', 'room' => 'P.105', 'device' => 'Smart TV Samsung 4K', 'date' => '22/05/2024', 'cost' => '1.500.000đ', 'status' => 'repairing', 'label' => 'ĐANG SỬA CHỮA'],
+                                    ['id' => 'REP-2024-003', 'room' => 'P.402', 'device' => 'Vòi sen TOTO', 'date' => '20/05/2024', 'cost' => '250.000đ', 'status' => 'completed', 'label' => 'ĐÃ HOÀN THÀNH'],
+                                    ['id' => 'REP-2024-004', 'room' => 'P.210', 'device' => 'Khóa thẻ từ thông minh', 'date' => '18/05/2024', 'cost' => '0đ', 'status' => 'cancelled', 'label' => 'ĐÃ HỦY'],
                                 ];
                             @endphp
 
-                            @foreach($services as $item)
+                            @foreach($repairs as $item)
                             <tr>
-                                <td class="sv-id">{{ $item['id'] }}</td>
-                                <td class="sv-name-main">{{ $item['name'] }}</td>
-                                <td>{{ $item['group'] }}</td>
-                                <td class="sv-price">{{ $item['price'] }}</td>
-                                <td>{{ $item['unit'] }}</td>
+                                <td>{{ $item['id'] }}</td>
+                                <td>{{ $item['room'] }}</td>
+                                <td>{{ $item['device'] }}</td>
+                                <td>{{ $item['date'] }}</td>
+                                <td class="rp-price">{{ $item['cost'] }}</td>
                                 <td>
-                                    <div class="sv-actions">
-                                        <button class="sv-btn-action edit" title="Chỉnh sửa">
+                                    <span class="rp-status-badge rp-status-{{ $item['status'] }}">
+                                        {{ $item['label'] }}
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="rp-actions">
+                                        <button class="rp-btn-action view" title="Xem chi tiết">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                        </button>
+                                        @if($item['status'] == 'waiting')
+                                        <button class="rp-btn-action edit" title="Chỉnh sửa">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                         </button>
-                                        <button class="sv-btn-action delete" title="Xóa">
+                                        @endif
+                                        <button class="rp-btn-action delete" title="Xóa">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                         </button>
                                     </div>
@@ -119,16 +131,15 @@
                     </table>
                 </div>
 
-                <div class="sv-footer">
-                    <div class="sv-info">Hiển thị 5 trên 42 dịch vụ</div>
-                    <div class="sv-pagination">
-                        <button class="sv-page-btn disabled">
+                <div class="rp-footer">
+                    <div class="rp-info">Hiển thị 4 trên 12 phiếu sửa chữa</div>
+                    <div class="rp-pagination">
+                        <button class="rp-page-btn disabled">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         </button>
-                        <button class="sv-page-btn active">1</button>
-                        <button class="sv-page-btn">2</button>
-                        <button class="sv-page-btn">3</button>
-                        <button class="sv-page-btn">
+                        <button class="rp-page-btn active">1</button>
+                        <button class="rp-page-btn">2</button>
+                        <button class="rp-page-btn">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </button>
                     </div>

@@ -79,13 +79,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.asset-groups.index') }}" class="sb-item {{ request()->routeIs('admin.asset-groups.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.equipment-types.index') }}" class="sb-item {{ request()->routeIs('admin.equipment-types.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
                         Nhóm thiết bị
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.repairs.index') }}" class="sb-item {{ request()->routeIs('admin.repairs.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.repair-ticket.index') }}" class="sb-item {{ request()->routeIs('admin.repair-ticket.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
                         Phiếu sửa chữa
                         <span class="sb-badge sb-badge-orange">2</span>
@@ -155,7 +155,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.reports') }}" class="sb-item {{ request()->routeIs('admin.reports') ? 'active' : '' }}">
+                    <a href="{{ route('admin.statistical') }}" class="sb-item {{ request()->routeIs('admin.statistical') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
                         Thống kê
                     </a>
