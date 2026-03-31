@@ -115,11 +115,6 @@
     transition: color .15s;
     flex-shrink: 0;
 }
-.sb-item:hover {
-   
-    
-  
-}
 
 
 .sb-item.active {
