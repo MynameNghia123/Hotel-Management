@@ -64,12 +64,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     })->name('dashboard');
 
     // Vận hành
-    Route::get('/rooms/map', function () {
-        return view('admin.rooms.map');
-    })->name('rooms.map');
-    Route::get('/rooms/edit-map', function () {
-        return view('admin.rooms.edit-map');
-    })->name('rooms.edit-map');
+    Route::get('/room-map', function () {
+        return view('admin.room-map.index');
+    })->name('room-map.index');
+    Route::get('/room-map-edit', function () {
+        return view('admin.room-map-edit.index');
+    })->name('room-map-edit.index');
 
     // Đặt phòng
     Route::get('/bookings', function () {
@@ -80,20 +80,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/rooms', function () {
         return view('admin.rooms.index');
     })->name('rooms.index');
-    Route::get('/rooms/types', function () {
-        return view('admin.rooms.types');
-    })->name('rooms.types');
+    Route::get('/room-types', function () {
+        return view('admin.room-types.index');
+    })->name('room-types.index');
 
     // Quản lý tài sản
-    Route::get('/assets/equipment', function () {
-        return view('admin.assets.equipment');
-    })->name('assets.equipment');
-    Route::get('/assets/groups', function () {
-        return view('admin.assets.groups');
-    })->name('assets.groups');
-    Route::get('/assets/repairs', function () {
-        return view('admin.assets.repairs');
-    })->name('assets.repairs');
+    Route::get('/equipment', function () {
+        return view('admin.equipment.index');
+    })->name('equipment.index');
+    Route::get('/asset-groups', function () {
+        return view('admin.asset-groups.index');
+    })->name('asset-groups.index');
+    Route::get('/repairs', function () {
+        return view('admin.repairs.index');
+    })->name('repairs.index');
 
     // Khách hàng
     Route::get('/customers', function () {
@@ -104,9 +104,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/services', function () {
         return view('admin.services.index');
     })->name('services');
-    Route::get('/services/types', function () {
-        return view('admin.services.types');
-    })->name('services.types');
+    Route::get('/service-types', function () {
+        return view('admin.service-types.index');
+    })->name('service-types.index');
     Route::get('/amenities', function () {
         return view('admin.amenities.index');
     })->name('amenities');
@@ -116,9 +116,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         return view('admin.staff.index');
     })->name('staff');
 
-    Route::get('/staff/roles', function () {
-        return view('admin.staff.roles');
-    })->name('staff.roles');
+    Route::get('/staff-roles', function () {
+        return view('admin.staff-roles.index');
+    })->name('staff-roles.index');
     Route::get('/settings', function () {
         return view('admin.settings.index');
     })->name('settings');

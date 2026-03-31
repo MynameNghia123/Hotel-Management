@@ -190,8 +190,10 @@
             </div>
 
         </div>
+
+        {{-- FOOTER --}}
+        @include('admin.layouts.footer')
+
     </main>
 </div>
-  {{-- FOOTER --}}
-    @include('admin.layouts.footer')
 @endsection

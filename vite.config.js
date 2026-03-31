@@ -27,9 +27,9 @@ export default defineConfig({
                 'resources/css/admin/room-types.css',
                 'resources/css/admin/bookings.css',
                 'resources/css/admin/sidebar.css',
+                'resources/css/admin/footer.css',
                 'resources/css/admin/login.css',
                 'resources/css/admin/dashboard.css',
-                'resources/css/admin/footer.css',
                 'resources/js/admin/app.js'
             ],
             refresh: true,

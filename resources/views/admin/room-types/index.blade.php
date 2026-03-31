@@ -226,7 +226,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        {{-- FOOTER --}}
+        @include('admin.layouts.footer')
+
     </main>
 </div>
 @endsection

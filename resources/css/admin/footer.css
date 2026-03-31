@@ -1,0 +1,118 @@
+/* ============================================================
+   ADMIN FOOTER — Urban Luxe Management System
+   ============================================================ */
+
+.admin-footer {
+    flex-shrink: 0;
+    background: #fff;
+    border-top: 1px solid #f1f3f7;
+    padding: 0 32px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+}
+
+.admin-footer__inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/* ── LEFT: Brand ── */
+.admin-footer__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.admin-footer__logo {
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #2a3f8a 0%, #1a2d6b 100%);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.admin-footer__logo svg {
+    width: 13px;
+    height: 13px;
+}
+
+.admin-footer__name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.admin-footer__name span {
+    font-weight: 400;
+    color: #94a3b8;
+}
+
+/* ── CENTER: Copyright ── */
+.admin-footer__copy {
+    font-size: 11.5px;
+    color: #94a3b8;
+    font-weight: 400;
+    text-align: center;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── RIGHT: Status & Time ── */
+.admin-footer__meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.admin-footer__status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.admin-footer__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+    animation: footer-pulse 2s infinite;
+    flex-shrink: 0;
+}
+
+@keyframes footer-pulse {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2); }
+    50%       { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.08); }
+}
+
+.admin-footer__divider {
+    width: 1px;
+    height: 16px;
+    background: #e9ecf3;
+}
+
+.admin-footer__time {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    min-width: 68px;
+    text-align: right;
+}

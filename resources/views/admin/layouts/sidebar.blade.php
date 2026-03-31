@@ -33,13 +33,13 @@
             <span class="sb-label">Vận hành</span>
             <ul>
                 <li>
-                    <a href="{{ route('admin.rooms.map') }}" class="sb-item {{ request()->routeIs('admin.rooms.map') ? 'active' : '' }}">
+                    <a href="{{ route('admin.room-map.index') }}" class="sb-item {{ request()->routeIs('admin.room-map.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/></svg>
                         Sơ đồ phòng
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.rooms.edit-map') }}" class="sb-item {{ request()->routeIs('admin.rooms.edit-map') ? 'active' : '' }}">
+                    <a href="{{ route('admin.room-map-edit.index') }}" class="sb-item {{ request()->routeIs('admin.room-map-edit.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                         Chỉnh sửa sơ đồ phòng
                     </a>
@@ -61,9 +61,10 @@
                 <li>
                     <a href="{{ route('admin.rooms.index') }}" class="sb-item {{ request()->routeIs('admin.rooms.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 10h18M5 10V7a2 2 0 012-2h10a2 2 0 012 2v3M7 21v-4a2 2 0 012-2h6a2 2 0 012 2v4"/></svg>
-                        Quản lý loại phòng
+                        Danh sách phòng
                     </a>
                 </li>
+
             </ul>
         </div>
 
@@ -72,19 +73,19 @@
             <span class="sb-label">Quản lý tài sản</span>
             <ul>
                 <li>
-                    <a href="{{ route('admin.assets.equipment') }}" class="sb-item {{ request()->routeIs('admin.assets.equipment') ? 'active' : '' }}">
+                    <a href="{{ route('admin.equipment.index') }}" class="sb-item {{ request()->routeIs('admin.equipment.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/></svg>
                         Trang thiết bị
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.assets.groups') }}" class="sb-item {{ request()->routeIs('admin.assets.groups') ? 'active' : '' }}">
+                    <a href="{{ route('admin.asset-groups.index') }}" class="sb-item {{ request()->routeIs('admin.asset-groups.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
                         Nhóm thiết bị
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.assets.repairs') }}" class="sb-item {{ request()->routeIs('admin.assets.repairs') ? 'active' : '' }}">
+                    <a href="{{ route('admin.repairs.index') }}" class="sb-item {{ request()->routeIs('admin.repairs.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
                         Phiếu sửa chữa
                         <span class="sb-badge sb-badge-orange">2</span>
@@ -117,7 +118,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.services.types') }}" class="sb-item {{ request()->routeIs('admin.services.types') ? 'active' : '' }}">
+                    <a href="{{ route('admin.service-types.index') }}" class="sb-item {{ request()->routeIs('admin.service-types.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                         Loại dịch vụ
                     </a>
@@ -142,7 +143,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.staff.roles') }}" class="sb-item {{ request()->routeIs('admin.staff.roles') ? 'active' : '' }}">
+                    <a href="{{ route('admin.staff-roles.index') }}" class="sb-item {{ request()->routeIs('admin.staff-roles.index') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                         Quản lý vai trò
                     </a>
@@ -162,16 +163,28 @@
             </ul>
         </div>
 
-        {{-- Widget hỗ trợ --}}
-        <div class="sb-footer">
-            <div class="sb-footer-head">
-                <div class="sb-footer-icon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        {{-- Bottom actions --}}
+        <div class="sb-bottom">
+
+            {{-- Nút quay lại trang web --}}
+            <a href="{{ route('home') }}" class="sb-back-web" target="_blank">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+                Xem trang web
+                <svg class="sb-back-web__arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+
+            {{-- Widget hỗ trợ --}}
+            <div class="sb-footer">
+                <div class="sb-footer-head">
+                    <div class="sb-footer-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    </div>
+                    <strong>Hỗ trợ kỹ thuật</strong>
                 </div>
-                <strong>Hỗ trợ kỹ thuật</strong>
+                <p>Giải đáp mọi thắc mắc qua trung tâm trợ giúp.</p>
+                <button class="sb-footer-btn">Liên hệ ngay</button>
             </div>
-            <p>Giải đáp mọi thắc mắc qua trung tâm trợ giúp.</p>
-            <button class="sb-footer-btn">Liên hệ ngay</button>
+
         </div>
 
     </nav>

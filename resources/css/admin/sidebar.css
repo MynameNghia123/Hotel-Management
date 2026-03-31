@@ -150,16 +150,21 @@
 }
 
 /* Footer widget */
+.sb-bottom {
+    margin-top: auto;
+    padding: 0 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+}
 .sb-footer {
-    margin: 16px 12px 0;
     padding: 14px;
     background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
     border: 1px solid #c7d7fd;
     border-radius: 14px;
     position: relative;
     overflow: hidden;
-    flex-shrink: 0;
-    margin-top: auto;
 }
 .sb-footer::after {
     content: '';
@@ -217,4 +222,38 @@
 .sb-footer-btn:hover {
     background: #1e2f6a;
     transform: translateY(-1px);
+}
+
+/* Back to website button */
+.sb-back-web {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    text-decoration: none;
+    background: #f8fafc;
+    border: 1px solid #e9ecf3;
+    transition: all .18s;
+    flex-shrink: 0;
+}
+.sb-back-web svg:first-child { color: #64748b; flex-shrink: 0; }
+.sb-back-web__arrow {
+    margin-left: auto;
+    color: #b0b9cc;
+    transition: transform .18s, color .18s;
+    flex-shrink: 0;
+}
+.sb-back-web:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #2a3f8a;
+}
+.sb-back-web:hover svg:first-child { color: #2a3f8a; }
+.sb-back-web:hover .sb-back-web__arrow {
+    color: #2a3f8a;
+    transform: translate(2px, -2px);
 }
