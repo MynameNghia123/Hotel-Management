@@ -90,17 +90,21 @@
             <div style="background:#fff; border-radius:16px; border:1px solid #f1f3f7; box-shadow:0 1px 4px rgba(0,0,0,.04); overflow:hidden;">
                 <div style="display:flex; align-items:center; justify-content:space-between; padding:22px 28px 18px;">
                     <div>
-                        <h1 style="font-size:17px; font-weight:800; color:#0f172a; margin:0 0 4px;">Danh Sách Khách Sẽ Đến</h1>
-                        <p style="font-size:13px; color:#94a3b8; margin:0;">Danh sách khách hàng dự kiến nhận phòng hôm nay</p>
+                        <h1 id="tab-title" style="font-size:17px; font-weight:800; color:#0f172a; margin:0 0 4px;">Danh Sách Khách Sẽ Đến</h1>
+                        <p id="tab-desc" style="font-size:13px; color:#94a3b8; margin:0;">Danh sách khách hàng dự kiến nhận phòng hôm nay</p>
                     </div>
                     <div style="display:flex; align-items:center; gap:10px;">
                         <div style="display:flex; gap:3px; background:#f8f9fb; border:1px solid #f1f3f7; border-radius:10px; padding:3px;">
-                            <button style="display:flex; align-items:center; gap:6px; padding:6px 14px; background:#2a3f8a; color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">
+                            <button class="tab-btn active" data-tab="incoming" style="display:flex; align-items:center; gap:6px; padding:6px 14px; background:#2a3f8a; color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                                SẼ ĐẾN
+                                <span>SẼ ĐẾN</span>
                             </button>
-                            <button style="padding:6px 14px; background:transparent; border:none; font-size:12px; font-weight:600; color:#64748b; cursor:pointer; border-radius:8px;">SẼ ĐI</button>
-                            <button style="padding:6px 14px; background:transparent; border:none; font-size:12px; font-weight:600; color:#64748b; cursor:pointer; border-radius:8px;">ĐANG Ở</button>
+                            <button class="tab-btn" data-tab="outgoing" style="display:flex; align-items:center; gap:6px; padding:6px 14px; background:transparent; border:none; font-size:12px; font-weight:600; color:#64748b; cursor:pointer; border-radius:8px;">
+                                <span>SẼ ĐI</span>
+                            </button>
+                            <button class="tab-btn" data-tab="staying" style="display:flex; align-items:center; gap:6px; padding:6px 14px; background:transparent; border:none; font-size:12px; font-weight:600; color:#64748b; cursor:pointer; border-radius:8px;">
+                                <span>ĐANG Ở</span>
+                            </button>
                         </div>
                         <button style="display:flex; align-items:center; gap:6px; padding:8px 18px; background:#2a3f8a; color:#fff; border:none; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 3px 10px rgba(42,63,138,.25);">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -121,7 +125,7 @@
                                 <th style="padding:12px 28px; text-align:right; font-size:10.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:.08em;">Thao Tác</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="dashboard-table-body" style="transition: opacity 0.2s;">
                             <tr style="border-bottom:1px solid #f8f9fb;">
                                 <td style="padding:14px 28px;">
                                     <div style="display:flex; align-items:center; gap:10px;">
@@ -196,4 +200,8 @@
 
     </main>
 </div>
+
+@vite('resources/js/admin/dashboard.js')
+
 @endsection
+    

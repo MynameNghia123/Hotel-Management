@@ -115,9 +115,47 @@
                 </div>
             </div>
 
+    {{-- MODAL: THÊM NHÓM MỚI --}}
+    <div id="typeModal" class="dg-modal-overlay">
+        <div class="dg-modal">
+            <div class="dg-modal-header">
+                <div class="dg-modal-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Tạo nhóm thiết bị mới
+                </div>
+                <button type="button" id="closeModal" class="dg-modal-close">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <div class="dg-modal-body">
+                <div class="dg-form-group">
+                    <label class="dg-modal-label">MÃ NHÓM (CODE)</label>
+                    <input type="text" id="typeCode" class="dg-modal-input" placeholder="VD: CAT-005">
+                </div>
+                <div class="dg-form-group">
+                    <label class="dg-modal-label">TÊN NHÓM (NAME)</label>
+                    <input type="text" id="typeName" class="dg-modal-input" placeholder="VD: Thiết bị vệ sinh cao cấp">
+                </div>
+            </div>
+
+            <div class="dg-modal-footer">
+                <button type="button" id="cancelModal" class="dg-btn-secondary">Hủy bỏ</button>
+                <button type="button" id="saveType" class="dg-btn-save">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Lưu thông tin
+                </button>
+            </div>
+        </div>
+    </div>
+
         {{-- FOOTER --}}
         @include('admin.layouts.footer')
 
     </main>
 </div>
+
+@push('scripts')
+    @vite('resources/js/admin/equipment-types.js')
+@endpush
 @endsection

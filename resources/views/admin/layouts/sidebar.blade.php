@@ -8,8 +8,8 @@
             </svg>
         </div>
         <div>
-            <span class="sb-logo-title">URBAN LUXE</span>
-            <span class="sb-logo-sub">Management</span>
+            <span  class="sb-logo-title">URBAN LUXE</span>
+            <span  class="sb-logo-sub">Management</span>
         </div>
     </a>
 
@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.bookings') }}" class="sb-item {{ request()->routeIs('admin.bookings') ? 'active' : '' }}">
+                    <a href="{{ route('admin.bookings.index') }}" class="sb-item {{ request()->routeIs('admin.bookings') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         Quản lý đặt lịch
                         <span class="sb-badge sb-badge-blue">12</span>

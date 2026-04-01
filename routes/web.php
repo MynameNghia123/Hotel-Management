@@ -74,26 +74,85 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Đặt phòng
     Route::get('/bookings', function () {
         return view('admin.bookings.index');
-    })->name('bookings');
+    })->name('bookings.index');
+    Route::get('/bookings/create', function () {
+        return view('admin.bookings.create');
+    })->name('bookings.create');
 
     // Quản lý phòng
     Route::get('/rooms', function () {
         return view('admin.rooms.index');
     })->name('rooms.index');
+    Route::get('/room-map/detail', function () {
+        return view('admin.room-map.detail');
+    })->name('room-map.detail');
+
+
+    Route::post('/room-map/detail/add-service', function() {
+        return response()->json(['message' => 'Service added successfully (Mock)']);
+    })->name('room-map.add-service');
+
+    // Route cho Hóa Đơn In
+    Route::get('room-map/invoice', function() {
+        return view('admin.room-map.invoice');
+    })->name('room-map.invoice');
+
+    // Route Chi tiết Khách Bấm Sắp Nhận (Chưa Đến)
+    Route::get('room-map/incoming', function() {
+        return view('admin.room-map.incoming-detail');
+    })->name('room-map.incoming');
+
+    // Route Chi tiết Phòng Trống
+    Route::get('room-map/available', function() {
+        return view('admin.room-map.available-detail');
+    })->name('room-map.available');
+    // phong trong
+    Route::get('room-map/available', function() {
+        return view('admin.room-map.available-detail');
+    })->name('room-map.available');
+
     Route::get('/room-types', function () {
         return view('admin.room-types.index');
     })->name('room-types.index');
+   Route::get('room-types/edit', function() {
+    return view('admin.room-types.edit');
+   })->name('room-types.edit');
+    // Chỉnh sửa sơ đồ phòng
+    Route::get('room-map-edit', function() {
+        return view('admin.room-map-edit.index');
+    })->name('room-map-edit.index');
+
+    Route::get('room-map-edit/create-type', function() {
+        return view('admin.room-map-edit.create-type');
+    })->name('room-map-edit.create-type');
+
+    Route::get('room-map-edit/create-floor', function() {
+        return view('admin.room-map-edit.create-floor');
+    })->name('room-map-edit.create-floor');
+
+    Route::get('room-map-edit/create-room', function() {
+        return view('admin.room-map-edit.create-room');
+    })->name('room-map-edit.create-room');
 
     // Quản lý tài sản
     Route::get('/equipment', function () {
         return view('admin.equipment.index');
     })->name('equipment.index');
+    Route::get('/equipment/edit', function () {
+        return view('admin.equipment.edit');
+    })->name('equipment.edit');
     Route::get('/equipment-types', function () {
         return view('admin.equipment-types.index');
     })->name('equipment-types.index');
     Route::get('/repair-ticket', function () {
         return view('admin.repair-ticket.index');
     })->name('repair-ticket.index');
+    Route::get('/repair-ticket/create', function () {
+        return view('admin.repair-ticket.add');
+    })->name('repair-ticket.create');
+    Route::get('/repair-ticket/detail', function () {
+        return view('admin.repair-ticket.detail');
+    })->name('repair-ticket.detail');
 
     // Khách hàng
     Route::get('/customers', function () {

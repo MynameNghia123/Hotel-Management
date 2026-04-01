@@ -1,0 +1,442 @@
+/* =========================================
+   ROOM MAP (SƠ ĐỒ PHÒNG) - URBAN LUXE
+   ========================================= */
+
+/* Trình bọc chính */
+.rm-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Các Nút Lọc (Filter Badges) */
+.rm-filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.rm-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 700;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1.5px solid transparent;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.rm-filter-btn.active {
+    background: #f8fafc;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.rm-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Màu sắc các trạng thái */
+.rm-filter-btn.green {
+    border-color: #22c55e;
+    color: #15803d;
+}
+
+.rm-filter-btn.green .rm-dot {
+    background: #22c55e;
+}
+
+.rm-filter-btn.blue {
+    border-color: #3b82f6;
+    color: #1d4ed8;
+}
+
+.rm-filter-btn.blue .rm-dot {
+    background: #3b82f6;
+}
+
+.rm-filter-btn.purple {
+    border-color: #a855f7;
+    color: #7e22ce;
+}
+
+.rm-filter-btn.purple .rm-dot {
+    background: #a855f7;
+}
+
+.rm-filter-btn.red {
+    border-color: #ef4444;
+    color: #b91c1c;
+}
+
+.rm-filter-btn.red .rm-dot {
+    background: #ef4444;
+}
+
+.rm-filter-btn.orange {
+    border-color: #f97316;
+    color: #c2410c;
+}
+
+.rm-filter-btn.orange .rm-dot {
+    background: #f97316;
+}
+
+.rm-filter-btn.dark {
+    border-color: #475569;
+    color: #334155;
+}
+
+.rm-filter-btn.dark .rm-dot {
+    background: #475569;
+}
+
+/* Thanh Công Cu (Toolbar) */
+.rm-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+}
+
+.rm-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Toggle Tabs */
+.rm-toggle-group {
+    display: flex;
+    background: #f1f5f9;
+    padding: 3px;
+    border-radius: 8px;
+}
+
+.rm-toggle-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rm-toggle-btn.active {
+    background: #fff;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Tìm kiếm & DatePicker giả lập */
+.rm-date-picker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #475569;
+    font-weight: 500;
+    background: #fafafa;
+}
+
+.rm-search {
+    position: relative;
+    width: 260px;
+}
+
+.rm-search input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    background: #f8fafc;
+    transition: 0.2s;
+}
+
+.rm-search input:focus {
+    border-color: #cbd5e1;
+    background: #fff;
+}
+
+.rm-search svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+/* ================== GRID VÀ KHỐI NHÓM ================== */
+.rm-group {
+    margin-bottom: 30px;
+}
+
+.rm-group-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.rm-group-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rm-group-count {
+    background: #e2e8f0;
+    color: #475569;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.rm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 16px;
+}
+
+/* ================== THẺ PHÒNG (ROOM CARD) ================== */
+.rm-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 115px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    position: relative;
+}
+
+.rm-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.rm-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.rm-card-room {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.rm-card-type {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.rm-card-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+/* Trống (Green) */
+.rm-card.empty {
+    border-color: #22c55e;
+}
+
+.rm-card.empty .rm-card-room {
+    color: #16a34a;
+}
+
+.rm-card.empty .rm-card-indicator {
+    background: #22c55e;
+}
+
+.rm-card.empty .rm-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.rm-card.empty .check-circle {
+    width: 28px;
+    height: 28px;
+    background: #16a34a;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rm-card.empty .status-text {
+    font-size: 11px;
+    font-weight: 800;
+    color: #16a34a;
+    letter-spacing: 0.05em;
+}
+
+/* Có Khách (Red) */
+.rm-card.occupied {
+    border-color: #ef4444;
+}
+
+.rm-card.occupied .rm-card-room {
+    color: #dc2626;
+}
+
+.rm-card.occupied .rm-card-indicator {
+    background: #ef4444;
+}
+
+/* Sắp Đến (Purple) */
+.rm-card.incoming {
+    border-color: #a855f7;
+}
+
+.rm-card.incoming .rm-card-room {
+    color: #9333ea;
+}
+
+.rm-card.incoming .rm-card-indicator {
+    background: #a855f7;
+}
+
+/* Đã Đặt (Blue) */
+.rm-card.booked {
+    border-color: #3b82f6;
+}
+
+.rm-card.booked .rm-card-room {
+    color: #2563eb;
+}
+
+.rm-card.booked .rm-card-indicator {
+    background: #3b82f6;
+}
+
+/* Chuẩn bị đi (Orange) */
+.rm-card.checkout {
+    border-color: #f97316;
+}
+
+.rm-card.checkout .rm-card-room {
+    color: #ea580c;
+}
+
+.rm-card.checkout .rm-card-indicator {
+    background: #f97316;
+}
+
+/* Dơ (Dark) */
+.rm-card.dirty {
+    border-color: #334155;
+}
+
+.rm-card.dirty .rm-card-room {
+    color: #334155;
+}
+
+.rm-card.dirty .rm-card-indicator {
+    background: transparent;
+    border: 1.5px solid #334155;
+}
+
+/* Nội dung chung của thẻ (các thẻ có khách) */
+.rm-guest-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rm-time-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #475569;
+    font-weight: 500;
+}
+
+.rm-time-icon {
+    color: #dc2626;
+    margin-right: 3px;
+}
+
+.rm-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+}
+
+.rm-status-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+.rm-status-badge.red-text {
+    color: #dc2626;
+}
+
+.rm-status-badge.blue-text {
+    color: #2563eb;
+}
+
+.rm-action-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.rm-action-btn.btn-outline {
+    background: #f8fafc;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+}
+
+.rm-action-btn.btn-orange {
+    background: #ea580c;
+    color: #fff;
+}

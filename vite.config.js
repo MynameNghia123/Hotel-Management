@@ -20,6 +20,7 @@ export default defineConfig({
                 'resources/css/client/checkout.css',
                 'resources/css/client/forgot_password.css',
                 'resources/css/client/success.css',
+                // import js client
                  'resources/js/client/app.js',
                 // import css admin
                 'resources/css/admin/app.css',
@@ -38,11 +39,26 @@ export default defineConfig({
                 'resources/css/admin/staff-roles.css',
                 'resources/css/admin/statistical.css',
                 'resources/css/admin/roles.css',
+                'resources/css/admin/room-map.css',
                 'resources/css/admin/equipment.css',
                 'resources/css/admin/dashboard.css',
-                'resources/js/admin/app.js'
-
-             
+                'resources/css/admin/booking-create.css',
+                'resources/js/admin/booking-create.js',
+                'resources/css/admin/room-detail.css',
+                'resources/css/admin/invoice.css',
+                'resources/css/admin/incoming.css',
+                'resources/css/admin/equipment-edit.css',
+                'resources/css/admin/room-available.css',
+                'resources/css/admin/room-map-edit.css',
+                'resources/css/admin/room-types-edit.css',
+                'resources/css/admin/repair-ticket-add.css',
+                 // import js admin
+                'resources/js/admin/booking-create.js',
+                'resources/js/admin/app.js',
+                'resources/js/admin/dashboard.js',
+                'resources/js/admin/room-detail.js',
+                'resources/js/admin/equipment-types.js',
+                'resources/js/admin/repair-ticket.js'
             ],
             refresh: true,
         }),

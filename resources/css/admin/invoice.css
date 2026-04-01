@@ -1,0 +1,236 @@
+/* =========================================
+   INVOICE (HÓA ĐƠN IN) - URBAN LUXE
+   ========================================= */
+
+body {
+    background: #f1f5f9;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #0f172a;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    margin: 0;
+}
+
+.inv-wrapper {
+    background: #fff;
+    width: 210mm; /* Kích thước A4 (rộng) */
+    min-height: 297mm; /* Kích thước A4 (cao) */
+    padding: 60px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border-radius: 4px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* HEADER */
+.inv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+}
+
+.inv-company {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.inv-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 900;
+    color: #1e293b;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.inv-address {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.inv-title-box {
+    text-align: right;
+}
+
+.inv-title-text {
+    font-size: 32px;
+    font-weight: 200;
+    color: #cbd5e1;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+}
+
+.inv-id {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.inv-date {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* INFO SECTION */
+.inv-info-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.inv-info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.inv-info-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.inv-customer-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+}
+.inv-customer-sub {
+    font-size: 13px;
+    color: #475569;
+}
+
+.inv-stay-row {
+    font-size: 13px;
+    color: #0f172a;
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+}
+.inv-stay-label {
+    font-weight: 600;
+}
+
+/* TABLE SECTION */
+.inv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+}
+
+.inv-th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #0f172a;
+}
+.inv-th.right { text-align: right; }
+.inv-th.center { text-align: center; }
+
+.inv-td {
+    padding: 16px 0;
+    font-size: 13px;
+    color: #0f172a;
+    border-bottom: 1px dashed #e2e8f0;
+}
+.inv-td.right { text-align: right; }
+.inv-td.center { text-align: center; }
+
+.inv-room-name {
+    font-weight: 800;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.inv-sub-item {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 6px;
+    padding-left: 12px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+.inv-sub-item::before {
+    content: '-';
+    position: absolute;
+    left: 0;
+}
+.inv-sub-item:last-child { margin-bottom: 0; }
+.inv-sub-item.red { color: #dc2626; }
+
+/* SUMMARY SECTION */
+.inv-summary {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 60px;
+}
+
+.inv-summary-box {
+    width: 300px;
+}
+
+.inv-sum-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 12px;
+}
+
+.inv-sum-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 2px solid #0f172a;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.inv-sum-total-val {
+    font-size: 20px;
+    font-weight: 900;
+    color: #0f172a;
+}
+
+/* FOOTER */
+.inv-footer {
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-top: auto;
+}
+
+/* IN ẤN TỰ ĐỘNG BỎ VIỀN, NỀN */
+@media print {
+    body {
+        background: #fff;
+        padding: 0;
+    }
+    .inv-wrapper {
+        box-shadow: none;
+        width: 100%;
+        padding: 0;
+        min-height: auto;
+    }
+}

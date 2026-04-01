@@ -46,10 +46,10 @@
                         <h1 class="rp-title">Quản lý phiếu sửa chữa</h1>
                         <p class="rp-subtitle">Hệ thống quản trị khách sạn Urban Luxe - Quản lý phiếu sửa chữa thiết bị.</p>
                     </div>
-                    <button class="rp-btn-primary">
+                    <a href="{{ route('admin.repair-ticket.create') }}" class="rp-btn-primary">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         Tạo phiếu sửa chữa mới
-                    </button>
+                    </a>
                 </div>
 
                 <div class="rp-toolbar">
@@ -107,14 +107,14 @@
                                 <td>
                                     <span class="rp-status-badge rp-status-{{ $item['status'] }}">
                                         {{ $item['label'] }}
-                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                                     </span>
                                 </td>
                                 <td>
                                     <div class="rp-actions">
-                                        <button class="rp-btn-action view" title="Xem chi tiết">
+                                        <a href="{{ route('admin.repair-ticket.create') }}" class="rp-btn-action view" title="Xem chi tiết">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                        </button>
+                                        </a>
                                         @if($item['status'] == 'waiting')
                                         <button class="rp-btn-action edit" title="Chỉnh sửa">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
@@ -145,6 +145,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         {{-- FOOTER --}}
         @include('admin.layouts.footer')

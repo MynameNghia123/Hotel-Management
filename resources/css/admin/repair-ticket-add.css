@@ -1,0 +1,182 @@
+/* ==========================================================================
+   URBAN LUXE ADMIN - REPAIR TICKET ADD (PREMIUM UI)
+   ========================================================================== */
+
+.rta-container {
+    background: #fff;
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+    max-width: 1100px;
+    /* Increased width as requested */
+    width: 95%;
+    margin: 40px auto 60px; /* Increased bottom margin */
+    border: 1px solid #f1f5f9;
+    background: #fff;
+}
+
+.rta-header {
+    padding: 24px 32px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rta-box-title {
+    font-size: 18px;
+    font-weight: 850;
+    color: #1e293b;
+    margin: 0;
+}
+
+.rta-box-subtitle {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 4px 0 0;
+    font-weight: 500;
+}
+
+.rta-close-btn {
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rta-close-btn:hover {
+    color: #ef4444;
+}
+
+.rta-body {
+    padding: 32px;
+}
+
+.rta-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.rta-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rta-form-group.full-width {
+    grid-column: span 2;
+}
+
+.rta-label {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rta-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    background: #f8fafc;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.rta-input:focus {
+    border-color: #1e3a8a;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.06);
+}
+
+.rta-select {
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 44px;
+}
+
+.rta-textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+}
+
+.rta-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.rta-currency-addon {
+    position: absolute;
+    right: 16px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #94a3b8;
+}
+
+.rta-footer {
+    padding: 24px 32px;
+    background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 24px;
+}
+
+.rta-btn-cancel {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rta-btn-save {
+    background: #1e3a8a;
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+    transition: 0.2s;
+}
+
+.rta-btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.3);
+}
+
+.rta-page-header {
+    margin-bottom: 32px;
+}
+
+.rta-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0;
+}
+
+.rta-subtitle {
+    font-size: 14px;
+    color: #94a3b8;
+    margin: 6px 0 0;
+    font-weight: 500;
+}

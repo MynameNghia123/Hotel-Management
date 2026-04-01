@@ -1,0 +1,231 @@
+/* ==========================================================================
+   URBAN LUXE ADMIN - ROOM TYPES EDIT (PREMIUM UI)
+   ========================================================================== */
+
+/* RT-Edit Logic: Input & Form Elements */
+.rte-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rte-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+}
+
+.rte-input {
+    padding: 12px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    outline: none;
+    background: #f8fafc;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+.rte-input:focus {
+    border-color: #2a3f8a;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(42, 63, 138, 0.08);
+}
+
+.rte-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+.rte-textarea {
+    resize: vertical;
+    line-height: 1.6;
+    font-family: inherit;
+}
+
+/* Header Upload Button */
+.rte-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #fff;
+    color: #2a3f8a;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rte-upload-btn:hover {
+    background: #f0f4ff;
+    border-color: #2a3f8a;
+}
+
+/* Media Item Styles */
+.rte-media-del {
+    background: #fff1f2;
+    border: none;
+    color: #ef4444;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.rte-media-del:hover {
+    background: #ef4444;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Drag & Drop */
+.rte-upload-zone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+    color: #94a3b8;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rte-upload-zone:hover {
+    border-color: #2a3f8a;
+    background: #f0f4ff;
+    color: #1e293b;
+}
+
+.rte-upload-zone span {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Amenity Toggles */
+.amenity-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 750;
+    color: #475569;
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
+}
+
+.amenity-toggle:hover {
+    border-color: #94a3b8;
+    background: #fff;
+}
+
+.amenity-toggle.is-on {
+    background: #f0f4ff;
+    border-color: #2a3f8a;
+    color: #2a3f8a;
+}
+
+/* Table Inputs */
+.rte-table-input {
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.rte-table-input:focus {
+    background: #fff;
+    border-color: #e2e8f0;
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.rte-qty {
+    font-weight: 900;
+}
+
+.rte-del-row {
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rte-del-row:hover {
+    color: #ef4444;
+}
+
+/* Specific Refining */
+.main-title {
+    font-size: 26px;
+    letter-spacing: -0.5px;
+}
+
+.sub-desc {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.btn-cancel {
+    background: #fff;
+    color: #64748b;
+    border: 1.5px solid #e2e8f0;
+    padding: 11px 24px;
+    font-weight: 800;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.btn-primary-blue {
+    background: #2a3f8a;
+    color: #fff;
+    border: none;
+    padding: 11px 28px;
+    font-weight: 800;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(42, 138, 70, 0.1);
+}
+
+.card-top-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.card-top-flex .card-section-title {
+    margin-bottom: 0;
+}

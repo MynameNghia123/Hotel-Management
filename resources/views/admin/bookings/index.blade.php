@@ -47,10 +47,12 @@
                         <h1 class="bk-title">Quản lý đặt lịch</h1>
                         <p class="bk-subtitle">Hệ thống quản trị khách sạn Urban Luxe - Quản lý đặt lịch khách hàng.</p>
                     </div>
-                    <button class="bk-btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                        Tạo đặt phòng mới
-                    </button>
+                    <a href="{{ route('admin.bookings.create') }}" style="text-decoration: none;">
+                        <button class="bk-btn-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            Tạo đặt phòng mới
+                        </button>
+                    </a>
                 </div>
 
                 <div class="bk-toolbar">
