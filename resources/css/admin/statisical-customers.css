@@ -1,0 +1,168 @@
+/* ==========================================================================
+   URBAN LUXE ADMIN - CUSTOMER STATISTICS
+   ========================================================================== */
+
+/* --- CUSTOMER FILTERS --- */
+
+.cust-filters {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.cust-filter-input {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    font-size: 13px;
+    color: #1e293b;
+    font-weight: 600;
+    min-width: 180px;
+}
+
+.cust-btn-filter {
+    background: #2a3f8a;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 10px;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.cust-btn-filter:hover {
+    background: #1e2e6b;
+    box-shadow: 0 4px 12px rgba(42, 63, 138, 0.2);
+}
+
+/* --- STAT CARDS --- */
+
+.cust-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.cust-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #f1f3f7;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.cust-card-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 12px;
+}
+
+.cust-card-val {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.cust-card-trend {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.cust-card-trend.up { color: #10b981; }
+.cust-card-trend.stable { color: #64748b; }
+
+/* --- LOYAL CUSTOMERS TABLE --- */
+
+.loyal-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #f1f3f7;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    overflow: hidden;
+}
+
+.loyal-header {
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.loyal-header h3 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
+}
+
+.loyal-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.loyal-table th {
+    background: #f8fafc;
+    padding: 14px 32px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.loyal-table td {
+    padding: 20px 32px;
+    border-bottom: 1px solid #f8fafc;
+    vertical-align: middle;
+}
+
+.loyal-table tr:last-child td {
+    border-bottom: none;
+}
+
+.cust-info-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cust-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.cust-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 2px;
+}
+
+.cust-email {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.visit-count {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.spending-val {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1e293b;
+}

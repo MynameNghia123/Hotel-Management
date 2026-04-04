@@ -266,9 +266,7 @@
 
             </div>
 
-            {{-- Nếu có footer bạn thêm vào đây --}}
-            {{-- @include('admin.layouts.footer') --}}
-
+                @include('admin.layouts.footer') 
         </main>
     </div>
 

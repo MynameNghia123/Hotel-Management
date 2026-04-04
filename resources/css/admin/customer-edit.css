@@ -1,0 +1,203 @@
+
+.ce-container {
+    padding: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Header */
+.ce-header {
+    margin-bottom: 30px;
+}
+
+.ce-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.ce-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.ce-subtitle {
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* Card */
+.ce-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+}
+
+/* Section Divider */
+.ce-section-header {
+    padding: 30px 40px 10px;
+}
+
+.ce-section-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Form Styles */
+.ce-form-body {
+    padding: 20px 40px 30px;
+}
+
+.ce-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px 35px;
+}
+
+.ce-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ce-form-group.full-width {
+    grid-column: span 2;
+}
+
+.ce-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-left: 4px;
+}
+
+.ce-input {
+    height: 48px;
+    padding: 0 16px;
+    background: #fff;
+    border: 1.5px solid #edf2f7;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #1e293b;
+    transition: all 0.2s;
+}
+
+.ce-input:focus {
+    outline: none;
+    border-color: #2a3f8a;
+    box-shadow: 0 0 0 4px rgba(42, 63, 138, 0.08);
+}
+
+.ce-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 14px;
+}
+
+/* Table Styles */
+.ce-table-container {
+    padding: 10px 0 0;
+}
+
+.ce-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ce-table th {
+    text-align: left;
+    padding: 16px 40px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: #f8fafc;
+    border-top: 1px solid #f1f3f7;
+    border-bottom: 1px solid #f1f3f7;
+}
+
+.ce-table td {
+    padding: 20px 40px;
+    font-size: 13.5px;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.ce-booking-id {
+    font-weight: 700;
+    color: #2a3f8a;
+    text-decoration: none;
+}
+
+.ce-total-price {
+    font-weight: 800;
+    color: #1e293b;
+}
+
+/* Footer Actions */
+.ce-footer {
+    padding: 30px 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.ce-btn {
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.ce-btn-cancel {
+    background: #fff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.ce-btn-save {
+    background: #2a3f8a;
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 14px rgba(42, 63, 138, 0.25);
+}
+
+.ce-btn-save:hover {
+    background: #1e2f6a;
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ce-form-grid {
+        grid-template-columns: 1fr;
+    }
+    .ce-form-group.full-width {
+        grid-column: span 1;
+    }
+    .ce-table th, .ce-table td {
+        padding: 12px 20px;
+    }
+}

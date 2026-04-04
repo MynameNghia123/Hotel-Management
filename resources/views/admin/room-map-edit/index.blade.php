@@ -136,7 +136,9 @@
             </div>
         </div>
     </main>
+
 </div>
+@include('admin.layouts.footer') 
 
 @vite(['resources/css/admin/room-map-edit.css'])
 @endsection

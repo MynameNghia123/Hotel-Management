@@ -37,7 +37,6 @@ export default defineConfig({
                 'resources/css/admin/service-types.css',
                 'resources/css/admin/amenities.css',
                 'resources/css/admin/staff-roles.css',
-                'resources/css/admin/statistical.css',
                 'resources/css/admin/roles.css',
                 'resources/css/admin/room-map.css',
                 'resources/css/admin/equipment.css',
@@ -52,13 +51,22 @@ export default defineConfig({
                 'resources/css/admin/room-map-edit.css',
                 'resources/css/admin/room-types-edit.css',
                 'resources/css/admin/repair-ticket-add.css',
-                 // import js admin
+                'resources/css/admin/customer-create.css',
+                'resources/css/admin/customer-edit.css',
+                'resources/css/admin/statistical.css',
+                'resources/css/admin/statisical-revenue.css',
+                'resources/css/admin/statisical-room-efficency.css',
+                'resources/css/admin/statisical-customers.css',
+                'resources/css/admin/configuration.css',
+
+                // import js admin
                 'resources/js/admin/booking-create.js',
                 'resources/js/admin/app.js',
                 'resources/js/admin/dashboard.js',
                 'resources/js/admin/room-detail.js',
                 'resources/js/admin/equipment-types.js',
-                'resources/js/admin/repair-ticket.js'
+                'resources/js/admin/repair-ticket.js',
+                'resources/js/admin/sidebar.js'
             ],
             refresh: true,
         }),
