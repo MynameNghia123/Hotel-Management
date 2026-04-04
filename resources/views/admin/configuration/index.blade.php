@@ -50,7 +50,7 @@
                         <p>Chọn mục để chỉnh sửa cấu hình</p>
                     </div>
                     <div class="config-menu-list">
-                        <a href="{{ request()->fullUrlWithQuery(['type' => 'general']) }}" class="config-menu-item {{ (request()->get('type', 'general') == 'general') ? 'active' : '' }}">
+                        <a href="{{ request()->fullUrlWithQuery(['type' => 'general']) }}" class="config-menu-item {{ (request()->  ('type', 'general') == 'general') ? 'active' : '' }}">
                             <h4>Cấu hình vận hành chung</h4>
                             <p>Cài đặt giờ nhận/trả phòng, thời gian chờ, quy định hủy phòng...</p>
                         </a>

@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     
     <!-- Sử dụng Vite để quản lý CSS và JS cho Client -->
-    @vite(['resources/css/client/app.css', 'resources/js/client/app.js'])
+    @vite(['resources/css/client/app.css', 'resources/js/client/app.js', 'resources/css/client/chat-ai.css', 'resources/css/client/animations.css', 'resources/js/client/animations.js'])
     @stack('styles')
     
 </head>
@@ -28,6 +28,8 @@
     </main>
 
     @include('client.layouts.footer')
-
+    
+    <!-- AI Chat Box Widget -->
+    @include('client.layouts.chat-ai')
 </body>
 </html>

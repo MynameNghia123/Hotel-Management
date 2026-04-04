@@ -21,6 +21,9 @@ Route::get('/amenities', function () {
 Route::get('/dining', function () {
     return view('client.pages.dining');
 })->name('dining');
+Route::get('/roomdetail',function(){
+    return view('client.pages.roomdetail');
+})->name('roomdetail');
 
 Route::get('/search', function () {
     return view('client.pages.search');

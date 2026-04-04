@@ -82,9 +82,9 @@
             <!-- Section Header Layout -->
             <div class="section-header-row">
                 <div class="section-intro">
-                    <span class="subtitle-gold">TIỆN NGHI CAO CẤP</span>
-                    <h2 class="section-title">Tiện Ích Đẳng Cấp Thế Giới</h2>
-                    <p class="section-desc">
+                    <span class="subtitle-gold reveal reveal-left">TIỆN NGHI CAO CẤP</span>
+                    <h2 class="section-title reveal reveal-up">Tiện Ích Đẳng Cấp Thế Giới</h2>
+                    <p class="section-desc reveal reveal-up delay-200">
                         Tận hưởng hàng loạt dịch vụ thượng lưu được thiết kế để nâng tầm kỳ nghỉ của bạn,<br>
                         từ thư giãn tinh khiết cho đến chăm sóc thể chất toàn diện.
                     </p>
@@ -125,7 +125,7 @@
     <!-- === Curated Stays Section (Dark Theme) === -->
     <section class="section stays-section">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header reveal reveal-up">
                 <h2 class="section-title">Lựa Chọn Nghỉ Dưỡng</h2>
                 <p class="section-desc">Khám phá không gian hoàn hảo dành cho bạn ngay giữa trung tâm thành phố.</p>
             </div>
