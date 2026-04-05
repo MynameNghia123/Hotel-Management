@@ -146,8 +146,8 @@
             <span class="sb-label">Khách hàng</span>
             <ul>
                 <li>
-                    <a href="{{ route('admin.customers') }}"
-                        class="sb-item {{ request()->routeIs('admin.customers') ? 'active' : '' }}">
+                    <a href="{{ route('admin.customers.index') }}"
+                        class="sb-item {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
@@ -166,8 +166,8 @@
             <span class="sb-label">Dịch vụ &amp; Tiện ích</span>
             <ul>
                 <li>
-                    <a href="{{ route('admin.services') }}"
-                        class="sb-item {{ request()->routeIs('admin.services') ? 'active' : '' }}">
+                    <a href="{{ route('admin.services.index') }}"
+                        class="sb-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path
@@ -194,8 +194,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.amenities') }}"
-                        class="sb-item {{ request()->routeIs('admin.amenities') ? 'active' : '' }}">
+                    <a href="{{ route('admin.amenities.index') }}"
+                        class="sb-item {{ request()->routeIs('admin.amenities.*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z" />
@@ -211,8 +211,8 @@
             <span class="sb-label">Hệ thống</span>
             <ul>
                 <li>
-                    <a href="{{ route('admin.roles') }}"
-                        class="sb-item {{ request()->routeIs('admin.roles') ? 'active' : '' }}">
+                    <a href="{{ route('admin.employees.index') }}"
+                        class="sb-item {{ request()->routeIs('admin.employees.*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
@@ -224,8 +224,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.staff-roles.index') }}"
-                        class="sb-item {{ request()->routeIs('admin.staff-roles.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.roles.index') }}"
+                        class="sb-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -235,7 +235,7 @@
                 </li>
                 <li>
                     <a href="{{ route('admin.configuration.index') }}"
-                        class="sb-item {{ request()->routeIs('admin.configuration.index') ? 'active' : '' }}">
+                        class="sb-item {{ request()->routeIs('admin.configuration.*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3" />
@@ -247,7 +247,7 @@
                 </li>
                 <li>
                     <a href="{{ route('admin.statistical.index') }}"
-                        class="sb-item {{ request()->routeIs('admin.statistical.index') ? 'active' : '' }}">
+                        class="sb-item {{ request()->routeIs('admin.statistical.*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 20V10M12 20V4M6 20v-6" />
