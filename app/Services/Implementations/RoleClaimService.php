@@ -29,5 +29,11 @@
         public function delete($id){
             return $this->roleClaimRepository->delete($id);
         }
+        public function getByRoleId($roleId){
+            return $this->roleClaimRepository->getByRoleId($roleId);
+        }
+        public function deleteByRoleId($roleId){
+            return $this->roleClaimRepository->deleteByRoleId($roleId);
+        }
     }
 ?>

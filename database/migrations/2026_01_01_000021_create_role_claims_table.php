@@ -12,7 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('claim_name');
             $table->string('claim_value');
-            $table->foreignId('role_id')->constrained('roles');
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

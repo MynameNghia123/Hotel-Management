@@ -59,50 +59,46 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $roles = [
-                                    ['id' => 'ROLE-01', 'name' => 'Admin', 'count' => '02', 'color' => '#6366f1'],
-                                    ['id' => 'ROLE-02', 'name' => 'Lễ tân', 'count' => '06', 'color' => '#10b981'],
-                                    ['id' => 'ROLE-03', 'name' => 'Kỹ thuật', 'count' => '03', 'color' => '#f59e0b'],
-                                    ['id' => 'ROLE-04', 'name' => 'Quản lý kho', 'count' => '03', 'color' => '#3b82f6'],
-                                    ['id' => 'ROLE-05', 'name' => 'Buồng phòng', 'count' => '12', 'color' => '#64748b'],
-                                ];
-                            @endphp
-
-                            @foreach($roles as $item)
+                            @forelse($roles as $role)
                             <tr>
-                                <td class="sr-id">{{ $item['id'] }}</td>
+                                <td class="sr-id">{{ $role->id }}</td>
                                 <td>
                                     <div class="sr-role-main">
-                                        <div class="sr-role-dot" style="background: {{ $item['color'] }}"></div>
-                                        <div class="sr-role-name">{{ $item['name'] }}</div>
+                                        <div class="sr-role-dot" style="background: #3b82f6;"></div>
+                                        <div class="sr-role-name">{{ $role->name }}</div>
                                     </div>
                                 </td>
-                                <td class="sr-staff-count">{{ $item['count'] }}</td>
+                                <td class="sr-staff-count">0</td>
                                 <td>
                                     <span class="sr-status-badge">ĐANG KÍCH HOẠT</span>
                                 </td>
                                 <td>
                                     <div class="sr-actions">
-                                        <button class="sr-btn-action permissions" title="Phân quyền">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                                        </button>
-                                        <button class="sr-btn-action edit" title="Chỉnh sửa">
+
+                                        <button class="sr-btn-action edit" title="Chỉnh sửa" onclick="window.location.href='{{ route('admin.roles.edit', $role->id) }}'">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                         </button>
-                                        <button class="sr-btn-action delete" title="Xóa">
+                                        <button class="sr-btn-action delete" title="Xóa" data-toggle="modal" data-target="#deleteModal" data-role-id="{{ $role->id }}" data-role-name="{{ $role->name }}">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                         </button>
+                                        <form id="delete-form-{{ $role->id }}" action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 24px; color: #64748b;">Không có vai trò nào</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
                 <div class="sr-footer">
-                    <div class="sr-info">Hiển thị 5 vai trò hệ thống</div>
+                    <div class="sr-info">Hiển thị {{ $roles->count() }} vai trò hệ thống</div>
                     <div class="sr-pagination">
                         <button class="sr-page-btn disabled">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -121,4 +117,64 @@
 
     </main>
 </div>
+
+<!-- Modal Xóa Vai Trò -->
+<div id="deleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 12px; padding: 32px; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+        <div style="margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">Xác nhận xóa vai trò</h2>
+            <p style="color: #6b7280; font-size: 14px;">Bạn có chắc muốn xóa vai trò <strong id="deleteRoleName">Admin</strong> này? Hành động này không thể hoàn tác.</p>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <button type="button" onclick="closeDeleteModal()" style="flex: 1; padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 8px; background: white; color: #6b7280; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                Hủy
+            </button>
+            <button type="button" onclick="confirmDelete()" id="deleteConfirmBtn" style="flex: 1; padding: 10px 16px; border: none; border-radius: 8px; background: #ef4444; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                <span id="deleteButtonText">Xóa vai trò</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let deleteRoleId = null;
+
+    // Khi click nút xóa, hiển thị modal
+    document.querySelectorAll('.sr-btn-action.delete').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            deleteRoleId = this.getAttribute('data-role-id');
+            const roleName = this.getAttribute('data-role-name');
+            document.getElementById('deleteRoleName').textContent = roleName;
+            document.getElementById('deleteModal').style.display = 'flex';
+        });
+    });
+
+    // Đóng modal
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+        deleteRoleId = null;
+    }
+
+    // Xác nhận xóa
+    function confirmDelete() {
+        if (deleteRoleId) {
+            const deleteBtn = document.getElementById('deleteConfirmBtn');
+            const deleteForm = document.getElementById('delete-form-' + deleteRoleId);
+            
+            if (deleteBtn && deleteForm) {
+                deleteBtn.disabled = true;
+                document.getElementById('deleteButtonText').textContent = 'Đang xóa...';
+                deleteForm.submit();
+            }
+        }
+    }
+
+    // Đóng modal khi click outside
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeDeleteModal();
+        }
+    });
+</script>
 @endsection

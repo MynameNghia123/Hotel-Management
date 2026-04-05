@@ -21,5 +21,9 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Services\Contracts\RoleServiceInterface::class,
             \App\Services\Implementations\RoleService::class
         );
+        $this->app->bind(
+            \App\Services\Contracts\RoleClaimServiceInterface::class,
+            \App\Services\Implementations\RoleClaimService::class
+        );
     }
 }

@@ -31,7 +31,7 @@ class RoleController extends Controller
     public function store(StoreRoleRequest $request): RedirectResponse
     {
         try {
-            $this->roleService->create($request->validated());
+            $this->roleService->create($request->mapped());
             return redirect()->route('admin.roles.index')->with('success', 'Tạo vai trò thành công!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Tạo vai trò thất bại: ' . $e->getMessage())->withInput();
@@ -47,7 +47,7 @@ class RoleController extends Controller
     public function update(StoreRoleRequest $request, $id): RedirectResponse
     {
         try {
-            $this->roleService->update($id, $request->validated());
+            $this->roleService->update($id, $request->mapped());
             return redirect()->route('admin.roles.index')->with('success', 'Cập nhật vai trò thành công!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Cập nhật vai trò thất bại: ' . $e->getMessage())->withInput();
