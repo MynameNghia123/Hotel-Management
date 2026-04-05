@@ -30,8 +30,12 @@ class RoleController extends Controller
 
     public function store(StoreRoleRequest $request): RedirectResponse
     {
-        $this->roleService->create($request->validated());
-        return redirect()->route('roles.index')->with('success', 'Tạo vai trò thành công!');
+        try {
+            $this->roleService->create($request->validated());
+            return redirect()->route('admin.roles.index')->with('success', 'Tạo vai trò thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Tạo vai trò thất bại: ' . $e->getMessage())->withInput();
+        }
     }
 
     public function edit($id): View
@@ -42,13 +46,21 @@ class RoleController extends Controller
 
     public function update(StoreRoleRequest $request, $id): RedirectResponse
     {
-        $this->roleService->update($id, $request->validated());
-        return redirect()->route('roles.index')->with('success', 'Cập nhật vai trò thành công!');
+        try {
+            $this->roleService->update($id, $request->validated());
+            return redirect()->route('admin.roles.index')->with('success', 'Cập nhật vai trò thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Cập nhật vai trò thất bại: ' . $e->getMessage())->withInput();
+        }
     }
 
     public function destroy($id): RedirectResponse
     {
-        $this->roleService->delete($id);
-        return redirect()->route('roles.index')->with('success', 'Xóa vai trò thành công!');
+        try {
+            $this->roleService->delete($id);
+            return redirect()->route('admin.roles.index')->with('success', 'Xóa vai trò thành công!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.roles.index')->with('error', 'Xóa vai trò thất bại: ' . $e->getMessage());
+        }
     }
 }

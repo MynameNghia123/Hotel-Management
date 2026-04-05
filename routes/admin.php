@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\RoleController;
 
 // ============== Auth & Dashboard ==============
 Route::get('/', function () {
@@ -162,9 +163,12 @@ Route::group(['prefix' => 'employees', 'as' => 'employees.'], function () {
 });
 
 Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
-    Route::get('/', function () {
-        return view('admin.roles.index');
-    })->name('index');
+    Route::get('/', [RoleController::class, 'index'])->name('index');
+    Route::get('/create', [RoleController::class, 'create'])->name('create');
+    Route::post('/', [RoleController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [RoleController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [RoleController::class, 'update'])->name('update');
+    Route::delete('/{id}', [RoleController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'configuration', 'as' => 'configuration.'], function () {
