@@ -19,9 +19,13 @@ export default defineConfig({
                 'resources/css/client/payment.css',
                 'resources/css/client/checkout.css',
                 'resources/css/client/forgot_password.css',
+                'resources/css/client/roomdetail.css',
                 'resources/css/client/success.css',
+                'resources/css/client/chat-ai.css',
+                'resources/css/client/animations.css',
                 // import js client
                  'resources/js/client/app.js',
+                 'resources/js/client/animations.js',
                 // import css admin
                 'resources/css/admin/app.css',
                 'resources/css/admin/rooms.css',
