@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\StaffController;
+use App\Models\Staff;
 
 // ============== Auth & Dashboard ==============
 Route::get('/', function () {
@@ -160,10 +162,14 @@ Route::group(['prefix' => 'amenities', 'as' => 'amenities.'], function () {
 });
 
 // ============== Hệ thống ==============
-Route::group(['prefix' => 'employees', 'as' => 'employees.'], function () {
-    Route::get('/', function () {
-        return view('admin.employees.index');
-    })->name('index');
+Route::group(['prefix' => 'staffs', 'as' => 'staffs.'], function () {
+    Route::get('/', [StaffController::class, 'index'])->name('index');
+    Route::get('/create', [StaffController::class, 'create'])->name('create');
+    Route::get('/{id}/edit', [StaffController::class, 'edit'])->name('edit');
+    Route::post('/', [StaffController::class, 'store'])->name('store');
+    Route::put('/{id}', [StaffController::class, 'update'])->name('update');
+    Route::put('/{id}/toggle-status', [StaffController::class, 'toggleStatus'])->name('toggle-status');
+    Route::delete('/{id}', [StaffController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {

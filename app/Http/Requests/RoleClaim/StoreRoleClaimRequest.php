@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Requests;
+namespace App\Http\Requests\RoleClaim;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRoleClaimRequest extends FormRequest

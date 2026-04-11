@@ -211,8 +211,8 @@
             <span class="sb-label">Hệ thống</span>
             <ul>
                 <li>
-                    <a href="{{ route('admin.employees.index') }}"
-                        class="sb-item {{ request()->routeIs('admin.employees.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.staffs.index') }}"
+                        class="sb-item {{ request()->routeIs('admin.staffs.*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />

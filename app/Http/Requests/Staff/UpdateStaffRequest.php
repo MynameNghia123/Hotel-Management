@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Requests\Staff;
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateStaffRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        $staffId = $this->route('id');
+        
+        return [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'role_id' => 'required|exists:roles,id',
+            'password' => 'nullable|string|min:6|confirmed',
+            'email' => 'required|email|unique:staff,email,' . $staffId,
+            'phone_number' => 'required|string|max:20',
+            'is_active' => 'nullable|boolean',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'first_name.required' => 'Họ là bắt buộc',
+            'last_name.required' => 'Tên là bắt buộc',
+            'role_id.required' => 'Vai trò là bắt buộc',
+            'role_id.exists' => 'Vai trò không tồn tại',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp',
+            'email.required' => 'Email là bắt buộc',
+            'email.email' => 'Email không hợp lệ',
+            'email.unique' => 'Email đã tồn tại trong hệ thống',
+            'phone_number.required' => 'Số điện thoại là bắt buộc',
+        ];
+    }
+
+    /**
+     * Nếu password để trống thì xóa khỏi data (giữ mật khẩu cũ)
+     */
+    protected function passedValidation()
+    {
+        if (empty($this->password)) {
+            $this->request->remove('password');
+            $this->request->remove('password_confirmation');
+        }
+    }
+}

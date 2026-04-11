@@ -4,6 +4,11 @@
 
 @push('styles')
     @vite('resources/css/admin/roles.css')
+    @vite('resources/css/admin/staffs-index.css')
+@endpush
+
+@push('scripts')
+    @vite('resources/js/admin/staffs-index.js')
 @endpush
 
 @section('content')
@@ -46,10 +51,10 @@
                         <h1 class="sf-title">Quản lý nhân viên</h1>
                         <p class="sf-subtitle">Hệ thống quản trị khách sạn Urban Luxe - Quản lý hồ sơ và tài khoản nhân sự.</p>
                     </div>
-                    <button class="sf-btn-primary">
+                    <a href={{ route('admin.staffs.create') }} class="sf-btn-primary">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="16" y1="11" x2="22" y2="11"></line></svg>
                         Thêm nhân viên mới
-                    </button>
+                    </a>
                 </div>
 
                 <div class="sf-toolbar">
@@ -86,38 +91,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $staffs = [
-                                    ['id' => 'NV-001', 'name' => 'Nguyễn Văn Đức', 'email' => 'duc.nd@urbanluxe.com', 'role' => 'Quản lý', 'phone' => '0901.234.567', 'active' => true, 'color' => '#f3e8ff', 'txt' => '#6b21a8', 'initials' => 'ND'],
-                                    ['id' => 'NV-002', 'name' => 'Trần Thị Hoa', 'email' => 'hoa.tt@urbanluxe.com', 'role' => 'Lễ tân', 'phone' => '0932.123.456', 'active' => true, 'color' => '#dcfce7', 'txt' => '#166534', 'initials' => 'TH'],
-                                    ['id' => 'NV-003', 'name' => 'Lê Văn Chính', 'email' => 'chinh.lv@urbanluxe.com', 'role' => 'Kỹ thuật', 'phone' => '0867.888.221', 'active' => false, 'color' => '#ffedd5', 'txt' => '#9a3412', 'initials' => 'LC'],
-                                    ['id' => 'NV-004', 'name' => 'Phạm Thu Thảo', 'email' => 'thao.pt@urbanluxe.com', 'role' => 'Buồng phòng', 'phone' => '0733.888.999', 'active' => true, 'color' => '#ecfdf5', 'txt' => '#065f46', 'initials' => 'PT'],
-                                    ['id' => 'NV-005', 'name' => 'Đỗ Đăng Khoa', 'email' => 'khoa.dd@urbanluxe.com', 'role' => 'Lễ tân', 'phone' => '0944.555.666', 'active' => true, 'color' => '#dbeafe', 'txt' => '#1e40af', 'initials' => 'DK'],
-                                ];
-                            @endphp
 
-                            @foreach($staffs as $item)
+                            @foreach($staffs as $staff)
                             <tr>
-                                <td class="sf-id">{{ $item['id'] }}</td>
+                                <td class="sf-id">{{ $staff->id }}</td>
                                 <td>
                                     <div class="sf-user-block">
-                                        <div class="sf-avatar-thumb" style="background: {{ $item['color'] }}; color: {{ $item['txt'] }};">
-                                            {{ $item['initials'] }}
-                                        </div>
                                         <div class="sf-user-info">
-                                            <span class="sf-user-name">{{ $item['name'] }}</span>
-                                            <span class="sf-user-email">{{ $item['email'] }}</span>
+                                            <span class="sf-user-name">{{ $staff->first_name }} {{ $staff->last_name }}</span>
+                                            <span class="sf-user-email">{{ $staff->email }}</span>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="sf-role-pill" style="background: {{ $item['color'] }}; color: {{ $item['txt'] }};">
-                                        {{ $item['role'] }}
+                                    <span class="sf-role-pill" >
+                                        {{ $staff->role->name }}
                                     </span>
                                 </td>
-                                <td>{{ $item['phone'] }}</td>
+                                <td>{{ $staff->phone_number }}</td>
                                 <td>
-                                    @if($item['active'])
+                                    @if($staff->is_active)
                                     <div class="sf-status-flex sf-dot-green">
                                         <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
                                         Đang hoạt động
@@ -132,18 +125,20 @@
                                 <td>
                                     <div class="sf-actions">
                                         <label class="sf-switch">
-                                            <input type="checkbox" {{ $item['active'] ? 'checked' : '' }}>
+                                            <input type="checkbox" data-staff-id="{{ $staff->id }}" {{ $staff->is_active ? 'checked' : '' }}>
                                             <span class="sf-slider"></span>
                                         </label>
-                                        <button class="sf-btn-action permissions" title="Phân quyền">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                                        </button>
-                                        <button class="sf-btn-action edit" title="Sửa">
+
+                                        <a class="sf-btn-action edit" title="Sửa" href="{{ route('admin.staffs.edit', $staff->id) }}">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                        </button>
-                                        <button class="sf-btn-action delete" title="Xóa">
+                                        </a>
+                                        <button class="sf-btn-action delete" title="Xóa" onclick="if(confirm('Bạn có chắc muốn xóa nhân viên này?')) { document.getElementById('deleteForm-{{ $staff->id }}').submit(); }">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                         </button>
+                                        <form id="deleteForm-{{ $staff->id }}" action="{{ route('admin.staffs.destroy', $staff->id) }}" method="POST" style="display:none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

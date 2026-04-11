@@ -35,5 +35,6 @@
         public function deleteByRoleId($roleId){
             return $this->roleClaimRepository->deleteByRoleId($roleId);
         }
+
     }
 ?>
