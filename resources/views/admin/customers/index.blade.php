@@ -37,19 +37,26 @@
             </div>
         </header>
 
-        {{-- MAIN CONTENT --}}
+        {{-- MAIN CONTENT AREA --}}
         <div class="admin-content">
             
+            @if(session('success'))
+                <div style="background: #dcfce7; color: #15803d; padding: 16px; border-radius: 12px; margin-bottom: 24px; border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 12px; font-weight: 600;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="cs-container">
                 <div class="cs-header">
                     <div>
                         <h1 class="cs-title">Quản lý khách hàng</h1>
                         <p class="cs-subtitle">Hệ thống quản trị khách sạn Urban Luxe - Quản lý danh sách khách hàng chuyên nghiệp.</p>
                     </div>
-                    <button class="cs-btn-primary">
+                    <a href="{{ route('admin.customers.create') }}" class="cs-btn-primary" style="text-decoration: none;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="16" y1="11" x2="22" y2="11"></line></svg>
                         Thêm khách hàng mới
-                    </button>
+                    </a>
                 </div>
 
                 <div class="cs-toolbar">
@@ -88,94 +95,38 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse($customers as $customer)
                             <tr>
-                                <td>CUS-1001</td>
-                                <td>Nguyễn</td>
-                                <td class="cs-name-main">Minh Anh</td>
-                                <td>0901234567</td>
-                                <td>ACC-9901</td>
-                                <td>Việt Nam</td>
-                                <td>minhanh.ng@gmail.com</td>
+                                <td>CUS-{{ str_pad($customer->id, 4, '0', STR_PAD_LEFT) }}</td>
+                                <td>{{ $customer->last_name }}</td>
+                                <td class="cs-name-main">{{ $customer->first_name }}</td>
+                                <td>{{ $customer->phone_number }}</td>
+                                <td>{{ $customer->country }}</td>
+                                <td>{{ $customer->country ?? 'N/A' }}</td> {{-- Giả sử là Mã TK nếu có --}}
+                                <td>{{ $customer->email }}</td>
                                 <td>
                                     <div class="cs-actions">
-                                        <button class="cs-btn-action view" title="Xem chi tiết">
+                                        <a href="#" class="cs-btn-action view" title="Xem chi tiết">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                        </button>
-                                        <button class="cs-btn-action edit" title="Chỉnh sửa">
+                                        </a>
+                                        <a href="{{ route('admin.customers.edit', $customer->id) }}" class="cs-btn-action edit" title="Chỉnh sửa">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                        </button>
-                                        <button class="cs-btn-action delete" title="Xóa">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                        </button>
+                                        </a>
+                                        <form action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa khách hàng này?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="cs-btn-action delete" title="Xóa" style="border:none; background:none; cursor:pointer; padding:0;">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
+                            @empty
                             <tr>
-                                <td>CUS-1002</td>
-                                <td>Smith</td>
-                                <td class="cs-name-main">John</td>
-                                <td>+1 (555) 123-4567</td>
-                                <td>ACC-9902</td>
-                                <td>Hoa Kỳ</td>
-                                <td>john.smith@example.com</td>
-                                <td>
-                                    <div class="cs-actions">
-                                        <button class="cs-btn-action view" title="Xem chi tiết">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                        </button>
-                                        <button class="cs-btn-action edit" title="Chỉnh sửa">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                        </button>
-                                        <button class="cs-btn-action delete" title="Xóa">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                        </button>
-                                    </div>
-                                </td>
+                                <td colspan="8" style="text-align: center; padding: 2rem; color: #64748b;">Chưa có khách hàng nào.</td>
                             </tr>
-                            <tr>
-                                <td>CUS-1003</td>
-                                <td>Lý</td>
-                                <td class="cs-name-main">Quang Hải</td>
-                                <td>0983114489</td>
-                                <td>ACC-9903</td>
-                                <td>Việt Nam</td>
-                                <td>hai.lq@gm.vn</td>
-                                <td>
-                                    <div class="cs-actions">
-                                        <button class="cs-btn-action view" title="Xem chi tiết">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                        </button>
-                                        <button class="cs-btn-action edit" title="Chỉnh sửa">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                        </button>
-                                        <button class="cs-btn-action delete" title="Xóa">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>CUS-1004</td>
-                                <td>Sato</td>
-                                <td class="cs-name-main">Yuki</td>
-                                <td>+81 90-1234-5678</td>
-                                <td>ACC-9904</td>
-                                <td>Nhật Bản</td>
-                                <td>yuki.sato@jp.co</td>
-                                <td>
-                                    <div class="cs-actions">
-                                        <button class="cs-btn-action view" title="Xem chi tiết">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                        </button>
-                                        <button class="cs-btn-action edit" title="Chỉnh sửa">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                        </button>
-                                        <button class="cs-btn-action delete" title="Xóa">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

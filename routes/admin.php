@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Web\RoleController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\CustomerController;
 
 // ============== Auth & Dashboard ==============
 Route::get('/', function () {
@@ -75,9 +77,12 @@ Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
 
 // ============== Quản lý phòng ==============
 Route::group(['prefix' => 'rooms', 'as' => 'rooms.'], function () {
-    Route::get('/', function () {
-        return view('admin.rooms.index');
-    })->name('index');
+    Route::get('/', [RoomController::class, 'index'])->name('index');
+    Route::get('/create', [RoomController::class, 'create'])->name('create');
+    Route::post('/', [RoomController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [RoomController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [RoomController::class, 'update'])->name('update');
+    Route::delete('/{id}', [RoomController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'room-types', 'as' => 'room-types.'], function () {
@@ -123,18 +128,14 @@ Route::group(['prefix' => 'repair-ticket', 'as' => 'repair-ticket.'], function (
 
 // ============== Khách hàng ==============
 Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
-    Route::get('/', function () {
-        return view('admin.customers.index');
-    })->name('index');
-
-    Route::get('/create', function() {
-        return view('admin.customers.create');   
-    })->name('create');
-
-    Route::get('/edit', function() {
-        return view('admin.customers.edit');   
-    })->name('edit');
+    Route::get('/', [App\Http\Controllers\CustomerController::class, 'index'])->name('index');
+    Route::get('/create', [App\Http\Controllers\CustomerController::class, 'create'])->name('create');
+    Route::post('/', [App\Http\Controllers\CustomerController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [App\Http\Controllers\CustomerController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [App\Http\Controllers\CustomerController::class, 'update'])->name('update');
+    Route::delete('/{id}', [App\Http\Controllers\CustomerController::class, 'destroy'])->name('destroy');
 });
+
 
 // ============== Dịch vụ & Tiện ích ==============
 Route::group(['prefix' => 'services', 'as' => 'services.'], function () {
@@ -150,9 +151,12 @@ Route::group(['prefix' => 'service-types', 'as' => 'service-types.'], function (
 });
 
 Route::group(['prefix' => 'amenities', 'as' => 'amenities.'], function () {
-    Route::get('/', function () {
-        return view('admin.amenities.index');
-    })->name('index');
+    Route::get('/', [App\Http\Controllers\AmenityController::class, 'index'])->name('index');
+    Route::get('/create', [App\Http\Controllers\AmenityController::class, 'create'])->name('create');
+    Route::post('/', [App\Http\Controllers\AmenityController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [App\Http\Controllers\AmenityController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [App\Http\Controllers\AmenityController::class, 'update'])->name('update');
+    Route::delete('/{id}', [App\Http\Controllers\AmenityController::class, 'destroy'])->name('destroy');
 });
 
 // ============== Hệ thống ==============
