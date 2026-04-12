@@ -37,13 +37,26 @@ class UpdateStaffRequest extends FormRequest
     }
 
     /**
-     * Nếu password để trống thì xóa khỏi data (giữ mật khẩu cũ)
+     * Xóa password trước khi validation nếu nó trống (giữ mật khẩu cũ)
      */
-    protected function passedValidation()
+    protected function prepareForValidation()
     {
         if (empty($this->password)) {
             $this->request->remove('password');
             $this->request->remove('password_confirmation');
         }
+    }
+
+    /**
+     * Override validated() để đảm bảo password không được gửi lên service
+     */
+    public function validated($key = null, $default = null)
+    {
+        $data = parent::validated($key, $default);
+        
+        // Xóa password_confirmation khỏi dữ liệu trước khi return
+        unset($data['password_confirmation']);
+        
+        return $data;
     }
 }
