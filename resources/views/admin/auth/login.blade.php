@@ -29,17 +29,28 @@
             <h2 class="text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">Đăng nhập quản trị</h2>
             <p class="text-gray-500 mb-12 text-lg">Chào mừng trở lại! Vui lòng nhập thông tin để tiếp tục quản lý hệ thống.</p>
 
-            <form action="{{ route('admin.dashboard') }}" method="GET" class="space-y-6">
+            @if ($message = Session::get('error'))
+                <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-red-700 font-medium text-sm">{{ $message }}</p>
+                </div>
+            @endif
+
+            <form action="{{ route('admin.login') }}" method="POST" class="space-y-6">
+                @csrf
+                
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2.5 uppercase tracking-wider">Tên đăng nhập</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2.5 uppercase tracking-wider">Email</label>
                     <div class="relative group">
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 group-focus-within:text-purple-600 transition-colors">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                         </span>
-                        <input type="text" value="admin@urbanluxe.com" 
+                        <input type="email" name="email" value="{{ old('email') }}"
                             class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-purple-500/10 focus:border-purple-500 transition-all outline-none text-gray-900 font-medium" 
-                            placeholder="Nhập email quản trị">
+                            placeholder="Nhập email đăng nhập" required>
                     </div>
+                    @error('email')
+                        <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
@@ -48,10 +59,16 @@
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 group-focus-within:text-purple-600 transition-colors">
                             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                         </span>
-                        <input type="password" value="password" 
+                        <input type="password" id="password" name="password"
                             class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-purple-500/10 focus:border-purple-500 transition-all outline-none text-gray-900 font-medium" 
-                            placeholder="••••••••">
+                            placeholder="••••••••" required>
+                        <button type="button" onclick="togglePassword('password')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
                     </div>
+                    @error('password')
+                        <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="flex items-center justify-between py-2">
@@ -77,5 +94,16 @@
 @push('styles')
     @vite(['resources/css/admin/login.css'])
 @endpush
+
+<script>
+function togglePassword(fieldId) {
+    const input = document.getElementById(fieldId);
+    if (input.type === 'password') {
+        input.type = 'text';
+    } else {
+        input.type = 'password';
+    }
+}
+</script>
 
 @endsection

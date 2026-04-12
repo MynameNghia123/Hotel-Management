@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\StoreRoleRequest;
+use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Services\Contracts\RoleServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -44,7 +45,7 @@ class RoleController extends Controller
         return view('admin.roles.edit', compact('role'));
     }
 
-    public function update(StoreRoleRequest $request, $id): RedirectResponse
+    public function update(UpdateRoleRequest $request, $id): RedirectResponse
     {
         try {
             $this->roleService->update($id, $request->mapped());

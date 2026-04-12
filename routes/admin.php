@@ -5,6 +5,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\AuthAdminController;
+use App\Http\Middleware\CheckAdminPermission;
 use App\Models\Staff;
 
 // ============== Auth & Dashboard ==============
@@ -12,13 +14,18 @@ Route::get('/', function () {
     return redirect(route('admin.login'));
 });
 
-Route::get('/login', function () {
-    return view('admin.auth.login');
-})->name('login');
+// Login routes (không cần middleware)
+Route::get('/login', [AuthAdminController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthAdminController::class, 'login']);
+Route::post('/logout', [AuthAdminController::class, 'logout'])->name('logout');
 
+// Dashboard (cần quyền admin)
 Route::get('/dashboard', function () {
     return view('admin.dashboard.index');
-})->name('dashboard');
+})->middleware(CheckAdminPermission::class)->name('dashboard');
+
+// ============== Protected Routes - Cần đăng nhập ==============
+Route::middleware([CheckAdminPermission::class])->group(function () {
 
 // ============== Vận hành - Room Map ==============
 Route::group(['prefix' => 'room-map', 'as' => 'room-map.'], function () {
@@ -205,3 +212,5 @@ Route::group(['prefix' => 'statistical', 'as' => 'statistical.'], function () {
         return view('admin.statistical.customers');
     })->name('customers');
 });
+
+}); // Close protected routes middleware group

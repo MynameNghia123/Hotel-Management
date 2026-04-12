@@ -14,12 +14,12 @@ class StaffSeeder extends Seeder
         $staff = [
             [
                 'role_id'       => 1,
-                'first_name'    => 'Nguyễn',
-                'last_name'     => 'Văn Admin',
-                'phone_number'  => '0901234567',
-                'email'         => 'admin@hotel.com',
+                'first_name'    => 'Admin',
+                'last_name'     => 'Hotel',
+                'phone_number'  => '0933666999',
+                'email'         => 'nghialam1509@gmail.com',
                 'is_active'     => true,
-                'password'      => Hash::make('password'),
+                'password'      => Hash::make('123456'),
             ],
             [
                 'role_id'       => 2,

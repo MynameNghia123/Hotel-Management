@@ -22,6 +22,15 @@
 
         {{-- MAIN CONTENT --}}
         <div style="flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; background:#f8fafc;">
+            @if ($errors->any())
+                <div style="color: red; background: #fee2e2; padding: 10px; border-radius: 8px; margin-bottom: 20px;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="sr-container">
                 <div style="margin-bottom: 24px;">
                     <a href="{{ route('admin.roles.index') }}" style="color:#64748b; font-size:14px;">&larr; Quay lại danh sách</a>

@@ -46,6 +46,10 @@
         }
 
         public function update($id, array $data){
+
+            // dd( $id);
+            // dd($data);
+
             // Update role
             $role = $this->roleRepository->update($id, ['name' => $data['name']]);
             
@@ -57,7 +61,8 @@
             foreach ($oldClaims as $claim) {
                 $this->roleClaimService->delete($claim->id);
             }
-            
+
+
             // Lưu role claims mới
             if (!empty($permissions)) {
                 foreach ($permissions as $permission) {
