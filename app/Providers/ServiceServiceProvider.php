@@ -37,5 +37,19 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\StaffServiceInterface::class,
             \App\Services\Implementations\StaffService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\EquipmentServiceInterface::class,
+            \App\Services\Implementations\EquipmentService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Contracts\EquipmentCategoryServiceInterface::class,
+            \App\Services\Implementations\EquipmentCategoryService::class
+        );
+        $this->app->bind(
+            \App\Services\Contracts\ServiceServiceInterface::class,
+            \App\Services\Implementations\ServiceService::class
+        );
     }
 }

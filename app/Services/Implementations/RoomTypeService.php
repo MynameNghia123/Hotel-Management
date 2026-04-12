@@ -24,6 +24,11 @@ class RoomTypeService implements RoomTypeServiceInterface
         return $this->roomTypeRepository->findById($id);
     }
 
+    public function findWithDetails($id)
+    {
+        return $this->roomTypeRepository->findWithDetails($id);
+    }
+
     public function create(array $data)
     {
         return $this->roomTypeRepository->create($data);

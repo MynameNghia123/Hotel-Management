@@ -34,6 +34,13 @@ class EloquentRoomTypeRepository implements RoomTypeRepositoryInterface
         return $this->model->findOrFail($id);
     }
 
+    public function findWithDetails($id)
+    {
+        return $this->model
+            ->with(['amenities', 'equipments', 'images'])
+            ->findOrFail($id);
+    }
+
     public function update($id, array $data)
     {
         $record = $this->findById($id);

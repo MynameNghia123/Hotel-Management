@@ -1,9 +1,49 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Chỉnh sửa loại phòng: Urban Suite King | Urban Luxe Admin')
+@section('title', 'Chỉnh sửa loại phòng: {{ $roomType->name }} | Urban Luxe Admin')
 
 @push('styles')
     @vite(['resources/css/admin/room-types.css', 'resources/css/admin/room-types-edit.css'])
+    <style>
+        /* Modal Styles */
+        .rte-modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        .rte-modal-overlay.active { display: flex; }
+        .rte-modal {
+            background: #fff; width: 100%; max-width: 500px; border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden;
+            transform: scale(0.95); opacity: 0; transition: all 0.2s;
+        }
+        .rte-modal-overlay.active .rte-modal { transform: scale(1); opacity: 1; }
+        .rte-modal-header {
+            padding: 20px 24px; border-bottom: 1px solid #f1f5f9;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .rte-modal-title { font-size: 16px; font-weight: 800; color: #1e293b; }
+        .rte-modal-close {
+            background: none; border: none; cursor: pointer; color: #94a3b8; transition: 0.2s;
+        }
+        .rte-modal-close:hover { color: #ef4444; }
+        .rte-modal-body { padding: 24px; max-height: 400px; overflow-y: auto; }
+        .rte-modal-footer {
+            padding: 16px 24px; border-top: 1px solid #f1f5f9; background: #f8fafc;
+            display: flex; justify-content: flex-end; gap: 12px;
+        }
+        /* Amenities Grid in Modal */
+        .amenities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .amenity-checkbox-wrapper {
+            display: flex; align-items: center; gap: 12px; padding: 12px;
+            border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; transition: 0.2s;
+        }
+        .amenity-checkbox-wrapper:hover { border-color: #cbd5e1; background: #f8fafc; }
+        .amenity-checkbox-wrapper.checked { border-color: #2a3f8a; background: #f0f4ff; }
+        .amenity-checkbox-wrapper input { display: none; }
+        /* Equipment Select in Modal */
+        .equip-modal-row { display: flex; gap: 12px; margin-bottom: 16px; }
+    </style>
 @endpush
 
 @section('content')
@@ -33,11 +73,11 @@
             {{-- PAGE HEADER ACTIONS --}}
             <div class="page-actions-header">
                 <div class="header-titles">
-                    <a href="{{ route('admin.room-types.index') }}" class="back-text">
+                    <a href="{{ route('admin.rooms.show', $roomType->id) }}" class="back-text">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         Trở lại danh sách
                     </a>
-                    <h1 class="main-title">Chỉnh sửa loại phòng: Urban Suite King</h1>
+                    <h1 class="main-title">Chỉnh sửa loại phòng: {{ $roomType->name }}</h1>
                     <p class="sub-desc">Hệ thống quản trị khách sạn Urban Luxe</p>
                 </div>
                 <div class="right-badges">
@@ -49,8 +89,10 @@
                 </div>
             </div>
 
-            <form id="roomTypeEditForm">
+            <form id="roomTypeEditForm" action="{{ route('admin.rooms.update', $roomType->id) }}" method="POST">
                 <div class="details-grid-layout">
+                    @csrf
+                    @method('PUT')
 
                     {{-- LEFT COLUMN --}}
                     <div class="details-col-left">
@@ -65,26 +107,25 @@
                             <div class="info-split" style="margin-bottom: 24px;">
                                 <div class="rte-form-group">
                                     <label class="rte-label">Tên loại phòng</label>
-                                    <input type="text" class="rte-input" value="Urban Suite King" placeholder="Nhập tên loại phòng...">
+                                    <input type="text" name="name" class="rte-input" value="{{ old('name', $roomType->name) }}" placeholder="Nhập tên loại phòng...">
                                 </div>
                                 <div class="rte-form-group">
                                     <label class="rte-label">Mã loại phòng</label>
-                                    <input type="text" class="rte-input" value="USK-590" placeholder="VD: USK-001">
+                                    <input type="text" name="code" class="rte-input" value="{{ old('code', $roomType->code) }}" placeholder="VD: USK-001">
                                 </div>
                             </div>
 
                             <div class="rte-form-group" style="margin-bottom: 24px;">
                                 <label class="rte-label">Trạng thái</label>
-                                <select class="rte-input rte-select">
-                                    <option selected>Đang kinh doanh</option>
-                                    <option>Tạm dừng kinh doanh</option>
-                                    <option>Ngừng cung cấp</option>
+                                <select name="is_active" class="rte-input rte-select">
+                                    <option value="1" {{ old('is_active', $roomType->is_active) ? 'selected' : '' }}>Đang kinh doanh</option>
+                                    <option value="0" {{ !old('is_active', $roomType->is_active) ? 'selected' : '' }}>Ngừng kinh doanh</option>
                                 </select>
                             </div>
 
                             <div class="rte-form-group">
                                 <label class="rte-label">Mô tả loại phòng</label>
-                                <textarea class="rte-input rte-textarea" rows="6" placeholder="Nhập mô tả chi tiết về loại phòng...">Phòng của anh Bộ Pc có 2 giường ngủ lớn, view hướng ra thành phố. Không gian rộng rãi thoáng mát, phù hợp cho gia đình hoặc nhóm bạn đi du lịch nghỉ dưỡng. Được trang bị đầy đủ tiện nghi hiện đại nhất.</textarea>
+                                <textarea name="description" class="rte-input rte-textarea" rows="6" placeholder="Nhập mô tả chi tiết về loại phòng...">{{ old('description', $roomType->description) }}</textarea>
                             </div>
                         </div>
 
@@ -101,12 +142,12 @@
                                     <div class="dim-flex">
                                         <div class="rte-form-group" style="flex:1;">
                                             <label class="rte-label" style="font-size:10px; color:#94a3b8;">Rộng (m)</label>
-                                            <input type="number" class="rte-input" value="5.0" step="0.1" style="text-align:center; font-size:18px; font-weight:800;">
+                                            <input type="number" name="width" class="rte-input" value="{{ old('width', $roomType->width) }}" step="0.1" style="text-align:center; font-size:18px; font-weight:800;">
                                         </div>
                                         <div class="dim-divider" style="margin: 0 16px;"></div>
                                         <div class="rte-form-group" style="flex:1;">
                                             <label class="rte-label" style="font-size:10px; color:#94a3b8;">Dài (m)</label>
-                                            <input type="number" class="rte-input" value="8.0" step="0.1" style="text-align:center; font-size:18px; font-weight:800;">
+                                            <input type="number" name="height" class="rte-input" value="{{ old('height', $roomType->height) }}" step="0.1" style="text-align:center; font-size:18px; font-weight:800;">
                                         </div>
                                     </div>
                                 </div>
@@ -114,14 +155,14 @@
                                     <div class="rte-form-group">
                                         <label class="rte-label">Giá giờ (hourly)</label>
                                         <div style="position:relative;">
-                                            <input type="number" class="rte-input" value="200000" style="font-size:20px; font-weight:850; color:#2a3f8a; padding-right:50px;">
+                                            <input type="number" name="hourly_price" class="rte-input" value="{{ old('hourly_price', $roomType->hourly_price) }}" style="font-size:20px; font-weight:850; color:#2a3f8a; padding-right:50px;">
                                             <span style="position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:12px; font-weight:800; color:#94a3b8;">VNĐ</span>
                                         </div>
                                     </div>
                                     <div class="rte-form-group" style="margin-top:16px;">
                                         <label class="rte-label">Giá ngày (daily)</label>
                                         <div style="position:relative;">
-                                            <input type="number" class="rte-input" value="1500000" style="font-size:20px; font-weight:850; color:#2a3f8a; padding-right:50px;">
+                                            <input type="number" name="daily_price" class="rte-input" value="{{ old('daily_price', $roomType->daily_price) }}" style="font-size:20px; font-weight:850; color:#2a3f8a; padding-right:50px;">
                                             <span style="position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:12px; font-weight:800; color:#94a3b8;">VNĐ</span>
                                         </div>
                                     </div>
@@ -139,22 +180,22 @@
                                 <div class="cap-card">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                     <span>Người lớn</span>
-                                    <input type="number" value="2" class="rte-input" style="border:none; background:transparent; font-size:24px; font-weight:850; text-align:center; padding:0; width:40px;">
+                                    <input type="number" name="adult_quantity" value="{{ old('adult_quantity', $roomType->adult_quantity) }}" class="rte-input" style="border:none; background:transparent; font-size:24px; font-weight:850; text-align:center; padding:0; width:40px;">
                                 </div>
                                 <div class="cap-card">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="1.5"></circle><circle cx="12" cy="7" r="4"></circle></svg>
                                     <span>Trẻ em</span>
-                                    <input type="number" value="1" class="rte-input" style="border:none; background:transparent; font-size:24px; font-weight:850; text-align:center; padding:0; width:40px;">
+                                    <input type="number" name="child_quantity" value="{{ old('child_quantity', $roomType->child_quantity) }}" class="rte-input" style="border:none; background:transparent; font-size:24px; font-weight:850; text-align:center; padding:0; width:40px;">
                                 </div>
                                 <div class="cap-card">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17v-4M17 17v-4M3 8v9M21 8v9M3 11h18M5 8h14a2 2 0 012 2v1h-18v-1a2 2 0 012-2z"/></svg>
                                     <span>Giường đơn</span>
-                                    <input type="number" value="0" class="rte-input" style="border:none; background:transparent; font-size:24px; font-weight:850; text-align:center; padding:0; width:40px;">
+                                    <input type="number" name="single_bed_quantity" value="{{ old('single_bed_quantity', $roomType->single_bed_quantity) }}" class="rte-input" style="border:none; background:transparent; font-size:24px; font-weight:850; text-align:center; padding:0; width:40px;">
                                 </div>
                                 <div class="cap-card">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="8" rx="2"/><path d="M7 11V7a2 2 0 012-2h6a2 2 0 012 2v4M11 11v4"/></svg>
                                     <span>Giường đôi</span>
-                                    <input type="number" value="1" class="rte-input" style="border:none; background:transparent; font-size:24px; font-weight:850; text-align:center; padding:0; width:40px;">
+                                    <input type="number" name="double_bed_quantity" value="{{ old('double_bed_quantity', $roomType->double_bed_quantity) }}" class="rte-input" style="border:none; background:transparent; font-size:24px; font-weight:850; text-align:center; padding:0; width:40px;">
                                 </div>
                             </div>
                         </div>
@@ -170,38 +211,32 @@
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"></polyline></svg>
                                     MEDIA (HÌNH ẢNH)
                                 </h3>
-                                <button type="button" class="rte-upload-btn">
+                                <button type="button" class="rte-upload-btn" onclick="document.getElementById('image-upload').click()">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                     Tải ảnh lên
                                 </button>
+                                <input type="file" id="image-upload" style="display:none;" accept="image/*" onchange="uploadImage(this, {{ $roomType->id }})">
                             </div>
 
-                            <div class="media-list">
-                                <div class="media-item border-left-active">
-                                    <img src="https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&q=80&w=300" alt="Main">
+                            <div class="media-list" id="media-list">
+                                @forelse($roomType->images as $img)
+                                <div class="media-item" id="media-{{ $img->id }}">
+                                    <img src="{{ $img->image_url }}" alt="Image">
                                     <div class="media-info" style="flex:1;">
-                                        <strong>urban-suite-main.jpg</strong>
-                                        <span>Ảnh đại diện chính</span>
+                                        <strong>Image #{{ $loop->iteration }}</strong>
+                                        <span>Order: {{ $img->order }}</span>
                                     </div>
-                                    <button type="button" class="rte-media-del">
+                                    <button type="button" class="rte-media-del" onclick="deleteImage({{ $roomType->id }}, {{ $img->id }})">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
                                     </button>
                                 </div>
-                                <div class="media-item">
-                                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=300" alt="Bath">
-                                    <div class="media-info" style="flex:1;">
-                                        <strong>bathroom-detail.jpg</strong>
-                                        <span>Phòng tắm chi tiết</span>
-                                    </div>
-                                    <button type="button" class="rte-media-del">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-                                    </button>
-                                </div>
+                                @empty
+                                <div class="media-item border-left-active empty-msg">Chưa có hình ảnh.</div>
+                                @endforelse
                             </div>
-                            <div class="rte-upload-zone">
+                            <div class="rte-upload-zone" onclick="document.getElementById('image-upload').click()">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                <span>Kéo thả ảnh hoặc <label for="upload" style="color:#2a3f8a; cursor:pointer; font-weight:700;">chọn từ máy</label></span>
-                                <input type="file" id="upload" style="display:none;">
+                                <span>Kéo thả ảnh hoặc <span style="color:#2a3f8a; cursor:pointer; font-weight:700;">chọn từ máy</span></span>
                             </div>
                         </div>
 
@@ -211,25 +246,16 @@
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21l-8-4.5v-9L12 3l8 4.5v9z"></path><polyline points="12 21 12 12 20 7.5"></polyline><line x1="12" y1="12" x2="4" y2="7.5"></line></svg>
                                 TIỆN ÍCH (AMENITIES)
                             </h3>
-                            <div class="amenities-flex">
+                            <div class="amenities-flex" id="amenities-container">
+                                @forelse($roomType->amenities as $am)
                                 <label class="amenity-toggle is-on">
-                                    <input type="checkbox" checked hidden>
-                                    <span>Free WiFi</span>
+                                    <span><span class="material-symbols-outlined" style="font-size:16px; margin-right:4px; vertical-align:middle;">{{ strtolower(trim($am->icon)) }}</span>{{ $am->name }}</span>
                                 </label>
-                                <label class="amenity-toggle is-on">
-                                    <input type="checkbox" checked hidden>
-                                    <span>Điều hòa</span>
-                                </label>
-                                <label class="amenity-toggle is-on">
-                                    <input type="checkbox" checked hidden>
-                                    <span>Bãi đỗ</span>
-                                </label>
-                                <label class="amenity-toggle is-on">
-                                    <input type="checkbox" checked hidden>
-                                    <span>Hồ bơi</span>
-                                </label>
-                                <button type="button" class="amenity-toggle" style="border-style:dashed; border-color:#cbd5e1; background:transparent;">
-                                    <span>+ Thêm tiện ích</span>
+                                @empty
+                                <span class="empty-msg" style="font-size:13px; color:#94a3b8;">Chưa có tiện ích.</span>
+                                @endforelse
+                                <button type="button" class="amenity-toggle" style="border-style:dashed; border-color:#cbd5e1; background:transparent;" onclick="openAmenityModal()">
+                                    <span>+ Quản lý tiện ích</span>
                                 </button>
                             </div>
                         </div>
@@ -243,7 +269,7 @@
                                 </h3>
                             </div>
 
-                            <table class="equip-table">
+                            <table class="equip-table" id="equip-table">
                                 <thead>
                                     <tr>
                                         <th>TÊN THIẾT BỊ</th>
@@ -252,49 +278,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @forelse($roomType->equipments as $eq)
                                     <tr>
-                                        <td>
-                                            <input type="text" class="rte-table-input" value="Điều hòa Daikin 1.5HP" placeholder="Nhập tên thiết bị...">
-                                        </td>
+                                        <td>{{ $eq->name }}<input type="hidden" name="equip_id[]" value="{{ $eq->id }}"></td>
                                         <td style="text-align:center;">
-                                            <input type="number" class="rte-table-input rte-qty" value="1" min="1" style="text-align:center;">
+                                            <input type="number" name="equip_qty[]" class="rte-table-input rte-qty" value="{{ $eq->pivot->quantity }}" min="1" style="text-align:center;" onchange="syncEquipments({{ $roomType->id }})">
                                         </td>
                                         <td style="text-align:right;">
-                                            <button type="button" class="rte-del-row">
+                                            <button type="button" class="rte-del-row" onclick="removeEquipmentRow(this, {{ $roomType->id }})">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="text" class="rte-table-input" value="Tủ lạnh mini Samsung" placeholder="Nhập tên thiết bị...">
-                                        </td>
-                                        <td style="text-align:center;">
-                                            <input type="number" class="rte-table-input rte-qty" value="1" min="1" style="text-align:center;">
-                                        </td>
-                                        <td style="text-align:right;">
-                                            <button type="button" class="rte-del-row">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="text" class="rte-table-input" value="Smart TV 55 inch" placeholder="Nhập tên thiết bị...">
-                                        </td>
-                                        <td style="text-align:center;">
-                                            <input type="number" class="rte-table-input rte-qty" value="1" min="1" style="text-align:center;">
-                                        </td>
-                                        <td style="text-align:right;">
-                                            <button type="button" class="rte-del-row">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    @empty
+                                    <tr class="empty-msg"><td colspan="3" style="text-align:center; color:#94a3b8; font-size:13px;">Chưa có thiết bị.</td></tr>
+                                    @endforelse
                                 </tbody>
                             </table>
 
-                            <button type="button" class="rte-upload-zone" style="margin-top:16px; width:100%; padding:10px; border-style:dashed;">
+                            <button type="button" class="rte-upload-zone" style="margin-top:16px; width:100%; padding:10px; border-style:dashed;" onclick="openEquipModal()">
                                 <span style="font-size:12px; font-weight:700;">+ Thêm thiết bị mới</span>
                             </button>
                         </div>
@@ -307,17 +309,65 @@
     </main>
 </div>
 
+{{-- MODAL AMENITIES --}}
+<div class="rte-modal-overlay" id="amenityModal">
+    <div class="rte-modal">
+        <div class="rte-modal-header">
+            <div class="rte-modal-title">Quản lý Tiện ích</div>
+            <button class="rte-modal-close" onclick="closeModal('amenityModal')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="rte-modal-body">
+            <div class="amenities-grid">
+                @php $currentAmIds = $roomType->amenities->pluck('id')->toArray(); @endphp
+                @foreach($allAmenities as $am)
+                <label class="amenity-checkbox-wrapper {{ in_array($am->id, $currentAmIds) ? 'checked' : '' }}">
+                    <input type="checkbox" value="{{ $am->id }}" class="amenity-checkbox" {{ in_array($am->id, $currentAmIds) ? 'checked' : '' }} onchange="this.parentElement.classList.toggle('checked', this.checked)">
+                    <span class="material-symbols-outlined" style="font-size:20px; color:#64748b;">{{ strtolower(trim($am->icon)) }}</span>
+                    <span style="font-size:14px; font-weight:600; color:#333;">{{ $am->name }}</span>
+                </label>
+                @endforeach
+            </div>
+        </div>
+        <div class="rte-modal-footer">
+            <button class="btn-cancel" onclick="closeModal('amenityModal')" style="padding:8px 16px;">Hủy</button>
+            <button class="btn-primary-blue" onclick="saveAmenities({{ $roomType->id }})" style="padding:8px 16px;">Lưu tiện ích</button>
+        </div>
+    </div>
+</div>
+
+{{-- MODAL EQUIPMENT --}}
+<div class="rte-modal-overlay" id="equipModal">
+    <div class="rte-modal">
+        <div class="rte-modal-header">
+            <div class="rte-modal-title">Thêm Thiết Bị Mới</div>
+            <button class="rte-modal-close" onclick="closeModal('equipModal')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="rte-modal-body">
+            <div class="equip-modal-row">
+                <div class="rte-form-group" style="flex:1;">
+                    <label class="rte-label">Chọn thiết bị</label>
+                    <select id="new-equip-id" class="rte-input rte-select">
+                        @foreach($allEquipments as $eq)
+                            <option value="{{ $eq->id }}" data-name="{{ $eq->name }}">{{ $eq->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="rte-form-group" style="width:100px;">
+                    <label class="rte-label">Số lượng</label>
+                    <input type="number" id="new-equip-qty" class="rte-input" value="1" min="1" style="text-align:center;">
+                </div>
+            </div>
+        </div>
+        <div class="rte-modal-footer">
+            <button class="btn-cancel" onclick="closeModal('equipModal')" style="padding:8px 16px;">Hủy</button>
+            <button class="btn-primary-blue" onclick="addEquipmentRow({{ $roomType->id }})" style="padding:8px 16px;">Thêm</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Handle toggle amenity
-    document.querySelectorAll('.amenity-toggle input').forEach(input => {
-        input.addEventListener('change', function() {
-            if(this.checked) {
-                this.parentElement.classList.add('is-on');
-            } else {
-                this.parentElement.classList.remove('is-on');
-            }
-        });
-    });
+    const csrfToken = "{{ csrf_token() }}";
 </script>
+@vite('resources/js/admin/room-type-edit.js')
 
 @endsection

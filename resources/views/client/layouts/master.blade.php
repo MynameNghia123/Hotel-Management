@@ -20,7 +20,7 @@
     @stack('styles')
     
 </head>
-<body>
+<body>  
     @include('client.layouts.header')
 
     <main>

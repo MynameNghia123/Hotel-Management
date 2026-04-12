@@ -42,5 +42,15 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\AmenityRepositoryInterface::class,
             \App\Repositories\Implementations\EloquentAmenityRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\EquipmentRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentEquipmentRepository::class
+        );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\EquipmentCategoryRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentEquipmentCategoryRepository::class
+        );
     }
 }

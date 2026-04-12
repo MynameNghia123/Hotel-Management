@@ -6,6 +6,7 @@ interface RoomTypeServiceInterface
 {
     public function getAllWithRoomCount();
     public function findById($id);
+    public function findWithDetails($id);
     public function create(array $data);
     public function update($id, array $data);
     public function delete($id);

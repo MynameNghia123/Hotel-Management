@@ -24,6 +24,13 @@
                         @error('name') <span class="am-error">{{ $message }}</span> @enderror
                     </div>
 
+                    <div class="am-form-group" style="margin-top: 16px;">
+                        <label class="am-form-label">Tên Icon (Tùy chọn)</label>
+                        <input type="text" name="icon" class="am-form-input" value="{{ old('icon', $amenity->icon) }}" placeholder="Vd: wifi, tv, kitchen, pool...">
+                        <small style="color: #64748b; font-size: 12px; margin-top: 4px; display: inline-block;">Nhập tên chuẩn từ thư viện Google Material Symbols (Google Fonts Icons).</small>
+                        @error('icon') <span class="am-error">{{ $message }}</span> @enderror
+                    </div>
+
                     <div style="margin-top: 32px; display: flex; justify-content: flex-end;">
                         <a href="{{ route('admin.amenities.index') }}" class="am-btn-back">Hủy bỏ</a>
                         <button type="submit" class="am-btn-submit">Cập nhật tiện ích</button>

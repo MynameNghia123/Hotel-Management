@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\EquipmentCategoryontroller;
+
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AuthAdminController;
@@ -89,36 +93,36 @@ Route::group(['prefix' => 'rooms', 'as' => 'rooms.'], function () {
     Route::get('/', [RoomController::class, 'index'])->name('index');
     Route::get('/create', [RoomController::class, 'create'])->name('create');
     Route::post('/', [RoomController::class, 'store'])->name('store');
+    Route::get('/{id}', [RoomController::class, 'show'])->name('show');
     Route::get('/{id}/edit', [RoomController::class, 'edit'])->name('edit');
     Route::put('/{id}', [RoomController::class, 'update'])->name('update');
     Route::delete('/{id}', [RoomController::class, 'destroy'])->name('destroy');
+    // AJAX endpoints
+    Route::post('/{id}/images', [RoomController::class, 'uploadImage'])->name('images.upload');
+    Route::delete('/{id}/images/{imageId}', [RoomController::class, 'deleteImage'])->name('images.delete');
+    Route::post('/{id}/amenities/sync', [RoomController::class, 'syncAmenities'])->name('amenities.sync');
+    Route::post('/{id}/equipments/sync', [RoomController::class, 'syncEquipments'])->name('equipments.sync');
 });
 
-Route::group(['prefix' => 'room-types', 'as' => 'room-types.'], function () {
-    Route::get('/', function () {
-        return view('admin.room-types.index');
-    })->name('index');
 
-    Route::get('/edit', function () {
-        return view('admin.room-types.edit');
-    })->name('edit');
-});
 
 // ============== Quản lý tài sản ==============
 Route::group(['prefix' => 'equipment', 'as' => 'equipment.'], function () {
-    Route::get('/', function () {
-        return view('admin.equipment.index');
-    })->name('index');
-
-    Route::get('/edit', function () {
-        return view('admin.equipment.edit');
-    })->name('edit');
+    Route::get('/', [App\Http\Controllers\EquipmentController::class, 'index'])->name('index');
+    Route::get('/create', [App\Http\Controllers\EquipmentController::class, 'create'])->name('create');
+    Route::post('/', [App\Http\Controllers\EquipmentController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [App\Http\Controllers\EquipmentController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [App\Http\Controllers\EquipmentController::class, 'update'])->name('update');
+    Route::delete('/{id}', [App\Http\Controllers\EquipmentController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'equipment-types', 'as' => 'equipment-types.'], function () {
-    Route::get('/', function () {
-        return view('admin.equipment-types.index');
-    })->name('index');
+    Route::get('/', [App\Http\Controllers\EquipmentCategoryController::class, 'index'])->name('index');
+    Route::get('/create', [App\Http\Controllers\EquipmentCategoryController::class, 'create'])->name('create');
+    Route::post('/', [App\Http\Controllers\EquipmentCategoryController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [App\Http\Controllers\EquipmentCategoryController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [App\Http\Controllers\EquipmentCategoryController::class, 'update'])->name('update');
+    Route::delete('/{id}', [App\Http\Controllers\EquipmentCategoryController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'repair-ticket', 'as' => 'repair-ticket.'], function () {
@@ -148,9 +152,12 @@ Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
 
 // ============== Dịch vụ & Tiện ích ==============
 Route::group(['prefix' => 'services', 'as' => 'services.'], function () {
-    Route::get('/', function () {
-        return view('admin.services.index');
-    })->name('index');
+     Route::get('/', [App\Http\Controllers\ServiceController::class, 'index'])->name('index');
+    Route::get('/create', [App\Http\Controllers\ServiceController::class, 'create'])->name('create');
+    Route::post('/', [App\Http\Controllers\ServiceController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [App\Http\Controllers\ServiceController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [App\Http\Controllers\ServiceController::class, 'update'])->name('update');
+    Route::delete('/{id}', [App\Http\Controllers\ServiceController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'service-types', 'as' => 'service-types.'], function () {

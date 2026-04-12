@@ -295,5 +295,16 @@
         </div>
 
     </nav>
+    
+    {{-- Script khôi phục nhanh để tránh bị giật (flicker) --}}
+    <script>
+        (function() {
+            var nav = document.querySelector('.sb-nav');
+            var pos = localStorage.getItem('sidebar-scroll');
+            if (nav && pos) {
+                nav.scrollTop = pos;
+            }
+        })();
+    </script>
 
 </aside>

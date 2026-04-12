@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RoomType extends Model
 {
-    public $timestamps = false; // Bảng không có created_at/updated_at
+    public $timestamps = false;
 
     protected $fillable = [
         'name',
@@ -27,5 +27,24 @@ class RoomType extends Model
     public function rooms()
     {
         return $this->hasMany(Room::class);
+    }
+
+    // RoomType <-> Amenities (many-to-many)
+    public function amenities()
+    {
+        return $this->belongsToMany(Amenity::class, 'room_type_amenities', 'room_type_id', 'amenity_id');
+    }
+
+    // RoomType <-> Equipments (many-to-many với quantity)
+    public function equipments()
+    {
+        return $this->belongsToMany(Equipment::class, 'room_equipment', 'room_type_id', 'equipment_id')
+                    ->withPivot('quantity');
+    }
+
+    // RoomType có nhiều Images
+    public function images()
+    {
+        return $this->hasMany(RoomTypeImage::class, 'room_type_id')->orderBy('order');
     }
 }

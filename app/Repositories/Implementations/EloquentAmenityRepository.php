@@ -39,6 +39,7 @@ class EloquentAmenityRepository implements AmenityRepositoryInterface
     public function delete($id)
     {
         $record = $this->findById($id);
+        $record->roomTypes()->detach();
         return $record->delete();
     }
 }

@@ -68,12 +68,14 @@ export default defineConfig({
 
                 // import js admin
                 'resources/js/admin/booking-create.js',
+                'resources/js/admin/sidebar.js',
                 'resources/js/admin/app.js',
                 'resources/js/admin/dashboard.js',
                 'resources/js/admin/room-detail.js',
                 'resources/js/admin/equipment-types.js',
                 'resources/js/admin/repair-ticket.js',
-                'resources/js/admin/sidebar.js'
+                'resources/js/admin/sidebar.js',
+                'resources/js/admin/room-type-edit.js'
             ],
             refresh: true,
         }),
