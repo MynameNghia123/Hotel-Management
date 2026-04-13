@@ -50,15 +50,15 @@
                         <p>Chọn mục để chỉnh sửa cấu hình</p>
                     </div>
                     <div class="config-menu-list">
-                        <a href="{{ request()->fullUrlWithQuery(['type' => 'general']) }}" class="config-menu-item {{ (request()->  ('type', 'general') == 'general') ? 'active' : '' }}">
+                        <a href="{{ request()->fullUrlWithQuery(['type' => 'general']) }}" class="config-menu-item {{ (request('type', 'general') == 'general') ? 'active' : '' }}">
                             <h4>Cấu hình vận hành chung</h4>
                             <p>Cài đặt giờ nhận/trả phòng, thời gian chờ, quy định hủy phòng...</p>
                         </a>
-                        <a href="{{ request()->fullUrlWithQuery(['type' => 'surcharges']) }}" class="config-menu-item {{ (request()->get('type') == 'surcharges') ? 'active' : '' }}">
+                        <a href="{{ request()->fullUrlWithQuery(['type' => 'surcharges']) }}" class="config-menu-item {{ (request('type') == 'surcharges') ? 'active' : '' }}">
                             <h4>Quy định phụ phí</h4>
                             <p>Thiết lập giá chênh lệch khi khách nhận/trả phòng trễ, gửi thêm khách...</p>
                         </a>
-                        <a href="{{ request()->fullUrlWithQuery(['type' => 'roles']) }}" class="config-menu-item {{ (request()->get('type') == 'roles') ? 'active' : '' }}">
+                        <a href="{{ request()->fullUrlWithQuery(['type' => 'roles']) }}" class="config-menu-item {{ (request('type') == 'roles') ? 'active' : '' }}">
                             <h4>Quản lý vai trò (Roles)</h4>
                             <p>Phân quyền truy cập và chức năng cho các cấp nhân viên...</p>
                         </a>
@@ -69,10 +69,10 @@
                 <div class="config-detail">
                     <div class="config-detail-header">
                         <div class="config-detail-title">
-                            @if(request()->get('type', 'general') == 'general')
+                            @if(request('type', 'general') == 'general')
                                 <h3>Cấu hình vận hành chung</h3>
                                 <p>Thiết lập các mốc thời gian và quy tắc cốt lõi của khách sạn.</p>
-                            @elseif(request()->get('type') == 'surcharges')
+                            @elseif(request('type') == 'surcharges')
                                 <h3>Quy định phụ phí</h3>
                                 <p>Quản lý các loại phụ phí khi nhận/trả phòng.</p>
                             @else
@@ -88,9 +88,9 @@
 
                     <div class="config-detail-body">
                         
-                        @if(request()->get('type', 'general') == 'general')
+                        @if(request('type', 'general') == 'general')
                             @include('admin.configuration.general')
-                        @elseif(request()->get('type') == 'surcharges')
+                        @elseif(request('type') == 'surcharges')
                             @include('admin.configuration.surcharges')
                         @else
                             <div style="text-align:center; padding:100px 0; color:#94a3b8;">

@@ -41,6 +41,8 @@ export default defineConfig({
                 'resources/css/admin/customers-create.css',
                 'resources/css/admin/services.css',
                 'resources/css/admin/service-types.css',
+                'resources/css/admin/service-types-edit.css',
+                'resources/css/admin/service-types-create.css',
                 'resources/css/admin/amenities.css',
                 'resources/css/admin/amenities-create.css',
                 'resources/css/admin/staff-roles.css',

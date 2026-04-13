@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface ServiceRepositoryInterface
+interface ServiceGroupRepositoryInterface
 {
     public function getAll();
     public function create(array $data);

@@ -46,15 +46,7 @@
                 </div>
                 
                 {{-- FILTERS --}}
-                <div class="cust-filters">
-                    <input type="date" class="cust-filter-input" value="2024-03-24">
-                    <select class="cust-filter-input">
-                        <option>Tất cả loại khách</option>
-                        <option>Khách hàng VIP</option>
-                        <option>Khách hàng Thường</option>
-                    </select>
-                    <button class="cust-btn-filter">Lọc kết quả</button>
-                </div>
+                
             </div>
 
             {{-- NAV TABS --}}
@@ -64,6 +56,15 @@
                 <a href="{{ route('admin.statistical.room-efficiency') }}" class="stats-tab {{ request()->routeIs('admin.statistical.room-efficiency') ? 'active' : '' }}" style="text-decoration: none;">Hiệu suất phòng</a>
                 <a href="{{ route('admin.statistical.customers') }}" class="stats-tab {{ request()->routeIs('admin.statistical.customers') ? 'active' : '' }}" style="text-decoration: none;">Khách hàng</a>
             </nav>
+            <div class="cust-filters">
+                    <input type="date" class="cust-filter-input" value="2024-03-24">
+                    <select class="cust-filter-input">
+                        <option>Tất cả loại khách</option>
+                        <option>Khách hàng VIP</option>
+                        <option>Khách hàng Thường</option>
+                    </select>
+                    <button class="cust-btn-filter">Lọc kết quả</button>
+                </div>
 
             {{-- STATS CARDS --}}
             <div class="cust-stats-grid">

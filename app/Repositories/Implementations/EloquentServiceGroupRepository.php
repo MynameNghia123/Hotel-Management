@@ -2,21 +2,21 @@
 
 namespace App\Repositories\Implementations;
 
-use App\Models\Service;
-use App\Repositories\Contracts\ServiceRepositoryInterface;
+use App\Models\ServiceGroup;
+use App\Repositories\Contracts\ServiceGroupRepositoryInterface;
 
-class EloquentServiceRepository implements ServiceRepositoryInterface
+class EloquentServiceGroupRepository implements ServiceGroupRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Service $model)
+    public function __construct(ServiceGroup $model)
     {
         $this->model = $model;
     }
 
     public function getAll()
     {
-        return $this->model->with('group')->get();
+        return $this->model->all();
     }
 
     public function create(array $data)

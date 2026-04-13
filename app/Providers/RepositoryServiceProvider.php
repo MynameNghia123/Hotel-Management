@@ -52,5 +52,13 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\EquipmentCategoryRepositoryInterface::class,
             \App\Repositories\Implementations\EloquentEquipmentCategoryRepository::class
         );
+        $this->app->bind(
+            \App\Repositories\Contracts\ServiceGroupRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentServiceGroupRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\Contracts\ServiceRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentServiceRepository::class
+        );
     }
 }

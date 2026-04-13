@@ -2,28 +2,34 @@
 
 namespace App\Http\Requests\Service;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreServiceRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'group_id' => 'required|exists:service_groups,id',
+            'unit_price' => 'required|numeric|min:0',
+            'unit' => 'required|string|max:50',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Tên dịch vụ không được bỏ trống.',
+            'group_id.required' => 'Vui lòng chọn nhóm dịch vụ.',
+            'group_id.exists' => 'Nhóm dịch vụ không hợp lệ.',
+            'unit_price.required' => 'Đơn giá không được bỏ trống.',
+            'unit_price.numeric' => 'Đơn giá phải là số.',
+            'unit.required' => 'Đơn vị tính không được bỏ trống.',
         ];
     }
 }

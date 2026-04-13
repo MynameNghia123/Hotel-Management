@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ServiceGroupController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\EquipmentCategoryontroller;
@@ -161,10 +162,15 @@ Route::group(['prefix' => 'services', 'as' => 'services.'], function () {
 });
 
 Route::group(['prefix' => 'service-types', 'as' => 'service-types.'], function () {
-    Route::get('/', function () {
-        return view('admin.service-types.index');
-    })->name('index');
+    Route::get('/', [App\Http\Controllers\ServiceGroupController::class, 'index'])->name('index');
+    Route::get('/create', [App\Http\Controllers\ServiceGroupController::class, 'create'])->name('create');
+    Route::post('/', [App\Http\Controllers\ServiceGroupController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [App\Http\Controllers\ServiceGroupController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [App\Http\Controllers\ServiceGroupController::class, 'update'])->name('update');
+    Route::delete('/{id}', [App\Http\Controllers\ServiceGroupController::class, 'destroy'])->name('destroy');
 });
+
+
 
 Route::group(['prefix' => 'amenities', 'as' => 'amenities.'], function () {
     Route::get('/', [App\Http\Controllers\AmenityController::class, 'index'])->name('index');

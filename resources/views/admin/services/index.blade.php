@@ -41,15 +41,21 @@
         <div style="flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; background:#f8fafc;">
             
             <div class="sv-container">
+                @if(session('success'))
+                    <div style="background-color: #dcfce7; color: #166534; padding: 12px 16px; border-radius: 10px; margin-bottom: 24px; font-size: 14px; font-weight: 500; border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 8px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="sv-header">
                     <div>
                         <h1 class="sv-title">Quản lý dịch vụ</h1>
                         <p class="sv-subtitle">Hệ thống quản trị khách sạn Urban Luxe - Quản lý danh mục dịch vụ dựa trên mô hình dữ liệu.</p>
                     </div>
-                    <button class="sv-btn-primary">
+                    <a href="{{ route('admin.services.create') }}" class="sv-btn-primary" style="text-decoration: none;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                         Thêm dịch vụ mới
-                    </button>
+                    </a>
                 </div>
 
                 <div class="sv-toolbar">
@@ -86,31 +92,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $services = [
-                                    ['id' => 'SRV-1001', 'name' => 'Buffet Sáng Cao Cấp', 'group' => 'Dịch vụ ăn uống', 'price' => '450.000 VNĐ', 'unit' => 'Người'],
-                                    ['id' => 'SRV-1002', 'name' => 'Massage Toàn Thân Thụy Điển', 'group' => 'Spa & Wellness', 'price' => '1.200.000 VNĐ', 'unit' => 'Lượt'],
-                                    ['id' => 'SRV-1003', 'name' => 'Giặt Khô Vesti/Váy Cưới', 'group' => 'Dịch vụ giặt ủi', 'price' => '150.000 VNĐ', 'unit' => 'Bộ'],
-                                    ['id' => 'SRV-1004', 'name' => 'Đưa Đón Sân Bay (Limousine)', 'group' => 'Dịch vụ lữ hành', 'price' => '800.000 VNĐ', 'unit' => 'Chuyến'],
-                                    ['id' => 'SRV-1005', 'name' => 'Trà Chiều Hoàng Gia', 'group' => 'Dịch vụ ăn uống', 'price' => '350.000 VNĐ', 'unit' => 'Set'],
-                                ];
-                            @endphp
-
                             @foreach($services as $item)
                             <tr>
-                                <td class="sv-id">{{ $item['id'] }}</td>
-                                <td class="sv-name-main">{{ $item['name'] }}</td>
-                                <td>{{ $item['group'] }}</td>
-                                <td class="sv-price">{{ $item['price'] }}</td>
-                                <td>{{ $item['unit'] }}</td>
+                                <td class="sv-id">{{ $item->id }}</td>
+                                <td class="sv-name-main">{{ $item->name }}</td>
+                                <td>{{ $item->group ? $item->group->service_name : 'N/A' }}</td>
+                                <td class="sv-price">{{ number_format($item->unit_price, 0, ',', '.') }} VNĐ</td>
+                                <td>{{ $item->unit }}</td>
                                 <td>
                                     <div class="sv-actions">
-                                        <button class="sv-btn-action edit" title="Chỉnh sửa">
+                                        <a href="{{ route('admin.services.edit', $item->id) }}" class="sv-btn-action edit" title="Chỉnh sửa">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                        </button>
-                                        <button class="sv-btn-action delete" title="Xóa">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                        </button>
+                                        </a>
+                                        <form action="{{ route('admin.services.destroy', $item->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="sv-btn-action delete" title="Xóa" style="border:none; cursor:pointer; background:none;">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
