@@ -2,6 +2,7 @@
     namespace App\Repositories\Implementations;
     use App\Models\Role;
     use App\Repositories\Contracts\RoleRepositoryInterface;
+    use App\Repositories\Filters\RoleFilter;
     use Illuminate\Support\Collection;
 
     class EloquentRoleRepository implements RoleRepositoryInterface{
@@ -32,6 +33,16 @@
         public function delete($id) : bool{
             $role = $this->findById($id);
             return $role->delete();
+        }
+
+        public function getPaginated(array $filters = [], $perPage = 15)
+        {
+            $query = $this->model->query();
+
+            // Áp dụng các filter từ RoleFilter
+            $query = RoleFilter::apply($query, $filters);
+
+            return $query->paginate($perPage);
         }
     }
 ?>

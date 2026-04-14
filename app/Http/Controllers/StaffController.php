@@ -2,12 +2,15 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\Staff\StoreStaffRequest;
 use App\Http\Requests\Staff\UpdateStaffRequest;
+use App\Http\Traits\PaginationTrait;
 use App\Services\Contracts\RoleServiceInterface;
 use App\Services\Contracts\StaffServiceInterface;
-
+use Illuminate\Http\Request;
 
 class StaffController extends Controller
 {
+    use PaginationTrait;
+    
     protected $staffService;
     protected $roleService;
     public function __construct(StaffServiceInterface $staffService, RoleServiceInterface $roleService)
@@ -16,10 +19,18 @@ class StaffController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $staffs = $this->staffService->getAll();
-        return view('admin.staffs.index', compact('staffs'));
+        $perPage = $this->getPerPage(10); 
+        $filters = $request->input('filter', []);
+        $staffs = $this->staffService->getPaginated($filters, $perPage);
+        
+        $this->validatePageNumber($staffs->currentPage(), $staffs->lastPage(), 'abort');
+        
+        // Lấy tất cả các vai trò để dùng trong filter dropdown
+        $roles = $this->roleService->getAll();
+        
+        return view('admin.staffs.index', compact('staffs', 'roles'));
     }
 
     public function create()

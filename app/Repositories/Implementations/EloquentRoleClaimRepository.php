@@ -36,7 +36,17 @@ class EloquentRoleClaimRepository implements RoleClaimRepositoryInterface{
         public function deleteByRoleId($roleId) : int{
             return $this->model->where('role_id', $roleId)->delete();
         }
-        
+        public function getPaginated(array $filters = [], $perPage = 15){
+            $query = $this->model->query();
+    
+            foreach ($filters as $column => $value) {
+                if (!empty($value)) {
+                    $query->where($column, 'like', "%{$value}%");
+                }
+            }
+    
+            return $query->paginate($perPage);
+        }
 }
     
 ?>

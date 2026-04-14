@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
+use App\Http\Traits\PaginationTrait;
 use App\Services\Contracts\RoleServiceInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class RoleController extends Controller
 {
+    use PaginationTrait;
+    
     protected $roleService;
 
     public function __construct(RoleServiceInterface $roleService)
@@ -18,9 +22,14 @@ class RoleController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $roles = $this->roleService->getAll();
+        $filters =  $request->input('filter', []);
+        $perPage = $this->getPerPage(10); // Default: 10, Allowed: [5, 10, 20, 50, 100]
+        $roles = $this->roleService->getPaginated($filters, $perPage);
+
+        $this->validatePageNumber($roles->currentPage(), $roles->lastPage(), 'abort');
+        
         return view('admin.roles.index', compact('roles'));
     }
 

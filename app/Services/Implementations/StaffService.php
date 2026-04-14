@@ -2,6 +2,7 @@
 namespace App\Services\Implementations;
 use App\Services\Contracts\StaffServiceInterface;
 use App\Repositories\Contracts\StaffRepositoryInterface;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 
 class StaffService implements StaffServiceInterface
@@ -44,5 +45,10 @@ class StaffService implements StaffServiceInterface
     public function delete($id) : bool
     {
         return $this->staffRepository->delete($id);
+    }
+
+    public function getPaginated(array $filters = [], $perPage = 15)
+    {
+        return $this->staffRepository->getPaginated($filters, $perPage);
     }
 }

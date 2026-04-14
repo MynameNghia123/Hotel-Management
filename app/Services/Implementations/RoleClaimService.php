@@ -35,6 +35,8 @@
         public function deleteByRoleId($roleId){
             return $this->roleClaimRepository->deleteByRoleId($roleId);
         }
-
+        public function getPaginated(array $filters = [], $perPage = 15){
+            return $this->roleClaimRepository->getPaginated($filters, $perPage);
+        }
     }
 ?>

@@ -4,6 +4,7 @@ namespace App\Repositories\Implementations;
 
 use App\Models\Staff;
 use App\Repositories\Contracts\StaffRepositoryInterface;
+use App\Repositories\Filters\StaffFilter;
 use Illuminate\Support\Collection;
 
 class EloquentStaffRepository implements StaffRepositoryInterface
@@ -40,5 +41,15 @@ class EloquentStaffRepository implements StaffRepositoryInterface
     {
         $staff = $this->findById($id);
         return $staff->delete();
+    }
+
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        $query = $this->model->with('role');
+
+        // Áp dụng các filter từ StaffFilter
+        $query = StaffFilter::apply($query, $filters);
+
+        return $query->paginate($perPage);
     }
 }

@@ -46,8 +46,6 @@
         }
 
         public function update($id, array $data){
-
-            // dd( $id);
             // dd($data);
 
             // Update role
@@ -82,6 +80,10 @@
 
         public function delete($id){
             return $this->roleRepository->delete($id);
+        }
+
+        public function getPaginated(array $filters = [], $perPage = 15){
+            return $this->roleRepository->getPaginated($filters, $perPage);
         }
     }
 ?>

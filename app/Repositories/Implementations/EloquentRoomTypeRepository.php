@@ -53,4 +53,14 @@ class EloquentRoomTypeRepository implements RoomTypeRepositoryInterface
         $record = $this->findById($id);
         return $record->delete();
     }
+    public function getPaginated(array $filters = [], $perPage = 5)
+    {
+        $query = $this->model->query();
+
+        if (isset($filters['name'])) {
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+
+        return $query->paginate($perPage);
+    }
 }

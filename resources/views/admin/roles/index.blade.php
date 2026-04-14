@@ -34,12 +34,14 @@
                 </div>
 
                 <div class="sr-toolbar">
-                    <div class="sr-search-wrapper">
-                        <div class="sr-search-icon">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <form method="GET" action="{{ route('admin.roles.index') }}" style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                        <div class="sr-search-wrapper">
+                            <div class="sr-search-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            </div>
+                            <input type="text" name="filter[search]" class="sr-search-input" placeholder="Tìm tên vai trò..." value="{{ request('filter.search') }}" onkeyup="if(event.key==='Enter') this.form.submit();">
                         </div>
-                        <input type="text" class="sr-search-input" placeholder="Tìm tên vai trò...">
-                    </div>
+                    </form>
                     
                     <button class="sr-btn-filter">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
@@ -97,19 +99,8 @@
                     </table>
                 </div>
 
-                <div class="sr-footer">
-                    <div class="sr-info">Hiển thị {{ $roles->count() }} vai trò hệ thống</div>
-                    <div class="sr-pagination">
-                        <button class="sr-page-btn disabled">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                        </button>
-                        <button class="sr-page-btn active">1</button>
-                        <button class="sr-page-btn">2</button>
-                        <button class="sr-page-btn">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </button>
-                    </div>
-                </div>
+                <!-- Pagination Component -->
+                <x-pagination :paginator="$roles" />
             </div>
 
         {{-- FOOTER --}}

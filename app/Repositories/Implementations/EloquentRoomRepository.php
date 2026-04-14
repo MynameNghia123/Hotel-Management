@@ -41,4 +41,22 @@ class EloquentRoomRepository implements RoomRepositoryInterface
         $record = $this->model->findOrFail($id);
         return $record->delete();
     }
+    public function getPaginated(array $filters = [], $perPage = 5)
+    {
+        $query = $this->model->with(['roomType', 'floor']);
+
+        if (isset($filters['number'])) {
+            $query->where('number', 'like', '%' . $filters['number'] . '%');
+        }
+
+        if (isset($filters['room_type_id'])) {
+            $query->where('room_type_id', $filters['room_type_id']);
+        }
+
+        if (isset($filters['floor_id'])) {
+            $query->where('floor_id', $filters['floor_id']);
+        }
+
+        return $query->paginate($perPage);
+    }
 }

@@ -39,24 +39,28 @@
                 </div>
 
                 <div class="sf-toolbar">
-                    <div class="sf-search-wrapper">
-                        <div class="sf-search-icon">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <form method="GET" action="{{ route('admin.staffs.index') }}" style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                        <div class="sf-search-wrapper">
+                            <div class="sf-search-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            </div>
+                            <input type="text" name="filter[search]" class="sf-search-input" placeholder="Tìm theo tên hoặc mã nhân viên..." value="{{ request('filter.search') }}" onkeyup="if(event.key==='Enter') this.form.submit();">
                         </div>
-                        <input type="text" class="sf-search-input" placeholder="Tìm theo tên hoặc mã nhân viên...">
-                    </div>
+
+
                     
-                    <div class="sf-filters">
-                        <select class="sf-select">
-                            <option>Vai trò (Tất cả)</option>
-                            <option>Lễ tân</option>
-                            <option>Kỹ thuật</option>
-                            <option>Quản lý</option>
+                    <div class=" sf-filters" style="margin-left:50%;">
+                        <select class="sf-select" name="filter[role_id]">
+                            <option value="">Vai trò (Tất cả)</option>
+                            @foreach($roles as $role)
+                            <option value="{{ $role->id }}" {{ request('filter.role_id') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                            @endforeach
                         </select>
                         <button class="sf-btn-action" style="color: #94a3b8;">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                         </button>
                     </div>
+                                        </form>
                 </div>
 
                 <div class="sf-table-wrapper">
@@ -128,19 +132,8 @@
                     </table>
                 </div>
 
-                <div class="sf-footer">
-                    <div class="sf-info">Hiển thị 5 trên 32 nhân viên</div>
-                    <div class="sf-pagination">
-                        <button class="sf-page-btn disabled">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                        </button>
-                        <button class="sf-page-btn active">1</button>
-                        <button class="sf-page-btn">2</button>
-                        <button class="sf-page-btn">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </button>
-                    </div>
-                </div>
+                <!-- Pagination Component -->
+                <x-pagination :paginator="$staffs" />
             </div>
 
         {{-- FOOTER --}}
