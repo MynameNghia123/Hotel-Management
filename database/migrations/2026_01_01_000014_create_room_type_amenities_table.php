@@ -10,8 +10,8 @@ return new class extends Migration
     {
         // Bảng pivot: RoomType <-> Amenities
         Schema::create('room_type_amenities', function (Blueprint $table) {
-            $table->foreignId('room_type_id')->constrained('room_types');
-            $table->foreignId('amenity_id')->constrained('amenities');
+            $table->foreignId('room_type_id')->constrained('room_types')->onDelete('cascade');
+            $table->foreignId('amenity_id')->constrained('amenities')->onDelete('cascade');
 
             $table->primary(['room_type_id', 'amenity_id']);
         });

@@ -3,6 +3,7 @@
 namespace App\Repositories\Implementations;
 
 use App\Models\Service;
+use App\Repositories\Filters\ServiceFilter;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
 
 class EloquentServiceRepository implements ServiceRepositoryInterface
@@ -41,4 +42,14 @@ class EloquentServiceRepository implements ServiceRepositoryInterface
         $record = $this->findById($id);
         return $record->delete();
     }
+
+    public function getPaginated(array $filters = [], $perPage = 5)
+    {
+        $query = $this->model->with('group');
+
+        $query = ServiceFilter::apply($query, $filters);
+
+        return $query->paginate($perPage);   
+    }
 }
+

@@ -3,16 +3,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Amenity\StoreAmenityRequest;
 use App\Http\Requests\Amenity\UpdateAmenityRequest;
 use App\Services\Contracts\AmenityServiceInterface;
+use App\Http\Traits\PaginationTrait;
+use Illuminate\Http\Request;
 
 class AmenityController extends Controller
 {
+    use PaginationTrait;
     public function __construct(
         private readonly AmenityServiceInterface $amenityService
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $amenities = $this->amenityService->getAllAmenities();
+        $perpage = $request->input('per_page', 10);
+        $filters = $request->input('filter', []);
+
+        $amenities = $this->amenityService->getPaginated($filters, $perpage);
+        
+        $this->validatePageNumber($amenities->currentPage(), $amenities->lastPage(), 'abort');
+
         return view('admin.amenities.index', compact('amenities'));
     }
 
@@ -23,25 +32,37 @@ class AmenityController extends Controller
 
     public function store(StoreAmenityRequest $request)
     {
-        $this->amenityService->createAmenity($request->validated());
-        return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã được tạo thành công.');
+        try {
+            $this->amenityService->create($request->validated());
+            return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã được tạo thành công.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 
     public function edit($id)
     {
-        $amenity = $this->amenityService->getAmenityById($id);
+        $amenity = $this->amenityService->findById($id);
         return view('admin.amenities.edit', compact('amenity'));
     }
 
     public function update(UpdateAmenityRequest $request, $id)
     {
-        $this->amenityService->updateAmenity($id, $request->validated());
-        return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã được cập nhật.');
+        try {
+            $this->amenityService->update($id, $request->validated());
+            return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã được cập nhật.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
     {
-        $this->amenityService->deleteAmenity($id);
-        return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã bị xoá.');
+        try {
+            $this->amenityService->delete($id);
+            return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã bị xoá.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 }

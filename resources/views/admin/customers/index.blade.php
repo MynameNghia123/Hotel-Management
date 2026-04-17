@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="cs-toolbar">
-                        <div class="cs-search-wrapper">
+                        <form method="GET" action="{{ route('admin.customers.index') }}" class="cs-search-wrapper">
                             <div class="cs-search-icon">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -90,16 +90,22 @@
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
                             </div>
-                            <input type="text" class="cs-search-input" placeholder="Tìm theo Tên/Email/SĐT...">
-                        </div>
+                            <input type="text" name="filter[search]" class="cs-search-input" placeholder="Tìm theo Tên/Email/SĐT..." value="{{ request('filter.search') }}" onkeyup="if(event.key==='Enter') this.form.submit();">
+                            <button type="submit" style="display:none;"></button>
+                        </form>
 
                         <div class="cs-filters">
-                            <select class="cs-select">
-                                <option>Quốc gia (Tất cả)</option>
-                                <option>Việt Nam</option>
-                                <option>Hoa Kỳ</option>
-                                <option>Nhật Bản</option>
-                            </select>
+                            <form method="GET" action="{{ route('admin.customers.index') }}" style="display: flex; gap: 10px; align-items: center;">
+                                <input type="hidden" name="filter[search]" value="{{ request('filter.search') }}">
+                                <select name="filter[country]" class="cs-select" onchange="this.form.submit();">
+                                    <option value="">Quốc gia (Tất cả)</option>
+                                    @foreach($countries as $country)
+                                        <option value="{{ $country }}" {{ request('filter.country') == $country ? 'selected' : '' }}>
+                                            {{ $country }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
                             <button class="cs-btn-action" style="color: #94a3b8;">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -117,7 +123,6 @@
                                     <th>HỌ</th>
                                     <th>TÊN</th>
                                     <th>SỐ ĐIỆN THOẠI</th>
-                                    <th>SỐ TÀI KHOẢN</th>
                                     <th>QUỐC GIA</th>
                                     <th>EMAIL</th>
                                     <th style="text-align: right;">THAO TÁC</th>
@@ -131,11 +136,10 @@
                                         <td class="cs-name-main">{{ $customer->first_name }}</td>
                                         <td>{{ $customer->phone_number }}</td>
                                         <td>{{ $customer->country }}</td>
-                                        <td>{{ $customer->country ?? 'N/A' }}</td> {{-- Giả sử là Mã TK nếu có --}}
                                         <td>{{ $customer->email }}</td>
                                         <td>
                                             <div class="cs-actions">
-                                                <a href="#" class="cs-btn-action view" title="Xem chi tiết">
+                                                <a href="{{ route('admin.customers.show', $customer->id) }}" class="cs-btn-action view" title="Xem chi tiết">
                                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                         stroke-linejoin="round">
@@ -184,27 +188,8 @@
                         </table>
                     </div>
 
-                    <div class="cs-footer">
-                        <div class="cs-info">Hiển thị 4 trên 150 khách hàng</div>
-                        <div class="cs-pagination">
-                            <button class="cs-page-btn disabled">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="15 18 9 12 15 6"></polyline>
-                                </svg>
-                            </button>
-                            <button class="cs-page-btn active">1</button>
-                            <button class="cs-page-btn">2</button>
-                            <button class="cs-page-btn">3</button>
-                            <button class="cs-page-btn">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
                 </div>
+                <x-pagination :paginator="$customers" />
             </div>
 
             {{-- FOOTER --}}

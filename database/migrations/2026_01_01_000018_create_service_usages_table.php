@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('service_usages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_detail_id')->constrained('booking_details');
-            $table->foreignId('service_id')->constrained('services');
+            $table->foreignId('booking_detail_id')->constrained('booking_details')->onDelete('cascade');
+            $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->integer('quantity');
             $table->decimal('unit_price', 15, 2);
             $table->timestamps();

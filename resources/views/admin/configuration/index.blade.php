@@ -58,10 +58,7 @@
                             <h4>Quy định phụ phí</h4>
                             <p>Thiết lập giá chênh lệch khi khách nhận/trả phòng trễ, gửi thêm khách...</p>
                         </a>
-                        <a href="{{ request()->fullUrlWithQuery(['type' => 'roles']) }}" class="config-menu-item {{ (request('type') == 'roles') ? 'active' : '' }}">
-                            <h4>Quản lý vai trò (Roles)</h4>
-                            <p>Phân quyền truy cập và chức năng cho các cấp nhân viên...</p>
-                        </a>
+
                     </div>
                 </div>
 
@@ -70,14 +67,11 @@
                     <div class="config-detail-header">
                         <div class="config-detail-title">
                             @if(request('type', 'general') == 'general')
-                                <h3>Cấu hình vận hành chung</h3>
-                                <p>Thiết lập các mốc thời gian và quy tắc cốt lõi của khách sạn.</p>
+                                <h3>Chi tiết cấu hình</h3>
+                                <p>Cấu hình vận hành chung cho hệ thống khách sạn.</p>
                             @elseif(request('type') == 'surcharges')
-                                <h3>Quy định phụ phí</h3>
-                                <p>Quản lý các loại phụ phí khi nhận/trả phòng.</p>
-                            @else
-                                <h3>Quản lý vai trò</h3>
-                                <p>Thiết lập quyền hạn cho nhân viên.</p>
+                                <h3>Chi tiết cấu hình</h3>
+                                <p>Quản lý các loại phụ phí nhận và trả phòng.</p>
                             @endif
                         </div>
                         <button class="btn-save-config">
@@ -92,11 +86,6 @@
                             @include('admin.configuration.general')
                         @elseif(request('type') == 'surcharges')
                             @include('admin.configuration.surcharges')
-                        @else
-                            <div style="text-align:center; padding:100px 0; color:#94a3b8;">
-                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:20px; opacity:0.3;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                <p>Đang phát triển chức năng phân quyền...</p>
-                            </div>
                         @endif
 
                     </div>

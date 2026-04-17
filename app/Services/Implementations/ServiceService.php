@@ -11,28 +11,33 @@ class ServiceService implements ServiceServiceInterface
         private readonly ServiceRepositoryInterface $serviceRepository
     ) {}
 
-    public function getAllServices()
+    public function getAll()
     {
         return $this->serviceRepository->getAll();
     }
 
-    public function createService(array $data)
+    public function create(array $data)
     {
         return $this->serviceRepository->create($data);
     }
 
-    public function getServiceById($id)
+    public function findById($id)
     {
         return $this->serviceRepository->findById($id);
     }
 
-    public function updateService($id, array $data)
+    public function update($id, array $data)
     {
         return $this->serviceRepository->update($id, $data);
     }
 
-    public function deleteService($id)
+    public function delete($id)
     {
         return $this->serviceRepository->delete($id);
+    }
+
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        return $this->serviceRepository->getPaginated($filters, $perPage);
     }
 }

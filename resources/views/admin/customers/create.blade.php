@@ -46,8 +46,13 @@
                     </div>
 
                     <div class="cs-form-group">
-                        <label class="cs-form-label">Quốc gia</label>
-                        <input type="text" name="country" value="{{ old('country', 'Việt Nam') }}" class="cs-form-input" placeholder="Vd: Việt Nam, Hoa Kỳ...">
+                        <label class="cs-form-label">Quốc gia <span style="color:#ef4444">*</span></label>
+                        <select name="country" class="cs-form-input" required>
+                            <option value="">-- Chọn quốc gia --</option>
+                            @foreach($countries as $country)
+                                <option value="{{ $country }}" {{ old('country') == $country ? 'selected' : '' }}>{{ $country }}</option>
+                            @endforeach
+                        </select>
                         @error('country') <span class="cs-error">{{ $message }}</span> @enderror
                     </div>
 

@@ -14,4 +14,12 @@ class Customer extends Model
        'country',
        'email'
     ];
+
+    /**
+     * Relationship: Customer has many Bookings
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

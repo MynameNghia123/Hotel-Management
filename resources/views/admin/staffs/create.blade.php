@@ -23,17 +23,7 @@
         {{-- MAIN CONTENT --}}
         <div style="flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; background:#f8fafc;">
             
-            {{-- Flash Messages --}}
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success">
-                    ✓ {{ $message }}
-                </div>
-            @endif
-            @if ($message = Session::get('error'))
-                <div class="alert alert-error">
-                    ✗ {{ $message }}
-                </div>
-            @endif
+
 
             <div class="staff-form-container">
                 {{-- Header --}}

@@ -145,6 +145,7 @@ Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
     Route::get('/', [App\Http\Controllers\CustomerController::class, 'index'])->name('index');
     Route::get('/create', [App\Http\Controllers\CustomerController::class, 'create'])->name('create');
     Route::post('/', [App\Http\Controllers\CustomerController::class, 'store'])->name('store');
+    Route::get('/{id}', [App\Http\Controllers\CustomerController::class, 'show'])->name('show');
     Route::get('/{id}/edit', [App\Http\Controllers\CustomerController::class, 'edit'])->name('edit');
     Route::put('/{id}', [App\Http\Controllers\CustomerController::class, 'update'])->name('update');
     Route::delete('/{id}', [App\Http\Controllers\CustomerController::class, 'destroy'])->name('destroy');

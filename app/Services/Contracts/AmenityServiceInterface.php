@@ -2,11 +2,6 @@
 
 namespace App\Services\Contracts;
 
-interface AmenityServiceInterface
+interface AmenityServiceInterface extends BaseServiceInterface
 {
-    public function getAllAmenities();
-    public function createAmenity(array $data);
-    public function getAmenityById($id);
-    public function updateAmenity($id, array $data);
-    public function deleteAmenity($id);
 }

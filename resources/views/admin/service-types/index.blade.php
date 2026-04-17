@@ -56,6 +56,16 @@
             <div style="flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; background:#f8fafc;">
 
                 <div class="st-container">
+                    @if ($message = Session::get('success'))
+                        <div style="margin-bottom: 16px; padding: 12px 16px; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; color: #166534; font-weight: 500;">
+                            ✓ {{ $message }}
+                        </div>
+                    @endif
+                    @if ($message = Session::get('error'))
+                        <div style="margin-bottom: 16px; padding: 12px 16px; background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; color: #991b1b; font-weight: 500;">
+                            ✕ {{ $message }}
+                        </div>
+                    @endif
                     <div class="st-header">
                         <div>
                             <h1 class="st-title">Quản lý loại dịch vụ</h1>
@@ -83,7 +93,7 @@
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
                             </div>
-                            <input type="text" class="st-search-input" placeholder="Tìm tên loại dịch vụ...">
+                            <input type="text" class="st-search-input" placeholder="Tìm tên loại dịch vụ hoặc id...">
                         </div>
 
                         <button class="st-btn-filter">
@@ -147,25 +157,8 @@
                         </table>
                     </div>
 
-                    <div class="st-footer">
-                        <div class="st-info">Hi显示 5 loại dịch vụ</div>
-                        <div class="st-pagination">
-                            <button class="st-page-btn disabled">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="15 18 9 12 15 6"></polyline>
-                                </svg>
-                            </button>
-                            <button class="st-page-btn active">1</button>
-                            <button class="st-page-btn disabled">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
                 </div>
+                <x-pagination :paginator="$serviceGroups" />
 
                 {{-- FOOTER --}}
                 @include('admin.layouts.footer')
