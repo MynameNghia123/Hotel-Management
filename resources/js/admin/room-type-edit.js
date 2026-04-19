@@ -4,9 +4,59 @@ window.openAmenityModal = function() {
 };
 window.openEquipModal = function() {
     document.getElementById('equipModal').classList.add('active');
+    document.getElementById('equip-search').focus();
+    // Show all equipment immediately
+    showEquipmentList(allEquipments);
 };
 window.closeModal = function(id) {
     document.getElementById(id).classList.remove('active');
+    // Reset search when modal closes
+    if (id === 'equipModal') {
+        document.getElementById('equip-search').value = '';
+        document.getElementById('equip-suggestions').innerHTML = '';
+        document.getElementById('equip-suggestions').style.display = 'none';
+    }
+};
+
+function showEquipmentList(items) {
+    const suggestionsDiv = document.getElementById('equip-suggestions');
+    if (items.length === 0) {
+        suggestionsDiv.innerHTML = '<div style="padding: 12px; color: #94a3b8; text-align: center;">Không tìm thấy thiết bị</div>';
+    } else {
+        suggestionsDiv.innerHTML = items.map(eq => `
+            <div class="equip-suggestion-item" onclick="selectEquipment(${eq.id}, '${eq.name.replace(/'/g, "\\'")}')">${eq.name}</div>
+        `).join('');
+    }
+    suggestionsDiv.style.display = 'block';
+}
+
+// Equipment search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('equip-search');
+    
+    if (!searchInput) return; // Safety check
+    
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+        
+        if (searchTerm.length === 0) {
+            showEquipmentList(allEquipments);
+            return;
+        }
+        
+        // Filter equipment based on search term
+        const filtered = allEquipments.filter(eq => 
+            eq.name.toLowerCase().includes(searchTerm)
+        );
+        showEquipmentList(filtered);
+    });
+});
+
+window.selectEquipment = function(equipId, equipName) {
+    document.getElementById('equip-search').value = equipName;
+    document.getElementById('new-equip-id').value = equipId;
+    document.getElementById('new-equip-name').value = equipName;
+    document.getElementById('equip-suggestions').style.display = 'none';
 };
 
 window.uploadImage = async function(input, roomId) {
@@ -109,12 +159,16 @@ window.saveAmenities = async function(roomId) {
 
 // ================= EQUIPMENTS =================
 window.addEquipmentRow = function(roomId) {
-    const select = document.getElementById('new-equip-id');
-    const id = select.value;
-    const name = select.options[select.selectedIndex].getAttribute('data-name');
+    const equipId = document.getElementById('new-equip-id').value;
+    const equipName = document.getElementById('new-equip-name').value;
     const qty = document.getElementById('new-equip-qty').value;
 
-    if(!id || qty < 1) return;
+    if (!equipId || !equipName) {
+        alert('Vui lòng chọn thiết bị từ danh sách!');
+        return;
+    }
+
+    if(qty < 1) return;
 
     const tbody = document.querySelector('#equip-table tbody');
     
@@ -123,7 +177,7 @@ window.addEquipmentRow = function(roomId) {
     if (emptyMsg) emptyMsg.remove();
 
     // Check if already in list
-    const existingInput = tbody.querySelector(`input[name="equip_id[]"][value="${id}"]`);
+    const existingInput = tbody.querySelector(`input[name="equip_id[]"][value="${equipId}"]`);
     if(existingInput) {
         alert('Thiết bị này đã có trong danh sách!');
         return;
@@ -131,7 +185,7 @@ window.addEquipmentRow = function(roomId) {
 
     const rowHtml = `
         <tr>
-            <td>${name}<input type="hidden" name="equip_id[]" value="${id}"></td>
+            <td>${equipName}<input type="hidden" name="equip_id[]" value="${equipId}"></td>
             <td style="text-align:center;">
                 <input type="number" name="equip_qty[]" class="rte-table-input rte-qty" value="${qty}" min="1" style="text-align:center;" onchange="syncEquipments(${roomId})">
             </td>
@@ -143,6 +197,13 @@ window.addEquipmentRow = function(roomId) {
         </tr>
     `;
     tbody.insertAdjacentHTML('beforeend', rowHtml);
+    
+    // Reset form
+    document.getElementById('equip-search').value = '';
+    document.getElementById('new-equip-id').value = '';
+    document.getElementById('new-equip-name').value = '';
+    document.getElementById('new-equip-qty').value = 1;
+    
     closeModal('equipModal');
     
     // Auto sync

@@ -17,8 +17,8 @@ class RoomTypeFilter
             $query->where('name', 'like', $searchTerm);
         }
 
-        // Filter by status
-        if (isset($filters['is_active'])) {
+        // Filter by status (dùng !== '' vì "0" là giá trị hợp lệ, !empty("0") sẽ sai)
+        if (isset($filters['is_active']) && $filters['is_active'] !== '') {
             $query->where('is_active', $filters['is_active']);
         }
 

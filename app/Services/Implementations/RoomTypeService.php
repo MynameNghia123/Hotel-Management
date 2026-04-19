@@ -48,6 +48,10 @@ class RoomTypeService implements RoomTypeServiceInterface
      */
     public function create(array $data)
     {
+        // Auto-generate code if missing
+        if (empty($data['code'])) {
+            $data['code'] = 'RT-' . strtoupper(uniqid());
+        }
         return $this->roomTypeRepository->create($data);
     }
 
@@ -73,5 +77,44 @@ class RoomTypeService implements RoomTypeServiceInterface
     public function getPaginated(array $filters = [], $perPage = 10)
     {
         return $this->roomTypeRepository->getPaginated($filters, $perPage);
+    }
+
+    /**
+     * Format room type data for edit form
+     * Transforms amenities and equipments into format required by UI
+     */
+    public function formatForEditForm($roomType)
+    {
+        if (!$roomType) {
+            return null;
+        }
+
+        return [
+            'roomType' => $roomType,
+            'selectedAmenities' => $roomType->amenities->pluck('id')->toArray(),
+            'selectedEquipments' => $roomType->equipments->map(function ($equip) {
+                return [
+                    'id' => $equip->id,
+                    'quantity' => $equip->pivot->quantity
+                ];
+            })->keyBy('id')->toArray()
+        ];
+    }
+
+    /**
+     * Sync equipments with quantities
+     * Transforms equipment data array into sync format
+     */
+    public function syncEquipmentsWithQuantities($roomType, array $equipmentData)
+    {
+        $syncData = [];
+
+        foreach ($equipmentData as $item) {
+            $syncData[$item['equipment_id']] = [
+                'quantity' => $item['quantity']
+            ];
+        }
+
+        return $roomType->equipments()->sync($syncData);
     }
 }

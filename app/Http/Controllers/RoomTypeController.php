@@ -7,10 +7,19 @@ use App\Services\Contracts\AmenityServiceInterface;
 use App\Services\Contracts\EquipmentServiceInterface;
 use App\Http\Requests\RoomType\StoreRoomTypeRequest;
 use App\Http\Requests\RoomType\UpdateRoomTypeRequest;
+use App\Services\Contracts\RoomTypeImageServiceInterface;
 use App\Http\Traits\PaginationTrait;
-use App\Models\RoomTypeImage;
 use Illuminate\Http\Request;
 
+/**
+ * RoomTypeController
+ * Handles all web requests for room type operations
+ * (Pages: index, create, edit, show, store, update, destroy)
+ * 
+ * Separation of concerns:
+ * - Web routing logic is here (index, create, edit, etc.)
+ * - Action/API logic is in RoomTypeActionController (uploadImage, syncAmenities, etc.)
+ */
 class RoomTypeController extends Controller
 {
     use PaginationTrait;
@@ -18,20 +27,21 @@ class RoomTypeController extends Controller
     public function __construct(
         protected RoomTypeServiceInterface $roomTypeService,
         protected AmenityServiceInterface $amenityService,
-        protected EquipmentServiceInterface $equipmentService
+        protected EquipmentServiceInterface $equipmentService,
+        protected RoomTypeImageServiceInterface $roomTypeImageService
     ) {}
 
     /**
-     * Display a listing of room types
+     * Display a listing of room types with pagination
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', $this->getPerPage(10));
+        $perPage = $this->getPerPage(10); // Default: 10, Allowed: [5, 10, 20, 50, 100]
         $filters = $request->input('filter', []);
+        
         $roomTypes = $this->roomTypeService->getPaginated($filters, $perPage);
-
         $this->validatePageNumber($roomTypes->currentPage(), $roomTypes->lastPage(), 'abort');
-
+        
         return view('admin.room-types.index', compact('roomTypes'));
     }
 
@@ -42,7 +52,45 @@ class RoomTypeController extends Controller
     {
         $allAmenities = $this->amenityService->getAll();
         $allEquipments = $this->equipmentService->getAll();
+        
         return view('admin.room-types.create', compact('allAmenities', 'allEquipments'));
+    }
+
+    /**
+     * Store a newly created room type in storage
+     */
+    public function store(StoreRoomTypeRequest $request)
+    {
+        try {
+            $validated = $request->validated();
+            
+            // Create room type with amenities and equipments
+            $roomType = $this->roomTypeService->create($validated);
+            
+            // Attach temporary images to the newly created room type
+            $this->roomTypeImageService->attachTempImagesToRoomType($roomType->id);
+            
+            // Return JSON for AJAX requests (from create form)
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'room_type_id' => $roomType->id,
+                    'message' => 'Loại phòng được tạo thành công!'
+                ]);
+            }
+
+            return redirect()->route('admin.rooms.index')
+                ->with('success', 'Loại phòng được tạo thành công!');
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Lỗi khi tạo loại phòng: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Lỗi khi tạo loại phòng.');
+        }
     }
 
     /**
@@ -55,94 +103,58 @@ class RoomTypeController extends Controller
     }
 
     /**
-     * Store a newly created room type
-     */
-    public function store(StoreRoomTypeRequest $request)
-    {
-        $this->roomTypeService->create($request->validated());
-        return redirect()->route('admin.rooms.index')->with('success', 'Thêm loại phòng thành công!');
-    }
-
-    /**
-     * Show the form for editing a room type
+     * Show the form for editing the specified room type
      */
     public function edit($id)
     {
         $roomType = $this->roomTypeService->findWithDetails($id);
+        
+        // Format data for edit form using service
+        $formData = $this->roomTypeService->formatForEditForm($roomType);
+        
         $allAmenities = $this->amenityService->getAll();
         $allEquipments = $this->equipmentService->getAll();
-
-        return view('admin.room-types.edit', compact('roomType', 'allAmenities', 'allEquipments'));
+        
+        return view('admin.room-types.edit', array_merge(
+            $formData,
+            compact('allAmenities', 'allEquipments')
+        ));
     }
 
     /**
-     * Update the specified room type
+     * Update the specified room type in storage
      */
     public function update(UpdateRoomTypeRequest $request, $id)
     {
-        $this->roomTypeService->update($id, $request->validated());
-        return redirect()->route('admin.rooms.index')->with('success', 'Cập nhật thành công!');
-    }
-
-    /**
-     * Delete the specified room type
-     */
-    public function destroy($id)
-    {
-        $this->roomTypeService->delete($id);
-        return redirect()->route('admin.rooms.index')->with('success', 'Đã xóa loại phòng!');
-    }
-
-    /**
-     * Upload an image for a room type
-     */
-    public function uploadImage(Request $request, $id)
-    {
-        $request->validate(['image' => 'required|image|max:5120']);
-        $path = $request->file('image')->store('room-types', 'public');
-        $image = RoomTypeImage::create([
-            'room_type_id' => $id,
-            'image_url' => '/storage/' . $path,
-            'order' => RoomTypeImage::where('room_type_id', $id)->max('order') + 1,
-        ]);
-        return response()->json(['success' => true, 'image' => $image]);
-    }
-
-    /**
-     * Delete an image from a room type
-     */
-    public function deleteImage(Request $request, $id, $imageId)
-    {
-        $image = RoomTypeImage::where('id', $imageId)->where('room_type_id', $id)->firstOrFail();
-        $filePath = str_replace('/storage/', '', $image->image_url);
-        \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
-        $image->delete();
-        return response()->json(['success' => true]);
-    }
-
-    /**
-     * Sync amenities for a room type
-     */
-    public function syncAmenities(Request $request, $id)
-    {
-        $roomType = $this->roomTypeService->findById($id);
-        $amenityIds = $request->input('amenity_ids', []);
-        $roomType->amenities()->sync($amenityIds);
-        return response()->json(['success' => true, 'count' => count($amenityIds)]);
-    }
-
-    /**
-     * Sync equipments for a room type
-     */
-    public function syncEquipments(Request $request, $id)
-    {
-        $roomType = $this->roomTypeService->findById($id);
-        $equipments = $request->input('equipments', []);
-        $syncData = [];
-        foreach ($equipments as $item) {
-            $syncData[$item['id']] = ['quantity' => (int)$item['quantity']];
+        try {
+            $roomType = $this->roomTypeService->findById($id);
+            
+            $validated = $request->validated();
+            $this->roomTypeService->update($id, $validated);
+            
+            return redirect()->route('admin.rooms.index')
+                ->with('success', 'Loại phòng được cập nhật thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Lỗi khi cập nhật loại phòng.');
         }
-        $roomType->equipments()->sync($syncData);
-        return response()->json(['success' => true, 'count' => count($syncData)]);
+    }
+
+    /**
+     * Remove the specified room type from storage
+     */
+    public function destroy(Request $request, $id)
+    {
+        try {
+            $roomType = $this->roomTypeService->findById($id);
+            $this->roomTypeService->delete($id);
+
+            
+            return redirect()->route('admin.rooms.index')
+                ->with('success', 'Loại phòng được xóa thành công!');
+        } catch (\Exception $e) {
+
+            return back()->with('error', 'Lỗi khi xóa loại phòng.');
+        }
     }
 }
+

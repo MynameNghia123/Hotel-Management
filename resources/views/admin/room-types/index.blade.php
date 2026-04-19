@@ -87,7 +87,7 @@
                                     value="{{ request('filter.search', '') }}">
                             </div>
                             <div class="rt-filters">
-                                <select name="filter[is_active]" class="rt-select">
+                                <select name="filter[is_active]" class="rt-select" onchange="this.form.submit()">
                                     <option value="">Tất cả trạng thái</option>
                                     <option value="1" @selected(request('filter.is_active') === '1')>Hoạt động</option>
                                     <option value="0" @selected(request('filter.is_active') === '0')>Ngừng kinh doanh</option>

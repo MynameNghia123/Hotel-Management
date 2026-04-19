@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\RoomTypeActionController;
 use App\Http\Controllers\ServiceGroupController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EquipmentController;
@@ -91,6 +92,7 @@ Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
 
 // ============== Quản lý phòng ==============
 Route::group(['prefix' => 'rooms', 'as' => 'rooms.'], function () {
+    // Web routes - HTML pages
     Route::get('/', [RoomTypeController::class, 'index'])->name('index');
     Route::get('/create', [RoomTypeController::class, 'create'])->name('create');
     Route::post('/', [RoomTypeController::class, 'store'])->name('store');
@@ -98,11 +100,14 @@ Route::group(['prefix' => 'rooms', 'as' => 'rooms.'], function () {
     Route::get('/{id}/edit', [RoomTypeController::class, 'edit'])->name('edit');
     Route::put('/{id}', [RoomTypeController::class, 'update'])->name('update');
     Route::delete('/{id}', [RoomTypeController::class, 'destroy'])->name('destroy');
-    // AJAX endpoints
-    Route::post('/{id}/images', [RoomTypeController::class, 'uploadImage'])->name('images.upload');
-    Route::delete('/{id}/images/{imageId}', [RoomTypeController::class, 'deleteImage'])->name('images.delete');
-    Route::post('/{id}/amenities/sync', [RoomTypeController::class, 'syncAmenities'])->name('amenities.sync');
-    Route::post('/{id}/equipments/sync', [RoomTypeController::class, 'syncEquipments'])->name('equipments.sync');
+    
+    // AJAX/API endpoints
+    Route::post('/temp-images/upload', [RoomTypeActionController::class, 'uploadTempImage'])->name('temp-images.upload');
+    Route::delete('/temp-images/delete', [RoomTypeActionController::class, 'deleteTempImage'])->name('temp-images.delete');
+    Route::post('/{id}/images', [RoomTypeActionController::class, 'uploadImage'])->name('images.upload');
+    Route::delete('/{id}/images/{imageId}', [RoomTypeActionController::class, 'deleteImage'])->name('images.delete');
+    Route::post('/{id}/amenities/sync', [RoomTypeActionController::class, 'syncAmenities'])->name('amenities.sync');
+    Route::post('/{id}/equipments/sync', [RoomTypeActionController::class, 'syncEquipments'])->name('equipments.sync');
 });
 
 

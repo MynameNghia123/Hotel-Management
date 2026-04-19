@@ -24,7 +24,7 @@ class StoreRoomTypeRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'code' => 'required|string|unique:room_types,code',
+            'is_active' => 'nullable|boolean',
             'hourly_price' => 'required|numeric',
             'daily_price' => 'required|numeric',
             'adult_quantity' => 'required|integer',
@@ -34,6 +34,12 @@ class StoreRoomTypeRequest extends FormRequest
             'width' => 'required|numeric',
             'height' => 'required|numeric',
             'description' => 'nullable|string',
+            'amenities' => 'nullable|array',
+            'amenities.*' => 'integer|exists:amenities,id',
+            'equip_id' => 'nullable|array',
+            'equip_id.*' => 'integer|exists:equipments,id',
+            'equip_qty' => 'nullable|array',
+            'equip_qty.*' => 'integer|min:1',
         ];
     }
 }

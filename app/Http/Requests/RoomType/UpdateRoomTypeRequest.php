@@ -26,7 +26,6 @@ class UpdateRoomTypeRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
-            'code' => 'required|string|unique:room_types,code,' . $id,
             'hourly_price' => 'required|numeric',
             'daily_price' => 'required|numeric',
             'adult_quantity' => 'required|integer',
