@@ -39,12 +39,23 @@
                 </div>
 
                 <div class="am-toolbar">
-                    <div class="am-search-wrapper">
+                    <form method="GET" action="{{ route('admin.equipment.index') }}" class="am-search-wrapper">
                         <div class="am-search-icon">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </div>
-                        <input type="text" class="am-search-input" placeholder="Tìm tên thiết bị...">
-                    </div>
+                        <input type="text" name="filter[search]" class="am-search-input" placeholder="Tìm tên thiết bị..." value="{{ request('filter.search') }}" onkeyup="if(event.key==='Enter') this.form.submit();">
+                        <button type="submit" style="display:none;"></button>
+                    </form>
+
+                    <form method="GET" action="{{ route('admin.equipment.index') }}" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="hidden" name="filter[search]" value="{{ request('filter.search') }}">
+                        <select name="filter[category]" class="am-search-input" style="width: auto; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;" onchange="this.form.submit();">
+                            <option value="">Tất cả loại thiết bị</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('filter.category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </form>
                 </div>
 
                 <div class="am-table-wrapper">
@@ -99,9 +110,7 @@
                     </table>
                 </div>
 
-                <div class="am-footer">
-                    <div class="am-info">Tổng: {{ $equipments->count() }} thiết bị</div>
-                </div>
+                <x-pagination :paginator="$equipments" />
             </div>
 
             @include('admin.layouts.footer')

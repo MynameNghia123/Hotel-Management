@@ -1,222 +1,219 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Chi tiết loại phòng: {{ $roomType->name }} | Urban Luxe Admin')
+@section('title', 'Quản lý loại phòng | Urban Luxe Admin')
 
 @push('styles')
-    @vite('resources/css/admin/room-types.css')
+    @vite('resources/css/admin/rooms.css')
 @endpush
 
 @section('content')
-<div class="admin-layout">
-    @include('admin.layouts.sidebar')
+    <div class="admin-layout">
 
-    <main class="admin-main">
-        @include('admin.layouts.header')
+        {{-- SIDEBAR --}}
+        @include('admin.layouts.sidebar')
 
-        {{-- MAIN CONTENT AREA --}}
-        <div class="admin-content">
-            
-            {{-- PAGE HEADER ACTIONS --}}
-            <div class="page-actions-header">
-                <div class="header-titles">
-                    <a href="{{ route('admin.rooms.index') }}" class="back-text">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                        Trở lại danh sách
-                    </a>
-                    <h1 class="main-title">Chi tiết loại phòng: {{ $roomType->name }}</h1>
-                    <p class="sub-desc">Mã phòng: <strong>{{ $roomType->code }}</strong> &mdash; Hệ thống quản trị khách sạn Urban Luxe</p>
+        {{-- CONTENT --}}
+        <main class="admin-main">
+
+            {{-- HEADER (Dùng chung với dashboard/bookings) --}}
+            <header class="admin-header">
+                <div class="admin-header-left">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012 2v14M9 21v-6h6v6" />
+                    </svg>
+                    16819 &middot; Urban Luxe Hotel
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
                 </div>
-                <div class="right-badges">
-                    <div class="view-only-badge">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        Chế độ xem chi tiết (View Only)
-                    </div>
-                    <a href="{{ route('admin.rooms.edit', $roomType->id) }}" class="btn-primary-blue" style="text-decoration:none;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                        Chỉnh sửa
-                    </a>
-                </div>
-            </div>
-
-            <div class="details-grid-layout">
-                {{-- LEFT: Main Information --}}
-                <div class="details-col-left">
-                    
-                    {{-- THÔNG TIN CHUNG --}}
-                    <div class="details-card">
-                        <h3 class="card-section-title">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                            THÔNG TIN CHUNG
-                        </h3>
-                        <div class="info-split">
-                            <div class="info-block">
-                                <label>TÊN LOẠI PHÒNG</label>
-                                <strong>{{ $roomType->name }}</strong>
-                            </div>
-                            <div class="info-block">
-                                <label>MÃ LOẠI PHÒNG</label>
-                                <strong>{{ $roomType->code }}</strong>
-                            </div>
+                <div class="admin-header-right">
+                    <button class="admin-header-notification">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+                        </svg>
+                        <span class="admin-header-notification-dot"></span>
+                    </button>
+                    <div class="admin-header-divider"></div>
+                    <div class="admin-header-user">
+                        <div class="admin-header-user-info">
+                            <div class="admin-header-user-name">Admin Đức</div>
+                            <div class="admin-header-user-role">Quản lý cấp cao</div>
                         </div>
-                        <div class="info-block" style="margin-top: 15px;">
-                            <label>TRẠNG THÁI</label>
-                            @if($roomType->is_active)
-                                <span class="status-pill-green">Đang kinh doanh</span>
-                            @else
-                                <span class="status-pill-red">Ngừng kinh doanh</span>
-                            @endif
-                        </div>
-                        <div class="info-block" style="margin-top: 20px;">
-                            <label>MÔ TẢ LOẠI PHÒNG</label>
-                            <div class="desc-content-box">
-                                {{ $roomType->description ?? 'Chưa có mô tả.' }}
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- KÍCH THƯỚC & GIÁ --}}
-                    <div class="details-card">
-                        <h3 class="card-section-title">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg>
-                            KÍCH THƯỚC & GIÁ
-                        </h3>
-                        <div class="pricing-container">
-                            <div class="dimension-box">
-                                <label>KÍCH THƯỚC</label>
-                                <div class="dim-flex">
-                                    <div class="dim-item">
-                                        Rộng (Width) <br>
-                                        <strong>{{ $roomType->width }} m</strong>
-                                    </div>
-                                    <div class="dim-divider"></div>
-                                    <div class="dim-item">
-                                        Dài (Length) <br>
-                                        <strong>{{ $roomType->height }} m</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="price-side">
-                                <div class="price-row">
-                                    <span>Giá giờ (Hourly)</span>
-                                    <div class="price-val">{{ number_format($roomType->hourly_price, 0, ',', '.') }} <small>VNĐ</small></div>
-                                </div>
-                                <div class="price-row">
-                                    <span>Giá ngày (Daily)</span>
-                                    <div class="price-val">{{ number_format($roomType->daily_price, 0, ',', '.') }} <small>VNĐ</small></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- SỨC CHỨA --}}
-                    <div class="details-card">
-                        <h3 class="card-section-title">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-                            SỨC CHỨA
-                        </h3>
-                        <div class="capacity-cards-grid">
-                            <div class="cap-card">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                <span>Người lớn</span>
-                                <strong>{{ $roomType->adult_quantity }}</strong>
-                            </div>
-                            <div class="cap-card">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="1.5"></circle><circle cx="12" cy="7" r="4"></circle></svg>
-                                <span>Trẻ em</span>
-                                <strong>{{ $roomType->child_quantity }}</strong>
-                            </div>
-                            <div class="cap-card">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17v-4M17 17v-4M3 8v9M21 8v9M3 11h18M5 8h14a2 2 0 012 2v1h-18v-1a2 2 0 012-2z"/></svg>
-                                <span>Giường đơn</span>
-                                <strong>{{ $roomType->single_bed_quantity }}</strong>
-                            </div>
-                            <div class="cap-card">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="8" rx="2"/><path d="M7 11V7a2 2 0 012-2h6a2 2 0 012 2v4M11 11v4"/></svg>
-                                <span>Giường đôi</span>
-                                <strong>{{ $roomType->double_bed_quantity }}</strong>
-                            </div>
-                        </div>
+                        <img src="https://ui-avatars.com/api/?name=Admin+Duc&background=2a3f8a&color=fff&size=80"
+                            class="admin-header-user-avatar" alt="Admin">
                     </div>
                 </div>
+            </header>
 
-                {{-- RIGHT: Media & Components --}}
-                <div class="details-col-right">
-                    
-                    {{-- MEDIA (HÌNH ẢNH) --}}
-                    <div class="details-card">
-                        <div class="card-top-flex">
-                            <h3 class="card-section-title">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"></polyline></svg>
-                                MEDIA (HÌNH ẢNH)
-                            </h3>
+            {{-- MAIN CONTENT --}}
+            <div class="admin-content">
+                @if(session('success'))
+                    <div
+                        style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #c3e6cb;">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <div class="rt-container">
+                    <div class="rt-header">
+                        <div>
+                            <h1 class="rt-title">Danh sách phòng</h1>
+                            <p class="rt-subtitle">Hệ thống quản trị khách sạn Urban Luxe - Quản lý danh mục loại phòng và
+                                chính sách giá.</p>
                         </div>
-                        <div class="media-list">
-                            @forelse($roomType->images as $image)
-                                <div class="media-item {{ $loop->first ? 'border-left-active' : '' }}">
-                                    <img src="{{ $image->image_url }}" alt="Room image {{ $loop->iteration }}">
-                                    <div class="media-info">
-                                        <strong>Ảnh {{ $loop->iteration }}</strong>
-                                        <span>Thứ tự: {{ $image->order }}</span>
-                                    </div>
-                                </div>
-                            @empty
-                                <p style="color:#94a3b8; font-size:13px;">Chưa có hình ảnh nào.</p>
-                            @endforelse
-                        </div>
-                        <p class="media-total">Tổng: {{ $roomType->images->count() }} hình ảnh</p>
+                        <a href="{{ route('admin.rooms.create') }}" class="rt-btn-primary" style="text-decoration: none;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Thêm loại phòng mới
+                        </a>
                     </div>
 
-                    {{-- TIỆN ÍCH (AMENITIES) --}}
-                    <div class="details-card">
-                        <h3 class="card-section-title">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21l-8-4.5v-9L12 3l8 4.5v9z"></path><polyline points="12 21 12 12 20 7.5"></polyline><line x1="12" y1="12" x2="4" y2="7.5"></line></svg>
-                            TIỆN ÍCH (AMENITIES)
-                        </h3>
-                        <div class="amenities-flex">
-                            @forelse($roomType->amenities as $amenity)
-                                <div class="amenity-pill">
-                                    <span class="material-symbols-outlined" style="font-size:16px;">{{ strtolower(trim($amenity->icon)) }}</span>
-                                    {{ $amenity->name }}
+                    <div class="rt-toolbar">
+                        <form method="GET" action="{{ route('admin.rooms.index') }}" class="rt-search-form">
+                            <div class="rt-search-wrapper">
+                                <div class="rt-search-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
                                 </div>
-                            @empty
-                                <p style="color:#94a3b8; font-size:13px;">Chưa có tiện ích nào.</p>
-                            @endforelse
-                        </div>
+                                <input type="text" name="filter[search]" class="rt-search-input" placeholder="Tìm theo tên loại phòng (Room Type)..."
+                                    value="{{ request('filter.search', '') }}">
+                            </div>
+                            <div class="rt-filters">
+                                <select name="filter[is_active]" class="rt-select">
+                                    <option value="">Tất cả trạng thái</option>
+                                    <option value="1" @selected(request('filter.is_active') === '1')>Hoạt động</option>
+                                    <option value="0" @selected(request('filter.is_active') === '0')>Ngừng kinh doanh</option>
+                                </select>
+                                <button type="submit" class="rt-btn-filter">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
                     </div>
 
-                    {{-- THIẾT BỊ (ROOM EQUIPMENT) --}}
-                    <div class="details-card">
-                        <h3 class="card-section-title">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-                            THIẾT BỊ (ROOM EQUIPMENT)
-                        </h3>
-                        <table class="equip-table">
+                    <div class="rt-table-wrapper">
+                        <table class="rt-table">
                             <thead>
                                 <tr>
-                                    <th>TÊN THIẾT BỊ</th>
-                                    <th>SL</th>
+                                    <th>TÊN LOẠI PHÒNG</th>
+                                    <th>DIỆN TÍCH (M2)</th>
+                                    <th>SỐ GIƯỜNG (BED/TYPE)</th>
+                                    <th>GIÁ THEO GIỜ</th>
+                                    <th>GIÁ THEO NGÀY</th>
+                                    <th>SỐ LƯỢNG</th>
+                                    <th style="text-align: right;">HÀNH ĐỘNG</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($roomType->equipments as $equipment)
+                                @forelse($roomTypes as $type)
                                     <tr>
-                                        <td>{{ $equipment->name }}</td>
-                                        <td class="qty-num">{{ $equipment->pivot->quantity }}</td>
+                                        <td>
+                                            <div class="rt-type-info">
+                                                <div class="rt-name">{{ $type->name }}</div>
+                                                <div class="rt-code">{{ $type->code }}</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="rt-area">{{ number_format($type->width * $type->height, 1) }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="rt-beds">
+                                                <div class="rt-bed-item">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2.5">
+                                                        <path
+                                                            d="M7 17v-4M17 17v-4M3 8v9M21 8v9M3 11h18M5 8h14a2 2 0 012 2v1h-18v-1a2 2 0 012-2z" />
+                                                    </svg>
+                                                    {{ $type->single_bed_quantity }}
+                                                </div>
+                                                <div class="rt-bed-item">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2.5">
+                                                        <rect x="3" y="11" width="18" height="8" rx="2" />
+                                                        <path d="M7 11V7a2 2 0 012-2h6a2 2 0 012 2v4M11 11v4" />
+                                                    </svg>
+                                                    {{ $type->double_bed_quantity }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span
+                                                class="rt-price-hour">{{ number_format($type->hourly_price, 0, ',', '.') }}₫</span>
+                                        </td>
+                                        <td><span
+                                                class="rt-price-day">{{ number_format($type->daily_price, 0, ',', '.') }}₫</span>
+                                        </td>
+                                        <td>
+                                            <div class="rt-quantity">{{ $type->rooms_count }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="rt-actions">
+                                                <a href="{{ route('admin.rooms.show', $type->id) }}" class="rt-btn-action view"
+                                                    title="Xem chi tiết">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                        <circle cx="12" cy="12" r="3"></circle>
+                                                    </svg>
+                                                </a>
+                                                <a href="{{ route('admin.rooms.edit', $type->id) }}" class="rt-btn-action edit"
+                                                    title="Chỉnh sửa">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
+                                                        <path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                                    </svg>
+                                                </a>
+                                                <form action="{{ route('admin.rooms.destroy', $type->id) }}" method="POST"
+                                                    style="display:inline-block;"
+                                                    onsubmit="return confirm('Bạn có chắc chắn muốn xóa loại phòng này?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="rt-btn-action delete" title="Xóa"
+                                                        style="border:none; cursor:pointer;">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path
+                                                                d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2">
+                                                            </path>
+                                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="2" style="text-align:center; color:#94a3b8;">Chưa có thiết bị nào.</td>
+                                        <td colspan="7" style="text-align: center; padding: 2rem; color: #888;">
+                                            Chưa có loại phòng nào. Hãy thêm mới!
+                                        </td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
+
+                        <x-pagination :paginator="$roomTypes" />
                 </div>
-            </div>
 
-        {{-- FOOTER --}}
-        @include('admin.layouts.footer')
+                {{-- FOOTER --}}
+                @include('admin.layouts.footer')
 
-    </main>
-</div>
+        </main>
+    </div>
 @endsection

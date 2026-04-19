@@ -4,8 +4,13 @@ namespace App\Repositories\Contracts;
 
 interface RoomTypeRepositoryInterface extends BaseRepositoryInterface
 {
-    // Lấy tất cả loại phòng kèm theo số lượng phòng con
+    /**
+     * Get all room types with their room count
+     */
     public function getAllWithRoomCount();
-    // Lấy loại phòng kèm đầy đủ quan hệ: amenities, equipments, images
+
+    /**
+     * Find a room type with all related details (images, amenities, equipments)
+     */
     public function findWithDetails($id);
 }

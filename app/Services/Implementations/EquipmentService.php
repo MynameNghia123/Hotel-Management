@@ -11,27 +11,32 @@ class EquipmentService implements EquipmentServiceInterface
         private readonly EquipmentRepositoryInterface $equipmentRepository
     ) {}
 
-    public function getAllEquipment()
+    public function getAll()
     {
         return $this->equipmentRepository->getAll();
     }
 
-    public function createEquipment(array $data)
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        return $this->equipmentRepository->getPaginated($filters, $perPage);
+    }
+
+    public function create(array $data)
     {
         return $this->equipmentRepository->create($data);
     }
 
-    public function getEquipmentById($id)
+    public function findById($id)
     {
         return $this->equipmentRepository->findById($id);
     }
 
-    public function updateEquipment($id, array $data)
+    public function update($id, array $data)
     {
         return $this->equipmentRepository->update($id, $data);
     }
 
-    public function deleteEquipment($id)
+    public function delete($id)
     {
         return $this->equipmentRepository->delete($id);
     }

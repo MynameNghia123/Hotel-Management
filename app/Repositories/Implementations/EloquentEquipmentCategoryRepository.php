@@ -4,6 +4,7 @@ namespace App\Repositories\Implementations;
 
 use App\Models\EquipmentCategory;
 use App\Repositories\Contracts\EquipmentCategoryRepositoryInterface;
+use App\Repositories\Filters\EquipmentCategoryFilter;
 
 class EloquentEquipmentCategoryRepository implements EquipmentCategoryRepositoryInterface
 {
@@ -17,6 +18,13 @@ class EloquentEquipmentCategoryRepository implements EquipmentCategoryRepository
     public function getAll()
     {
         return $this->model->all();
+    }
+
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        $query = $this->model->query();
+        $query = EquipmentCategoryFilter::apply($query, $filters);
+        return $query->paginate($perPage);
     }
 
     public function create(array $data)

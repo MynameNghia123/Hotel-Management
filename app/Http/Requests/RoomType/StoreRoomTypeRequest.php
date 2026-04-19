@@ -12,7 +12,7 @@ class StoreRoomTypeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,17 @@ class StoreRoomTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|unique:room_types,code',
+            'hourly_price' => 'required|numeric',
+            'daily_price' => 'required|numeric',
+            'adult_quantity' => 'required|integer',
+            'child_quantity' => 'required|integer',
+            'single_bed_quantity' => 'required|integer',
+            'double_bed_quantity' => 'required|integer',
+            'width' => 'required|numeric',
+            'height' => 'required|numeric',
+            'description' => 'nullable|string',
         ];
     }
 }
