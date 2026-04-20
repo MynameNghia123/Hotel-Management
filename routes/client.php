@@ -1,6 +1,18 @@
+
 <?php
 
+
+use App\Http\Controllers\AuthClientController;
 use Illuminate\Support\Facades\Route;
+
+// Đăng nhập / Đăng xuất Khách hàng (OTP)
+// Gắn throttle: 3 lần / 1 phút để chống spam gửi OTP
+Route::post('/login/send-otp', [AuthClientController::class, 'sendOtp'])->name('client.send_otp')->middleware('throttle:3,1');
+Route::post('/login/verify-otp', [AuthClientController::class, 'verifyOtp'])->name('client.verify_otp')->middleware('throttle:10,1');
+// Gắn throttle cho đăng ký: 3 lần / 1 phút (chống spam bot tạo tài khoản)
+Route::post('/register', [AuthClientController::class, 'register'])->name('client.register')->middleware('throttle:3,1');
+Route::post('/logout', [AuthClientController::class, 'logout'])->name('client.logout');
+
 
 // Trang chủ và thông tin chung
 Route::get('/', function () {

@@ -37,93 +37,75 @@
                     </div>
 
                     <div class="rme-type-list">
-                        <div class="rme-type-item">
+                        @foreach($roomTypes as $type)
+                        <a href="{{ route('admin.room-map-edit.index', ['type_id' => $type->id]) }}" class="rme-type-item {{ $selectedType && $selectedType->id == $type->id ? 'is-active' : '' }}" style="text-decoration:none; color:inherit; display:flex; justify-content:space-between;">
                             <div>
-                                <div class="rme-ti-name">TẦNG A</div>
-                                <div class="rme-ti-sub">3 loại · 8 phòng</div>
+                                <div class="rme-ti-name">{{ strtoupper($type->name) }}</div>
+                                <div class="rme-ti-sub">{{ $type->rooms_count ?? 0 }} phòng</div>
                             </div>
-                            <span class="rme-ti-count">28</span>
-                        </div>
-
-                        <div class="rme-type-item is-active">
-                            <div>
-                                <div class="rme-ti-name">SUITE</div>
-                                <div class="rme-ti-sub">Hạng sang · Tầng cao</div>
-                            </div>
-                            <span class="rme-ti-count is-active">6</span>
-                        </div>
-
-                        <div class="rme-type-item">
-                            <div>
-                                <div class="rme-ti-name">DELUXE</div>
-                                <div class="rme-ti-sub">2 tầng · 18 phòng</div>
-                            </div>
-                            <span class="rme-ti-count">18</span>
-                        </div>
-
-                        <div class="rme-type-item">
-                            <div>
-                                <div class="rme-ti-name">STANDARD</div>
-                                <div class="rme-ti-sub">3 tầng · 36 phòng</div>
-                            </div>
-                            <span class="rme-ti-count">36</span>
-                        </div>
+                            <span class="rme-ti-count {{ $selectedType && $selectedType->id == $type->id ? 'is-active' : '' }}">{{ $type->rooms_count ?? 0 }}</span>
+                        </a>
+                        @endforeach
                     </div>
                 </aside>
 
                 {{-- CỘT PHẢI: NỘI DUNG CHỈNH SỬA --}}
                 <section class="rme-main">
 
+                    @if($selectedType)
                     {{-- Tiêu đề + Nút xóa --}}
                     <div class="rme-main-header">
                         <div style="display:flex; align-items:center; gap:14px;">
-                            <h1 class="rme-main-title">SUITE</h1>
+                            <h1 class="rme-main-title">{{ strtoupper($selectedType->name) }}</h1>
                             <span class="rme-main-subtitle">
-                                Urban Suite King
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                {{ $selectedType->description ?? 'Loại phòng ' . $selectedType->name }}
                             </span>
                         </div>
-                        <button class="rme-btn-danger">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                            Xóa phòng
-                        </button>
                     </div>
 
                     {{-- Danh sách tầng --}}
                     <div class="rme-floor-list">
-
-                        {{-- Tầng 1 --}}
+                        @foreach($floors as $floor)
                         <div class="rme-floor-row">
                             <div class="rme-floor-drag">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><circle cx="15" cy="5" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="19" r="1" fill="currentColor"/></svg>
                             </div>
-                            <div class="rme-floor-label">Tầng 1</div>
+                            <div class="rme-floor-label">
+                                {{ $floor->name }}
+                                <form action="{{ route('admin.room-map-edit.destroy-floor', $floor->id) }}" method="POST" style="display:inline;" data-confirm-delete="Bạn có chắc chắn muốn xóa tầng này?">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" style="background:none; border:none; padding:0; cursor:pointer; color:#ef4444; margin-left:8px;" title="Xóa tầng">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                                    </button>
+                                </form>
+                            </div>
                             <div class="rme-room-list">
-                                <span class="rme-room-tag">501</span>
-                                <span class="rme-room-tag is-dim">n</span>
-                                <a href="{{ route('admin.room-map-edit.create-room') }}" class="rme-room-add-btn">
+                                @php
+                                    $roomsInFloor = $floor->rooms->where('room_type_id', $selectedType->id);
+                                @endphp
+                                @foreach($roomsInFloor as $room)
+                                <div style="display:inline-flex; position:relative; align-items:center;">
+                                    <span class="rme-room-tag {{ $room->status === 'maintenance' ? 'is-orange' : '' }}">{{ $room->name }}</span>
+                                    <form action="{{ route('admin.room-map-edit.destroy-room', $room->id) }}" method="POST" style="position:absolute; top:-5px; right:-5px;" data-confirm-delete="Bạn có chắc chắn muốn xóa phòng này?">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" style="background:#ef4444; color:white; border:none; border-radius:50%; width:16px; height:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;" title="Xóa phòng">
+                                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
+                                @endforeach
+                                <a href="{{ route('admin.room-map-edit.create-room', ['floor_id' => $floor->id, 'type_id' => $selectedType->id]) }}" class="rme-room-add-btn">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                 </a>
                             </div>
                         </div>
-
-                        {{-- Tầng 2 --}}
-                        <div class="rme-floor-row">
-                            <div class="rme-floor-drag">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><circle cx="15" cy="5" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="19" r="1" fill="currentColor"/></svg>
-                            </div>
-                            <div class="rme-floor-label">Tầng 2</div>
-                            <div class="rme-room-list">
-                                <span class="rme-room-tag">503</span>
-                                <span class="rme-room-tag">205</span>
-                                <span class="rme-room-tag is-orange">202</span>
-                                <a href="{{ route('admin.room-map-edit.create-room') }}" class="rme-room-add-btn">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                </a>
-                            </div>
-                        </div>
-
+                        @endforeach
                     </div>
+                    @else
+                    <div style="padding: 20px; text-align: center; color: #64748b;">
+                        Không có loại phòng nào được chọn hoặc chưa có loại phòng. Vui lòng thêm loại phòng trước.
+                    </div>
+                    @endif
 
                     {{-- Thêm tầng mới --}}
                     <a href="{{ route('admin.room-map-edit.create-floor') }}" class="rme-add-floor-btn" style="text-decoration:none;">

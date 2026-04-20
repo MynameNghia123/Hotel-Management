@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Đăng nhập | Urban Luxe Hotel</title>
     <meta name="description" content="Đăng nhập vào tài khoản Urban Luxe để quản lý đặt phòng và nhận các ưu đãi đặc quyền.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +20,7 @@
             </svg>
             Quay lại trang web
         </a>
+
         <!-- Branding -->
         <div class="auth-brand">
             <div class="brand-icon">
@@ -31,60 +33,164 @@
             <p class="brand-tagline">CHỐN BÌNH YÊN GIỮA LÒNG THÀNH PHỐ</p>
         </div>
 
-        <!-- AUTH CARD (ĐĂNG NHẬP) -->
+        <!-- AUTH CARD -->
         <div class="auth-card">
-            <h1>Đăng nhập</h1>
-            <p class="auth-subtitle">Nhập email để nhận OTP</p>
+            <h1 id="card-title">Đăng nhập</h1>
+            <p class="auth-subtitle" id="card-subtitle">Nhập email để nhận mã OTP</p>
 
-            <form action="#" method="GET">
-                <!-- Input with Mail Icon -->
+            <!-- Thông báo lỗi / thành công -->
+            <div id="alert-msg" style="display:none; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 14px;"></div>
+
+            <!-- BƯỚC 1: Nhập Email -->
+            <div id="step-email">
                 <div class="input-group">
                     <div class="input-icon">
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <input type="email" class="login-input" placeholder="unknown@example.com">
+                    <input type="email" id="input-email" class="login-input" placeholder="email@example.com">
                 </div>
-
-                <!-- Thông báo lỗi tĩnh y mẫu -->
-                <div class="error-msg">
-                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM10 9v4m0-7v.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <span>Địa chỉ email này chưa được đăng ký. Vui lòng kiểm tra lại chính tả hoặc tạo tài khoản mới.</span>
-                </div>
-
-                <button type="submit" class="btn-send-otp">Gửi OTP</button>
-            </form>
-
-            <div class="social-divider">
-                <span>HOẶC TIẾP TỤC VỚI</span>
+                <button id="btn-send-otp" class="btn-send-otp" onclick="sendOtp()">Gửi mã OTP</button>
             </div>
 
-            <!-- Các nút hình tròn -->
-            <div class="social-icons-row">
-                <div class="icon-circle">
-                    <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
-                        <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.674.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714.415.039 2.532-.676 3.559-1.701"></path>
-                    </svg>
+            <!-- BƯỚC 2: Nhập OTP (ẩn mặc định) -->
+            <div id="step-otp" style="display:none;">
+                <p style="font-size:13px; color:#94a3b8; margin-bottom:16px;">
+                    Mã OTP đã được gửi đến <strong id="display-email" style="color:#e2e8f0;"></strong>
+                    — <a href="#" onclick="backToEmail()" style="color:#60a5fa;">Đổi email</a>
+                </p>
+                <div class="input-group">
+                    <div class="input-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0110 0v4"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="input-otp" class="login-input" placeholder="Nhập mã 6 số" maxlength="6" style="letter-spacing: 8px; font-size: 20px; text-align: center;">
                 </div>
-                <div class="icon-circle">
-                    <svg width="24" height="24" fill="#1877F2" viewBox="0 0 24 24">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path>
-                    </svg>
-                </div>
+                <button id="btn-verify-otp" class="btn-send-otp" onclick="verifyOtp()">Xác nhận & Đăng nhập</button>
+                <p style="font-size:12px; color:#64748b; text-align:center; margin-top:12px;">
+                    Không nhận được mã? <a href="#" onclick="sendOtp()" style="color:#60a5fa;">Gửi lại</a>
+                </p>
             </div>
+
+            <div class="social-divider"><span>HOẶC</span></div>
+
+            <p style="font-size:14px; color:#94a3b8; text-align:center;">
+                Chưa có tài khoản? <a href="{{ route('register') }}" style="color:#60a5fa; font-weight:600;">Đăng ký ngay</a>
+            </p>
 
             <!-- Policy Footer -->
             <div class="auth-policy">
                 Bằng việc tiếp tục, bạn đồng ý với<br>
                 <a href="#">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a> của chúng tôi.
             </div>
-
         </div>
 
     </section>
+
+<script>
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    function showAlert(message, isError = true) {
+        const alert = document.getElementById('alert-msg');
+        alert.style.display = 'block';
+        alert.style.background = isError ? 'rgba(239,68,68,0.15)' : 'rgba(34,197,94,0.15)';
+        alert.style.color = isError ? '#f87171' : '#4ade80';
+        alert.style.border = isError ? '1px solid rgba(239,68,68,0.3)' : '1px solid rgba(34,197,94,0.3)';
+        alert.textContent = message;
+    }
+
+    function setLoading(btnId, loading) {
+        const btn = document.getElementById(btnId);
+        btn.disabled = loading;
+        btn.textContent = loading ? 'Đang xử lý...' : (btnId === 'btn-send-otp' ? 'Gửi mã OTP' : 'Xác nhận & Đăng nhập');
+    }
+
+    // Gửi OTP
+    async function sendOtp() {
+        const email = document.getElementById('input-email').value.trim();
+        if (!email) { showAlert('Vui lòng nhập địa chỉ email.'); return; }
+
+        setLoading('btn-send-otp', true);
+        document.getElementById('alert-msg').style.display = 'none';
+
+        try {
+            const res = await fetch('{{ route("client.send_otp") }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                // Chuyển sang bước nhập OTP
+                document.getElementById('step-email').style.display = 'none';
+                document.getElementById('step-otp').style.display = 'block';
+                document.getElementById('display-email').textContent = email;
+                document.getElementById('card-subtitle').textContent = 'Nhập mã OTP từ email của bạn';
+                showAlert(data.message, false);
+            } else {
+                showAlert(data.message || 'Có lỗi xảy ra, vui lòng thử lại.');
+            }
+        } catch (e) {
+            showAlert('Không thể kết nối máy chủ, vui lòng thử lại.');
+        } finally {
+            setLoading('btn-send-otp', false);
+        }
+    }
+
+    // Xác nhận OTP
+    async function verifyOtp() {
+        const email = document.getElementById('input-email').value.trim();
+        const otp   = document.getElementById('input-otp').value.trim();
+        if (!otp || otp.length !== 6) { showAlert('Vui lòng nhập đủ mã 6 số.'); return; }
+
+        setLoading('btn-verify-otp', true);
+        document.getElementById('alert-msg').style.display = 'none';
+
+        try {
+            const res = await fetch('{{ route("client.verify_otp") }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                body: JSON.stringify({ email, otp })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                showAlert('Đăng nhập thành công! Đang chuyển hướng...', false);
+                setTimeout(() => window.location.href = data.redirect, 1000);
+            } else {
+                showAlert(data.message || 'Mã OTP không hợp lệ.');
+            }
+        } catch (e) {
+            showAlert('Không thể kết nối máy chủ, vui lòng thử lại.');
+        } finally {
+            setLoading('btn-verify-otp', false);
+        }
+    }
+
+    // Quay lại nhập email
+    function backToEmail() {
+        document.getElementById('step-otp').style.display = 'none';
+        document.getElementById('step-email').style.display = 'block';
+        document.getElementById('input-otp').value = '';
+        document.getElementById('card-subtitle').textContent = 'Nhập email để nhận mã OTP';
+        document.getElementById('alert-msg').style.display = 'none';
+    }
+
+    // Cho phép nhấn Enter để submit
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            if (document.getElementById('step-otp').style.display !== 'none') {
+                verifyOtp();
+            } else {
+                sendOtp();
+            }
+        }
+    });
+</script>
 
 </body>
 </html>

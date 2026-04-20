@@ -23,9 +23,17 @@
 
         <!-- Right actions -->
         <div class="nav-actions">
-            <a href="{{ route('login') }}" class="sign-in-link">Đăng Nhập</a>
-            <span style="color: rgba(255,255,255,0.2)">/</span>
-            <a href="{{ route('register') }}" class="sign-in-link">Đăng Ký</a>
+            @auth
+                <span class="sign-in-link" style="margin-right: 15px; color: white;">Chào bạn, {{ trim(Auth::user()->last_name . ' ' . Auth::user()->first_name) ?: 'Khách' }}</span>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="sign-in-link">Đăng Xuất</a>
+                <form id="logout-form" action="{{ route('client.logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="sign-in-link">Đăng Nhập</a>
+                <span style="color: rgba(255,255,255,0.2)">/</span>
+                <a href="{{ route('register') }}" class="sign-in-link">Đăng Ký</a>
+            @endauth
             <a href="#" class="btn btn-primary" style="margin-left: 10px;">Đặt Phòng Ngay</a>
         </div>
     </div>

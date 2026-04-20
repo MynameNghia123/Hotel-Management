@@ -15,6 +15,8 @@
 
     @yield('content')
 
+    <x-confirm-delete />
+
     @stack('scripts')
 
 </body>

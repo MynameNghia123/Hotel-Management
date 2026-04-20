@@ -30,7 +30,8 @@
                 Quay lại sơ đồ
             </a>
 
-            <div style="background:#fff; border-radius:20px; border:1px solid #e2e8f0; max-width:600px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.05); overflow:hidden;">
+            <form action="{{ route('admin.room-map-edit.store-room') }}" method="POST" style="background:#fff; border-radius:20px; border:1px solid #e2e8f0; max-width:600px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.05); overflow:hidden;">
+                @csrf
                 <div style="padding: 24px 32px; border-bottom:1px solid #f1f5f9;">
                     <h1 style="font-size:20px; font-weight:900; color:#0f172a; margin:0;">Thêm phòng mới</h1>
                 </div>
@@ -38,35 +39,40 @@
                 <div style="padding: 32px; display:flex; flex-direction:column; gap:24px;">
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <label style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Số phòng</label>
-                        <input type="text" placeholder="Nhập số phòng (vd: 101, 202...)" style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; transition:border-color 0.15s;">
+                        <input type="text" name="name" required placeholder="Nhập số phòng (vd: 101, 202...)" style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; transition:border-color 0.15s;">
+                        @error('name') <small style="color:red">{{ $message }}</small> @enderror
                     </div>
 
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <label style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Loại phòng</label>
-                        <select style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; background:#fff; cursor:pointer;">
-                            <option value="1">SUITE</option>
-                            <option value="2">DELUXE</option>
-                            <option value="3">STANDARD</option>
+                        <select name="room_type_id" required style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; background:#fff; cursor:pointer;">
+                            @if(isset($roomTypes))
+                                @foreach($roomTypes as $type)
+                                    <option value="{{ $type->id }}" {{ (isset($typeId) && $typeId == $type->id) ? 'selected' : '' }}>{{ $type->name }}</option>
+                                @endforeach
+                            @endif
                         </select>
+                        @error('room_type_id') <small style="color:red">{{ $message }}</small> @enderror
                     </div>
 
                     <div style="display:flex; flex-direction:column; gap:8px;">
                         <label style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Tầng</label>
-                        <select style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; background:#fff; cursor:pointer;">
-                            <option value="1">Tầng 1</option>
-                            <option value="2">Tầng 2</option>
-                            <option value="3">Tầng 3</option>
-                            <option value="4">Tầng 4</option>
-                            <option value="5">Tầng 5</option>
+                        <select name="floor_id" required style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; background:#fff; cursor:pointer;">
+                            @if(isset($floors))
+                                @foreach($floors as $floor)
+                                    <option value="{{ $floor->id }}" {{ (isset($floorId) && $floorId == $floor->id) ? 'selected' : '' }}>{{ $floor->name }}</option>
+                                @endforeach
+                            @endif
                         </select>
+                        @error('floor_id') <small style="color:red">{{ $message }}</small> @enderror
                     </div>
                 </div>
 
                 <div style="padding: 24px 32px; background:#f8fafc; border-top:1px solid #f1f5f9; display:flex; justify-content:flex-end; gap:12px;">
                     <a href="{{ route('admin.room-map-edit.index') }}" style="padding:10px 24px; border-radius:8px; font-size:13px; font-weight:700; color:#64748b; background:#fff; border:1px solid #e2e8f0; text-decoration:none;">Hủy</a>
-                    <button style="padding:10px 32px; border-radius:8px; font-size:13px; font-weight:800; color:#fff; background:#2a3f8a; border:none; cursor:pointer; transition:transform 0.15s, background 0.15s;">Thêm phòng</button>
+                    <button type="submit" style="padding:10px 32px; border-radius:8px; font-size:13px; font-weight:800; color:#fff; background:#2a3f8a; border:none; cursor:pointer; transition:transform 0.15s, background 0.15s;">Thêm phòng</button>
                 </div>
-            </div>
+            </form>
 
         </div>
 

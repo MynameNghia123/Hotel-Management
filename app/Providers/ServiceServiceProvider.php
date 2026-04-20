@@ -55,9 +55,15 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\ServiceGroupServiceInterface::class,
             \App\Services\Implementations\ServiceGroupService::class
         );
+
         $this->app->bind(
-            \App\Services\Contracts\ServiceServiceInterface::class,
-            \App\Services\Implementations\ServiceService::class
+            \App\Services\Contracts\FloorServiceInterface::class,
+            \App\Services\Implementations\FloorService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Contracts\RoomServiceInterface::class,
+            \App\Services\Implementations\RoomService::class
         );
     }
 }
