@@ -49,7 +49,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
             return [
                 'success' => true,
                 'id' => $imageId,
-                'path' => '/storage/' . $path
+                'path' => Storage::disk('public')->url($path)
             ];
         } catch (\Exception $e) {
             Log::error('RoomTypeImageService::uploadTempImage - ' . $e->getMessage(), [
@@ -112,7 +112,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
             $path = $file->storeAs(self::PERMANENT_DIR, $filename, 'public');
 
             // Create image record
-            $imageUrl = '/storage/' . $path;
+            $imageUrl = Storage::disk('public')->url($path);
             $maxOrder = RoomTypeImage::where('room_type_id', $roomTypeId)->max('order') ?? 0;
 
             $image = RoomTypeImage::create([
@@ -203,7 +203,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
                     // Create image record
                     RoomTypeImage::create([
                         'room_type_id' => $roomTypeId,
-                        'image_url' => '/storage/' . $permanentPath,
+                        'image_url' => Storage::disk('public')->url($permanentPath),
                         'order' => $maxOrder + $index + 1
                     ]);
 

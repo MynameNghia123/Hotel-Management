@@ -60,5 +60,10 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\RoomTypeImageServiceInterface::class,
             \App\Services\Implementations\RoomTypeImageService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\RoomMapServiceInterface::class,
+            \App\Services\Implementations\RoomMapService::class
+        );
     }
 }

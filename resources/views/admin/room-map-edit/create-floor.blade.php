@@ -35,23 +35,24 @@
                     <h1 style="font-size:20px; font-weight:900; color:#0f172a; margin:0;">Thêm tầng mới</h1>
                 </div>
                 
-                <div style="padding: 32px; display:flex; flex-direction:column; gap:24px;">
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <label style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Tên tầng / Số tầng</label>
-                        <input type="text" placeholder="Ví dụ: Tầng 6, Tầng trệt, Tầng lửng..." style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; transition:border-color 0.15s;">
+                <form method="POST" action="{{ route('admin.room-map-edit.store-floor') }}">
+                    @csrf
+
+                    <div style="padding: 32px; display:flex; flex-direction:column; gap:24px;">
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <label style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Tên tầng / Số tầng</label>
+                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Ví dụ: Tầng 6, Tầng trệt, Tầng lửng..." style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; transition:border-color 0.15s;" required>
+                            @error('name')
+                                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
 
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <label style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Vị trí hiển thị (Thứ tự)</label>
-                        <input type="number" value="6" style="width:100%; padding:12px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:14px; outline:none; transition:border-color 0.15s;">
-                        <small style="font-size:11px; color:#94a3b8;">Số càng lớn tầng càng ở trên cao.</small>
+                    <div style="padding: 24px 32px; background:#f8fafc; border-top:1px solid #f1f5f9; display:flex; justify-content:flex-end; gap:12px;">
+                        <a href="{{ route('admin.room-map-edit.index') }}" style="padding:10px 24px; border-radius:8px; font-size:13px; font-weight:700; color:#64748b; background:#fff; border:1px solid #e2e8f0; text-decoration:none;">Hủy</a>
+                        <button type="submit" style="padding:10px 32px; border-radius:8px; font-size:13px; font-weight:800; color:#fff; background:#2a3f8a; border:none; cursor:pointer; transition:transform 0.15s, background 0.15s;">Tạo tầng</button>
                     </div>
-                </div>
-
-                <div style="padding: 24px 32px; background:#f8fafc; border-top:1px solid #f1f5f9; display:flex; justify-content:flex-end; gap:12px;">
-                    <a href="{{ route('admin.room-map-edit.index') }}" style="padding:10px 24px; border-radius:8px; font-size:13px; font-weight:700; color:#64748b; background:#fff; border:1px solid #e2e8f0; text-decoration:none;">Hủy</a>
-                    <button style="padding:10px 32px; border-radius:8px; font-size:13px; font-weight:800; color:#fff; background:#2a3f8a; border:none; cursor:pointer; transition:transform 0.15s, background 0.15s;">Tạo tầng</button>
-                </div>
+                </form>
             </div>
 
         </div>

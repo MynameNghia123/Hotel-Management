@@ -62,21 +62,27 @@ Route::group(['prefix' => 'room-map', 'as' => 'room-map.'], function () {
 
 // ============== Vận hành - Room Map Edit ==============
 Route::group(['prefix' => 'room-map-edit', 'as' => 'room-map-edit.'], function () {
-    Route::get('/', function () {
-        return view('admin.room-map-edit.index');
-    })->name('index');
+    // Index - Display all floors and rooms
+    Route::get('/', [\App\Http\Controllers\RoomMapController::class, 'index'])->name('index');
 
+    // Create Type Route (if needed)
     Route::get('/create-type', function () {
         return view('admin.room-map-edit.create-type');
     })->name('create-type');
 
-    Route::get('/create-floor', function () {
-        return view('admin.room-map-edit.create-floor');
-    })->name('create-floor');
+    // Floor Management Routes
+    Route::get('/create-floor', [\App\Http\Controllers\RoomMapController::class, 'createFloor'])->name('create-floor');
+    Route::post('/floors', [\App\Http\Controllers\RoomMapController::class, 'storeFloor'])->name('store-floor');
+    Route::get('/floors/{id}/edit', [\App\Http\Controllers\RoomMapController::class, 'editFloor'])->name('edit-floor');
+    Route::put('/floors/{id}', [\App\Http\Controllers\RoomMapController::class, 'updateFloor'])->name('update-floor');
+    Route::delete('/floors/{id}', [\App\Http\Controllers\RoomMapController::class, 'deleteFloor'])->name('delete-floor');
 
-    Route::get('/create-room', function () {
-        return view('admin.room-map-edit.create-room');
-    })->name('create-room');
+    // Room Management Routes
+    Route::get('/create-room', [\App\Http\Controllers\RoomMapController::class, 'createRoom'])->name('create-room');
+    Route::post('/rooms', [\App\Http\Controllers\RoomMapController::class, 'storeRoom'])->name('store-room');
+    Route::get('/rooms/{id}/edit', [\App\Http\Controllers\RoomMapController::class, 'editRoom'])->name('edit-room');
+    Route::put('/rooms/{id}', [\App\Http\Controllers\RoomMapController::class, 'updateRoom'])->name('update-room');
+    Route::delete('/rooms/{id}', [\App\Http\Controllers\RoomMapController::class, 'deleteRoom'])->name('delete-room');
 });
 
 // ============== Đặt phòng ==============

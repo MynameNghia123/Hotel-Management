@@ -92,6 +92,7 @@ class RoomTypeService implements RoomTypeServiceInterface
         return [
             'roomType' => $roomType,
             'selectedAmenities' => $roomType->amenities->pluck('id')->toArray(),
+            // plunk là câu lệnh chỉ lấy những như nằm trong tham số của hàm
             'selectedEquipments' => $roomType->equipments->map(function ($equip) {
                 return [
                     'id' => $equip->id,
