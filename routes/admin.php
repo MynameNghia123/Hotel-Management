@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomMapEditController;
-use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\RoomTypeActionController;
 use App\Http\Controllers\ServiceGroupController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EquipmentController;
@@ -68,7 +69,7 @@ Route::group(['prefix' => 'room-map-edit', 'as' => 'room-map-edit.'], function (
     
     // For RoomType (currently redirecting or handling within RoomController, but we use this view or logic)
     // If it's a separate view:
-    Route::get('/create-type', [RoomController::class, 'create'])->name('create-type'); // Adjust if you want specific view
+    Route::get('/create-type', [RoomTypeController::class, 'create'])->name('create-type'); // Adjust if you want specific view
 
     // Floors
     Route::get('/create-floor', [RoomMapEditController::class, 'createFloor'])->name('create-floor');
@@ -94,18 +95,22 @@ Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
 
 // ============== Quản lý phòng ==============
 Route::group(['prefix' => 'rooms', 'as' => 'rooms.'], function () {
-    Route::get('/', [RoomController::class, 'index'])->name('index');
-    Route::get('/create', [RoomController::class, 'create'])->name('create');
-    Route::post('/', [RoomController::class, 'store'])->name('store');
-    Route::get('/{id}', [RoomController::class, 'show'])->name('show');
-    Route::get('/{id}/edit', [RoomController::class, 'edit'])->name('edit');
-    Route::put('/{id}', [RoomController::class, 'update'])->name('update');
-    Route::delete('/{id}', [RoomController::class, 'destroy'])->name('destroy');
-    // AJAX endpoints
-    Route::post('/{id}/images', [RoomController::class, 'uploadImage'])->name('images.upload');
-    Route::delete('/{id}/images/{imageId}', [RoomController::class, 'deleteImage'])->name('images.delete');
-    Route::post('/{id}/amenities/sync', [RoomController::class, 'syncAmenities'])->name('amenities.sync');
-    Route::post('/{id}/equipments/sync', [RoomController::class, 'syncEquipments'])->name('equipments.sync');
+    // Web routes - HTML pages
+    Route::get('/', [RoomTypeController::class, 'index'])->name('index');
+    Route::get('/create', [RoomTypeController::class, 'create'])->name('create');
+    Route::post('/', [RoomTypeController::class, 'store'])->name('store');
+    Route::get('/{id}', [RoomTypeController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [RoomTypeController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [RoomTypeController::class, 'update'])->name('update');
+    Route::delete('/{id}', [RoomTypeController::class, 'destroy'])->name('destroy');
+    
+    // AJAX/API endpoints
+    Route::post('/temp-images/upload', [RoomTypeActionController::class, 'uploadTempImage'])->name('temp-images.upload');
+    Route::delete('/temp-images/delete', [RoomTypeActionController::class, 'deleteTempImage'])->name('temp-images.delete');
+    Route::post('/{id}/images', [RoomTypeActionController::class, 'uploadImage'])->name('images.upload');
+    Route::delete('/{id}/images/{imageId}', [RoomTypeActionController::class, 'deleteImage'])->name('images.delete');
+    Route::post('/{id}/amenities/sync', [RoomTypeActionController::class, 'syncAmenities'])->name('amenities.sync');
+    Route::post('/{id}/equipments/sync', [RoomTypeActionController::class, 'syncEquipments'])->name('equipments.sync');
 });
 
 
