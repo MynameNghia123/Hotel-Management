@@ -4,6 +4,7 @@ namespace App\Repositories\Implementations;
 
 use App\Models\Customer;
 use App\Repositories\Contracts\CustomerRepositoryInterface;
+use App\Repositories\Filters\CustomerFilter;
 
 class EloquentCustomerRepository implements CustomerRepositoryInterface
 {
@@ -41,11 +42,16 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
     public function getPaginated(array $filters = [], $perPage = 5)
     {
         $query = $this->model->query();
-
-        if (isset($filters['name'])) {
-            $query->where('name', 'like', '%' . $filters['name'] . '%');
-        }
-
+        $query = CustomerFilter::apply($query, $filters);
         return $query->paginate($perPage);
+    }
+
+    public function getDistinctCountries()
+    {
+        return $this->model->distinct('country')
+                           ->whereNotNull('country')
+                           ->pluck('country')
+                           ->sort()
+                           ->values();
     }
 }

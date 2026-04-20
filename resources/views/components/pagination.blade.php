@@ -4,7 +4,7 @@
     $currentPage = $paginator->currentPage();
     $lastPage = $paginator->lastPage();
     $pageRange = $pageRange;
-    $maxVisible = $maxVisible;
+    $maxVisible = $maxVisible; //  Ngương hiển thị
     $total = $paginator->total();
     $perPage = $paginator->perPage();
     $from = ($currentPage - 1) * $perPage + 1;
@@ -21,7 +21,7 @@
         $pages[] = 1;
         
         // Calculate start and end of the range around current page
-        $rangeStart = max(2, $currentPage - $pageRange);
+        $rangeStart = max(2, $currentPage - $pageRange); 
         $rangeEnd = min($lastPage - 1, $currentPage + $pageRange);
         
         // Add ellipsis and pages between first and range

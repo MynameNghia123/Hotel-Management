@@ -10,8 +10,8 @@ return new class extends Migration
     {
         // Bảng pivot: RoomType <-> Equipments (many-to-many với quantity)
         Schema::create('room_equipment', function (Blueprint $table) {
-            $table->foreignId('room_type_id')->constrained('room_types');
-            $table->foreignId('equipment_id')->constrained('equipments');
+            $table->foreignId('room_type_id')->constrained('room_types')->onDelete('cascade');
+            $table->foreignId('equipment_id')->constrained('equipments')->onDelete('cascade');
             $table->integer('quantity');
 
             $table->primary(['room_type_id', 'equipment_id']);

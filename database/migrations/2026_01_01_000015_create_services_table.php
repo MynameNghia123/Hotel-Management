@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('group_id')->constrained('service_groups');
+            $table->foreignId('group_id')->constrained('service_groups')->onDelete('cascade');
             $table->decimal('unit_price', 15, 2);
             $table->string('unit');
         });

@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('booking_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('room_id')->constrained('rooms');
-            $table->foreignId('booking_id')->constrained('bookings');
+            $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
             $table->dateTime('checkin_date');
             $table->dateTime('checkout_date');
             $table->decimal('hourly_price', 15, 2);

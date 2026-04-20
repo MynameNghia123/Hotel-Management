@@ -26,6 +26,18 @@
         {{-- MAIN CONTENT --}}
         <div style="flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; background:#f8fafc;">
             
+            {{-- Success Alert --}}
+            @if ($message = Session::get('success'))
+                <div style="margin-bottom: 16px; padding: 12px 16px; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; color: #166534; font-weight: 500;">
+                    ✓ {{ $message }}
+                </div>
+            @endif
+
+            @if ($message = Session::get('error'))
+                <div style="margin-bottom: 16px; padding: 12px 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #991b1b; font-weight: 500; animation: slideInDown 0.3s ease;">
+                    ✕ {{ $message }}
+                </div>
+            @endif
             <div class="sf-container">
                 <div class="sf-header">
                     <div>

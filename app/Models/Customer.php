@@ -13,4 +13,12 @@ class Customer extends Authenticatable
        'country',
        'email',
     ];
+
+    /**
+     * Relationship: Customer has many Bookings
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

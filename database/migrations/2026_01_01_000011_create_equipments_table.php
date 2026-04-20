@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('equipments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('equipment_category_id')->constrained('equipment_categories');
+            $table->foreignId('equipment_category_id')->constrained('equipment_categories')->onDelete('cascade');
             $table->decimal('import_price', 15, 2);
         });
     }

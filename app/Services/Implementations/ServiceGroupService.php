@@ -11,28 +11,32 @@ class ServiceGroupService implements ServiceGroupServiceInterface
         private readonly ServiceGroupRepositoryInterface $serviceGroupRepository
     ) {}
 
-    public function getAllServiceGroups()
+    public function getAll()
     {
         return $this->serviceGroupRepository->getAll();
     }
 
-    public function createServiceGroup(array $data)
+    public function create(array $data)
     {
         return $this->serviceGroupRepository->create($data);
     }
 
-    public function getServiceGroupById($id)
+    public function findById($id)
     {
         return $this->serviceGroupRepository->findById($id);
     }
 
-    public function updateServiceGroup($id, array $data)
+    public function update($id, array $data)
     {
         return $this->serviceGroupRepository->update($id, $data);
     }
 
-    public function deleteServiceGroup($id)
+    public function delete($id)
     {
         return $this->serviceGroupRepository->delete($id);
+    }
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        return $this->serviceGroupRepository->getPaginated($filters, $perPage);
     }
 }

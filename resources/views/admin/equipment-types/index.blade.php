@@ -39,12 +39,13 @@
                 </div>
 
                 <div class="am-toolbar">
-                    <div class="am-search-wrapper">
+                    <form method="GET" action="{{ route('admin.equipment-types.index') }}" class="am-search-wrapper">
                         <div class="am-search-icon">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </div>
-                        <input type="text" class="am-search-input" placeholder="Tìm tên loại thiết bị...">
-                    </div>
+                        <input type="text" name="filter[search]" class="am-search-input" placeholder="Tìm tên loại thiết bị..." value="{{ request('filter.search') }}" onkeyup="if(event.key==='Enter') this.form.submit();">
+                        <button type="submit" style="display:none;"></button>
+                    </form>
                 </div>
 
                 <div class="am-table-wrapper">
@@ -91,9 +92,7 @@
                     </table>
                 </div>
 
-                <div class="am-footer">
-                    <div class="am-info">Tổng: {{ $categories->count() }} loại thiết bị</div>
-                </div>
+                <x-pagination :paginator="$categories" />
             </div>
 
             @include('admin.layouts.footer')

@@ -2,11 +2,7 @@
 
 namespace App\Services\Contracts;
 
-interface ServiceGroupServiceInterface
+interface ServiceGroupServiceInterface extends BaseServiceInterface
 {
-    public function getAllServiceGroups();
-    public function getServiceGroupById($id);
-    public function createServiceGroup(array $data);
-    public function updateServiceGroup($id, array $data);
-    public function deleteServiceGroup($id);
+
 }

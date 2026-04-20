@@ -11,28 +11,33 @@ class AmenityService implements AmenityServiceInterface
         private readonly AmenityRepositoryInterface $amenityRepository
     ) {}
 
-    public function getAllAmenities()
+    public function getAll()
     {
         return $this->amenityRepository->getAll();
     }
 
-    public function createAmenity(array $data)
+    public function create(array $data)
     {
         return $this->amenityRepository->create($data);
     }
 
-    public function getAmenityById($id)
+    public function findById($id)
     {
         return $this->amenityRepository->findById($id);
     }
 
-    public function updateAmenity($id, array $data)
+    public function update($id, array $data)
     {
         return $this->amenityRepository->update($id, $data);
     }
 
-    public function deleteAmenity($id)
+    public function delete($id)
     {
         return $this->amenityRepository->delete($id);
+    }
+
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        return $this->amenityRepository->getPaginated($filters, $perPage);
     }
 }

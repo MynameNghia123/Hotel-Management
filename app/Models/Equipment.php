@@ -10,7 +10,7 @@ class Equipment extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
+        'name', 
         'equipment_category_id',
         'import_price',
     ];

@@ -10,13 +10,13 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained('bookings');
+            $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
             $table->decimal('amount', 15, 2);
             $table->string('payment_method');
             // cash | card | transfer | ...
             $table->text('note')->nullable();
             $table->string('transaction_code')->nullable();
-            $table->foreignId('staff_id')->nullable()->constrained('staff');
+            $table->foreignId('staff_id')->nullable()->constrained('staff')->onDelete('cascade');
             $table->timestamps();
         });
     }

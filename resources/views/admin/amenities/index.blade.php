@@ -175,27 +175,9 @@
                         </table>
                     </div>
 
-                    <div class="am-footer">
-                        <div class="am-info">Hiển thị 6 trên 12 tiện ích</div>
-                        <div class="am-pagination">
-                            <button class="am-page-btn disabled">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="15 18 9 12 15 6"></polyline>
-                                </svg>
-                            </button>
-                            <button class="am-page-btn active">1</button>
-                            <button class="am-page-btn">2</button>
-                            <button class="am-page-btn">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
 
+                </div>
+                <x-pagination :paginator="$amenities" />
                 {{-- FOOTER --}}
                 @include('admin.layouts.footer')
 

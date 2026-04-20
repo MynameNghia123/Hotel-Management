@@ -1,0 +1,228 @@
+/* Customers Show Page */
+
+.cs-layout {
+    display: flex;
+    height: 100vh;
+    background: #f8fafc;
+}
+
+.cs-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.cs-content-area {
+    padding: 32px;
+    background: #f8fafc;
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Cards */
+.cs-card {
+    background: #fff;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f3f7;
+    margin-bottom: 24px;
+}
+
+.cs-card-title {
+    margin: 0;
+    font-size: 20px;
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.cs-card-subtitle {
+    color: #64748b;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* Form */
+.cs-form-section {
+    margin-bottom: 24px;
+}
+
+.cs-form-section-title {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0 0 16px 0;
+}
+
+.cs-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.cs-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.cs-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.cs-form-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    outline: none;
+    background: #f8fafc;
+    font-size: 14px;
+}
+
+.cs-form-input:focus {
+    border-color: #2a3f8a;
+    background: #fff;
+}
+
+.cs-form-input[readonly] {
+    background: #f8fafc;
+    cursor: not-allowed;
+}
+
+/* Table */
+.cs-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 24px;
+}
+
+.cs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.cs-table thead {
+    background: #f8fafc;
+}
+
+.cs-table thead tr {
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.cs-table thead th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #64748b;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.cs-table tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.cs-table tbody td {
+    padding: 12px;
+    color: #475569;
+}
+
+.cs-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.cs-booking-code {
+    color: #2a3f8a;
+    font-weight: 600;
+}
+
+.cs-total-amount {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* Actions */
+.cs-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+    border-top: 1px solid #f1f3f7;
+    padding-top: 24px;
+}
+
+.cs-btn {
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cs-btn-cancel {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.cs-btn-cancel:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.cs-btn-submit {
+    background: #2a3f8a;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(42, 63, 138, 0.2);
+}
+
+.cs-btn-submit:hover {
+    background: #1f2d5e;
+    box-shadow: 0 6px 16px rgba(42, 63, 138, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cs-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-content-area {
+        padding: 16px;
+    }
+
+    .cs-card {
+        padding: 16px;
+    }
+
+    .cs-table {
+        font-size: 12px;
+    }
+
+    .cs-table thead th,
+    .cs-table tbody td {
+        padding: 8px;
+    }
+
+    .cs-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cs-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

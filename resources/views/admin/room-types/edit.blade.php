@@ -13,7 +13,7 @@
         }
         .rte-modal-overlay.active { display: flex; }
         .rte-modal {
-            background: #fff; width: 100%; max-width: 500px; border-radius: 16px;
+            background: #fff; width: 100%; max-width: 600px; border-radius: 16px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden;
             transform: scale(0.95); opacity: 0; transition: all 0.2s;
         }
@@ -27,7 +27,7 @@
             background: none; border: none; cursor: pointer; color: #94a3b8; transition: 0.2s;
         }
         .rte-modal-close:hover { color: #ef4444; }
-        .rte-modal-body { padding: 24px; max-height: 400px; overflow-y: auto; }
+        .rte-modal-body { padding: 24px; max-height: 600px; overflow-y: auto; }
         .rte-modal-footer {
             padding: 16px 24px; border-top: 1px solid #f1f5f9; background: #f8fafc;
             display: flex; justify-content: flex-end; gap: 12px;
@@ -42,7 +42,7 @@
         .amenity-checkbox-wrapper.checked { border-color: #2a3f8a; background: #f0f4ff; }
         .amenity-checkbox-wrapper input { display: none; }
         /* Equipment Select in Modal */
-        .equip-modal-row { display: flex; gap: 12px; margin-bottom: 16px; }
+        .equip-modal-row { display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-end; }
     </style>
 @endpush
 
@@ -73,7 +73,7 @@
             {{-- PAGE HEADER ACTIONS --}}
             <div class="page-actions-header">
                 <div class="header-titles">
-                    <a href="{{ route('admin.rooms.show', $roomType->id) }}" class="back-text">
+                    <a href="{{ route('admin.rooms.index') }}" class="back-text">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         Trở lại danh sách
                     </a>
@@ -104,14 +104,10 @@
                                 THÔNG TIN CHUNG
                             </h3>
 
-                            <div class="info-split" style="margin-bottom: 24px;">
+                            <div style="margin-bottom: 24px;">
                                 <div class="rte-form-group">
                                     <label class="rte-label">Tên loại phòng</label>
                                     <input type="text" name="name" class="rte-input" value="{{ old('name', $roomType->name) }}" placeholder="Nhập tên loại phòng...">
-                                </div>
-                                <div class="rte-form-group">
-                                    <label class="rte-label">Mã loại phòng</label>
-                                    <input type="text" name="code" class="rte-input" value="{{ old('code', $roomType->code) }}" placeholder="VD: USK-001">
                                 </div>
                             </div>
 
@@ -343,18 +339,18 @@
             <button class="rte-modal-close" onclick="closeModal('equipModal')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="rte-modal-body">
-            <div class="equip-modal-row">
-                <div class="rte-form-group" style="flex:1;">
-                    <label class="rte-label">Chọn thiết bị</label>
-                    <select id="new-equip-id" class="rte-input rte-select">
-                        @foreach($allEquipments as $eq)
-                            <option value="{{ $eq->id }}" data-name="{{ $eq->name }}">{{ $eq->name }}</option>
-                        @endforeach
-                    </select>
+            <div class="equip-modal-row" style="position: relative;">
+                <div class="rte-form-group" style="flex:1; position: relative;">
+                    <label class="rte-label">Tìm kiếm thiết bị</label>
+                    <input type="text" id="equip-search" class="rte-input" placeholder="Nhập tên thiết bị..." style="position: relative; z-index: 10; font-size: 16px; padding: 12px;">
+                    <div id="equip-suggestions" class="equip-suggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; max-height: 300px; overflow-y: auto; display: none; z-index: 11; margin-top: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    </div>
+                    <input type="hidden" id="new-equip-id">
+                    <input type="hidden" id="new-equip-name">
                 </div>
-                <div class="rte-form-group" style="width:100px;">
+                <div class="rte-form-group" style="width:120px;">
                     <label class="rte-label">Số lượng</label>
-                    <input type="number" id="new-equip-qty" class="rte-input" value="1" min="1" style="text-align:center;">
+                    <input type="number" id="new-equip-qty" class="rte-input" value="1" min="1" style="text-align:center; font-size: 16px; padding: 12px;">
                 </div>
             </div>
         </div>
@@ -365,8 +361,43 @@
     </div>
 </div>
 
+<style>
+    .equip-suggestions {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        overflow: hidden;
+        max-height: 300px;
+    }
+    .equip-suggestion-item {
+        padding: 14px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid #f1f5f9;
+        transition: 0.2s;
+        font-size: 15px;
+        color: #475569;
+    }
+    .equip-suggestion-item:last-child {
+        border-bottom: none;
+    }
+    .equip-suggestion-item:hover {
+        background: #f0f4ff;
+        color: #2a3f8a;
+        font-weight: 500;
+    }
+    #equipModal .rte-input {
+        font-size: 16px !important;
+        padding: 12px !important;
+        height: 44px;
+    }
+    #equipModal .rte-label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+</style>
+
 <script>
     const csrfToken = "{{ csrf_token() }}";
+    const allEquipments = @json($allEquipments);
 </script>
 @vite('resources/js/admin/room-type-edit.js')
 

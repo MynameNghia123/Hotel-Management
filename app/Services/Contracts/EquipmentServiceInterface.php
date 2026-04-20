@@ -2,11 +2,13 @@
 
 namespace App\Services\Contracts;
 
-interface EquipmentServiceInterface
+interface EquipmentServiceInterface extends BaseServiceInterface
 {
-    public function getAllEquipment();
-    public function createEquipment(array $data);
-    public function getEquipmentById($id);
-    public function updateEquipment($id, array $data);
-    public function deleteEquipment($id);
+    // Inherits all methods from BaseServiceInterface:
+    // - getAll()
+    // - create(array $data)
+    // - findById($id)
+    // - update($id, array $data)
+    // - delete($id)
+    // - getPaginated(array $filters = [], $perPage = 10)
 }

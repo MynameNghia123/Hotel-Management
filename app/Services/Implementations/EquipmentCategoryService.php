@@ -11,27 +11,32 @@ class EquipmentCategoryService implements EquipmentCategoryServiceInterface
         private readonly EquipmentCategoryRepositoryInterface $equipmentCategoryRepository
     ) {}
 
-    public function getAllEquipmentCategories()
+    public function getAll()
     {
         return $this->equipmentCategoryRepository->getAll();
     }
 
-    public function createEquipmentCategory(array $data)
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        return $this->equipmentCategoryRepository->getPaginated($filters, $perPage);
+    }
+
+    public function create(array $data)
     {
         return $this->equipmentCategoryRepository->create($data);
     }
 
-    public function getEquipmentCategoryById($id)
+    public function findById($id)
     {
         return $this->equipmentCategoryRepository->findById($id);
     }
 
-    public function updateEquipmentCategory($id, array $data)
+    public function update($id, array $data)
     {
         return $this->equipmentCategoryRepository->update($id, $data);
     }
 
-    public function deleteEquipmentCategory($id)
+    public function delete($id)
     {
         return $this->equipmentCategoryRepository->delete($id);
     }

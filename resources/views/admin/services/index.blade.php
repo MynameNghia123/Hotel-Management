@@ -41,10 +41,14 @@
         <div style="flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; background:#f8fafc;">
             
             <div class="sv-container">
-                @if(session('success'))
-                    <div style="background-color: #dcfce7; color: #166534; padding: 12px 16px; border-radius: 10px; margin-bottom: 24px; font-size: 14px; font-weight: 500; border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        {{ session('success') }}
+                @if ($message = Session::get('success'))
+                    <div style="margin-bottom: 16px; padding: 12px 16px; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; color: #166534; font-weight: 500;">
+                        ✓ {{ $message }}
+                    </div>
+                @endif
+                @if ($message = Session::get('error'))
+                    <div style="margin-bottom: 16px; padding: 12px 16px; background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; color: #991b1b; font-weight: 500;">
+                        ✕ {{ $message }}
                     </div>
                 @endif
                 <div class="sv-header">
@@ -59,24 +63,25 @@
                 </div>
 
                 <div class="sv-toolbar">
-                    <div class="sv-search-wrapper">
-                        <div class="sv-search-icon">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <form method="GET" action="{{ route('admin.services.index') }}" style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                        <div class="sv-search-wrapper">
+                            <div class="sv-search-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            </div>
+                            <input type="text" name="filter[search]" class="sv-search-input" placeholder="Tìm tên dịch vụ..." value="{{ request('filter.search') }}" onkeyup="if(event.key==='Enter') this.form.submit();">
                         </div>
-                        <input type="text" class="sv-search-input" placeholder="Tìm tên dịch vụ...">
-                    </div>
-                    
-                    <div class="sv-filters">
-                        <select class="sv-select">
-                            <option>Nhóm dịch vụ (Tất cả)</option>
-                            <option>Dịch vụ ăn uống</option>
-                            <option>Spa & Wellness</option>
-                            <option>Giặt ủi</option>
+                        
+                        <select class="sv-select" name="filter[group_id]" onchange="this.form.submit();">
+                            <option value="">Nhóm dịch vụ (Tất cả)</option>
+                            @foreach($serviceGroups as $group)
+                            <option value="{{ $group->id }}" {{ request('filter.group_id') == $group->id ? 'selected' : '' }}>{{ $group->service_name }}</option>
+                            @endforeach
                         </select>
-                        <button class="sv-btn-action" style="color: #94a3b8;">
+
+                        <button class="sv-btn-action" type="button" style="color: #94a3b8;">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                         </button>
-                    </div>
+                    </form>
                 </div>
 
                 <div class="sv-table-wrapper">
@@ -119,20 +124,7 @@
                     </table>
                 </div>
 
-                <div class="sv-footer">
-                    <div class="sv-info">Hiển thị 5 trên 42 dịch vụ</div>
-                    <div class="sv-pagination">
-                        <button class="sv-page-btn disabled">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                        </button>
-                        <button class="sv-page-btn active">1</button>
-                        <button class="sv-page-btn">2</button>
-                        <button class="sv-page-btn">3</button>
-                        <button class="sv-page-btn">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </button>
-                    </div>
-                </div>
+                <x-pagination :paginator="$services" />
             </div>
 
         {{-- FOOTER --}}

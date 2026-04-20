@@ -49,10 +49,14 @@
                             @error('email') <span style="color: #ef4444; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span> @enderror
                         </div>
                     </div>
-
                     <div style="margin-bottom: 24px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #475569; font-size: 14px;">Quốc gia</label>
-                        <input type="text" name="country" value="{{ old('country', $customer->country) }}" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; outline: none;" placeholder="Vd: Việt Nam, Hoa Kỳ...">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #475569; font-size: 14px;">Quốc gia <span style="color:#ef4444">*</span></label>
+                        <select name="country" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; outline: none; font-size: 14px;" required>
+                            <option value="">-- Chọn quốc gia --</option>
+                            @foreach($countries as $country)
+                                <option value="{{ $country }}" {{ trim(strtolower(old('country', $customer->country ?? ''))) === trim(strtolower($country)) ? 'selected' : '' }}>{{ $country }}</option>
+                            @endforeach
+                        </select>
                         @error('country') <span style="color: #ef4444; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span> @enderror
                     </div>
 

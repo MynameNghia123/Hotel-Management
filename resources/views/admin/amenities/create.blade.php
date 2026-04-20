@@ -4,6 +4,12 @@
 
 @push('styles')
     @vite('resources/css/admin/amenities-create.css')
+    @vite('resources/css/admin/amenities-icon-picker.css')
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+@endpush
+
+@push('scripts')
+    @vite('resources/js/admin/amenities-icon-picker.js')
 @endpush
 
 @section('content')
@@ -27,8 +33,12 @@
                     
                     <div class="am-form-group">
                         <label class="am-form-label">Tên Icon (Tùy chọn)</label>
-                        <input type="text" name="icon" class="am-form-input" value="{{ old('icon') }}" placeholder="Vd: wifi, bath, wind, truck...">
-                        <small style="color: #64748b; font-size: 12px; margin-top: 4px; display: inline-block;">Nhập tên icon (wifi, bath, wind, truck, activity, droplet).</small>
+                        <div class="icon-input-wrapper">
+                            <input type="text" id="iconInput" name="icon" class="am-form-input with-icon" value="{{ old('icon') }}" placeholder="Vd: wifi, bath, kitchen..." autocomplete="off">
+                            <span class="icon-preview" id="iconPreview"></span>
+                            <div class="icon-suggestions" id="iconSuggestions"></div>
+                        </div>
+                        <small style="color: #64748b; font-size: 12px; margin-top: 4px; display: inline-block;">Gõ để tìm icon từ Google Material Symbols</small>
                         @error('icon') <span class="am-error">{{ $message }}</span> @enderror
                     </div>
 

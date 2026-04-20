@@ -4,7 +4,7 @@ namespace App\Repositories\Implementations;
 
 use App\Models\ServiceGroup;
 use App\Repositories\Contracts\ServiceGroupRepositoryInterface;
-
+use App\Repositories\Filters\ServiceGroupFilter;
 class EloquentServiceGroupRepository implements ServiceGroupRepositoryInterface
 {
     protected $model;
@@ -40,5 +40,14 @@ class EloquentServiceGroupRepository implements ServiceGroupRepositoryInterface
     {
         $record = $this->findById($id);
         return $record->delete();
+    }
+
+    public function getPaginated(array $filters = [], $perPage = 5)
+    {
+        $query = $this->model->with('services');
+
+        $query = ServiceGroupFilter::apply($query, $filters);
+
+        return $query->paginate($perPage);   
     }
 }

@@ -21,6 +21,17 @@
         {{-- MAIN CONTENT --}}
         <div style="flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; background:#f8fafc;">
             
+            @if ($message = Session::get('success'))
+                <div style="margin-bottom: 16px; padding: 12px 16px; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; color: #166534; font-weight: 500;">
+                    ✓ {{ $message }}
+                </div>
+            @endif
+
+            @if ($message = Session::get('error'))
+                <div style="margin-bottom: 16px; padding: 12px 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #991b1b; font-weight: 500; animation: slideInDown 0.3s ease;">
+                    ✕ {{ $message }}
+                </div>
+            @endif
             <div class="sr-container">
                 <div class="sr-header">
                     <div>
@@ -39,7 +50,7 @@
                             <div class="sr-search-icon">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                             </div>
-                            <input type="text" name="filter[search]" class="sr-search-input" placeholder="Tìm tên vai trò..." value="{{ request('filter.search') }}" onkeyup="if(event.key==='Enter') this.form.submit();">
+                            <input type="text" name="filter[search]" class="sr-search-input" placeholder="Tìm tên vai trò hoặc id ..." value="{{ request('filter.search') }}" onkeyup="if(event.key==='Enter') this.form.submit();">
                         </div>
                     </form>
                     

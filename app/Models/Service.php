@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
     public $timestamps = false;
+    
+    protected $dates = ['deleted_at']; // Khai báo cột ngày tháng
     
     protected $fillable = [
         'name',

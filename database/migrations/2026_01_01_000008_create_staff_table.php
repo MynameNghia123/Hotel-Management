@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained('roles');
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone_number');

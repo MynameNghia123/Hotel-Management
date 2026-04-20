@@ -4,40 +4,74 @@ namespace App\Http\Controllers;
 use App\Services\Contracts\CustomerServiceInterface;
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
-
+use App\Http\Traits\PaginationTrait;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-      public function __construct(
+    use PaginationTrait;
+    
+    public function __construct(
         private readonly CustomerServiceInterface $customerService
     ) {}
-    public function index ()
+    
+    public function index(Request $request)
     {
-        $customers = $this->customerService->getAllCustomers();
-        return view('admin.customers.index', compact('customers'));
+        $perPage = $this->getPerPage(10);
+        $filters = $request->get('filter', []);
+       
+        $countries = $this->customerService->getDistinctCountries();
+        $customers = $this->customerService->getPaginated($filters, $perPage);
+        $this->validatePageNumber($customers->currentPage(), $customers->lastPage(), 'abort');  
+        return view('admin.customers.index', compact('customers', 'countries'));
     }
-    public function create () 
+    
+    public function create()
     {
-        return view('admin.customers.create');
+        $countries = \App\Utils\Countries::getList();
+        return view('admin.customers.create', compact('countries'));
     }
-    public function store (StoreCustomerRequest $request) 
+    
+    public function store(StoreCustomerRequest $request)
     {
-        $this->customerService->storeCustomer($request->validated());
-        return redirect()->route('admin.customers.index')->with('success','Khách hàn vừa được tạo thành công ');
+        try {
+            $this->customerService->create($request->validated());
+            return redirect()->route('admin.customers.index')->with('success', 'Khách hàng vừa được tạo thành công.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
-    public function edit ($id) 
+    
+    public function edit($id)
     {
-        $customer = $this->customerService->getById($id);   
-        return view('admin.customers.edit', compact('customer'));
+        $customer = $this->customerService->findById($id);
+        $countries = \App\Utils\Countries::getList();
+        return view('admin.customers.edit', compact('customer', 'countries'));
     }
-    public function update (UpdateCustomerRequest $request, $id)
+
+    public function show($id)
     {
-        $this->customerService->updateCustomer($request->validated(), $id);
-        return redirect()->route('admin.customers.index')->with('success','Thông tin khách hàng vừa được bạn cập nhật thành công');
+        $customer = $this->customerService->findById($id);
+        return view('admin.customers.show', compact('customer'));
     }
-    public function destroy ($id)
+    
+    public function update(UpdateCustomerRequest $request, $id)
     {
-        $this->customerService->deleteCustomer($id);
-        return redirect()->route('admin.customers.index')->with('success','Xóa khách hàng thành công ');
+        try {
+            $this->customerService->update($id, $request->validated());
+            return redirect()->route('admin.customers.index')->with('success', 'Thông tin khách hàng vừa được cập nhật thành công.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
+    }
+    
+    public function destroy($id)
+    {
+        try {
+            $this->customerService->delete($id);
+            return redirect()->route('admin.customers.index')->with('success', 'Xóa khách hàng thành công.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 }
