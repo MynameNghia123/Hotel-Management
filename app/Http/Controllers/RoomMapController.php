@@ -8,7 +8,6 @@ use App\Http\Requests\RoomMap\StoreFloorRequest;
 use App\Http\Requests\RoomMap\UpdateFloorRequest;
 use App\Http\Requests\RoomMap\StoreRoomRequest;
 use App\Http\Requests\RoomMap\UpdateRoomRequest;
-use Illuminate\Http\Request;
 
 /**
  * RoomMapController

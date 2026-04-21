@@ -65,5 +65,15 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\RoomServiceInterface::class,
             \App\Services\Implementations\RoomService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\RoomTypeImageServiceInterface::class,
+            \App\Services\Implementations\RoomTypeImageService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Contracts\RoomMapServiceInterface::class,
+            \App\Services\Implementations\RoomMapService::class
+        );
     }
 }
