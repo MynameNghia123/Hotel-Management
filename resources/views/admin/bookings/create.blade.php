@@ -24,6 +24,245 @@
         </header>
 
         <div class="bc-container">
+            <div class="bc-left-col">
+                <div>
+                    <a href="{{ route('admin.bookings.index') }}" class="bc-back-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                        Trở lại
+                    </a>
+                    <h1 style="font-size:24px; font-weight:900; color:#0f172a; margin:0;">Tạo đặt phòng mới</h1>
+                </div>
+
+                <form method="POST" action="{{ route('admin.bookings.store') }}" id="bookingForm">
+                    @csrf
+
+                    {{-- THÔNG TIN KHÁCH HÀNG --}}
+                    <div class="bc-card">
+                        <div class="bc-card-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Thông tin khách hàng
+                        </div>
+                        
+                        <div class="bc-form-group">
+                            <label class="bc-label">Chọn khách hàng cũ hoặc tạo mới</label>
+                            <select name="customer_id" class="bc-input" onchange="handleCustomerChange()">
+                                <option value="">-- Tạo khách hàng mới --</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->name }} ({{ $customer->email }})</option>
+                                @endforeach
+                            </select>
+                            @error('customer_id')
+                                <span style="color:#ef4444; font-size:12px;">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Form cho khách hàng mới --}}
+                        <div id="newCustomerForm" style="display:none;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="bc-form-group">
+                                    <label class="bc-label">Họ và tên khách hàng</label>
+                                    <input type="text" name="customer_name" class="bc-input" placeholder="Ví dụ: Nguyễn Văn Hải" value="{{ old('customer_name') }}">
+                                    @error('customer_name')
+                                        <span style="color:#ef4444; font-size:12px;">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="bc-form-group">
+                                    <label class="bc-label">Email</label>
+                                    <input type="email" name="customer_email" class="bc-input" placeholder="email@example.com" value="{{ old('customer_email') }}">
+                                    @error('customer_email')
+                                        <span style="color:#ef4444; font-size:12px;">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="bc-form-group">
+                                    <label class="bc-label">Số điện thoại</label>
+                                    <input type="text" name="customer_phone" class="bc-input" placeholder="0905 123 456" value="{{ old('customer_phone') }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Booking date --}}
+                        <div class="bc-form-group">
+                            <label class="bc-label">Ngày đặt phòng</label>
+                            <input type="date" name="booking_date" class="bc-input" value="{{ old('booking_date', today()->toDateString()) }}" required>
+                            @error('booking_date')
+                                <span style="color:#ef4444; font-size:12px;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- CHỌN PHÒNG --}}
+                    <div class="bc-card">
+                        <div class="bc-card-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            Chọn phòng lưu trú
+                        </div>
+
+                        <div id="roomListContainer" class="bc-room-list">
+                            {{-- Room selection will be added here --}}
+                        </div>
+
+                        <button type="button" class="bc-btn-secondary" onclick="openRoomModal()" style="margin-top: 16px;">+ Thêm phòng</button>
+                    </div>
+
+                    {{-- CHI TIẾT THANH TOÁN --}}
+                    <div class="bc-card">
+                        <div class="bc-card-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            Chi tiết thanh toán
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="bc-form-group">
+                                <label class="bc-label">Tổng tiền phòng</label>
+                                <input type="number" name="total_room_amount" class="bc-input" placeholder="0" value="{{ old('total_room_amount', 0) }}" min="0">
+                            </div>
+                            <div class="bc-form-group">
+                                <label class="bc-label">Phí dịch vụ</label>
+                                <input type="number" name="total_service_amount" class="bc-input" placeholder="0" value="{{ old('total_service_amount', 0) }}" min="0">
+                            </div>
+                            <div class="bc-form-group">
+                                <label class="bc-label">Phụ phí bổ sung</label>
+                                <input type="number" name="surcharge_amount" class="bc-input" placeholder="0" value="{{ old('surcharge_amount', 0) }}" min="0">
+                            </div>
+                            <div class="bc-form-group">
+                                <label class="bc-label">Tổng cộng</label>
+                                <input type="number" name="final_amount" class="bc-input" placeholder="0" value="{{ old('final_amount', 0) }}" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- HIDDEN ROOM IDS ARRAY --}}
+                    <input type="hidden" id="roomIds" name="room_ids" value="">
+                    <input type="hidden" id="checkinDates" name="checkin_dates" value="">
+                    <input type="hidden" id="checkoutDates" name="checkout_dates" value="">
+
+                    <div class="bc-form-group" style="margin-top: 20px;">
+                        <button type="submit" class="bc-btn-confirm" style="width: 100%;">Xác nhận đặt phòng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {{-- MODAL CHỌN PHÒNG --}}
+        <div id="roomModal" class="bc-modal-overlay" style="display: none;">
+            <div class="bc-modal">
+                <div class="bc-modal-header">
+                    <div>
+                        <h2 class="bc-modal-title">Chọn phòng trống</h2>
+                        <p class="bc-modal-subtitle">Danh sách các phòng có thể thêm vào đơn đặt</p>
+                    </div>
+                    <button type="button" class="bc-modal-close" onclick="closeRoomModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+
+                <div class="bc-modal-body">
+                    <div class="bc-room-grid-modal">
+                        @forelse ($rooms as $room)
+                            <div class="bc-room-card-select" onclick="toggleRoomSelection(this, {{ $room->id }}, '{{ $room->room_number }}')">
+                                <span class="bc-rcs-num">{{ $room->room_number }}</span>
+                                <span class="bc-rcs-type">{{ $room->roomType->name ?? 'N/A' }}</span>
+                                <span class="bc-rcs-price">{{ $room->roomType->price_per_day ?? 0 }} đ</span>
+                                <div class="bc-rcs-check">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                            </div>
+                        @empty
+                            <p style="text-align: center; color: #94a3b8; padding: 40px;">Không có phòng nào</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <div class="bc-modal-footer">
+                    <button type="button" class="bc-btn-modal-cancel" onclick="closeRoomModal()">Hủy</button>
+                    <button type="button" class="bc-btn-modal-confirm" onclick="confirmRoomSelection()">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    let selectedRooms = new Set();
+
+    function handleCustomerChange() {
+        const select = document.querySelector('select[name="customer_id"]');
+        const newCustomerForm = document.getElementById('newCustomerForm');
+        if (select.value === '') {
+            newCustomerForm.style.display = 'block';
+        } else {
+            newCustomerForm.style.display = 'none';
+        }
+    }
+
+    function openRoomModal() {
+        document.getElementById('roomModal').style.display = 'flex';
+    }
+
+    function closeRoomModal() {
+        document.getElementById('roomModal').style.display = 'none';
+    }
+
+    function toggleRoomSelection(element, roomId, roomNumber) {
+        element.classList.toggle('is-selected');
+        if (element.classList.contains('is-selected')) {
+            selectedRooms.add(roomId);
+        } else {
+            selectedRooms.delete(roomId);
+        }
+    }
+
+    function confirmRoomSelection() {
+        const roomIds = Array.from(selectedRooms);
+        document.getElementById('roomIds').value = JSON.stringify(roomIds);
+        
+        // Update room list display
+        const container = document.getElementById('roomListContainer');
+        container.innerHTML = '';
+        
+        const roomElements = document.querySelectorAll('.bc-room-card-select.is-selected');
+        roomElements.forEach((el, index) => {
+            const roomNum = el.querySelector('.bc-rcs-num').textContent;
+            container.innerHTML += `
+                <div class="bc-room-item" style="margin-bottom: 12px;">
+                    <div class="bc-room-num-badge">${roomNum}</div>
+                    <div class="bc-room-info">
+                        <div class="bc-room-name">${el.querySelector('.bc-rcs-type').textContent}</div>
+                        <div class="bc-room-detail">
+                            <input type="date" name="checkin_dates[]" class="bc-input" style="max-width: 150px; display: inline-block; margin-right: 10px;" required>
+                            <input type="date" name="checkout_dates[]" class="bc-input" style="max-width: 150px; display: inline-block;" required>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        closeRoomModal();
+    }
+</script>
+
+@vite(['resources/css/admin/booking-create.css'])
+@endsection
+
+
+    <main style="flex:1; display:flex; flex-direction:column;">
+
+        {{-- HEADER CHUNG --}}
+        <header style="height:64px; background:#fff; border-bottom:1px solid #f1f3f7; padding:0 32px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#1e293b;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012 2v14M9 21v-6h6v6"/></svg>
+                16819 · Urban Luxe Hotel
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div style="text-align:right;">
+                    <div style="font-size:13px; font-weight:700; color:#1e293b;">Admin Đức</div>
+                    <div style="font-size:11px; color:#94a3b8;">Quản lý cấp cao</div>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Admin+Duc&background=2a3f8a&color=fff" style="width:36px; height:36px; border-radius:50%;">
+            </div>
+        </header>
+
+        <div class="bc-container">
             
             <div class="bc-left-col">
                 

@@ -14,28 +14,32 @@ class FloorService implements FloorServiceInterface
         $this->floorRepository = $floorRepository;
     }
 
-    public function getAllFloors()
+    public function getAll()
     {
         return $this->floorRepository->getAll();
     }
 
-    public function createFloor(array $data)
+    public function create(array $data)
     {
         return $this->floorRepository->create($data);
     }
 
-    public function findFloorById($id)
+    public function findById($id)
     {
         return $this->floorRepository->findById($id);
     }
 
-    public function updateFloor($id, array $data)
+    public function update($id, array $data)
     {
         return $this->floorRepository->update($id, $data);
     }
 
-    public function deleteFloor($id)
+    public function delete($id)
     {
         return $this->floorRepository->delete($id);
+    }
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        throw new \Exception('Not implemented');
     }
 }

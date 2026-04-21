@@ -2,11 +2,8 @@
 
 namespace App\Services\Contracts;
 
-interface FloorServiceInterface
+interface FloorServiceInterface extends BaseServiceInterface
 {
-    public function getAllFloors();
-    public function createFloor(array $data);
-    public function findFloorById($id);
-    public function updateFloor($id, array $data);
-    public function deleteFloor($id);
+    // All CRUD methods inherited from BaseServiceInterface
+    // Additional floor-specific methods can be added here
 }

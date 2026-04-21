@@ -2,11 +2,15 @@
 
 namespace App\Services\Contracts;
 
-interface ServiceServiceInterface
+interface ServiceServiceInterface extends BaseServiceInterface
 {
-    public function getAllServices();
-    public function getServiceById($id);
-    public function createService(array $data);
-    public function updateService($id, array $data);
-    public function deleteService($id);
+    // Thừa kế tất cả các method từ BaseServiceInterface:
+    // - getAll()
+    // - create(array $data)
+    // - findById($id)
+    // - update($id, array $data)
+    // - delete($id)
+    // - getPaginated(array $filters = [], $perPage = 10)
+    
+    // Các method specific cho Service nếu cần...
 }

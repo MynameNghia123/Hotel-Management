@@ -14,28 +14,43 @@ class RoomService implements RoomServiceInterface
         $this->roomRepository = $roomRepository;
     }
 
-    public function getAllRooms()
-    {
-        return $this->roomRepository->getAll();
-    }
-
-    public function createRoom(array $data)
+    // BaseServiceInterface methods
+    public function create(array $data)
     {
         return $this->roomRepository->create($data);
     }
 
-    public function findRoomById($id)
+    public function findById($id)
     {
         return $this->roomRepository->findById($id);
     }
 
-    public function updateRoom($id, array $data)
+    public function update($id, array $data)
     {
         return $this->roomRepository->update($id, $data);
     }
 
-    public function deleteRoom($id)
+    public function delete($id)
     {
         return $this->roomRepository->delete($id);
+    }
+    public function getPaginated(array $filters = [], $perPage = 10)
+    {
+        throw new \Exception('Not implemented');
+    }
+    public function getAll()
+    {
+        return $this->roomRepository->getAll();
+    }
+
+    // Domain-specific methods
+    public function getByRoomType($roomTypeId)
+    {
+        return $this->roomRepository->getByRoomType($roomTypeId);
+    }
+
+    public function getAvailableRooms($checkInDate, $checkOutDate)
+    {
+        return $this->roomRepository->getAvailableRooms($checkInDate, $checkOutDate);
     }
 }

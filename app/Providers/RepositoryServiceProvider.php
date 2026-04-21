@@ -65,5 +65,15 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\FloorRepositoryInterface::class,
             \App\Repositories\Implementations\EloquentFloorRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\BookingRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentBookingRepository::class
+        );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\BookingDetailRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentBookingDetailRepository::class
+        );
     }
 }

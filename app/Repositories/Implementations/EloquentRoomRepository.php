@@ -41,6 +41,25 @@ class EloquentRoomRepository implements RoomRepositoryInterface
         $record = $this->model->findOrFail($id);
         return $record->delete();
     }
+
+    public function getByRoomType($roomTypeId)
+    {
+        return $this->model->with(['roomType', 'floor'])
+            ->where('room_type_id', $roomTypeId)
+            ->get();
+    }
+
+    public function getAvailableRooms($checkInDate, $checkOutDate)
+    {
+        return $this->model->with(['roomType', 'floor'])
+            ->whereNotIn('id', function ($query) use ($checkInDate, $checkOutDate) {
+                $query->select('room_id')
+                    ->from('booking_details')
+                    ->whereRaw('? < checkout_date AND ? > checkin_date', [$checkInDate, $checkOutDate]);
+            })
+            ->get();
+    }
+
     public function getPaginated(array $filters = [], $perPage = 5)
     {
         $query = $this->model->with(['roomType', 'floor']);

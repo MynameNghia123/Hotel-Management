@@ -88,94 +88,106 @@
 
                     <div class="rm-grid">
                         {{-- Có Khách --}}
-                        <div class="rm-card occupied">
-                            <div class="rm-card-header">
-                                <div><span class="rm-card-room">201</span> <span class="rm-card-type">SUI</span></div>
-                                <span class="rm-card-indicator"></span>
+                        <a href="{{ route('admin.room-map.detail', ['id' => 201]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card occupied" style="cursor:pointer;">
+                                <div class="rm-card-header">
+                                    <div><span class="rm-card-room">201</span> <span class="rm-card-type">SUI</span></div>
+                                    <span class="rm-card-indicator"></span>
+                                </div>
+                                <div class="rm-guest-name">Lê Anh Tuấn</div>
+                                <div class="rm-time-row">
+                                    <span style="color:#dc2626; font-weight:700;">▼ 13:52</span>
+                                    <span>1.2tr</span>
+                                </div>
+                                <div class="rm-footer" style="margin-top:8px;">
+                                    <span class="rm-status-badge blue-text" style="background:#eff6ff;">+ P. Khách Hàng</span>
+                                    <span style="font-size:10px; font-weight:700; color:#0f172a;">14h</span>
+                                </div>
                             </div>
-                            <div class="rm-guest-name">Lê Anh Tuấn</div>
-                            <div class="rm-time-row">
-                                <span style="color:#dc2626; font-weight:700;">▼ 13:52</span>
-                                <span>1.2tr</span>
-                            </div>
-                            <div class="rm-footer" style="margin-top:8px;">
-                                <span class="rm-status-badge blue-text" style="background:#eff6ff;">+ P. Khách Hàng</span>
-                                <span style="font-size:10px; font-weight:700; color:#0f172a;">14h</span>
-                            </div>
-                        </div>
+                        </a>
 
                         {{-- Có Khách --}}
-                        <div class="rm-card occupied">
-                            <div class="rm-card-header">
-                                <div><span class="rm-card-room">202</span> <span class="rm-card-type">PRE</span></div>
-                                <span class="rm-card-indicator"></span>
+                        <a href="{{ route('admin.room-map.detail', ['id' => 202]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card occupied" style="cursor:pointer;">
+                                <div class="rm-card-header">
+                                    <div><span class="rm-card-room">202</span> <span class="rm-card-type">PRE</span></div>
+                                    <span class="rm-card-indicator"></span>
+                                </div>
+                                <div class="rm-guest-name">Nguyễn Thùy Chi</div>
+                                <div class="rm-time-row">
+                                    <span>22/02 - 26/02</span>
+                                    <span>2.4tr</span>
+                                </div>
+                                <div class="rm-footer" style="margin-top:8px;">
+                                    <span class="rm-status-badge red-text" style="background:#fef2f2;">▲ 350.000</span>
+                                </div>
                             </div>
-                            <div class="rm-guest-name">Nguyễn Thùy Chi</div>
-                            <div class="rm-time-row">
-                                <span>22/02 - 26/02</span>
-                                <span>2.4tr</span>
-                            </div>
-                            <div class="rm-footer" style="margin-top:8px;">
-                                <span class="rm-status-badge red-text" style="background:#fef2f2;">▲ 350.000</span>
-                            </div>
-                        </div>
+                        </a>
 
                         {{-- Trống --}}
-                        <div class="rm-card empty">
-                            <div class="rm-card-header" style="margin-bottom:0;">
-                                <div><span class="rm-card-room">203</span> <span class="rm-card-type">SUI</span></div>
-                            </div>
-                            <div class="rm-card-body">
-                                <div class="check-circle">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        <a href="{{ route('admin.room-map.available-detail', ['id' => 203]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card empty" style="cursor:pointer;">
+                                <div class="rm-card-header" style="margin-bottom:0;">
+                                    <div><span class="rm-card-room">203</span> <span class="rm-card-type">SUI</span></div>
                                 </div>
-                                <div class="status-text">TRỐNG</div>
+                                <div class="rm-card-body">
+                                    <div class="check-circle">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="status-text">TRỐNG</div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
 
                         {{-- Chuẩn Bị Đi (Checkout) --}}
-                        <div class="rm-card checkout">
-                            <div class="rm-card-header">
-                                <div><span class="rm-card-room">204</span> <span class="rm-card-type">ORD</span></div>
-                                <span class="rm-card-indicator"></span>
+                        <a href="{{ route('admin.room-map.detail', ['id' => 204]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card checkout" style="cursor:pointer;">
+                                <div class="rm-card-header">
+                                    <div><span class="rm-card-room">204</span> <span class="rm-card-type">ORD</span></div>
+                                    <span class="rm-card-indicator"></span>
+                                </div>
+                                <div class="rm-guest-name">Hoàng Gia Bảo</div>
+                                <div class="rm-footer">
+                                    <button class="rm-action-btn btn-orange" style="width:100%;" onclick="event.preventDefault();">
+                                        <svg style="display:inline; margin-bottom:-2px;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                        CHỜ NHẬN
+                                    </button>
+                                </div>
                             </div>
-                            <div class="rm-guest-name">Hoàng Gia Bảo</div>
-                            <div class="rm-footer">
-                                <button class="rm-action-btn btn-orange" style="width:100%;">
-                                    <svg style="display:inline; margin-bottom:-2px;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                                    CHỜ NHẬN
-                                </button>
-                            </div>
-                        </div>
+                        </a>
 
                         {{-- Đã đặt phòng (Booked / Blue) --}}
-                        <div class="rm-card booked">
-                            <div class="rm-card-header">
-                                <div><span class="rm-card-room">205</span> <span class="rm-card-type">FLX</span></div>
-                                <span class="rm-card-indicator"></span>
+                        <a href="{{ route('admin.room-map.incoming-detail', ['id' => 205]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card booked" style="cursor:pointer;">
+                                <div class="rm-card-header">
+                                    <div><span class="rm-card-room">205</span> <span class="rm-card-type">FLX</span></div>
+                                    <span class="rm-card-indicator"></span>
+                                </div>
+                                <div class="rm-guest-name" style="color:#2563eb;">#KSA5YRT HO1N</div>
+                                <div class="rm-guest-name">Trần Khắc Quân</div>
+                                <div class="rm-footer">
+                                    <span style="font-size:11px; font-weight:700; color:#2563eb; display:flex; align-items:center; gap:4px;">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                        Mới - VVIP
+                                    </span>
+                                </div>
                             </div>
-                            <div class="rm-guest-name" style="color:#2563eb;">#KSA5YRT HO1N</div>
-                            <div class="rm-guest-name">Trần Khắc Quân</div>
-                            <div class="rm-footer">
-                                <span style="font-size:11px; font-weight:700; color:#2563eb; display:flex; align-items:center; gap:4px;">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                    Mới - VVIP
-                                </span>
-                            </div>
-                        </div>
+                        </a>
 
                         {{-- Trống --}}
-                        <div class="rm-card empty">
-                            <div class="rm-card-header" style="margin-bottom:0;">
-                                <div><span class="rm-card-room">206</span> <span class="rm-card-type">SUI</span></div>
-                            </div>
-                            <div class="rm-card-body">
-                                <div class="check-circle">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        <a href="{{ route('admin.room-map.available-detail', ['id' => 206]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card empty" style="cursor:pointer;">
+                                <div class="rm-card-header" style="margin-bottom:0;">
+                                    <div><span class="rm-card-room">206</span> <span class="rm-card-type">SUI</span></div>
                                 </div>
-                                <div class="status-text">TRỐNG</div>
+                                <div class="rm-card-body">
+                                    <div class="check-circle">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="status-text">TRỐNG</div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
 
                     </div>
                 </div>
@@ -190,76 +202,86 @@
                     <div class="rm-grid">
 
                         {{-- Dơ (Dirty) --}}
-                        <div class="rm-card dirty">
-                            <div class="rm-card-header">
-                                <div><span class="rm-card-room">401</span> <span class="rm-card-type">DEL</span></div>
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14l6-6-6-6"/></svg>
+                        <a href="{{ route('admin.room-map.detail', ['id' => 401]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card dirty" style="cursor:pointer;">
+                                <div class="rm-card-header">
+                                    <div><span class="rm-card-room">401</span> <span class="rm-card-type">DEL</span></div>
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14l6-6-6-6"/></svg>
+                                </div>
+                                <div class="rm-card-body" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;">
+                                    <div style="font-size:11px; font-weight:800; letter-spacing:0.05em;">🧹 CHỜ DỌN</div>
+                                </div>
+                                <div class="rm-footer">
+                                    <button class="rm-action-btn btn-outline" style="width:100%;" onclick="event.preventDefault();">XÁC NHẬN</button>
+                                </div>
                             </div>
-                            <div class="rm-card-body" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;">
-                                <div style="font-size:11px; font-weight:800; letter-spacing:0.05em;">🧹 CHỜ DỌN</div>
-                            </div>
-                            <div class="rm-footer">
-                                <button class="rm-action-btn btn-outline" style="width:100%;">XÁC NHẬN</button>
-                            </div>
-                        </div>
+                        </a>
 
                         {{-- Sắp Đến (Purple) --}}
-                        <div class="rm-card incoming">
-                            <div class="rm-card-header">
-                                <div><span class="rm-card-room">402</span> <span class="rm-card-type">DEL</span></div>
-                                <span class="rm-card-indicator"></span>
+                        <a href="{{ route('admin.room-map.incoming-detail', ['id' => 402]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card incoming" style="cursor:pointer;">
+                                <div class="rm-card-header">
+                                    <div><span class="rm-card-room">402</span> <span class="rm-card-type">DEL</span></div>
+                                    <span class="rm-card-indicator"></span>
+                                </div>
+                                <div class="rm-guest-name" style="color:#9333ea; font-size:11px; margin-bottom:0;">JAM-DLXUX-4V</div>
+                                <div class="rm-guest-name">Lý Minh Quân</div>
+                                <div class="rm-footer">
+                                    <span style="font-size:11px; font-weight:700; color:#9333ea; display:flex; align-items:center; gap:4px;">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        Đã Dọn Xong
+                                    </span>
+                                </div>
                             </div>
-                            <div class="rm-guest-name" style="color:#9333ea; font-size:11px; margin-bottom:0;">JAM-DLXUX-4V</div>
-                            <div class="rm-guest-name">Lý Minh Quân</div>
-                            <div class="rm-footer">
-                                <span style="font-size:11px; font-weight:700; color:#9333ea; display:flex; align-items:center; gap:4px;">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                    Đã Dọn Xong
-                                </span>
-                            </div>
-                        </div>
+                        </a>
 
                         {{-- Khách đang ở (Có Trả phòng) --}}
-                        <div class="rm-card occupied">
-                            <div class="rm-card-header">
-                                <div><span class="rm-card-room">403</span> <span class="rm-card-type">DEL</span></div>
-                                <span class="rm-card-indicator"></span>
+                        <a href="{{ route('admin.room-map.detail', ['id' => 403]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card occupied" style="cursor:pointer;">
+                                <div class="rm-card-header">
+                                    <div><span class="rm-card-room">403</span> <span class="rm-card-type">DEL</span></div>
+                                    <span class="rm-card-indicator"></span>
+                                </div>
+                                <div class="rm-guest-name">Bly... Donit</div>
+                                <div class="rm-time-row">
+                                    <span style="color:#dc2626; text-decoration:line-through;">Đoán Đi - 11:30</span>
+                                </div>
+                                <div class="rm-footer" style="margin-top:8px;">
+                                    <span class="rm-status-badge blue-text" style="background:#eff6ff;">+ P. Khách Hàng</span>
+                                    <span style="font-size:10px; font-weight:700; color:#0f172a;">12:00</span>
+                                </div>
                             </div>
-                            <div class="rm-guest-name">Bly... Donit</div>
-                            <div class="rm-time-row">
-                                <span style="color:#dc2626; text-decoration:line-through;">Đoán Đi - 11:30</span>
-                            </div>
-                            <div class="rm-footer" style="margin-top:8px;">
-                                <span class="rm-status-badge blue-text" style="background:#eff6ff;">+ P. Khách Hàng</span>
-                                <span style="font-size:10px; font-weight:700; color:#0f172a;">12:00</span>
-                            </div>
-                        </div>
+                        </a>
 
                         {{-- Trống --}}
-                        <div class="rm-card empty">
-                            <div class="rm-card-header" style="margin-bottom:0;">
-                                <div><span class="rm-card-room">404</span> <span class="rm-card-type">PRE</span></div>
-                            </div>
-                            <div class="rm-card-body">
-                                <div class="check-circle">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        <a href="{{ route('admin.room-map.available-detail', ['id' => 404]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card empty" style="cursor:pointer;">
+                                <div class="rm-card-header" style="margin-bottom:0;">
+                                    <div><span class="rm-card-room">404</span> <span class="rm-card-type">PRE</span></div>
                                 </div>
-                                <div class="status-text">TRỐNG</div>
+                                <div class="rm-card-body">
+                                    <div class="check-circle">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="status-text">TRỐNG</div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
 
                         {{-- Trống --}}
-                        <div class="rm-card empty">
-                            <div class="rm-card-header" style="margin-bottom:0;">
-                                <div><span class="rm-card-room">405</span> <span class="rm-card-type">DEL</span></div>
-                            </div>
-                            <div class="rm-card-body">
-                                <div class="check-circle">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        <a href="{{ route('admin.room-map.available-detail', ['id' => 405]) }}" style="text-decoration:none; color:inherit;">
+                            <div class="rm-card empty" style="cursor:pointer;">
+                                <div class="rm-card-header" style="margin-bottom:0;">
+                                    <div><span class="rm-card-room">405</span> <span class="rm-card-type">DEL</span></div>
                                 </div>
-                                <div class="status-text">TRỐNG</div>
+                                <div class="rm-card-body">
+                                    <div class="check-circle">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="status-text">TRỐNG</div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                 </div>

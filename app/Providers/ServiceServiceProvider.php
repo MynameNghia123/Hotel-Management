@@ -75,5 +75,15 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\RoomMapServiceInterface::class,
             \App\Services\Implementations\RoomMapService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\BookingServiceInterface::class,
+            \App\Services\Implementations\BookingService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Contracts\BookingDetailServiceInterface::class,
+            \App\Services\Implementations\BookingDetailService::class
+        );
     }
 }

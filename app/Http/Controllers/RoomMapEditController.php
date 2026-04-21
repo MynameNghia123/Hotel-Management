@@ -32,12 +32,13 @@ class RoomMapEditController extends Controller
         if ($selectedTypeId) {
             $selectedType = $this->roomTypeService->findWithDetails($selectedTypeId);
         } else {
-            $selectedType = $roomTypes->first();
+            $selectedType = null;
         }
 
-        $floors = $this->floorService->getAllFloors();
+        $floors = $this->floorService->getAll();
+        $rooms = $this->roomService->getAll();
 
-        return view('admin.room-map-edit.index', compact('roomTypes', 'selectedType', 'floors'));
+        return view('admin.room-map-edit.index', compact('roomTypes', 'selectedType', 'floors', 'rooms'));
     }
 
     public function createFloor()
@@ -51,7 +52,7 @@ class RoomMapEditController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $this->floorService->createFloor($data);
+        $this->floorService->create($data);
 
         return redirect()->route('admin.room-map-edit.index')->with('success', 'Thêm tầng thành công!');
     }
@@ -62,7 +63,7 @@ class RoomMapEditController extends Controller
         $floorId = $request->query('floor_id');
         $typeId = $request->query('type_id');
         
-        $floors = $this->floorService->getAllFloors();
+        $floors = $this->floorService->getAll();
         $roomTypes = \App\Models\RoomType::all();
         
         return view('admin.room-map-edit.create-room', compact('floors', 'roomTypes', 'floorId', 'typeId'));
@@ -81,26 +82,26 @@ class RoomMapEditController extends Controller
             $data['status'] = 'available'; // Default status
         }
 
-        $this->roomService->createRoom($data);
+        $this->roomService->create($data);
 
         return redirect()->route('admin.room-map-edit.index', ['type_id' => $data['room_type_id']])->with('success', 'Thêm phòng thành công!');
     }
 
     public function destroyFloor($id)
     {
-        $floor = $this->floorService->findFloorById($id);
+        $floor = $this->floorService->findById($id);
         if ($floor->rooms()->count() > 0) {
             return redirect()->route('admin.room-map-edit.index')
                 ->with('error', 'Không thể xóa tầng này vì vẫn còn phòng bên trong. Vui lòng xóa hết phòng trước.');
         }
 
-        $this->floorService->deleteFloor($id);
+        $this->floorService->delete($id);
         return redirect()->route('admin.room-map-edit.index')->with('success', 'Xóa tầng thành công!');
     }
 
     public function destroyRoom($id)
     {
-        $this->roomService->deleteRoom($id);
+        $this->roomService->delete($id);
         return redirect()->back()->with('success', 'Xóa phòng thành công!');
     }
 }

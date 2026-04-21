@@ -41,6 +41,20 @@
         {{-- MAIN CONTENT --}}
         <div style="flex:1; overflow-y:auto; padding:28px 32px; display:flex; flex-direction:column; background:#f8fafc;">
             
+            {{-- FLASH MESSAGES --}}
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-dismissible" style="margin-bottom: 16px;">
+                    {{ $message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            @if ($message = Session::get('error'))
+                <div class="alert alert-danger alert-dismissible" style="margin-bottom: 16px;">
+                    {{ $message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            
             <div class="bk-container">
                 <div class="bk-header">
                     <div>
@@ -56,22 +70,22 @@
                 </div>
 
                 <div class="bk-toolbar">
-                    <div class="bk-search">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" placeholder="Tìm theo Tên khách / Mã đặt phòng...">
-                    </div>
-                    <div class="bk-filters">
-                        <select class="bk-select">
-                            <option>Tất cả trạng thái</option>
-                            <option>Đã xác nhận</option>
-                            <option>Đang ở</option>
-                            <option>Đã hủy</option>
-                            <option>Chờ xác nhận</option>
-                        </select>
-                        <button class="bk-btn-icon">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-                        </button>
-                    </div>
+                    <form method="get" class="d-flex gap-3" style="flex: 1;">
+                        <div class="bk-search">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Tìm theo Tên khách / Mã đặt phòng...">
+                        </div>
+                        <div class="bk-filters">
+                            <select class="bk-select" name="status" onchange="this.form.submit()">
+                                <option value="">Tất cả trạng thái ({{ $bookings->total() }})</option>
+                                @foreach ($statuses as $status)
+                                    <option value="{{ $status->value }}" {{ request('status') === $status->value ? 'selected' : '' }}>
+                                        {{ $status->label() }} ({{ $statusCounts[$status->value] ?? 0 }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
                 </div>
 
                 <div class="bk-table-wrapper">
@@ -80,7 +94,7 @@
                             <tr>
                                 <th>MÃ ĐẶT PHÒNG</th>
                                 <th>KHÁCH HÀNG</th>
-                                <th>LOẠI PHÒNG</th>
+                                <th>PHÒNG</th>
                                 <th>CHECK-IN</th>
                                 <th>CHECK-OUT</th>
                                 <th>TỔNG TIỀN</th>
@@ -89,72 +103,89 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="bk-id">#UL-280424</td>
-                                <td>
-                                    <div class="bk-customer-name">Nguyễn Văn An</div>
-                                    <div class="bk-customer-phone">090xxxx123</div>
-                                </td>
-                                <td class="bk-room-type">Urban Suite King</td>
-                                <td class="bk-date">25/05/2024</td>
-                                <td class="bk-date">27/05/2024</td>
-                                <td class="bk-price">5,000,000 đ</td>
-                                <td><span class="bk-badge confirmed">Đã xác nhận</span></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="bk-id">#UL-280425</td>
-                                <td>
-                                    <div class="bk-customer-name">Trần Thị Bích</div>
-                                    <div class="bk-customer-phone">091xxxx456</div>
-                                </td>
-                                <td class="bk-room-type">Urban Deluxe Twin</td>
-                                <td class="bk-date">24/05/2024</td>
-                                <td class="bk-date">26/05/2024</td>
-                                <td class="bk-price">3,600,000 đ</td>
-                                <td><span class="bk-badge staying">Đang ở</span></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="bk-id">#UL-280426</td>
-                                <td>
-                                    <div class="bk-customer-name">Lê Hoàng Nam</div>
-                                    <div class="bk-customer-phone">093xxxx789</div>
-                                </td>
-                                <td class="bk-room-type">Luxe Executive</td>
-                                <td class="bk-date">20/05/2024</td>
-                                <td class="bk-date">22/05/2024</td>
-                                <td class="bk-price">6,400,000 đ</td>
-                                <td><span class="bk-badge cancelled">Đã hủy</span></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="bk-id">#UL-280427</td>
-                                <td>
-                                    <div class="bk-customer-name">Phạm Minh Tuấn</div>
-                                    <div class="bk-customer-phone">098xxxx555</div>
-                                </td>
-                                <td class="bk-room-type">Urban Family Studio</td>
-                                <td class="bk-date">26/05/2024</td>
-                                <td class="bk-date">28/05/2024</td>
-                                <td class="bk-price">13,500,000 đ</td>
-                                <td><span class="bk-badge pending">Chờ xác nhận</span></td>
-                                <td></td>
-                            </tr>
+                            @forelse ($bookings as $booking)
+                                <tr>
+                                    <td class="bk-id">#{{ $booking->id }}</td>
+                                    <td>
+                                        <div class="bk-customer-name">{{ $booking->customer->name }}</div>
+                                        <div class="bk-customer-phone">{{ $booking->customer->phone ?? 'N/A' }}</div>
+                                    </td>
+                                    <td class="bk-room-type">
+                                        @if ($booking->bookingDetails->count() > 0)
+                                            {{ $booking->bookingDetails->map(fn($d) => $d->room->room_number)->join(', ') }}
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td class="bk-date">
+                                        @if ($booking->bookingDetails->first())
+                                            {{ $booking->bookingDetails->first()->checkin_date->format('d/m/Y') }}
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td class="bk-date">
+                                        @if ($booking->bookingDetails->first())
+                                            {{ $booking->bookingDetails->first()->checkout_date->format('d/m/Y') }}
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td class="bk-price">{{ number_format($booking->final_amount, 0, ',', '.') }} đ</td>
+                                    <td>
+                                        @php
+                                            $statusEnum = \App\Enums\BookingStatus::from($booking->status);
+                                            $badgeClass = match($statusEnum->value) {
+                                                'pending' => 'pending',
+                                                'confirmed' => 'confirmed',
+                                                'occupied' => 'staying',
+                                                'cancelled' => 'cancelled',
+                                                default => 'pending'
+                                            };
+                                        @endphp
+                                        <span class="bk-badge {{ $badgeClass }}">{{ $statusEnum->label() }}</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.bookings.show', $booking->id) }}" class="bk-btn-action" title="Xem chi tiết">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 40px; color: #94a3b8;">
+                                        Không có đặt phòng nào
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
                 <div class="bk-footer">
                     <div class="bk-footer-text">
-                        Hiển thị 1 đến 4 trên 48 đặt lịch
+                        Hiển thị {{ ($bookings->currentPage() - 1) * $bookings->perPage() + 1 }} đến {{ min($bookings->currentPage() * $bookings->perPage(), $bookings->total()) }} trên {{ $bookings->total() }} đặt lịch
                     </div>
                     <div class="bk-pagination">
-                        <button class="bk-page-btn border disabled">&lt;</button>
-                        <button class="bk-page-btn active">1</button>
-                        <button class="bk-page-btn">2</button>
-                        <button class="bk-page-btn">3</button>
-                        <button class="bk-page-btn border">&gt;</button>
+                        @if ($bookings->onFirstPage())
+                            <button class="bk-page-btn border disabled">&lt;</button>
+                        @else
+                            <a href="{{ $bookings->previousPageUrl() }}" class="bk-page-btn border">&lt;</a>
+                        @endif
+
+                        @for ($i = 1; $i <= $bookings->lastPage(); $i++)
+                            @if ($i == $bookings->currentPage())
+                                <button class="bk-page-btn active">{{ $i }}</button>
+                            @elseif ($i >= $bookings->currentPage() - 1 && $i <= $bookings->currentPage() + 1)
+                                <a href="{{ $bookings->url($i) }}" class="bk-page-btn">{{ $i }}</a>
+                            @endif
+                        @endfor
+
+                        @if ($bookings->hasMorePages())
+                            <a href="{{ $bookings->nextPageUrl() }}" class="bk-page-btn border">&gt;</a>
+                        @else
+                            <button class="bk-page-btn border disabled">&gt;</button>
+                        @endif
                     </div>
                 </div>
             </div>

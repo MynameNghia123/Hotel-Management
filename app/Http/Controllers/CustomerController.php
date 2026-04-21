@@ -18,7 +18,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $perPage = $this->getPerPage(10);
-        $filters = $request->get('filter', []);
+        $filters = $request->with('filter', []);
        
         $countries = $this->customerService->getDistinctCountries();
         $customers = $this->customerService->getPaginated($filters, $perPage);

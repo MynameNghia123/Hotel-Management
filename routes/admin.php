@@ -9,7 +9,7 @@ use App\Http\Controllers\ServiceGroupController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\EquipmentCategoryController;
-
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AuthAdminController;
@@ -41,8 +41,8 @@ Route::group(['prefix' => 'room-map', 'as' => 'room-map.'], function () {
         return view('admin.room-map.index');
     })->name('index');
 
-    Route::get('/detail', function () {
-        return view('admin.room-map.detail');
+    Route::get('/detail/{id}', function ($id) {
+        return view('admin.room-map.detail', ['roomId' => $id]);
     })->name('detail');
 
     Route::post('/detail/add-service', function () {
@@ -53,13 +53,13 @@ Route::group(['prefix' => 'room-map', 'as' => 'room-map.'], function () {
         return view('admin.room-map.invoice');
     })->name('invoice');
 
-    Route::get('/incoming', function () {
-        return view('admin.room-map.incoming-detail');
-    })->name('incoming');
+    Route::get('/incoming/{id}', function ($id) {
+        return view('admin.room-map.incoming-detail', ['roomId' => $id]);
+    })->name('incoming-detail');
 
-    Route::get('/available', function () {
-        return view('admin.room-map.available-detail');
-    })->name('available');
+    Route::get('/available/{id}', function ($id) {
+        return view('admin.room-map.available-detail', ['roomId' => $id]);
+    })->name('available-detail');
 });
 
 // ============== Vận hành - Room Map Edit ==============
@@ -84,13 +84,11 @@ Route::group(['prefix' => 'room-map-edit', 'as' => 'room-map-edit.'], function (
 
 // ============== Đặt phòng ==============
 Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
-    Route::get('/', function () {
-        return view('admin.bookings.index');
-    })->name('index');
-
-    Route::get('/create', function () {
-        return view('admin.bookings.create');
-    })->name('create');
+    Route::get('/', [BookingController::class, 'index'])->name('index');
+    Route::get('/create', [BookingController::class, 'create'])->name('create');
+    Route::post('/', [BookingController::class, 'store'])->name('store');
+    Route::get('/{id}', [BookingController::class, 'show'])->name('show');
+    Route::patch('/{id}/status', [BookingController::class, 'updateStatus'])->name('updateStatus');
 });
 
 // ============== Quản lý phòng ==============
