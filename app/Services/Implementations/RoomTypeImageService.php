@@ -112,7 +112,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
             $path = $file->storeAs(self::PERMANENT_DIR, $filename, 'public');
 
             // Create image record
-            $imageUrl = Storage::disk('public')->url($path);
+            $imageUrl = '/storage/' . $path;
             $maxOrder = RoomTypeImage::where('room_type_id', $roomTypeId)->max('order') ?? 0;
 
             $image = RoomTypeImage::create([
@@ -203,7 +203,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
                     // Create image record
                     RoomTypeImage::create([
                         'room_type_id' => $roomTypeId,
-                        'image_url' => Storage::disk('public')->url($permanentPath),
+                        'image_url' => '/storage/' . $permanentPath,
                         'order' => $maxOrder + $index + 1
                     ]);
 
