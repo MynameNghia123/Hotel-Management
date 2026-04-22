@@ -154,6 +154,7 @@ Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
     Route::get('/{id}/edit', [CustomerController::class, 'edit'])->name('edit');
     Route::put('/{id}', [CustomerController::class, 'update'])->name('update');
     Route::delete('/{id}', [CustomerController::class, 'destroy'])->name('destroy');
+    Route::get('/{id}', [CustomerController::class, 'show'])->name('show');
 });
 
 

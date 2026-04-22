@@ -79,12 +79,12 @@ class EloquentBookingRepository implements BookingRepositoryInterface
     public function checkRoomAvailability($roomId, $checkInDate, $checkOutDate)
     {
         return !$this->model
-            ->whereHas('details', function($q) use ($roomId) {
+            ->whereHas('bookingDetails', function($q) use ($roomId) {
                 $q->where('room_id', $roomId);
             })
             ->where(function($q) use ($checkInDate, $checkOutDate) {
-                $q->whereBetween('check_in_date', [$checkInDate, $checkOutDate])
-                  ->orWhereBetween('check_out_date', [$checkInDate, $checkOutDate]);
+                $q->where('check_in_date', '<', $checkOutDate)
+                  ->where('check_out_date', '>', $checkInDate);
             })
             ->whereIn('status', ['confirmed', 'occupied'])
             ->exists();

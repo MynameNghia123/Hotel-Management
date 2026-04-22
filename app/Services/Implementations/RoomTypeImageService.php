@@ -49,7 +49,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
             return [
                 'success' => true,
                 'id' => $imageId,
-                'path' => Storage::disk('public')->url($path)
+                'path' => '/storage/' . $path
             ];
         } catch (\Exception $e) {
             Log::error('RoomTypeImageService::uploadTempImage - ' . $e->getMessage(), [
