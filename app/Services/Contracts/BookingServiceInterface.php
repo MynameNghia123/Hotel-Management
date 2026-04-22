@@ -23,8 +23,19 @@ interface BookingServiceInterface extends BaseServiceInterface
      * Update booking status with validation
      */
     public function updateStatus($bookingId, $newStatus);
+
     /**
      * Get all statuses with their booking counts
      */
     public function getStatusCounts();
+
+    /**
+     * Prepare data for booking creation form
+     */
+    public function prepareDataForCreate();
+
+    /**
+     * Get booking details with related rooms
+     */
+    public function getBookingWithDetails($bookingId);
 }

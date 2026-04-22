@@ -16,7 +16,7 @@ class EloquentRoomRepository implements RoomRepositoryInterface
 
     public function getAll()
     {
-        return $this->model->with(['roomType', 'floor'])->get();
+        return $this->model->with(['roomType', 'floor'])->orderBy('name')->get();
     }
 
     public function create(array $data)

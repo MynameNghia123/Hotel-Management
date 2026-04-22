@@ -46,4 +46,9 @@ class CustomerService implements CustomerServiceInterface
     {
         return $this->customerRepository->getPaginated($filters, $perPage);
     }
+
+    public function findByEmail($email)
+    {
+        return $this->customerRepository->findByEmail($email);
+    }
 }

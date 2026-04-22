@@ -20,10 +20,10 @@ class ServiceController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 10);
-        $filters = $request->input('filter', []);
-
-        $services = $this->serviceService->getPaginated($filters, $perPage);
+        $services = $this->serviceService->getPaginated(
+            $request->input('filter', []), 
+            $request->input('per_page', 10)
+        );
 
         $this->validatePageNumber($services->currentPage(), $services->lastPage(), 'abort');
 
@@ -49,9 +49,10 @@ class ServiceController extends Controller
 
     public function edit($id)
     {
-        $service       = $this->serviceService->findById($id);
-        $serviceGroups = $this->serviceGroupService->getAll();
-        return view('admin.services.edit', compact('service', 'serviceGroups'));
+        return view('admin.services.edit', [
+            'service' => $this->serviceService->findById($id),
+            'serviceGroups' => $serviceGroups
+        ]);
     }
 
     public function update(UpdateServiceRequest $request, $id)
@@ -73,4 +74,4 @@ class ServiceController extends Controller
             return redirect()->back()->with('error', 'Lỗi: ' . $e->getMessage());
         }
     }
-    }
+}

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\Contracts\EquipmentServiceInterface;
-use App\Services\Contracts\EquipmentCategoryServiceInterface;
 use App\Http\Requests\Equipment\StoreEquipmentRequest;
 use App\Http\Requests\Equipment\UpdateEquipmentRequest;
 use App\Http\Traits\PaginationTrait;
@@ -14,25 +13,29 @@ class EquipmentController extends Controller
     use PaginationTrait;
 
     public function __construct(
-        private readonly EquipmentServiceInterface $equipmentService,
-        private readonly EquipmentCategoryServiceInterface $equipmentCategoryService
+        private readonly EquipmentServiceInterface $equipmentService
     ) {}
 
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', $this->getPerPage(10));
         $filters = $request->input('filter', []);
-        
-        $categories = $this->equipmentCategoryService->getAll();
-        $equipments = $this->equipmentService->getPaginated($filters, $perPage);
+
+        [
+            'equipments' => $equipments,
+            'categories' => $categories,
+        ] = $this->equipmentService->prepareDataForIndex($filters, $perPage);
+
         $this->validatePageNumber($equipments->currentPage(), $equipments->lastPage(), 'abort');
+
         return view('admin.equipment.index', compact('equipments', 'categories'));
     }
 
     public function create()
     {
-        $categories = $this->equipmentCategoryService->getAll();
-        return view('admin.equipment.create', compact('categories'));
+        return view('admin.equipment.create',[
+            'categories' => $categories,
+        ] = $this->equipmentService->prepareDataForCreate());
     }
 
     public function store(StoreEquipmentRequest $request)
@@ -47,9 +50,10 @@ class EquipmentController extends Controller
 
     public function edit($id)
     {
-        $equipment  = $this->equipmentService->findById($id);
-        $categories = $this->equipmentCategoryService->getAll();
-        return view('admin.equipment.edit', compact('equipment', 'categories'));
+        return view('admin.equipment.edit', [
+            'equipment'  => $equipment,
+            'categories' => $categories,
+        ] = $this->equipmentService->prepareDataForEdit($id));
     }
 
     public function update(UpdateEquipmentRequest $request, $id)

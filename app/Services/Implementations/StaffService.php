@@ -7,12 +7,9 @@ use Illuminate\Support\Facades\Hash;
 
 class StaffService implements StaffServiceInterface
 {
-    protected $staffRepository;
-
-    public function __construct(StaffRepositoryInterface $staffRepository)
-    {
-        $this->staffRepository = $staffRepository;
-    }
+    public function __construct(
+        private readonly StaffRepositoryInterface $staffRepository
+    ) {}
 
     public function getAll()
     {
@@ -50,5 +47,14 @@ class StaffService implements StaffServiceInterface
     public function getPaginated(array $filters = [], $perPage = 15)
     {
         return $this->staffRepository->getPaginated($filters, $perPage);
+    }
+
+    public function toggleStatus($id, $isActive): string
+    {
+        $this->staffRepository->update($id, ['is_active' => $isActive]);
+
+        return $isActive
+            ? 'Kích hoạt nhân viên thành công!'
+            : 'Vô hiệu hóa nhân viên thành công!';
     }
 }

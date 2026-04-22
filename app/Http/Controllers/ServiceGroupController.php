@@ -17,21 +17,15 @@ class ServiceGroupController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 10);
-        $filters = $request->input('filter', []);
-
-        $serviceGroups = $this->serviceGroupService->getPaginated($filters, $perPage);
+        $serviceGroups = $this->serviceGroupService->getPaginated(
+            $request->input('filter', []),
+            $request->input('per_page', 10)
+        );
 
         $this->validatePageNumber($serviceGroups->currentPage(), $serviceGroups->lastPage(), 'abort');
 
         return view('admin.service-types.index', compact('serviceGroups'));
     }
-    // public function index() 
-    // {   
-
-    //     $serviceGroups = $this->serviceGroupService->getAllServiceGroups();
-    //     return view('admin.service-types.index', compact('serviceGroups'));
-    // }
 
     public function create()
     {

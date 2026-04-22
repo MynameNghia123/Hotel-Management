@@ -4,5 +4,9 @@ namespace App\Services\Contracts;
 
 interface StaffServiceInterface extends BaseServiceInterface
 {
-    // Các phương thức đặc thù cho Staff có thể được thêm vào đây
-}
+    /**
+     * Toggle active status of a staff member.
+     * Returns the success message string.
+     */
+    public function toggleStatus($id, $isActive): string;
+}

@@ -4,11 +4,15 @@ namespace App\Services\Implementations;
 
 use App\Repositories\Contracts\RoomTypeRepositoryInterface;
 use App\Services\Contracts\RoomTypeServiceInterface;
+use App\Services\Contracts\AmenityServiceInterface;
+use App\Services\Contracts\EquipmentServiceInterface;
 
 class RoomTypeService implements RoomTypeServiceInterface
 {
     public function __construct(
-        protected RoomTypeRepositoryInterface $roomTypeRepository
+        protected RoomTypeRepositoryInterface $roomTypeRepository,
+        protected AmenityServiceInterface     $amenityService,
+        protected EquipmentServiceInterface   $equipmentService
     ) {}
 
     /**
@@ -117,5 +121,26 @@ class RoomTypeService implements RoomTypeServiceInterface
         }
 
         return $roomType->equipments()->sync($syncData);
+    }
+
+    public function prepareDataForCreate(): array
+    {
+        return [
+            'allAmenities'  => $this->amenityService->getAll(),
+            'allEquipments' => $this->equipmentService->getAll(),
+        ];
+    }
+
+    public function prepareDataForEdit($id): array
+    {
+        $roomType = $this->findWithDetails($id);
+
+        return array_merge(
+            $this->formatForEditForm($roomType),
+            [
+                'allAmenities'  => $this->amenityService->getAll(),
+                'allEquipments' => $this->equipmentService->getAll(),
+            ]
+        );
     }
 }

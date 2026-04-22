@@ -4,12 +4,14 @@ namespace App\Services\Implementations;
 
 use App\Repositories\Contracts\RoomMapRepositoryInterface;
 use App\Services\Contracts\RoomMapServiceInterface;
+use App\Services\Contracts\RoomTypeServiceInterface;
 use Exception;
 
 class RoomMapService implements RoomMapServiceInterface
 {
     public function __construct(
-        protected RoomMapRepositoryInterface $roomMapRepository
+        protected RoomMapRepositoryInterface $roomMapRepository,
+        protected RoomTypeServiceInterface   $roomTypeService
     ) {}
 
     /**
@@ -160,5 +162,31 @@ class RoomMapService implements RoomMapServiceInterface
     {
         $rooms = $this->roomMapRepository->getRoomsByFloor($floorId);
         return $rooms->count() > 0;
+    }
+
+    public function prepareDataForIndex(): array
+    {
+        return [
+            'floors'    => $this->getAllFloors(),
+            'rooms'     => $this->getAllRooms(),
+            'roomTypes' => $this->roomTypeService->getAll(),
+        ];
+    }
+
+    public function prepareDataForCreateRoom(): array
+    {
+        return [
+            'floors'    => $this->getAllFloors(),
+            'roomTypes' => $this->roomTypeService->getAll(),
+        ];
+    }
+
+    public function prepareDataForEditRoom($id): array
+    {
+        return [
+            'room'      => $this->findRoomById($id),
+            'floors'    => $this->getAllFloors(),
+            'roomTypes' => $this->roomTypeService->getAll(),
+        ];
     }
 }

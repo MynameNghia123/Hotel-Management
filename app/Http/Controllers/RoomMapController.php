@@ -3,56 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Services\Contracts\RoomMapServiceInterface;
-use App\Services\Contracts\RoomTypeServiceInterface;
 use App\Http\Requests\RoomMap\StoreFloorRequest;
 use App\Http\Requests\RoomMap\UpdateFloorRequest;
 use App\Http\Requests\RoomMap\StoreRoomRequest;
 use App\Http\Requests\RoomMap\UpdateRoomRequest;
 
-/**
- * RoomMapController
- * Manages Room Map (Floor and Room management)
- * Handles: index, create/store/edit/update/delete for both Floor and Room
- */
 class RoomMapController extends Controller
 {
     public function __construct(
-        protected RoomMapServiceInterface $roomMapService,
-        protected RoomTypeServiceInterface $roomTypeService
+        protected RoomMapServiceInterface $roomMapService
     ) {}
 
-    /**
-     * Display the room map with all floors and rooms
-     */
+    // ============================================
+    // ROOM MAP
+    // ============================================
+
     public function index()
     {
-        $floors = $this->roomMapService->getAllFloors();
-        $rooms = $this->roomMapService->getAllRooms();
-        $roomTypes = $this->roomTypeService->getAll();
-
-        return view('admin.room-map-edit.index', compact('floors', 'rooms', 'roomTypes'));
+        return view('admin.room-map-edit.index',[
+            'floors'    => $floors,
+            'rooms'     => $rooms,
+            'roomTypes' => $roomTypes,
+        ] = $this->roomMapService->prepareDataForIndex());
     }
 
     // ============================================
-    // 🏢 FLOOR METHODS
+    // FLOOR
     // ============================================
 
-    /**
-     * Show the form for creating a new floor
-     */
     public function createFloor()
     {
         return view('admin.room-map-edit.create-floor');
     }
 
-    /**
-     * Store a newly created floor
-     */
     public function storeFloor(StoreFloorRequest $request)
     {
         try {
-            $validated = $request->validated();
-            $floor = $this->roomMapService->createFloor($validated);
+            $floor = $this->roomMapService->createFloor($request->validated());
 
             return redirect()->route('admin.room-map-edit.index')
                 ->with('success', "Tầng '{$floor->name}' được tạo thành công!");
@@ -61,9 +48,6 @@ class RoomMapController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing a floor
-     */
     public function editFloor($id)
     {
         $floor = $this->roomMapService->findFloorById($id);
@@ -76,14 +60,10 @@ class RoomMapController extends Controller
         return view('admin.room-map-edit.edit-floor', compact('floor'));
     }
 
-    /**
-     * Update the specified floor
-     */
     public function updateFloor(UpdateFloorRequest $request, $id)
     {
         try {
-            $validated = $request->validated();
-            $floor = $this->roomMapService->updateFloor($id, $validated);
+            $floor = $this->roomMapService->updateFloor($id, $request->validated());
 
             return redirect()->route('admin.room-map-edit.index')
                 ->with('success', "Tầng '{$floor->name}' được cập nhật thành công!");
@@ -92,11 +72,6 @@ class RoomMapController extends Controller
         }
     }
 
-    /**
-     * Delete the specified floor
-     * 
-     * KIỂM TRA TRƯỚC: Nếu floor có phòng → không được xóa
-     */
     public function deleteFloor($id)
     {
         try {
@@ -106,9 +81,6 @@ class RoomMapController extends Controller
                 return back()->with('error', 'Không tìm thấy tầng này!');
             }
 
-            // Service sẽ check xem floor có phòng không
-            // Nếu có → throw exception
-            // Nếu không → xóa bình thường
             $this->roomMapService->deleteFloor($id);
 
             return redirect()->route('admin.room-map-edit.index')
@@ -119,28 +91,21 @@ class RoomMapController extends Controller
     }
 
     // ============================================
-    // ROOM METHODS
+    // ROOM
     // ============================================
 
-    /**
-     * Show the form for creating a new room
-     */
     public function createRoom()
     {
-        $floors = $this->roomMapService->getAllFloors();
-        $roomTypes = $this->roomTypeService->getAll();
-
-        return view('admin.room-map-edit.create-room', compact('floors', 'roomTypes'));
+        return view('admin.room-map-edit.create-room',[
+            'floors'    => $floors,
+            'roomTypes' => $roomTypes,
+        ] = $this->roomMapService->prepareDataForCreateRoom());
     }
 
-    /**
-     * Store a newly created room
-     */
     public function storeRoom(StoreRoomRequest $request)
     {
         try {
-            $validated = $request->validated();
-            $room = $this->roomMapService->createRoom($validated);
+            $room = $this->roomMapService->createRoom($request->validated());
 
             return redirect()->route('admin.room-map-edit.index')
                 ->with('success', "Phòng '{$room->name}' được tạo thành công!");
@@ -149,32 +114,26 @@ class RoomMapController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing a room
-     */
     public function editRoom($id)
     {
-        $room = $this->roomMapService->findRoomById($id);
+        [
+            'room'      => $room,
+            'floors'    => $floors,
+            'roomTypes' => $roomTypes,
+        ] = $this->roomMapService->prepareDataForEditRoom($id);
 
         if (!$room) {
             return redirect()->route('admin.room-map-edit.index')
                 ->with('error', 'Không tìm thấy phòng này!');
         }
 
-        $floors = $this->roomMapService->getAllFloors();
-        $roomTypes = $this->roomTypeService->getAll();
-
         return view('admin.room-map-edit.edit-room', compact('room', 'floors', 'roomTypes'));
     }
 
-    /**
-     * Update the specified room
-     */
     public function updateRoom(UpdateRoomRequest $request, $id)
     {
         try {
-            $validated = $request->validated();
-            $room = $this->roomMapService->updateRoom($id, $validated);
+            $room = $this->roomMapService->updateRoom($id, $request->validated());
 
             return redirect()->route('admin.room-map-edit.index')
                 ->with('success', "Phòng '{$room->name}' được cập nhật thành công!");
@@ -183,9 +142,6 @@ class RoomMapController extends Controller
         }
     }
 
-    /**
-     * Delete the specified room
-     */
     public function deleteRoom($id)
     {
         try {

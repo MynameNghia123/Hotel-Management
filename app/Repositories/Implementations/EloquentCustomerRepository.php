@@ -54,4 +54,9 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
                            ->sort()
                            ->values();
     }
+
+    public function findByEmail($email)
+    {
+        return $this->model->where('email', $email)->first();
+    }
 }

@@ -25,7 +25,7 @@ class RoleController extends Controller
     public function index(Request $request): View
     {
         $filters =  $request->input('filter', []);
-        $perPage = $this->getPerPage(10); // Default: 10, Allowed: [5, 10, 20, 50, 100]
+        $perPage = $this->getPerPage(10); 
         $roles = $this->roleService->getPaginated($filters, $perPage);
 
         $this->validatePageNumber($roles->currentPage(), $roles->lastPage(), 'abort');
@@ -50,8 +50,9 @@ class RoleController extends Controller
 
     public function edit($id): View
     {
-        $role = $this->roleService->findById($id);
-        return view('admin.roles.edit', compact('role'));
+        return view('admin.roles.edit',[
+            'role' => $this->roleService->findById($id)
+        ]);
     }
 
     public function update(UpdateRoleRequest $request, $id): RedirectResponse

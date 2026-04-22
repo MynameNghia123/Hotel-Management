@@ -11,23 +11,19 @@ class StaffController extends Controller
 {
     use PaginationTrait;
     
-    protected $staffService;
-    protected $roleService;
-    public function __construct(StaffServiceInterface $staffService, RoleServiceInterface $roleService)
-    {
-        $this->staffService = $staffService;
-        $this->roleService = $roleService;
+    public function __construct(
+        private readonly StaffServiceInterface $staffService,
+        private readonly RoleServiceInterface $roleService
+    ) {
     }
 
     public function index(Request $request)
     {
-        $perPage = $this->getPerPage(10); 
-        $filters = $request->input('filter', []);
-        $staffs = $this->staffService->getPaginated($filters, $perPage);
-        
+        $staffs = $this->staffService->getPaginated(
+            $request->input('filter', []),
+            $request->input('per_page', 10)
+        );
         $this->validatePageNumber($staffs->currentPage(), $staffs->lastPage(), 'abort');
-        
-        // Lấy tất cả các vai trò để dùng trong filter dropdown
         $roles = $this->roleService->getAll();
         
         return view('admin.staffs.index', compact('staffs', 'roles'));
@@ -79,17 +75,9 @@ class StaffController extends Controller
     public function toggleStatus($id)
     {
         try {
-            $isActive = request()->input('is_active');
-            $this->staffService->update($id, ['is_active' => $isActive]);
-            
-            $message = $isActive 
-                ? 'Kích hoạt nhân viên thành công!' 
-                : 'Vô hiệu hóa nhân viên thành công!';
-            
-            return response()->json([
-                'success' => true,
-                'message' => $message
-            ]);
+            $message = $this->staffService->toggleStatus($id, request()->input('is_active'));
+
+            return response()->json(['success' => true, 'message' => $message]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
