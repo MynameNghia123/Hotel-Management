@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+﻿@extends('admin.layouts.master')
 @section('title', 'Phòng trống | Urban Luxe')
 
 @section('content')
@@ -11,25 +11,7 @@
     <main style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
 
         {{-- HEADER CHUNG CỦA ADMIN --}}
-        <header style="height:64px; background:#fff; border-bottom:1px solid #f1f3f7; padding:0 32px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
-            <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#1e293b;">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012 2v14M9 21v-6h6v6"/></svg>
-                16819 · Urban Luxe Hotel
-            </div>
-            <div style="display:flex; align-items:center; gap:18px;">
-                <button style="position:relative; width:36px; height:36px; border:none; background:transparent; display:flex; align-items:center; justify-content:center; color:#94a3b8; cursor:pointer;">
-                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-                    <span style="position:absolute; top:6px; right:6px; width:8px; height:8px; background:#ef4444; border-radius:50%; border:2px solid #fff;"></span>
-                </button>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <div style="text-align:right;">
-                        <div style="font-size:13px; font-weight:700; color:#1e293b;">Admin Đức</div>
-                        <div style="font-size:11px; color:#94a3b8;">Quản lý cấp cao</div>
-                    </div>
-                    <img src="https://ui-avatars.com/api/?name=Admin+Duc&background=2a3f8a&color=fff" style="width:36px; height:36px; border-radius:50%;">
-                </div>
-            </div>
-        </header>
+        @include('admin.layouts.header')
 
         {{-- KHU VỰC CHI TIẾT PHÒNG TRỐNG --}}
         <div class="ra-wrapper">

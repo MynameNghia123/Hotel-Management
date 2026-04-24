@@ -31,27 +31,23 @@ class CreateBookingAction
         if ($validated['customer_id'] ?? null) {
             $customer = $this->customerService->findById($validated['customer_id']);
             if (!$customer) {
-                throw new \Exception('Khách hàng không tồn tại');
+                throw new \Exception('Khách hàng không tồn tại (id=' . $validated['customer_id'] . ')');
             }
         } 
         // Case 2: New customer from form
         else if ($validated['customer_new_email'] ?? null) {
-            $fullName = trim(
-                ($validated['customer_last_name'] ?? '') . ' ' . 
-                ($validated['customer_first_name'] ?? '')
-            );
-            
             $customer = $this->customerService->create([
-                'name' => $fullName ?: 'New Customer',
-                'email' => $validated['customer_new_email'],
-                'phone' => $validated['customer_phone'] ?? null,
+                'first_name' => $validated['customer_first_name'] ?? '',
+                'last_name'  => $validated['customer_last_name'] ?? '',
+                'email'      => $validated['customer_new_email'],
+                'phone_number' => $validated['customer_phone'] ?? null,
+                'country'    => $validated['customer_country'] ?? null,
             ]);
         }
 
         if (!$customer) {
             throw new \Exception('Vui lòng xác thực email khách hàng');
         }
-
         // Create booking
         $bookingData = [
             'customer_id' => $customer->id,

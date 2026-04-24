@@ -16,27 +16,7 @@
     <main class="admin-main">
 
          {{-- HEADER --}}
-        <header class="admin-header">
-            <div class="admin-header-left">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012-2h10a2 2 0 012 2v14M9 21v-6h6v6"/></svg>
-                16819 &middot; Urban Luxe Hotel
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-            <div class="admin-header-right">
-                <button class="admin-header-notification">
-                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-                    <span class="admin-header-notification-dot"></span>
-                </button>
-                <div class="admin-header-divider"></div>
-                <div class="admin-header-user">
-                    <div class="admin-header-user-info">
-                        <div class="admin-header-user-name">Admin Đức</div>
-                        <div class="admin-header-user-role">Quản lý cấp cao</div>
-                    </div>
-                    <img src="https://ui-avatars.com/api/?name=Admin+Duc&background=2a3f8a&color=fff&size=80" class="admin-header-user-avatar" alt="Admin">
-                </div>
-            </div>
-        </header>
+        @include('admin.layouts.header')
 
         {{-- MAIN CONTENT --}}
         <div class="admin-content">

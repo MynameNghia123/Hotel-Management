@@ -30,7 +30,7 @@ class BookingController extends Controller
         );
 
         $this->validatePageNumber($bookings->currentPage(), $bookings->lastPage(), 'abort');
-
+        // dd($bookings);
         return view('admin.bookings.index', [
             'bookings' => $bookings,
             'statuses' => BookingStatus::cases(),

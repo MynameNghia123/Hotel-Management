@@ -1,4 +1,16 @@
 /* bookings.css */
+
+/* Utility classes */
+.d-flex {
+    display: flex;
+}
+
+.d-flex.gap-3 {
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .bk-container {
     background: #fff;
     border-radius: 12px;
@@ -131,6 +143,7 @@
 
 .bk-table-wrapper {
     overflow-x: auto;
+    padding: 0 32px 32px 32px;
 }
 
 .bk-table {

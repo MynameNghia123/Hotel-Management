@@ -5,10 +5,11 @@
 @php
     $statusEnum = \App\Enums\BookingStatus::from($booking->status);
     $badgeColor = match($statusEnum->value) {
-        'pending' => ['bg' => '#fef3c7', 'border' => '#fde68a', 'text' => '#92400e', 'label' => 'Chờ xác nhận'],
+        'pending'   => ['bg' => '#fef3c7', 'border' => '#fde68a', 'text' => '#92400e', 'label' => 'Chờ xác nhận'],
         'confirmed' => ['bg' => '#f0fdf4', 'border' => '#bbf7d0', 'text' => '#15803d', 'label' => 'Đã xác nhận'],
-        'occupied' => ['bg' => '#dbeafe', 'border' => '#bfdbfe', 'text' => '#1e40af', 'label' => 'Đang ở'],
+        'occupied'  => ['bg' => '#dbeafe', 'border' => '#bfdbfe', 'text' => '#1e40af', 'label' => 'Đang ở'],
         'cancelled' => ['bg' => '#fee2e2', 'border' => '#fecaca', 'text' => '#991b1b', 'label' => 'Đã hủy'],
+        default     => ['bg' => '#f1f5f9', 'border' => '#e2e8f0', 'text' => '#475569', 'label' => 'Không rõ'],
     };
     $allowedTransitions = $statusEnum->allowedTransitions();
 @endphp
@@ -20,19 +21,7 @@
     <main style="flex:1; display:flex; flex-direction:column;">
 
         {{-- HEADER CHUNG --}}
-        <header style="height:64px; background:#fff; border-bottom:1px solid #f1f3f7; padding:0 32px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
-            <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#1e293b;">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012 2v14M9 21v-6h6v6"/></svg>
-                16819 · Urban Luxe Hotel
-            </div>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div style="text-align:right;">
-                    <div style="font-size:13px; font-weight:700; color:#1e293b;">Admin Đức</div>
-                    <div style="font-size:11px; color:#94a3b8;">Quản lý cấp cao</div>
-                </div>
-                <img src="https://ui-avatars.com/api/?name=Admin+Duc&background=2a3f8a&color=fff" style="width:36px; height:36px; border-radius:50%;">
-            </div>
-        </header>
+        @include('admin.layouts.header')
 
         <div class="bc-container">
             <div class="bc-left-col">
@@ -67,7 +56,7 @@
                     <div class="bc-form-group">
                         <label class="bc-label">Tên khách hàng</label>
                         <div style="padding:10px 14px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; color:#1e293b; font-weight:600;">
-                            {{ $booking->customer->name }}
+                        {{ trim($booking->customer->last_name . ' ' . $booking->customer->first_name) ?: 'N/A' }}
                         </div>
                     </div>
 
@@ -81,7 +70,7 @@
                         <div class="bc-form-group">
                             <label class="bc-label">Số điện thoại</label>
                             <div style="padding:10px 14px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; color:#1e293b; font-weight:600;">
-                                {{ $booking->customer->phone ?? 'N/A' }}
+                                {{ $booking->customer->phone_number ?? 'N/A' }}
                             </div>
                         </div>
                     </div>
@@ -97,10 +86,10 @@
                     <div class="bc-room-list">
                         @forelse ($bookingDetails as $detail)
                             <div class="bc-room-item" style="background:#f0f7ff; border-color:#e0f2fe; cursor:default;">
-                                <div class="bc-room-num-badge" style="background:#bfdbfe; color:#1e40af;">{{ $detail->room->room_number }}</div>
+                                <div class="bc-room-num-badge" style="background:#bfdbfe; color:#1e40af;">{{ $detail->room->name }}</div>
                                 <div class="bc-room-info">
                                     <div class="bc-room-name">{{ $detail->room->roomType->name ?? 'N/A' }}</div>
-                                    <div class="bc-room-detail">Tầng {{ $detail->room->floor->floor_number ?? 'N/A' }}</div>
+                                    <div class="bc-room-detail">{{ $detail->room->floor->name ?? 'N/A' }}</div>
                                 </div>
                             </div>
                         @empty

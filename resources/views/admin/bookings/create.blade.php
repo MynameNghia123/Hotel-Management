@@ -9,19 +9,7 @@
     <main style="flex:1; display:flex; flex-direction:column;">
 
         {{-- HEADER CHUNG --}}
-        <header style="height:64px; background:#fff; border-bottom:1px solid #f1f3f7; padding:0 32px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
-            <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#1e293b;">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012 2v14M9 21v-6h6v6"/></svg>
-                16819 · Urban Luxe Hotel
-            </div>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div style="text-align:right;">
-                    <div style="font-size:13px; font-weight:700; color:#1e293b;">Admin Đức</div>
-                    <div style="font-size:11px; color:#94a3b8;">Quản lý cấp cao</div>
-                </div>
-                <img src="https://ui-avatars.com/api/?name=Admin+Duc&background=2a3f8a&color=fff" style="width:36px; height:36px; border-radius:50%;">
-            </div>
-        </header>
+        @include('admin.layouts.header')
 
         {{-- MAIN CONTENT --}}
         <div style="flex:1; overflow-y:auto; padding:24px 32px;">
@@ -99,17 +87,13 @@
                                 </div>
                             </div>
 
-                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                            <div style="margin-bottom:16px;">
                                 <div class="bc-form-group">
                                     <label class="bc-label">Tên</label>
                                     <input type="text" id="customerFirstName" name="customer_first_name" class="bc-input" placeholder="Nhập tên khách hàng" value="{{ old('customer_first_name') }}">
                                     @error('customer_first_name')
                                         <span style="color:#ef4444; font-size:12px;">{{ $message }}</span>
                                     @enderror
-                                </div>
-                                <div class="bc-form-group">
-                                    <label class="bc-label">ID tài khoản</label>
-                                    <input type="text" id="customerAccountId" name="customer_account_id" class="bc-input" placeholder="VD: ACC-1234" value="{{ old('customer_account_id') }}">
                                 </div>
                             </div>
 
@@ -135,11 +119,11 @@
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
                             <div class="bc-form-group">
                                 <label class="bc-label">Ngày nhận phòng (Check-in)</label>
-                                <input type="date" id="checkinDate" class="bc-input" value="{{ old('checkin_date', today()->toDateString()) }}">
+                                <input type="date" id="checkinDate" name="checkin_date" class="bc-input" value="{{ old('checkin_date', today()->toDateString()) }}">
                             </div>
                             <div class="bc-form-group">
                                 <label class="bc-label">Ngày trả phòng (Check-out)</label>
-                                <input type="date" id="checkoutDate" class="bc-input" value="{{ old('checkout_date', today()->addDay()->toDateString()) }}">
+                                <input type="date" id="checkoutDate" name="checkout_date" class="bc-input" value="{{ old('checkout_date', today()->addDay()->toDateString()) }}">
                             </div>
                         </div>
                     </div>
@@ -189,6 +173,12 @@
                     <input type="hidden" id="roomIds" name="room_ids" value="">
                     <input type="hidden" id="checkinDates" name="checkin_dates" value="">
                     <input type="hidden" id="checkoutDates" name="checkout_dates" value="">
+
+                    {{-- HIDDEN PAYMENT FIELDS (used by JS updatePaymentSummary) --}}
+                    <input type="hidden" name="total_room_amount" id="hiddenRoomAmount" value="{{ old('total_room_amount', 0) }}">
+                    <input type="hidden" name="total_service_amount" id="hiddenServiceAmount" value="{{ old('total_service_amount', 0) }}">
+                    <input type="hidden" name="surcharge_amount" id="hiddenSurchargeAmount" value="{{ old('surcharge_amount', 0) }}">
+                    <input type="hidden" name="final_amount" id="hiddenFinalAmount" value="{{ old('final_amount', 0) }}">
                 </form>
                 </div>
 
@@ -348,7 +338,8 @@
                 emailSuccess.style.display = 'block';
                 emailError.style.display = 'none';
                 newCustomerForm.style.display = 'none';
-                document.getElementById('customerNameDisplay').textContent = data.customer.name;
+                document.getElementById('customerNameDisplay').textContent = 
+                    ((data.customer.last_name || '') + ' ' + (data.customer.first_name || '')).trim() || data.customer.email;
                 selectedCustomerId.value = data.customer.id;
             } else {
                 // Customer doesn't exist
@@ -505,23 +496,24 @@
     }
     
     function updatePaymentSummary() {
-        const totalRoomAmount = parseFloat(document.querySelector('input[name="total_room_amount"]').value) || 0;
-        const totalServiceAmount = parseFloat(document.querySelector('input[name="total_service_amount"]').value) || 0;
-        const surchargeAmount = parseFloat(document.querySelector('input[name="surcharge_amount"]').value) || 0;
-        const finalAmount = totalRoomAmount + totalServiceAmount + surchargeAmount;
+        const totalRoomAmount    = parseFloat(document.getElementById('hiddenRoomAmount')?.value) || 0;
+        const totalServiceAmount = parseFloat(document.getElementById('hiddenServiceAmount')?.value) || 0;
+        const surchargeAmount    = parseFloat(document.getElementById('hiddenSurchargeAmount')?.value) || 0;
+        const finalAmount        = totalRoomAmount + totalServiceAmount + surchargeAmount;
         
         // Format currency VND
         const formatVND = (value) => {
             return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value).replace('₫', 'đ').trim();
         };
         
-        document.getElementById('sidebarRoomAmount').textContent = formatVND(totalRoomAmount);
-        document.getElementById('sidebarServiceAmount').textContent = formatVND(totalServiceAmount);
+        document.getElementById('sidebarRoomAmount').textContent    = formatVND(totalRoomAmount);
+        document.getElementById('sidebarServiceAmount').textContent  = formatVND(totalServiceAmount);
         document.getElementById('sidebarSurchargeAmount').textContent = formatVND(surchargeAmount);
-        document.getElementById('sidebarTotalAmount').textContent = formatVND(finalAmount);
+        document.getElementById('sidebarTotalAmount').textContent    = formatVND(finalAmount);
         
-        // Update final_amount field
-        document.querySelector('input[name="final_amount"]').value = finalAmount;
+        // Update final_amount hidden field
+        const hiddenFinal = document.getElementById('hiddenFinalAmount');
+        if (hiddenFinal) hiddenFinal.value = finalAmount;
     }
     
     // Listen to payment input changes

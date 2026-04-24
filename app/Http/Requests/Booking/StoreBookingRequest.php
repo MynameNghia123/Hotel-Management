@@ -11,6 +11,39 @@ class StoreBookingRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Decode JSON string fields sent from hidden inputs before validation
+     */
+    protected function prepareForValidation(): void
+    {
+        $merge = [];
+
+        // room_ids: "[1,2,3]" → [1,2,3]
+        if ($this->has('room_ids') && is_string($this->room_ids)) {
+            $decoded = json_decode($this->room_ids, true);
+            $merge['room_ids'] = is_array($decoded) ? $decoded : [];
+        }
+
+        // checkin_dates: "[\"2026-04-24\",...]" → [...]
+        if ($this->has('checkin_dates') && is_string($this->checkin_dates)) {
+            $decoded = json_decode($this->checkin_dates, true);
+            $merge['checkin_dates'] = is_array($decoded) ? $decoded : [];
+        }
+
+        // checkout_dates
+        if ($this->has('checkout_dates') && is_string($this->checkout_dates)) {
+            $decoded = json_decode($this->checkout_dates, true);
+            $merge['checkout_dates'] = is_array($decoded) ? $decoded : [];
+        }
+
+        // booking_date: default to today if not provided
+        if (empty($this->booking_date)) {
+            $merge['booking_date'] = now()->toDateString();
+        }
+
+        $this->merge($merge);
+    }
+
     public function rules(): array
     {
         return [
@@ -24,13 +57,15 @@ class StoreBookingRequest extends FormRequest
             'customer_country' => 'nullable|string|max:255',
             
             // Booking info
-            'booking_date' => 'required|date',
+            'booking_date' => 'nullable|date',
             'staff_id' => 'nullable|exists:staff,id',
             
             // Rooms
-            'room_ids' => 'required|array|min:1',
-            'room_ids.*' => 'exists:rooms,id',
+            'room_ids'        => 'required|array|min:1',
+            'room_ids.*'      => 'exists:rooms,id',
+            'checkin_dates'   => 'nullable|array',
             'checkin_dates.*' => 'nullable|date',
+            'checkout_dates'   => 'nullable|array',
             'checkout_dates.*' => 'nullable|date',
             'hourly_prices.*' => 'nullable|numeric|min:0',
             'daily_prices.*' => 'nullable|numeric|min:0',
