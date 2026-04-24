@@ -6,6 +6,7 @@ class BookingFilter
 {
     public static function apply($query, array $filters = [])
     {
+        // dd($filters);
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function($q) use ($search) {
@@ -13,8 +14,11 @@ class BookingFilter
                     $q->where('id', (int)$search);
                 }
                 $q->orWhereHas('customer', function($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
+                    $like = "%{$search}%";
+
+                    $q->where('email', 'like', $like)
+                      ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", [$like])
+                      ->orWhereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", [$like]);
                 });
             });
         }

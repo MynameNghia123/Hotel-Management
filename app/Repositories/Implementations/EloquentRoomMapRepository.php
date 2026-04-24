@@ -2,12 +2,44 @@
 
 namespace App\Repositories\Implementations;
 
+use App\Enums\RoomStatus;
 use App\Models\Floor;
 use App\Models\Room;
 use App\Repositories\Contracts\RoomMapRepositoryInterface;
+use App\Repositories\Filters\RoomMapFilter;
 
 class EloquentRoomMapRepository implements RoomMapRepositoryInterface
 {
+    public function getFilteredRooms(array $filters = [])
+    {
+        $query = Room::with(['roomType', 'floor']);
+        $query = RoomMapFilter::apply($query, $filters);
+
+        return $query->orderBy('name')->get();
+    }
+
+    public function getRoomStatusCounts(array $filters = []): array
+    {
+        $query = Room::query();
+
+        // Status counters should still respect other filters like floor/room type/search.
+        $statusAgnosticFilters = $filters;
+        unset($statusAgnosticFilters['status']);
+
+        $query = RoomMapFilter::apply($query, $statusAgnosticFilters);
+        $rawCounts = $query->selectRaw('status, COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status')
+            ->toArray();
+
+        $counts = [];
+        foreach (RoomStatus::all() as $status) {
+            $counts[$status->value] = (int) ($rawCounts[$status->value] ?? 0);
+        }
+
+        return $counts;
+    }
+
     /**
      * Get all floors ordered by floor number (extract number from name)
      */
@@ -21,7 +53,7 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
      */
     public function getAllRooms()
     {
-        return Room::with(['roomType', 'floor'])->get();
+        return Room::with(['roomType', 'floor'])->orderBy('name')->get();
     }
 
     /**

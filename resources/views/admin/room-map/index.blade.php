@@ -1,4 +1,4 @@
-﻿@extends('admin.layouts.master')
+@extends('admin.layouts.master')
 @section('title', 'Sơ đồ phòng | Urban Luxe')
 
 @section('content')

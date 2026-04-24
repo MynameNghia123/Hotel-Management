@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RoomMapController;
 use App\Http\Controllers\RoomMapEditController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\RoomTypeActionController;
@@ -38,29 +39,13 @@ Route::middleware([CheckAdminPermission::class])->group(function () {
 
 // ============== Vận hành - Room Map ==============
 Route::group(['prefix' => 'room-map', 'as' => 'room-map.'], function () {
-    Route::get('/', function () {
-        return view('admin.room-map.index');
-    })->name('index');
+    Route::get('/', [RoomMapController::class, 'index'])->name('index');
+    Route::get('/index', [RoomMapController::class, 'index']);
 
-    Route::get('/detail/{id}', function ($id) {
-        return view('admin.room-map.detail', ['roomId' => $id]);
-    })->name('detail');
-
-    Route::post('/detail/add-service', function () {
-        return response()->json(['message' => 'Service added successfully (Mock)']);
-    })->name('add-service');
-
-    Route::get('/invoice', function () {
-        return view('admin.room-map.invoice');
-    })->name('invoice');
-
-    Route::get('/incoming/{id}', function ($id) {
-        return view('admin.room-map.incoming-detail', ['roomId' => $id]);
-    })->name('incoming-detail');
-
-    Route::get('/available/{id}', function ($id) {
-        return view('admin.room-map.available-detail', ['roomId' => $id]);
-    })->name('available-detail');
+    Route::get('/detail/{id?}', [RoomMapController::class, 'detail'])->name('detail');
+    Route::get('/available-detail/{id?}', [RoomMapController::class, 'availableDetail'])->name('available-detail');
+    Route::get('/incoming-detail/{id?}', [RoomMapController::class, 'incomingDetail'])->name('incoming-detail');
+    Route::get('/invoice', [RoomMapController::class, 'invoice'])->name('invoice');
 });
 
 // ============== Vận hành - Room Map Edit ==============

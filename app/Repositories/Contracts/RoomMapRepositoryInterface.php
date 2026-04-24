@@ -4,63 +4,25 @@ namespace App\Repositories\Contracts;
 
 interface RoomMapRepositoryInterface
 {
-    /**
-     * Get all floors
-     */
+    // Query methods for room map screen
+    public function getFilteredRooms(array $filters = []);
+    public function getRoomStatusCounts(array $filters = []): array;
+
+    // Basic read methods
     public function getAllFloors();
-
-    /**
-     * Get all rooms
-     */
     public function getAllRooms();
-
-    /**
-     * Get all rooms by floor
-     */
     public function getRoomsByFloor($floorId);
-
-    /**
-     * Get all rooms by room type
-     */
     public function getRoomsByRoomType($roomTypeId);
 
-    /**
-     * Create a new floor
-     */
+    // Write methods
     public function createFloor(array $data);
-
-    /**
-     * Create a new room
-     */
     public function createRoom(array $data);
-
-    /**
-     * Update floor
-     */
     public function updateFloor($id, array $data);
-
-    /**
-     * Update room
-     */
     public function updateRoom($id, array $data);
-
-    /**
-     * Delete floor
-     */
     public function deleteFloor($id);
-
-    /**
-     * Delete room
-     */
     public function deleteRoom($id);
 
-    /**
-     * Find floor by ID
-     */
+    // Find methods
     public function findFloorById($id);
-
-    /**
-     * Find room by ID
-     */
     public function findRoomById($id);
 }

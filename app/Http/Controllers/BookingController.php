@@ -26,7 +26,7 @@ class BookingController extends Controller
     {
         $bookings = $this->bookingService->getPaginated(
             $request->input('filters', []),
-            $request->input('per_page', 10)
+            $this->getPerPage(10)
         );
 
         $this->validatePageNumber($bookings->currentPage(), $bookings->lastPage(), 'abort');
