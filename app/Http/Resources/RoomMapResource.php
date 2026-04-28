@@ -30,6 +30,7 @@ class RoomMapResource extends JsonResource
             'route_name' => $status?->routeName() ?? RoomStatus::OCCUPIED->routeName(),
             'show_indicator' => $this->show_indicator,
             'is_empty' => $this->is_empty,
+            'is_maintenance' => $status === RoomStatus::MAINTENANCE,
             'is_confirmed' => $status === RoomStatus::CONFIRMED,
             'guest_name' => $latestBookingDetail?->booking?->customer?->full_name,
             'checkin_at' => $latestBookingDetail?->formatted_checkin_at,

@@ -15,6 +15,12 @@
 
             {{-- ROOM MAP WRAPPER --}}
             <div class="rm-wrapper">
+                @if(session('success'))
+                    <div class="rm-alert rm-alert-success">{{ session('success') }}</div>
+                @endif
+                @if(session('error'))
+                    <div class="rm-alert rm-alert-error">{{ session('error') }}</div>
+                @endif
 
                 {{-- TRẠNG THÁI (FILTERS) --}}
                 <div class="rm-filters">
@@ -96,7 +102,20 @@
 
                         <div class="rm-grid">
                             @foreach ($groupItem['rooms'] as $roomCard)
-                                <a href="{{ route($roomCard['route_name'], ['id' => $roomCard['id']]) }}" style="text-decoration:none; color:inherit;">
+                                @php
+                                    $nextRoomStatus = null;
+                                    $nextRoomActionLabel = null;
+
+                                    if ($roomCard['status'] === \App\Enums\RoomStatus::EMPTY->value) {
+                                        $nextRoomStatus = \App\Enums\RoomStatus::MAINTENANCE->value;
+                                        $nextRoomActionLabel = 'Chuyển sang đang sửa chữa';
+                                    } elseif ($roomCard['status'] === \App\Enums\RoomStatus::MAINTENANCE->value) {
+                                        $nextRoomStatus = \App\Enums\RoomStatus::EMPTY->value;
+                                        $nextRoomActionLabel = 'Chuyển về trống';
+                                    }
+                                @endphp
+                                <div class="rm-card-shell" data-room-card-shell>
+                                <a href="{{ route($roomCard['route_name'], ['id' => $roomCard['id']]) }}" class="rm-card-link">
                                     <div class="rm-card {{ $roomCard['card_class'] }}" style="cursor:pointer;">
                                         <div class="rm-card-header" style="margin-bottom:0;">
                                             <div>
@@ -115,6 +134,13 @@
                                                 </div>
                                                 <div class="status-text">TRỐNG</div>
                                             </div>
+                                        @elseif ($roomCard['is_maintenance'] ?? false)
+                                            <div class="rm-card-body">
+                                                <div class="maintenance-icon">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-2.4-2.4 3-3Z"/></svg>
+                                                </div>
+                                                <div class="status-text">ĐANG SỬA CHỮA</div>
+                                            </div>
                                         @else
                                             <div class="rm-guest-name">{{ $roomCard['guest_name'] ?: $roomCard['status_label'] }}</div>
                                             @if ($roomCard['is_confirmed'] ?? false)
@@ -132,6 +158,24 @@
                                         @endif
                                     </div>
                                 </a>
+                                    <div class="rm-card-actions">
+                                        <button type="button" class="rm-card-menu-toggle" data-room-menu-toggle aria-label="Tùy chọn phòng {{ $roomCard['name'] }}">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                                        </button>
+                                        <div class="rm-card-menu-panel" data-room-menu-panel>
+                                            @if ($nextRoomStatus)
+                                                <form method="POST" action="{{ route('admin.room-map.room-status', ['id' => $roomCard['id']]) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="{{ $nextRoomStatus }}">
+                                                    <button type="submit" class="rm-card-menu-item">{{ $nextRoomActionLabel }}</button>
+                                                </form>
+                                            @else
+                                                <div class="rm-card-menu-empty">Không có thao tác</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     </div>
@@ -151,5 +195,23 @@
     </div>
 
     @vite('resources/css/admin/room-map.css')
+
+    <script>
+        document.addEventListener('click', function (event) {
+            const toggle = event.target.closest('[data-room-menu-toggle]');
+
+            document.querySelectorAll('[data-room-card-shell].is-menu-open').forEach(function (shell) {
+                if (!toggle || shell !== toggle.closest('[data-room-card-shell]')) {
+                    shell.classList.remove('is-menu-open');
+                }
+            });
+
+            if (toggle) {
+                event.preventDefault();
+                event.stopPropagation();
+                toggle.closest('[data-room-card-shell]').classList.toggle('is-menu-open');
+            }
+        });
+    </script>
 
 @endsection

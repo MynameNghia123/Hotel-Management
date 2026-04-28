@@ -9,6 +9,7 @@ interface RoomMapServiceInterface
     public function prepareDataForAvailableDetail(?int $roomId): array;
     public function prepareDataForIncomingDetail(?int $roomId): array;
     public function prepareDataForInvoice(?int $roomId = null, array $roomIds = []): array;
+    public function updateRoomStatus(int $roomId, string $status): void;
     public function cancelIncomingBooking(int $roomId): void;
     public function checkInIncomingBooking(int $roomId): void;
     public function addServiceToCheckout(int $roomId, int $serviceId, int $quantity): void;

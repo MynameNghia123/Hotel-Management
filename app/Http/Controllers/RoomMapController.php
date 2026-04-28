@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoomMap\UpdateRoomStatusRequest;
+use App\Http\Requests\RoomMap\AddCheckoutServiceRequest;
+use App\Http\Requests\RoomMap\CheckoutSelectedRoomsRequest;
+use App\Http\Requests\RoomMap\PreviewCheckoutSelectedRoomsRequest;
+use App\Enums\RoomStatus;
 use App\Services\Contracts\RoomMapServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class RoomMapController extends Controller
@@ -69,6 +75,17 @@ class RoomMapController extends Controller
         return view('admin.room-map.incoming-detail', $this->roomMapService->prepareDataForIncomingDetail($id));
     }
 
+    public function updateRoomStatus(UpdateRoomStatusRequest $request, int $id)
+    {
+        try {
+            $this->roomMapService->updateRoomStatus($id, $request->validated('status'));
+
+            return redirect()->back()->with('success', 'Cập nhật trạng thái phòng thành công.');
+        } catch (\Throwable $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
+    }
+
     public function cancelIncomingBooking(int $id)
     {
         try {
@@ -93,14 +110,10 @@ class RoomMapController extends Controller
         }
     }
 
-    public function addCheckoutService(Request $request, int $id)
+    public function addCheckoutService(AddCheckoutServiceRequest $request, int $id)
     {
-        $validated = $request->validate([
-            'service_id' => ['required', 'integer', 'min:1'],
-            'quantity' => ['required', 'integer', 'min:1'],
-        ]);
-
         try {
+            $validated = $request->validated();
             $this->roomMapService->addServiceToCheckout(
                 $id,
                 (int) $validated['service_id'],
@@ -114,60 +127,37 @@ class RoomMapController extends Controller
         }
     }
 
-    public function checkoutSelectedRooms(Request $request, int $id)
+    public function checkoutSelectedRooms(CheckoutSelectedRoomsRequest $request, int $id)
     {
-        $validated = $request->validate([
-            'selected_room_ids' => ['required', 'array', 'min:1'],
-            'selected_room_ids.*' => ['required', 'integer', 'min:1'],
-            'pricing_mode' => ['required', 'in:hourly,daily'],
-        ]);
-
         try {
-            $result = $this->roomMapService->checkoutSelectedRooms(
+            $validated = $request->validated();
+            $formattedResult = $this->roomMapService->checkoutSelectedRooms(
                 $id,
                 $validated['selected_room_ids'],
                 $validated['pricing_mode']
             );
 
-            if ((int) ($result['processed_count'] ?? 0) < 1) {
+            if ($formattedResult['processed_count'] < 1) {
                 return redirect()->back()->with('error', 'Không có phòng nào cần thanh toán.');
             }
 
-            $invoiceRoomId = (int) (($result['processed_room_ids'][0] ?? $id));
-            $subtotal = (float) ($result['subtotal'] ?? 0);
-            $vatAmount = $subtotal * 0.1;
-            $grandTotal = $subtotal + $vatAmount;
-
-            return redirect()->route('admin.room-map.detail', ['id' => $invoiceRoomId])
-                ->with('checkout_success', [
-                    'invoice_room_id' => $invoiceRoomId,
-                    'processed_room_ids' => $result['processed_room_ids'] ?? [],
-                    'processed_count' => (int) ($result['processed_count'] ?? 0),
-                    'pricing_mode' => $result['pricing_mode'] ?? $validated['pricing_mode'],
-                    'subtotal' => $subtotal,
-                    'vat_amount' => $vatAmount,
-                    'grand_total' => $grandTotal,
-                ])
+            return redirect()->route('admin.room-map.detail', ['id' => $formattedResult['invoice_room_id']])
+                ->with('checkout_success', $formattedResult)
                 ->with('success', sprintf(
                     'Đã thanh toán %d phòng theo %s. Tổng tiền: %sđ (đã bao gồm VAT).',
-                    (int) ($result['processed_count'] ?? 0),
+                    $formattedResult['processed_count'],
                     ($validated['pricing_mode'] === 'daily' ? 'ngày' : 'giờ'),
-                    number_format($grandTotal, 0, ',', '.')
+                    number_format($formattedResult['grand_total'], 0, ',', '.')
                 ));
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
     }
 
-    public function previewCheckoutSelectedRooms(Request $request, int $id): JsonResponse
+    public function previewCheckoutSelectedRooms(PreviewCheckoutSelectedRoomsRequest $request, int $id): JsonResponse
     {
-        $validated = $request->validate([
-            'selected_room_ids' => ['nullable', 'array'],
-            'selected_room_ids.*' => ['required', 'integer', 'min:1'],
-            'pricing_mode' => ['required', 'in:hourly,daily'],
-        ]);
-
         try {
+            $validated = $request->validated();
             return response()->json($this->roomMapService->previewCheckoutSelectedRooms(
                 $id,
                 $validated['selected_room_ids'] ?? [],

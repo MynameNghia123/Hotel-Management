@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('floor_id')->constrained('floors')->onDelete('cascade');
             $table->string('name', 100)->unique();
             $table->string('status')->default('empty');
-            // empty | booked | confirmed | incoming | occupied | checkout | dirty
+            // empty | booked | confirmed | incoming | occupied | checkout | dirty | maintenance
         });
     }
 

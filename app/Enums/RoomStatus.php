@@ -11,6 +11,7 @@ enum RoomStatus: string
     case OCCUPIED = 'occupied';     // Có khách
     case CHECKOUT = 'checkout';     // Chuẩn bị đi
     case DIRTY = 'dirty';           // Bẩn
+    case MAINTENANCE = 'maintenance'; // Đang sửa chữa
 
     /**
      * Get Vietnamese label for status
@@ -25,6 +26,7 @@ enum RoomStatus: string
             self::OCCUPIED => 'Có khách',
             self::CHECKOUT => 'Chuẩn bị đi',
             self::DIRTY => 'Bẩn',
+            self::MAINTENANCE => 'Đang sửa chữa',
         };
     }
 
@@ -46,6 +48,7 @@ enum RoomStatus: string
             self::OCCUPIED => 'red',
             self::CHECKOUT => 'orange',
             self::DIRTY => 'dark',
+            self::MAINTENANCE => 'maintenance',
         };
     }
 
@@ -59,6 +62,7 @@ enum RoomStatus: string
             self::OCCUPIED => 'occupied',
             self::CHECKOUT => 'checkout',
             self::DIRTY => 'dirty',
+            self::MAINTENANCE => 'maintenance',
         };
     }
 
@@ -72,6 +76,7 @@ enum RoomStatus: string
             self::OCCUPIED,
             self::CHECKOUT,
             self::DIRTY => 'admin.room-map.detail',
+            self::MAINTENANCE => 'admin.room-map.available-detail',
         };
     }
 
@@ -88,6 +93,7 @@ enum RoomStatus: string
             self::OCCUPIED,
             self::CHECKOUT,
             self::DIRTY,
+            self::MAINTENANCE,
         ];
     }
 }

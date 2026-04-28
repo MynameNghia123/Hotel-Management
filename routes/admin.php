@@ -43,6 +43,7 @@ Route::group(['prefix' => 'room-map', 'as' => 'room-map.'], function () {
     Route::get('/detail/{id?}', [RoomMapController::class, 'detail'])->name('detail');
     Route::get('/available-detail/{id?}', [RoomMapController::class, 'availableDetail'])->name('available-detail');
     Route::get('/incoming-detail/{id?}', [RoomMapController::class, 'incomingDetail'])->name('incoming-detail');
+    Route::patch('/rooms/{id}/status', [RoomMapController::class, 'updateRoomStatus'])->name('room-status');
     Route::post('/incoming-detail/{id}/cancel', [RoomMapController::class, 'cancelIncomingBooking'])->name('incoming-cancel');
     Route::post('/incoming-detail/{id}/checkin', [RoomMapController::class, 'checkInIncomingBooking'])->name('incoming-checkin');
     Route::post('/detail/{id}/add-service', [RoomMapController::class, 'addCheckoutService'])->name('detail-add-service');

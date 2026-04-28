@@ -12,6 +12,25 @@
     gap: 20px;
 }
 
+.rm-alert {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.rm-alert-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+
+.rm-alert-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
 /* Các Nút Lọc (Filter Badges) */
 .rm-filters {
     display: flex;
@@ -108,6 +127,15 @@
 
 .rm-filter-btn.dark .rm-dot {
     background: #475569;
+}
+
+.rm-filter-btn.maintenance {
+    border-color: #71717a;
+    color: #3f3f46;
+}
+
+.rm-filter-btn.maintenance .rm-dot {
+    background: #71717a;
 }
 
 /* Thanh Công Cu (Toolbar) */
@@ -232,12 +260,22 @@
     gap: 16px;
 }
 
+.rm-card-shell {
+    position: relative;
+}
+
+.rm-card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
 /* ================== THẺ PHÒNG (ROOM CARD) ================== */
 .rm-card {
     background: #fff;
     border-radius: 12px;
     border: 2px solid #e2e8f0;
-    padding: 12px 14px;
+    padding: 12px 42px 12px 14px;
     display: flex;
     flex-direction: column;
     min-height: 115px;
@@ -395,6 +433,115 @@
 .rm-card.dirty .rm-card-indicator {
     background: transparent;
     border: 1.5px solid #334155;
+}
+
+/* Đang sửa chữa */
+.rm-card.maintenance {
+    border-color: #71717a;
+    background: #f8fafc;
+}
+
+.rm-card.maintenance .rm-card-room {
+    color: #3f3f46;
+}
+
+.rm-card.maintenance .rm-card-indicator {
+    background: #71717a;
+}
+
+.rm-card.maintenance .rm-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.rm-card.maintenance .maintenance-icon {
+    width: 28px;
+    height: 28px;
+    background: #52525b;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rm-card.maintenance .status-text {
+    font-size: 11px;
+    font-weight: 800;
+    color: #3f3f46;
+    letter-spacing: 0.05em;
+}
+
+.rm-card-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 4;
+}
+
+.rm-card-menu-toggle {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.rm-card-menu-toggle:hover {
+    background: #fff;
+    color: #0f172a;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+.rm-card-menu-panel {
+    display: none;
+    position: absolute;
+    top: 36px;
+    right: 0;
+    min-width: 190px;
+    padding: 6px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+}
+
+.rm-card-shell.is-menu-open .rm-card-menu-panel {
+    display: block;
+}
+
+.rm-card-menu-item {
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #0f172a;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.rm-card-menu-item:hover {
+    background: #f1f5f9;
+}
+
+.rm-card-menu-empty {
+    padding: 8px 10px;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
 }
 
 /* Nội dung chung của thẻ (các thẻ có khách) */
