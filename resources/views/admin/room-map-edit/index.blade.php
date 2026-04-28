@@ -131,7 +131,7 @@
                                 @endphp
                                 @foreach($roomsInFloor as $room)
                                 <div style="display:inline-flex; position:relative; align-items:center;">
-                                    <span class="rme-room-tag {{ $room->status === 'maintenance' ? 'is-orange' : '' }}">{{ $room->name }}</span>
+                                    <span class="rme-room-tag {{ $room->status === \App\Enums\RoomStatus::DIRTY ? 'is-orange' : '' }}">{{ $room->name }}</span>
                                     <form action="{{ route('admin.room-map-edit.destroy-room', $room->id) }}" method="POST" style="position:absolute; top:-5px; right:-5px;" data-confirm-delete="⚠️ Xác nhận xóa phòng này?\n\nHành động này không thể hoàn tác.">
                                         @csrf @method('DELETE')
                                         <button type="submit" style="background:#ef4444; color:white; border:none; border-radius:50%; width:16px; height:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;" title="Xóa phòng">

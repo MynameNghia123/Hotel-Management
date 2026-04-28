@@ -221,6 +221,7 @@
 
 .bk-badge.confirmed { background: #eff6ff; color: #2563eb; }
 .bk-badge.staying { background: #ffedd5; color: #ea580c; }
+.bk-badge.paid { background: #dcfce7; color: #166534; }
 .bk-badge.cancelled { background: #fee2e2; color: #dc2626; }
 .bk-badge.pending { background: #f1f5f9; color: #475569; }
 

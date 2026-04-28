@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Implementations;
 
+use App\Enums\BookingStatus;
 use App\Models\Booking;
-use App\Models\BookingDetail;
 use App\Repositories\Filters\BookingFilter;
 use App\Repositories\Contracts\BookingRepositoryInterface;
 
@@ -79,14 +79,17 @@ class EloquentBookingRepository implements BookingRepositoryInterface
     public function checkRoomAvailability($roomId, $checkInDate, $checkOutDate)
     {
         return !$this->model
-            ->whereHas('bookingDetails', function($q) use ($roomId) {
-                $q->where('room_id', $roomId);
+            ->whereHas('bookingDetails', function ($q) use ($roomId, $checkInDate, $checkOutDate) {
+                $q->where('room_id', $roomId)
+                    ->where('checkin_date', '<', $checkOutDate)
+                    ->where('checkout_date', '>', $checkInDate)
+                    ->whereHas('booking', function ($bookingQuery) {
+                        $bookingQuery->whereNotIn('status', [
+                            BookingStatus::CANCELLED->value,
+                            BookingStatus::PAID->value,
+                        ]);
+                    });
             })
-            ->where(function($q) use ($checkInDate, $checkOutDate) {
-                $q->where('check_in_date', '<', $checkOutDate)
-                  ->where('check_out_date', '>', $checkInDate);
-            })
-            ->whereIn('status', ['confirmed', 'occupied'])
             ->exists();
     }
 

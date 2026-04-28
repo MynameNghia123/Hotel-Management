@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\RoomTypeApiController;
 // ============== Booking API ==============
 Route::prefix('bookings')->group(function () {
     Route::post('/verify-customer', [BookingApiController::class, 'verifyCustomer'])->name('api.bookings.verify-customer');
+    Route::post('/available-rooms', [BookingApiController::class, 'availableRooms'])->name('api.bookings.available-rooms');
 });
 
 // ============== Room Type API ==============

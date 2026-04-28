@@ -3,375 +3,308 @@
 
 @section('content')
 <div style="display:flex; height:100vh; background:#f5f6fa; overflow:hidden;">
-
-    {{-- SIDEBAR --}}
     @include('admin.layouts.sidebar')
 
-    {{-- MAIN CONTENT --}}
     <main style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
-
-        {{-- HEADER (Dùng chung như các trang khác) --}}
         @include('admin.layouts.header')
 
-        {{-- CHI TIẾT HÓA ĐƠN WRAPPER --}}
         <div class="rd-wrapper">
-
-            {{-- Tiêu đề trang & Header --}}
             <div class="rd-header">
+                @if(session('success'))
+                    <div style="margin-bottom:12px; padding:10px 12px; border-radius:8px; background:#f0fdf4; color:#166534; border:1px solid #bbf7d0;">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div style="margin-bottom:12px; padding:10px 12px; border-radius:8px; background:#fef2f2; color:#991b1b; border:1px solid #fecaca;">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <a href="{{ route('admin.room-map.index') }}" class="rd-back">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                     Quay lại danh sách
                 </a>
-                <h1 class="rd-title">Chi tiết hóa đơn</h1>
-                <p class="rd-desc">Cung cấp thông tin chi tiết để thực hiện thanh toán đoàn Urban Luxe hiệu quả hơn.</p>
+                <h1 class="rd-title">Chi tiết phòng {{ $room->name ?? '--' }} - {{ $room->roomType->name ?? 'N/A' }}</h1>
+                <p class="rd-desc">Thông tin lưu trú và thanh toán theo phòng bạn đã chọn.</p>
                 <div class="rd-customer">
-                    <span style="color:#64748b; margin-right:6px; font-weight:500;">Thanh toán đoàn - Khách hàng:</span> Hoàng Gia Bảo
+                    <span style="color:#64748b; margin-right:6px; font-weight:500;">Khách hàng:</span> {{ $customerName }}
                 </div>
             </div>
 
-            {{-- Khung 2 cột --}}
             <div class="rd-grid">
-                
-                {{-- Cột Trái (Danh sách phòng) --}}
                 <div class="rd-panel">
                     <div class="rd-panel-header">
                         <div style="display:flex; align-items:center; gap:8px;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012 2v14M9 21v-6h6v6"/></svg>
-                            DANH SÁCH PHÒNG
+                            THÔNG TIN PHÒNG
                         </div>
-                        <div style="font-size:11px; font-weight:500; color:#94a3b8; text-transform:none;">Check-in: 30/05/2024</div>
+                        <div style="font-size:11px; font-weight:500; color:#94a3b8; text-transform:none;">
+                            Bắt đầu tính lưu trú từ: {{ $billingAnchorAt ?? '--' }}
+                        </div>
                     </div>
 
-                    {{-- Phòng 504 --}}
-                    <div class="rd-room-item">
-                        <div class="rd-room-main">
-                            <div class="rd-room-icon icon-orange">504</div>
-                            <div class="rd-room-info">
-                                <div class="rd-room-title-row">
-                                    <div class="rd-room-name">
-                                        P.504 <span class="rd-badge badge-red">QUÁ GIỜ</span>
+                    @forelse(($bookingRooms ?? []) as $bookingRoomItem)
+                        @php
+                            $isRoomPaid = ($bookingRoomItem['payment_status'] ?? 'unpaid') === 'paid';
+                        @endphp
+                        <div class="rd-room-item {{ $isRoomPaid ? 'rd-room-item-paid' : '' }}">
+                            <div class="rd-room-main">
+                                <div class="rd-room-icon icon-orange">{{ $bookingRoomItem['room_name'] ?? '--' }}</div>
+                                <div class="rd-room-info">
+                                    <div class="rd-room-title-row">
+                                        <div class="rd-room-name">P.{{ $bookingRoomItem['room_name'] ?? '--' }}</div>
+                                        <div class="rd-room-price">{{ number_format((float) ($bookingRoomItem['display_room_amount'] ?? $bookingRoomItem['room_amount'] ?? 0), 0, ',', '.') }}đ</div>
                                     </div>
-                                    <div class="rd-room-price">5,000,000đ</div>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
                                     <div>
-                                        <div class="rd-room-type">Suite King</div>
-                                        <div class="rd-room-checkout">Check-out: 12:30 31/05/2024</div>
+                                        <div class="rd-room-type">{{ $bookingRoomItem['room_type_name'] ?? 'N/A' }}</div>
+                                        <div class="rd-room-checkout">Check-in: {{ $bookingRoomItem['checkin_at'] ?? '--' }} | Check-out: {{ $bookingRoomItem['checkout_at'] ?? '--' }}</div>
+                                        <div style="font-size:11px; color:#475569; margin-top:4px;">
+                                            Giá giờ: {{ number_format((float) ($bookingRoomItem['hourly_price'] ?? 0), 0, ',', '.') }}đ | Giá ngày: {{ number_format((float) ($bookingRoomItem['daily_price'] ?? 0), 0, ',', '.') }}đ
+                                        </div>
+                                        <div style="font-size:11px; color:#64748b; margin-top:4px;">
+                                            Tạm tính theo {{ ($bookingRoomItem['display_pricing_mode'] ?? 'daily') === 'hourly' ? 'giờ' : 'ngày' }}: {{ $bookingRoomItem['display_pricing_units'] ?? 1 }} {{ ($bookingRoomItem['display_pricing_mode'] ?? 'daily') === 'hourly' ? 'giờ' : 'ngày' }}
+                                        </div>
+                                        @if ($isRoomPaid)
+                                            <div class="rd-paid-note">Đã thanh toán lúc: {{ $bookingRoomItem['paid_at'] ?? '--' }}</div>
+                                        @else
+                                            <label class="rd-room-check-label">
+                                                <input
+                                                    type="checkbox"
+                                                    class="rd-checkout-room-checkbox"
+                                                    form="checkoutSelectedRoomsForm"
+                                                    name="selected_room_ids[]"
+                                                    value="{{ $bookingRoomItem['room_id'] }}"
+                                                    {{ !empty($bookingRoomItem['is_selected_room']) ? 'checked' : '' }}
+                                                >
+                                                Chọn phòng này để thanh toán
+                                            </label>
+                                        @endif
+                                        @if (!empty($bookingRoomItem['is_selected_room']))
+                                            <div class="rd-current-room-note">Phòng bạn đang mở chi tiết</div>
+                                        @endif
                                     </div>
-                                    <button style="background:transparent; border:none; cursor:pointer; color:#2a3f8a;">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 16 16 12"/></svg>
-                                    </button>
+                                </div>
+                            </div>
+                            <div class="rd-room-add-service">
+                                @if ($isRoomPaid)
+                                    <div class="rd-service-locked">
+                                        <span class="rd-service-lock-icon">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                                        </span>
+                                        Phòng đã thanh toán, không thể thêm dịch vụ mới.
+                                    </div>
+                                @else
+                                    <form method="POST" action="{{ route('admin.room-map.detail-add-service', ['id' => $bookingRoomItem['room_id'] ?? 0]) }}" class="rd-service-form">
+                                        @csrf
+                                        <span class="rd-service-title">Thêm dịch vụ cho phòng {{ $bookingRoomItem['room_name'] ?? '--' }}</span>
+                                        <select name="service_id" class="rd-service-select" required>
+                                            <option value="">Chọn dịch vụ</option>
+                                            @foreach($serviceCatalog as $serviceItem)
+                                                <option value="{{ $serviceItem['id'] }}">{{ $serviceItem['name'] }} ({{ number_format((float) $serviceItem['unit_price'], 0, ',', '.') }}đ)</option>
+                                            @endforeach
+                                        </select>
+                                        <input type="number" name="quantity" min="1" value="1" class="rd-service-qty" required>
+                                        <button type="submit" class="rd-add-serv-btn">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                                            Thêm
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <div class="rd-room-item">
+                            <div class="rd-room-main">
+                                <div class="rd-room-icon icon-orange">--</div>
+                                <div class="rd-room-info">
+                                    <div class="rd-room-title-row">
+                                        <div class="rd-room-name">Chưa có phòng trong booking</div>
+                                        <div class="rd-room-price">0đ</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    @endforelse
+
+                    <div class="rd-room-item">
                         <div class="rd-room-services">
                             <div class="rd-serv-header">
-                                <span>- DỊCH VỤ SỬ DỤNG</span>
-                                <button class="rd-add-serv-btn">+ Thêm dịch vụ</button>
+                                <span>- DỊCH VỤ SỬ DỤNG (PHÒNG ĐANG CHỌN)</span>
                             </div>
-                            <div class="rd-serv-row">
-                                <span>Mini bar (Nước suối, Snack)</span>
-                                <span>150,000đ</span>
+                            @forelse($selectedRoomServiceUsageHistory ?? [] as $usageItem)
+                                <div class="rd-serv-row">
+                                    <span>{{ $usageItem['service_name'] }} (x{{ $usageItem['quantity'] }})</span>
+                                    <span>{{ number_format((float) $usageItem['line_total'], 0, ',', '.') }}đ</span>
+                                </div>
+                                <div style="font-size:11px; color:#94a3b8; margin-top:-6px; margin-bottom:8px;">
+                                    {{ $usageItem['created_at'] ?? '' }}
+                                </div>
+                            @empty
+                                <div class="rd-serv-row">
+                                    <span>Chưa có lịch sử dịch vụ</span>
+                                    <span>0đ</span>
+                                </div>
+                            @endforelse
+
+                            <div class="rd-serv-header" style="margin-top:14px;">
+                                <span>- LỊCH SỬ DỊCH VỤ TOÀN BOOKING</span>
                             </div>
-                            <div class="rd-serv-row">
-                                <span>Giặt là (Áo sơ mi x2)</span>
-                                <span>250,000đ</span>
-                            </div>
+                            @forelse($serviceUsageHistory as $usageItem)
+                                <div class="rd-serv-row">
+                                    <span>P.{{ $usageItem['room_name'] }} - {{ $usageItem['service_name'] }} (x{{ $usageItem['quantity'] }})</span>
+                                    <span>{{ number_format((float) $usageItem['line_total'], 0, ',', '.') }}đ</span>
+                                </div>
+                                <div style="font-size:11px; color:#94a3b8; margin-top:-6px; margin-bottom:8px;">
+                                    {{ $usageItem['created_at'] ?? '' }}
+                                </div>
+                            @empty
+                                <div class="rd-serv-row">
+                                    <span>Chưa có lịch sử dịch vụ toàn booking</span>
+                                    <span>0đ</span>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
-
-                    {{-- Phòng 505 --}}
-                    <div class="rd-room-item">
-                        <div class="rd-room-main">
-                            <div class="rd-room-icon icon-blue">505</div>
-                            <div class="rd-room-info">
-                                <div class="rd-room-title-row">
-                                    <div class="rd-room-name">P.505</div>
-                                    <div class="rd-room-price">3,200,000đ</div>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
-                                    <div>
-                                        <div class="rd-room-type">Deluxe</div>
-                                        <div class="rd-room-checkout">Check-out: 09:22 31/05/2024</div>
-                                    </div>
-                                    <button style="background:transparent; border:none; cursor:pointer; color:#cbd5e1;">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 16 16 12"/></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="rd-room-services" style="display:none;">
-                            {{-- Trạng thái đóng không hiện dịch vụ --}}
-                        </div>
-                        {{-- Hiển thị tạm nếu mở, trong hình thứ 2 là có 2 dịch vụ --}}
-                        <div class="rd-room-services">
-                             <div class="rd-serv-header">
-                                <span>- DỊCH VỤ SỬ DỤNG</span>
-                                <button class="rd-add-serv-btn">+ Thêm dịch vụ</button>
-                            </div>
-                            <div class="rd-serv-row">
-                                <span>Ăn sáng tại phòng</span>
-                                <span>250,000đ</span>
-                            </div>
-                            <div class="rd-serv-row">
-                                <span>Đồ uống (2 chai Coca)</span>
-                                <span>40,000đ</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Phòng 506 --}}
-                    <div class="rd-room-item">
-                        <div class="rd-room-main">
-                            <div class="rd-room-icon icon-green">506</div>
-                            <div class="rd-room-info">
-                                <div class="rd-room-title-row">
-                                    <div class="rd-room-name">
-                                        P.506 <span class="rd-badge badge-green">ĐÃ THANH TOÁN</span>
-                                    </div>
-                                    <div class="rd-room-price" style="color:#94a3b8; text-decoration:line-through;">2,100,000đ</div>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
-                                    <div>
-                                        <div class="rd-room-type">Standard</div>
-                                        <div class="rd-room-checkout">Check-out: 17:33 30/05/2024</div>
-                                    </div>
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="rd-room-services">
-                             <div class="rd-serv-header">
-                                <span>- DỊCH VỤ SỬ DỤNG</span>
-                                <button class="rd-add-serv-btn">+ Thêm dịch vụ</button>
-                            </div>
-                            <div class="rd-serv-row">
-                                <span>Giặt là</span>
-                                <span>150,000đ</span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
-                {{-- Cột Phải (Hóa đơn tổng) --}}
-                <div class="rd-panel">
+                <div class="rd-panel" id="checkoutBillPanel" data-preview-url="{{ route('admin.room-map.detail-checkout-preview', ['id' => $room->id ?? 0]) }}">
                     <div class="rd-panel-header">
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
                             HÓA ĐƠN TỔNG
                         </div>
                     </div>
+                    <div class="rd-bill-preview-message" data-bill-message></div>
 
-                    {{-- Tiền phòng --}}
                     <div class="rd-bill-section">
                         <div class="rd-bill-label">TIỀN PHÒNG</div>
-                        <div class="rd-bill-row"><span>- P.504 (Suite King)</span><span>5,000,000đ</span></div>
-                        <div class="rd-bill-row"><span>- P.505 (Deluxe)</span><span>3,200,000đ</span></div>
-                        <div class="rd-bill-row"><span>- P.506 (Standard)</span><span>2,100,000đ</span></div>
+                        <div data-bill-room-lines>
+                            @forelse(($bookingRooms ?? []) as $bookingRoomItem)
+                                <div class="rd-bill-row">
+                                    <span>- P.{{ $bookingRoomItem['room_name'] ?? '--' }} ({{ $bookingRoomItem['room_type_name'] ?? 'N/A' }})</span>
+                                    <span>{{ number_format((float) ($bookingRoomItem['display_room_amount'] ?? $bookingRoomItem['room_amount'] ?? 0), 0, ',', '.') }}đ</span>
+                                </div>
+                                @if ((float) ($bookingRoomItem['surcharge_amount'] ?? 0) > 0)
+                                    <div class="rd-bill-row">
+                                        <span>&nbsp;&nbsp;+ Phụ thu checkout sớm (P.{{ $bookingRoomItem['room_name'] ?? '--' }})</span>
+                                        <span>{{ number_format((float) ($bookingRoomItem['surcharge_amount'] ?? 0), 0, ',', '.') }}đ</span>
+                                    </div>
+                                @endif
+                            @empty
+                                <div class="rd-bill-row"><span>- Chưa có phòng</span><span>0đ</span></div>
+                            @endforelse
+                        </div>
                     </div>
 
-                    {{-- Dịch vụ --}}
                     <div class="rd-bill-section">
                         <div class="rd-bill-label">DỊCH VỤ</div>
-                        <div class="rd-bill-row"><span>Mini bar & ăn uống</span><span>190,000đ</span></div>
-                        <div class="rd-bill-row"><span>Giặt ủi & lo vú</span><span>300,000đ</span></div>
-                        <div class="rd-bill-row"><span>Ăn sáng tại phòng</span><span>250,000đ</span></div>
+                        <div class="rd-bill-row"><span>Dịch vụ phát sinh</span><span data-bill-service-amount>{{ number_format((float) ($invoiceTotals['service_amount'] ?? 0), 0, ',', '.') }}đ</span></div>
                     </div>
 
-                    {{-- Phụ phí --}}
                     <div class="rd-bill-section">
                         <div class="rd-bill-label">PHỤ PHÍ</div>
                         <div class="rd-bill-row-red">
-                            <span>10 Phí quá giờ (P.504)</span>
-                            <span>250,000đ</span>
+                            <span>Phụ phí khác</span>
+                            <span data-bill-surcharge-amount>{{ number_format((float) ($invoiceTotals['surcharge_amount'] ?? 0), 0, ',', '.') }}đ</span>
                         </div>
                     </div>
 
                     <div class="rd-bill-divider"></div>
 
                     <div class="rd-bill-row" style="font-weight:800; color:#0f172a;">
-                        <span>Tổng tiền dịch vụ:</span>
-                        <span>11,290,000đ</span>
+                        <span>Tạm tính:</span>
+                        <span data-bill-subtotal>{{ number_format((float) ($invoiceTotals['subtotal'] ?? 0), 0, ',', '.') }}đ</span>
                     </div>
 
-                    <div class="rd-payment-success">
-                        <span>ĐÃ THANH TOÁN</span>
-                        <span>- 5,500,000đ</span>
+                    <div class="rd-bill-row">
+                        <span>VAT (10%):</span>
+                        <span data-bill-vat-amount>{{ number_format((float) ($invoiceTotals['vat_amount'] ?? 0), 0, ',', '.') }}đ</span>
                     </div>
 
                     <div class="rd-bill-divider"></div>
 
                     <div class="rd-bill-total">
                         TỔNG CẦN<br>THANH TOÁN
-                        <div style="font-size:24px; line-height:1; margin-top:4px;">4,539,950đ</div>
-                        <div class="rd-bill-total-sub">(Đã bao gồm 10% VAT & phí PV)</div>
+                        <div style="font-size:24px; line-height:1; margin-top:4px;" data-bill-grand-total>{{ number_format((float) ($invoiceTotals['grand_total'] ?? 0), 0, ',', '.') }}đ</div>
+                        <div class="rd-bill-total-sub">(Đã bao gồm 10% VAT)</div>
                     </div>
-
                 </div>
-
             </div>
-            
-            {{-- BOTTOM ACTION BAR --}}
+
             <div class="rd-bottom-bar">
-                <button class="rd-btn-close">Đóng</button>
+                <a href="{{ route('admin.room-map.index') }}" class="rd-btn-close" style="text-decoration:none; display:inline-flex; align-items:center;">Đóng</a>
                 <div class="rd-action-right">
+                    <form id="checkoutSelectedRoomsForm" method="POST" action="{{ route('admin.room-map.detail-checkout-selected', ['id' => $room->id ?? 0]) }}" style="display:flex; align-items:center; gap:8px;">
+                        @csrf
+                        <select name="pricing_mode" id="checkoutPricingMode" style="height:36px; border:1px solid #cbd5e1; border-radius:8px; padding:0 10px;">
+                            <option value="hourly">Tính theo giờ</option>
+                            <option value="daily">Tính theo ngày</option>
+                        </select>
+                        <button class="rd-btn-checkout" type="submit">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                            THANH TOÁN PHÒNG ĐÃ CHỌN
+                        </button>
+                    </form>
                     <div class="rd-final-price">
-                        <span style="font-size:13px; font-weight:600; color:#64748b;">Còn lại:</span>
-                        4,539,950đ
+                        <span style="font-size:13px; font-weight:600; color:#64748b;">Tổng cần thanh toán:</span>
+                        <span data-final-grand-total>{{ number_format((float) ($invoiceTotals['grand_total'] ?? 0), 0, ',', '.') }}đ</span>
                     </div>
-                    <button class="rd-btn-checkout">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-                        CHECK-OUT & THANH TOÁN TẤT CẢ
-                    </button>
-                </div>
-            </div>
-
-        </div>
-
-        {{-- MODAL THÊM DỊCH VỤ --}}
-        <div class="rd-modal-overlay" id="addServiceModal">
-            <div class="rd-modal">
-                <div class="rd-modal-header">
-                    <div class="rd-modal-title">THÊM DỊCH VỤ</div>
-                    <button class="rd-modal-close" id="closeServiceModal">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                </div>
-                <div class="rd-modal-body">
-                    <div class="rd-modal-search">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" placeholder="Tìm kiếm dịch vụ (Mini bar, Giặt là, Spa...)">
-                    </div>
-                    <div class="rd-serv-list">
-                        {{-- Dịch vụ 1 --}}
-                        <div class="rd-serv-item">
-                            <div class="rd-serv-item-left">
-                                <div class="rd-serv-icon-box">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                                </div>
-                                <div>
-                                    <div class="rd-serv-info-name">Nước suối Lavie 500ml</div>
-                                    <div class="rd-serv-info-price">20,000đ</div>
-                                </div>
-                            </div>
-                            <div class="rd-serv-stepper">
-                                <button class="rd-serv-step-btn btn-down">-</button>
-                                <span class="rd-serv-step-val">1</span>
-                                <button class="rd-serv-step-btn btn-up">+</button>
-                            </div>
-                        </div>
-
-                        {{-- Dịch vụ 2 --}}
-                        <div class="rd-serv-item">
-                            <div class="rd-serv-item-left">
-                                <div class="rd-serv-icon-box">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2" ry="2"/><circle cx="12" cy="12" r="3"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="15" y1="4" x2="15" y2="20"/></svg>
-                                </div>
-                                <div>
-                                    <div class="rd-serv-info-name">Giặt là (kg)</div>
-                                    <div class="rd-serv-info-price">50,000đ</div>
-                                </div>
-                            </div>
-                            <div class="rd-serv-stepper">
-                                <button class="rd-serv-step-btn btn-down">-</button>
-                                <span class="rd-serv-step-val">0</span>
-                                <button class="rd-serv-step-btn btn-up">+</button>
-                            </div>
-                        </div>
-
-                        {{-- Dịch vụ 3 --}}
-                        <div class="rd-serv-item">
-                            <div class="rd-serv-item-left">
-                                <div class="rd-serv-icon-box">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-                                </div>
-                                <div>
-                                    <div class="rd-serv-info-name">Mì ly</div>
-                                    <div class="rd-serv-info-price">25,000đ</div>
-                                </div>
-                            </div>
-                            <div class="rd-serv-stepper">
-                                <button class="rd-serv-step-btn btn-down">-</button>
-                                <span class="rd-serv-step-val">2</span>
-                                <button class="rd-serv-step-btn btn-up">+</button>
-                            </div>
-                        </div>
-
-                        {{-- Dịch vụ 4 --}}
-                        <div class="rd-serv-item">
-                            <div class="rd-serv-item-left">
-                                <div class="rd-serv-icon-box">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22A10 10 0 0 0 12 2a10 10 0 0 0 0 20z"/><path d="M12 11a4 4 0 0 1 0-8 4 4 0 0 1 0 8z"/><path d="M12 22a4 4 0 0 1 0-8 4 4 0 0 1 0 8z"/><path d="M12 11c2.5 0 4-2 4-5s-1.5-4-4-4-4 1-4 4 1.5 5 4 5z"/></svg>
-                                </div>
-                                <div>
-                                    <div class="rd-serv-info-name">Gói Spa Thư Giãn 60p</div>
-                                    <div class="rd-serv-info-price">350,000đ</div>
-                                </div>
-                            </div>
-                            <div class="rd-serv-stepper">
-                                <button class="rd-serv-step-btn btn-down">-</button>
-                                <span class="rd-serv-step-val">1</span>
-                                <button class="rd-serv-step-btn btn-up">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="rd-modal-footer">
-                    <button class="rd-mod-btn-cancel" id="cancelServiceModal">HỦY</button>
-                    <button class="rd-mod-btn-submit">
-                        XÁC NHẬN
-                        <span style="font-size:10px; font-weight:600; opacity:0.8;">THÊM</span>
-                    </button>
                 </div>
             </div>
         </div>
 
-        {{-- MODAL CHECKOUT THÀNH CÔNG --}}
-        <div class="rd-modal-overlay" id="checkoutSuccessModal">
+        @php
+            $checkoutSuccess = session('checkout_success');
+            $checkoutInvoiceRoomId = $checkoutSuccess['invoice_room_id'] ?? ($room->id ?? null);
+            $checkoutInvoiceRoomIds = collect($checkoutSuccess['processed_room_ids'] ?? [$checkoutInvoiceRoomId])
+                ->filter()
+                ->unique()
+                ->implode(',');
+            $checkoutInvoiceNumber = $booking?->id ? '#INV-' . $booking->id : '#INV-N/A';
+            $checkoutTotal = (float) ($checkoutSuccess['grand_total'] ?? ($invoiceTotals['grand_total'] ?? 0));
+        @endphp
+
+        <div class="rd-modal-overlay {{ $checkoutSuccess ? 'active' : '' }}" id="checkoutSuccessModal" data-auto-open="{{ $checkoutSuccess ? '1' : '0' }}">
             <div class="rd-modal-success">
                 <div class="rs-success-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
                 </div>
                 <div class="rs-success-title">Thanh toán & Check-out thành công!</div>
                 <div class="rs-success-desc">Giao dịch đã được ghi nhận vào hệ thống Urban Luxe.</div>
-                
+
                 <div class="rs-success-box">
                     <div class="rs-success-row">
                         <span class="rs-success-label">Mã hóa đơn</span>
-                        <span class="rs-success-val">#INV-20231024</span>
+                        <span class="rs-success-val">{{ $checkoutInvoiceNumber }}</span>
                     </div>
                     <div class="rs-success-row">
                         <span class="rs-success-label">Khách hàng</span>
-                        <span class="rs-success-val">Nguyễn Văn A</span>
+                        <span class="rs-success-val">{{ $customerName }}</span>
                     </div>
                     <div class="rs-success-row">
                         <span class="rs-success-label">Tổng tiền</span>
-                        <span class="rs-success-total">13,039,950đ</span>
+                        <span class="rs-success-total">{{ number_format($checkoutTotal, 0, ',', '.') }}đ</span>
                     </div>
                 </div>
 
                 <div class="rs-success-print">
-                    <a href="{{ route('admin.room-map.invoice') }}" target="_blank" class="rs-btn-print" style="text-decoration:none;">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    <a href="{{ route('admin.room-map.invoice', ['id' => $checkoutInvoiceRoomId, 'room_ids' => $checkoutInvoiceRoomIds, 'paper' => 'a4']) }}" target="_blank" class="rs-btn-print" style="text-decoration:none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
                         In hóa đơn (A4)
                     </a>
-                    <button class="rs-btn-print">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 22h16V2H4v20z"/><path d="M14 2v4h4"/><path d="M8 12h8"/><path d="M8 16h8"/></svg>
+                    <a href="{{ route('admin.room-map.invoice', ['id' => $checkoutInvoiceRoomId, 'room_ids' => $checkoutInvoiceRoomIds, 'paper' => 'k80']) }}" target="_blank" class="rs-btn-print" style="text-decoration:none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2V2z"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h4"/></svg>
                         In hóa đơn (K80)
-                    </button>
+                    </a>
                 </div>
-
                 <a href="{{ route('admin.room-map.index') }}" class="rs-btn-home" style="text-decoration:none;">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     Về sơ đồ phòng
                 </a>
             </div>
         </div>
-
     </main>
 </div>
 
 @vite(['resources/css/admin/room-detail.css', 'resources/js/admin/room-detail.js'])
-
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Services\Implementations;
 
 use App\Enums\BookingStatus;
+use App\Enums\RoomStatus;
 use App\Repositories\Contracts\BookingRepositoryInterface;
 use App\Services\Contracts\BookingServiceInterface;
 use App\Services\Contracts\RoomServiceInterface;
@@ -81,6 +82,39 @@ class BookingService implements BookingServiceInterface
             );
         }
 
+        // Keep check-in timestamp consistent when booking is marked as occupied.
+        if ($newStatus === BookingStatus::OCCUPIED && !$booking->checked_in_at) {
+            $this->bookingRepository->update($bookingId, ['checked_in_at' => now()]);
+        }
+
+        if ($newStatus === BookingStatus::CONFIRMED) {
+            foreach ($booking->bookingDetails as $bookingDetail) {
+                if ($bookingDetail->room_id) {
+                    $this->roomService->update($bookingDetail->room_id, ['status' => RoomStatus::CONFIRMED->value]);
+                }
+            }
+        }
+
+        if ($newStatus === BookingStatus::OCCUPIED) {
+            foreach ($booking->bookingDetails as $bookingDetail) {
+                if ($bookingDetail->room_id) {
+                    $this->roomService->update($bookingDetail->room_id, ['status' => RoomStatus::OCCUPIED->value]);
+                }
+            }
+        }
+
+        if ($newStatus === BookingStatus::PAID) {
+            if (!$booking->checked_out_at) {
+                $this->bookingRepository->update($bookingId, ['checked_out_at' => now()]);
+            }
+
+            foreach ($booking->bookingDetails as $bookingDetail) {
+                if ($bookingDetail->room_id) {
+                    $this->roomService->update($bookingDetail->room_id, ['status' => RoomStatus::EMPTY->value]);
+                }
+            }
+        }
+
         return $this->bookingRepository->updateStatus($bookingId, $newStatus->value);
     }
 
@@ -103,8 +137,12 @@ class BookingService implements BookingServiceInterface
      */
     public function prepareDataForCreate()
     {
+        $defaultCheckInDate = now()->toDateString();
+        $defaultCheckOutDate = now()->addDay()->toDateString();
+        $rooms = $this->roomService->getAvailableRooms($defaultCheckInDate, $defaultCheckOutDate)->values();
+
         return [
-            'rooms' => $this->roomService->getAll(),
+            'rooms' => $rooms,
             'customers' => $this->customerService->getAll(),
             'staffs' => $this->staffService->getAll(),
         ];

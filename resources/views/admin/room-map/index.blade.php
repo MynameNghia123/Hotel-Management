@@ -18,255 +18,131 @@
 
                 {{-- TRẠNG THÁI (FILTERS) --}}
                 <div class="rm-filters">
-                    <button class="rm-filter-btn green active">
-                        <span class="rm-dot"></span> Trống (14)
-                    </button>
-                    <button class="rm-filter-btn blue">
-                        <span class="rm-dot"></span> Đã đặt (0)
-                    </button>
-                    <button class="rm-filter-btn purple">
-                        <span class="rm-dot"></span> Sắp đến (4)
-                    </button>
-                    <button class="rm-filter-btn red">
-                        <span class="rm-dot"></span> Có khách (21)
-                    </button>
-                    <button class="rm-filter-btn orange">
-                        <span class="rm-dot"></span> Chuẩn bị đi (2)
-                    </button>
-                    <button class="rm-filter-btn dark">
-                        <span class="rm-dot"></span> Dơ (5)
-                    </button>
-                    <button class="rm-filter-btn" style="border: 1px solid #cbd5e1; color: #475569;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                        Bảo trì (2)
-                    </button>
+                    @foreach ($statusMeta as $statusValue => $meta)
+                        @php
+                            $queryFilters = array_merge($filters, ['status' => $statusValue]);
+                            $isActive = $activeStatus === $statusValue;
+                        @endphp
+                        <a
+                            href="{{ route('admin.room-map.index', ['filters' => $queryFilters]) }}"
+                            class="rm-filter-btn {{ $meta['badge'] }} {{ $isActive ? 'active' : '' }}"
+                            style="text-decoration:none;"
+                        >
+                            <span class="rm-dot"></span> {{ $meta['label'] }} ({{ $roomStatusCounts[$statusValue] ?? 0 }})
+                        </a>
+                    @endforeach
+                    <a
+                        href="{{ route('admin.room-map.index', ['filters' => $filtersWithoutStatus]) }}"
+                        class="rm-filter-btn"
+                        style="border: 1px solid #cbd5e1; color: #475569; text-decoration:none;"
+                    >
+                        Tất cả ({{ $totalRooms }})
+                    </a>
                 </div>
 
                 {{-- TOOLBAR --}}
                 <div class="rm-toolbar">
                     <div class="rm-toolbar-left">
                         <div class="rm-toggle-group">
-                            <button class="rm-toggle-btn active">Lưới</button>
-                            <button class="rm-toggle-btn">Tầng</button>
-                            <button class="rm-toggle-btn">Phòng</button>
+                            <a
+                                href="{{ route('admin.room-map.index', ['filters' => array_merge($filters, ['group_by' => 'room_type'])]) }}"
+                                class="rm-toggle-btn {{ $groupBy === 'room_type' ? 'active' : '' }}"
+                                style="text-decoration:none;"
+                            >
+                                Loại phòng
+                            </a>
+                            <a
+                                href="{{ route('admin.room-map.index', ['filters' => array_merge($filters, ['group_by' => 'floor'])]) }}"
+                                class="rm-toggle-btn {{ $groupBy === 'floor' ? 'active' : '' }}"
+                                style="text-decoration:none;"
+                            >
+                                Tầng
+                            </a>
                         </div>
-                        <div class="rm-date-picker">
+                        <form method="GET" action="{{ route('admin.room-map.index') }}" class="rm-date-picker">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                            10 ngày - Biết ngày
-                        </div>
+                            @foreach ($filtersWithoutDate as $filterKey => $filterValue)
+                                <input type="hidden" name="filters[{{ $filterKey }}]" value="{{ $filterValue }}">
+                            @endforeach
+                            <input type="date" name="filters[date_from]" value="{{ $filters['date_from'] ?? '' }}" aria-label="Ngày bắt đầu">
+                            <input type="date" name="filters[date_to]" value="{{ $filters['date_to'] ?? '' }}" aria-label="Ngày kết thúc">
+                            <button type="submit" class="rm-toggle-btn" style="height:32px;">Lọc</button>
+                            <a
+                                href="{{ route('admin.room-map.index', ['filters' => ['group_by' => $groupBy]]) }}"
+                                class="rm-toggle-btn"
+                                style="height:32px; text-decoration:none; display:inline-flex; align-items:center;"
+                            >
+                                Xóa bộ lọc
+                            </a>
+                        </form>
                     </div>
                     <div class="rm-search">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        <input type="text" placeholder="Tìm tên/phòng...">
+                        <form method="GET" action="{{ route('admin.room-map.index') }}">
+                            @foreach ($filtersWithoutSearch as $filterKey => $filterValue)
+                                <input type="hidden" name="filters[{{ $filterKey }}]" value="{{ $filterValue }}">
+                            @endforeach
+                            <input type="text" name="filters[search]" value="{{ $filters['search'] ?? '' }}" placeholder="Tìm tên/phòng...">
+                        </form>
                     </div>
                 </div>
 
-                {{-- TẦNG / SUITE --}}
-                <div class="rm-group">
-                    <div class="rm-group-header">
-                        <span class="rm-group-title">SUITE</span>
-                        <span class="rm-group-count">6</span>
-                    </div>
+                @forelse ($groups as $groupItem)
+                    <div class="rm-group">
+                        <div class="rm-group-header">
+                            <span class="rm-group-title">{{ $groupItem['name'] }}</span>
+                            <span class="rm-group-count">{{ $groupItem['count'] }}</span>
+                        </div>
 
-                    <div class="rm-grid">
-                        {{-- Có Khách --}}
-                        <a href="{{ route('admin.room-map.detail', ['id' => 201]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card occupied" style="cursor:pointer;">
-                                <div class="rm-card-header">
-                                    <div><span class="rm-card-room">201</span> <span class="rm-card-type">SUI</span></div>
-                                    <span class="rm-card-indicator"></span>
-                                </div>
-                                <div class="rm-guest-name">Lê Anh Tuấn</div>
-                                <div class="rm-time-row">
-                                    <span style="color:#dc2626; font-weight:700;">▼ 13:52</span>
-                                    <span>1.2tr</span>
-                                </div>
-                                <div class="rm-footer" style="margin-top:8px;">
-                                    <span class="rm-status-badge blue-text" style="background:#eff6ff;">+ P. Khách Hàng</span>
-                                    <span style="font-size:10px; font-weight:700; color:#0f172a;">14h</span>
-                                </div>
-                            </div>
-                        </a>
+                        <div class="rm-grid">
+                            @foreach ($groupItem['rooms'] as $roomCard)
+                                <a href="{{ route($roomCard['route_name'], ['id' => $roomCard['id']]) }}" style="text-decoration:none; color:inherit;">
+                                    <div class="rm-card {{ $roomCard['card_class'] }}" style="cursor:pointer;">
+                                        <div class="rm-card-header" style="margin-bottom:0;">
+                                            <div>
+                                                <span class="rm-card-room">{{ $roomCard['name'] }}</span>
+                                                <span class="rm-card-type">{{ $roomCard['room_type_code'] }}</span>
+                                            </div>
+                                            @if ($roomCard['show_indicator'])
+                                                <span class="rm-card-indicator"></span>
+                                            @endif
+                                        </div>
 
-                        {{-- Có Khách --}}
-                        <a href="{{ route('admin.room-map.detail', ['id' => 202]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card occupied" style="cursor:pointer;">
-                                <div class="rm-card-header">
-                                    <div><span class="rm-card-room">202</span> <span class="rm-card-type">PRE</span></div>
-                                    <span class="rm-card-indicator"></span>
-                                </div>
-                                <div class="rm-guest-name">Nguyễn Thùy Chi</div>
-                                <div class="rm-time-row">
-                                    <span>22/02 - 26/02</span>
-                                    <span>2.4tr</span>
-                                </div>
-                                <div class="rm-footer" style="margin-top:8px;">
-                                    <span class="rm-status-badge red-text" style="background:#fef2f2;">▲ 350.000</span>
-                                </div>
-                            </div>
-                        </a>
-
-                        {{-- Trống --}}
-                        <a href="{{ route('admin.room-map.available-detail', ['id' => 203]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card empty" style="cursor:pointer;">
-                                <div class="rm-card-header" style="margin-bottom:0;">
-                                    <div><span class="rm-card-room">203</span> <span class="rm-card-type">SUI</span></div>
-                                </div>
-                                <div class="rm-card-body">
-                                    <div class="check-circle">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        @if ($roomCard['is_empty'])
+                                            <div class="rm-card-body">
+                                                <div class="check-circle">
+                                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                                </div>
+                                                <div class="status-text">TRỐNG</div>
+                                            </div>
+                                        @else
+                                            <div class="rm-guest-name">{{ $roomCard['guest_name'] ?: $roomCard['status_label'] }}</div>
+                                            @if ($roomCard['is_confirmed'] ?? false)
+                                                <div class="rm-confirmed-pill">
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                                    <span>{{ $roomCard['status_label'] }}</span>
+                                                </div>
+                                            @endif
+                                            @if (in_array($roomCard['status'], ['booked', 'confirmed', 'incoming']) && ($roomCard['checkin_at'] || $roomCard['checkout_at']))
+                                                <div class="rm-time-row">
+                                                    <span>CI: {{ $roomCard['checkin_at'] ?? '--' }}</span>
+                                                    <span>CO: {{ $roomCard['checkout_at'] ?? '--' }}</span>
+                                                </div>
+                                            @endif
+                                        @endif
                                     </div>
-                                    <div class="status-text">TRỐNG</div>
-                                </div>
-                            </div>
-                        </a>
-
-                        {{-- Chuẩn Bị Đi (Checkout) --}}
-                        <a href="{{ route('admin.room-map.detail', ['id' => 204]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card checkout" style="cursor:pointer;">
-                                <div class="rm-card-header">
-                                    <div><span class="rm-card-room">204</span> <span class="rm-card-type">ORD</span></div>
-                                    <span class="rm-card-indicator"></span>
-                                </div>
-                                <div class="rm-guest-name">Hoàng Gia Bảo</div>
-                                <div class="rm-footer">
-                                    <button class="rm-action-btn btn-orange" style="width:100%;" onclick="event.preventDefault();">
-                                        <svg style="display:inline; margin-bottom:-2px;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                                        CHỜ NHẬN
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        {{-- Đã đặt phòng (Booked / Blue) --}}
-                        <a href="{{ route('admin.room-map.incoming-detail', ['id' => 205]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card booked" style="cursor:pointer;">
-                                <div class="rm-card-header">
-                                    <div><span class="rm-card-room">205</span> <span class="rm-card-type">FLX</span></div>
-                                    <span class="rm-card-indicator"></span>
-                                </div>
-                                <div class="rm-guest-name" style="color:#2563eb;">#KSA5YRT HO1N</div>
-                                <div class="rm-guest-name">Trần Khắc Quân</div>
-                                <div class="rm-footer">
-                                    <span style="font-size:11px; font-weight:700; color:#2563eb; display:flex; align-items:center; gap:4px;">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                        Mới - VVIP
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-
-                        {{-- Trống --}}
-                        <a href="{{ route('admin.room-map.available-detail', ['id' => 206]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card empty" style="cursor:pointer;">
-                                <div class="rm-card-header" style="margin-bottom:0;">
-                                    <div><span class="rm-card-room">206</span> <span class="rm-card-type">SUI</span></div>
-                                </div>
-                                <div class="rm-card-body">
-                                    <div class="check-circle">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                    </div>
-                                    <div class="status-text">TRỐNG</div>
-                                </div>
-                            </div>
-                        </a>
-
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-
-                {{-- DELUXE --}}
-                <div class="rm-group">
-                    <div class="rm-group-header">
-                        <span class="rm-group-title">DELUXE</span>
-                        <span class="rm-group-count">14</span>
+                @empty
+                    <div class="rm-group">
+                        <div class="rm-group-header">
+                            <span class="rm-group-title">KHÔNG CÓ DỮ LIỆU</span>
+                            <span class="rm-group-count">0</span>
+                        </div>
                     </div>
-
-                    <div class="rm-grid">
-
-                        {{-- Dơ (Dirty) --}}
-                        <a href="{{ route('admin.room-map.detail', ['id' => 401]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card dirty" style="cursor:pointer;">
-                                <div class="rm-card-header">
-                                    <div><span class="rm-card-room">401</span> <span class="rm-card-type">DEL</span></div>
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14l6-6-6-6"/></svg>
-                                </div>
-                                <div class="rm-card-body" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;">
-                                    <div style="font-size:11px; font-weight:800; letter-spacing:0.05em;">🧹 CHỜ DỌN</div>
-                                </div>
-                                <div class="rm-footer">
-                                    <button class="rm-action-btn btn-outline" style="width:100%;" onclick="event.preventDefault();">XÁC NHẬN</button>
-                                </div>
-                            </div>
-                        </a>
-
-                        {{-- Sắp Đến (Purple) --}}
-                        <a href="{{ route('admin.room-map.incoming-detail', ['id' => 402]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card incoming" style="cursor:pointer;">
-                                <div class="rm-card-header">
-                                    <div><span class="rm-card-room">402</span> <span class="rm-card-type">DEL</span></div>
-                                    <span class="rm-card-indicator"></span>
-                                </div>
-                                <div class="rm-guest-name" style="color:#9333ea; font-size:11px; margin-bottom:0;">JAM-DLXUX-4V</div>
-                                <div class="rm-guest-name">Lý Minh Quân</div>
-                                <div class="rm-footer">
-                                    <span style="font-size:11px; font-weight:700; color:#9333ea; display:flex; align-items:center; gap:4px;">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                        Đã Dọn Xong
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-
-                        {{-- Khách đang ở (Có Trả phòng) --}}
-                        <a href="{{ route('admin.room-map.detail', ['id' => 403]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card occupied" style="cursor:pointer;">
-                                <div class="rm-card-header">
-                                    <div><span class="rm-card-room">403</span> <span class="rm-card-type">DEL</span></div>
-                                    <span class="rm-card-indicator"></span>
-                                </div>
-                                <div class="rm-guest-name">Bly... Donit</div>
-                                <div class="rm-time-row">
-                                    <span style="color:#dc2626; text-decoration:line-through;">Đoán Đi - 11:30</span>
-                                </div>
-                                <div class="rm-footer" style="margin-top:8px;">
-                                    <span class="rm-status-badge blue-text" style="background:#eff6ff;">+ P. Khách Hàng</span>
-                                    <span style="font-size:10px; font-weight:700; color:#0f172a;">12:00</span>
-                                </div>
-                            </div>
-                        </a>
-
-                        {{-- Trống --}}
-                        <a href="{{ route('admin.room-map.available-detail', ['id' => 404]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card empty" style="cursor:pointer;">
-                                <div class="rm-card-header" style="margin-bottom:0;">
-                                    <div><span class="rm-card-room">404</span> <span class="rm-card-type">PRE</span></div>
-                                </div>
-                                <div class="rm-card-body">
-                                    <div class="check-circle">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                    </div>
-                                    <div class="status-text">TRỐNG</div>
-                                </div>
-                            </div>
-                        </a>
-
-                        {{-- Trống --}}
-                        <a href="{{ route('admin.room-map.available-detail', ['id' => 405]) }}" style="text-decoration:none; color:inherit;">
-                            <div class="rm-card empty" style="cursor:pointer;">
-                                <div class="rm-card-header" style="margin-bottom:0;">
-                                    <div><span class="rm-card-room">405</span> <span class="rm-card-type">DEL</span></div>
-                                </div>
-                                <div class="rm-card-body">
-                                    <div class="check-circle">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                    </div>
-                                    <div class="status-text">TRỐNG</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                </div>
+                @endforelse
 
             </div>
 

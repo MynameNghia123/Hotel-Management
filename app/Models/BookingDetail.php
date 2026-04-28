@@ -20,8 +20,11 @@ class BookingDetail extends Model
         'checkout_date',
         'hourly_price',
         'daily_price',
+        'room_amount',
         'service_amount',
         'surcharge_amount',
+        'payment_status',
+        'paid_at',
     ];
 
     protected $casts = [
@@ -29,8 +32,10 @@ class BookingDetail extends Model
         'checkout_date' => 'datetime',
         'hourly_price' => 'float',
         'daily_price' => 'float',
+        'room_amount' => 'float',
         'service_amount' => 'float',
         'surcharge_amount' => 'float',
+        'paid_at' => 'datetime',
     ];
 
     /**
@@ -47,5 +52,33 @@ class BookingDetail extends Model
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    /**
+     * Relationship: BookingDetail has many ServiceUsages
+     */
+    public function serviceUsages()
+    {
+        return $this->hasMany(ServiceUsage::class);
+    }
+
+    public function getFormattedCheckinAtAttribute(): ?string
+    {
+        return $this->formatDateTime($this->checkin_date);
+    }
+
+    public function getFormattedCheckoutAtAttribute(): ?string
+    {
+        return $this->formatDateTime($this->checkout_date);
+    }
+
+    public function getFormattedPaidAtAttribute(): ?string
+    {
+        return $this->formatDateTime($this->paid_at);
+    }
+
+    private function formatDateTime($dateTimeValue): ?string
+    {
+        return $dateTimeValue?->format('d/m/Y H:i');
     }
 }

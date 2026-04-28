@@ -11,13 +11,11 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\EquipmentCategoryController;
 use App\Http\Controllers\BookingController;
-use App\Http\Controllers\Api\BookingApiController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AmenityController;
 use App\Http\Middleware\CheckAdminPermission;
-use App\Models\Staff;
 
 // ============== Auth & Dashboard ==============
 Route::get('/', function () {
@@ -45,6 +43,11 @@ Route::group(['prefix' => 'room-map', 'as' => 'room-map.'], function () {
     Route::get('/detail/{id?}', [RoomMapController::class, 'detail'])->name('detail');
     Route::get('/available-detail/{id?}', [RoomMapController::class, 'availableDetail'])->name('available-detail');
     Route::get('/incoming-detail/{id?}', [RoomMapController::class, 'incomingDetail'])->name('incoming-detail');
+    Route::post('/incoming-detail/{id}/cancel', [RoomMapController::class, 'cancelIncomingBooking'])->name('incoming-cancel');
+    Route::post('/incoming-detail/{id}/checkin', [RoomMapController::class, 'checkInIncomingBooking'])->name('incoming-checkin');
+    Route::post('/detail/{id}/add-service', [RoomMapController::class, 'addCheckoutService'])->name('detail-add-service');
+    Route::post('/detail/{id}/checkout-preview', [RoomMapController::class, 'previewCheckoutSelectedRooms'])->name('detail-checkout-preview');
+    Route::post('/detail/{id}/checkout-selected', [RoomMapController::class, 'checkoutSelectedRooms'])->name('detail-checkout-selected');
     Route::get('/invoice', [RoomMapController::class, 'invoice'])->name('invoice');
 });
 

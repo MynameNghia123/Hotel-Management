@@ -7,6 +7,7 @@ enum BookingStatus: string
     case PENDING = 'pending';           // Chờ xác nhận (trạng thái khi đặt online)
     case CONFIRMED = 'confirmed';       // Đã xác nhận (nhân viên gọi điện xác nhận)
     case OCCUPIED = 'occupied';         // Đang ở (đã check-in)
+    case PAID = 'paid';                 // Đã thanh toán
     case CANCELLED = 'cancelled';       // Đã hủy
 
     /**
@@ -18,6 +19,7 @@ enum BookingStatus: string
             self::PENDING => 'Chờ xác nhận',
             self::CONFIRMED => 'Đã xác nhận',
             self::OCCUPIED => 'Đang ở',
+            self::PAID => 'Đã thanh toán',
             self::CANCELLED => 'Đã hủy',
         };
     }
@@ -31,6 +33,7 @@ enum BookingStatus: string
             self::PENDING => 'yellow',
             self::CONFIRMED => 'green',
             self::OCCUPIED => 'blue',
+            self::PAID => 'emerald',
             self::CANCELLED => 'red',
         };
     }
@@ -43,7 +46,8 @@ enum BookingStatus: string
         return match($this) {
             self::PENDING => [self::CONFIRMED, self::CANCELLED],      // Chờ → Xác nhận hoặc Hủy
             self::CONFIRMED => [self::OCCUPIED, self::CANCELLED],     // Xác nhận → Đang ở hoặc Hủy
-            self::OCCUPIED => [self::CANCELLED],                      // Đang ở → Hủy
+            self::OCCUPIED => [self::PAID],                           // Đang ở → Đã thanh toán
+            self::PAID => [],                                         // Đã thanh toán: không thể chuyển đổi
             self::CANCELLED => [],                                    // Hủy: không thể chuyển đổi
         };
     }
@@ -53,7 +57,7 @@ enum BookingStatus: string
      */
     public function canTransitionTo(self $newStatus): bool
     {
-        return in_array($newStatus, $this->allowedTransitions());
+        return in_array($newStatus, $this->allowedTransitions(), true);
     }
 
     /**
@@ -65,6 +69,7 @@ enum BookingStatus: string
             self::PENDING,
             self::CONFIRMED,
             self::OCCUPIED,
+            self::PAID,
             self::CANCELLED,
         ];
     }

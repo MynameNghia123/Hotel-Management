@@ -43,7 +43,11 @@ class BookingController extends Controller
      */
     public function create()
     {
-        ['rooms' => $rooms, 'customers' => $customers, 'staffs' => $staffs] = $this->bookingService->prepareDataForCreate();
+        [
+            'rooms' => $rooms,
+            'customers' => $customers,
+            'staffs' => $staffs
+        ] = $this->bookingService->prepareDataForCreate();
         return view('admin.bookings.create', compact('rooms', 'customers', 'staffs'));
     }
 
@@ -74,7 +78,11 @@ class BookingController extends Controller
      */
     public function show($id)
     {
-        ['booking' => $booking, 'bookingDetails' => $bookingDetails, 'statuses' => $statuses] = $this->bookingService->getBookingWithDetails($id);
+        [
+            'booking' => $booking, 
+            'bookingDetails' => $bookingDetails, 
+            'statuses' => $statuses
+        ] = $this->bookingService->getBookingWithDetails($id);
         if (!$booking) {
             abort(404);
         }

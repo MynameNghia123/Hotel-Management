@@ -8,6 +8,7 @@
         'pending'   => ['bg' => '#fef3c7', 'border' => '#fde68a', 'text' => '#92400e', 'label' => 'Chờ xác nhận'],
         'confirmed' => ['bg' => '#f0fdf4', 'border' => '#bbf7d0', 'text' => '#15803d', 'label' => 'Đã xác nhận'],
         'occupied'  => ['bg' => '#dbeafe', 'border' => '#bfdbfe', 'text' => '#1e40af', 'label' => 'Đang ở'],
+        'paid'      => ['bg' => '#dcfce7', 'border' => '#bbf7d0', 'text' => '#166534', 'label' => 'Đã thanh toán'],
         'cancelled' => ['bg' => '#fee2e2', 'border' => '#fecaca', 'text' => '#991b1b', 'label' => 'Đã hủy'],
         default     => ['bg' => '#f1f5f9', 'border' => '#e2e8f0', 'text' => '#475569', 'label' => 'Không rõ'],
     };
@@ -205,7 +206,13 @@
                     <div style="margin-top:16px; padding:12px; background:#fffbeb; border:1px solid #fef3c7; border-radius:8px;">
                         <div style="display:flex; gap:8px; font-size:12px; color:#92400e;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                            <span>Bạn có thể thay đổi trạng thái đặt phòng bằng các nút bên trên.</span>
+                            <span>
+                                @if (!empty($allowedTransitions))
+                                    Bạn có thể thay đổi trạng thái đặt phòng bằng các nút bên trên.
+                                @else
+                                    Trạng thái hiện tại không có bước chuyển tiếp.
+                                @endif
+                            </span>
                         </div>
                     </div>
                 </div>

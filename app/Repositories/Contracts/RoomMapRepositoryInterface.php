@@ -25,4 +25,15 @@ interface RoomMapRepositoryInterface
     // Find methods
     public function findFloorById($id);
     public function findRoomById($id);
+    public function findLatestBookingDetailByRoomId(int $roomId);
+    public function getOtherBookingRooms(int $bookingId, int $excludedRoomId);
+    public function getBookingRoomIds(int $bookingId);
+
+    // Booking/service actions from room-map flow
+    public function updateBookingStatusById(int $bookingId, string $status);
+    public function updateBookingCheckInAt(int $bookingId, $checkedInAt);
+    public function updateRoomStatusById(int $roomId, string $status);
+    public function createServiceUsage(array $data);
+    public function incrementServiceAmounts(int $bookingId, int $bookingDetailId, float $amount): void;
+    public function checkoutBookingRooms(int $bookingId, array $roomIds, string $pricingMode, $billingStartAt, $billingEndAt): array;
 }

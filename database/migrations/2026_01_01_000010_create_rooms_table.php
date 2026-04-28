@@ -13,8 +13,8 @@ return new class extends Migration
             $table->foreignId('room_type_id')->constrained('room_types')->onDelete('cascade');
             $table->foreignId('floor_id')->constrained('floors')->onDelete('cascade');
             $table->string('name', 100)->unique();
-            $table->string('status')->default('available');
-            // available | occupied | maintenance
+            $table->string('status')->default('empty');
+            // empty | booked | confirmed | incoming | occupied | checkout | dirty
         });
     }
 

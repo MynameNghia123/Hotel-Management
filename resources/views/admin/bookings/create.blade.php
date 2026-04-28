@@ -173,6 +173,8 @@
                     <input type="hidden" id="roomIds" name="room_ids" value="">
                     <input type="hidden" id="checkinDates" name="checkin_dates" value="">
                     <input type="hidden" id="checkoutDates" name="checkout_dates" value="">
+                    <input type="hidden" id="hourlyPrices" name="hourly_prices" value="">
+                    <input type="hidden" id="dailyPrices" name="daily_prices" value="">
 
                     {{-- HIDDEN PAYMENT FIELDS (used by JS updatePaymentSummary) --}}
                     <input type="hidden" name="total_room_amount" id="hiddenRoomAmount" value="{{ old('total_room_amount', 0) }}">
@@ -229,6 +231,10 @@
 </div>
 
 {{-- MODAL CHỌN PHÒNG --}}
+@php
+    $emptyRooms = $rooms->values();
+@endphp
+
 <div id="roomModal" class="bc-modal-overlay" style="display: none;">
     <div class="bc-modal">
         <div class="bc-modal-header">
@@ -236,7 +242,7 @@
                 <h2 class="bc-modal-title">Chọn phòng trống</h2>
                 <p class="bc-modal-subtitle">
                     Sắp xếp từ thấp đến cao &nbsp;·&nbsp;
-                    <span id="roomCountBadge" style="font-weight:700; color:#2a3f8a;">{{ $rooms->count() }} phòng</span>
+                    <span id="roomCountBadge" style="font-weight:700; color:#2a3f8a;">{{ $emptyRooms->count() }} phòng</span>
                 </p>
             </div>
             <button type="button" class="bc-modal-close" onclick="closeRoomModal()">
@@ -273,11 +279,12 @@
 
         <div class="bc-modal-body">
             <div id="roomGridContainer" class="bc-room-grid-modal">
-                @forelse ($rooms as $room)
+                @forelse ($emptyRooms as $room)
                     <div class="bc-room-card-select" onclick="toggleRoomSelection(this, {{ $room->id }}, '{{ $room->name }}')" 
                          data-room-number="{{ $room->name }}" 
                          data-room-type="{{ $room->roomType->name ?? '' }}" 
-                         data-room-floor="{{ $room->floor->name ?? '' }}">
+                         data-room-floor="{{ $room->floor->name ?? '' }}"
+                         data-room-status="available">
                         <span class="bc-rcs-num">{{ $room->name }}</span>
                         <span class="bc-rcs-type">{{ $room->roomType->name ?? 'N/A' }}</span>
                         <span class="bc-rcs-price">{{ number_format($room->roomType->daily_price ?? 0, 0, ',', '.') }} đ</span>
@@ -286,7 +293,7 @@
                         </div>
                     </div>
                 @empty
-                    <p style="text-align: center; color: #94a3b8; padding: 40px; grid-column: 1/-1;">Không có phòng nào</p>
+                    <p style="text-align: center; color: #94a3b8; padding: 40px; grid-column: 1/-1;">Không có phòng trống</p>
                 @endforelse
             </div>
             <div id="noResultsMessage" style="display:none; text-align: center; color: #94a3b8; padding: 40px; grid-column: 1/-1;">
@@ -304,6 +311,7 @@
 
 <script>
     let selectedRooms = new Set();
+    let roomCatalog = [];
 
     function verifyCustomerEmail() {
         const email = document.getElementById('customerEmail').value.trim();
@@ -366,13 +374,97 @@
 
     function openRoomModal() {
         document.getElementById('roomModal').style.display = 'flex';
-        // Reset search when opening modal
         document.getElementById('roomSearchInput').value = '';
-        filterRooms();
+        loadAvailableRooms();
     }
 
     function closeRoomModal() {
         document.getElementById('roomModal').style.display = 'none';
+    }
+
+    function getRoomRangePayload() {
+        return {
+            check_in_date: document.getElementById('checkinDate').value,
+            check_out_date: document.getElementById('checkoutDate').value,
+        };
+    }
+
+    function resetRoomSelection() {
+        selectedRooms = new Set();
+        document.getElementById('roomIds').value = '';
+        document.getElementById('checkinDates').value = '';
+        document.getElementById('checkoutDates').value = '';
+        document.getElementById('roomListContainer').innerHTML = '';
+        document.getElementById('paymentRoomsList').innerHTML = '<div style="text-align:center; color:#94a3b8; font-size:12px; padding:12px;">Chưa có phòng nào</div>';
+        updatePaymentSummary();
+    }
+
+    async function loadAvailableRooms() {
+        const { check_in_date, check_out_date } = getRoomRangePayload();
+        const container = document.getElementById('roomGridContainer');
+
+        if (!check_in_date || !check_out_date) {
+            container.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:40px; grid-column:1/-1;">Vui lòng chọn ngày nhận/trả phòng</p>';
+            roomCatalog = [];
+            filterRooms();
+            return;
+        }
+
+        if (new Date(check_in_date) >= new Date(check_out_date)) {
+            container.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:40px; grid-column:1/-1;">Ngày trả phòng phải sau ngày nhận phòng</p>';
+            roomCatalog = [];
+            filterRooms();
+            return;
+        }
+
+        container.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:40px; grid-column:1/-1;">Đang tải phòng trống...</p>';
+
+        try {
+            const response = await fetch('/api/bookings/available-rooms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                },
+                body: JSON.stringify({ check_in_date, check_out_date })
+            });
+
+            const data = await response.json();
+            roomCatalog = Array.isArray(data.rooms) ? data.rooms : [];
+            renderRoomCatalog(roomCatalog);
+            filterRooms();
+        } catch (error) {
+            console.error('Error loading available rooms:', error);
+            container.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:40px; grid-column:1/-1;">Không tải được danh sách phòng</p>';
+            roomCatalog = [];
+            filterRooms();
+        }
+    }
+
+    function renderRoomCatalog(rooms) {
+        const container = document.getElementById('roomGridContainer');
+
+        if (!rooms.length) {
+            container.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:40px; grid-column:1/-1;">Không có phòng trống</p>';
+            return;
+        }
+
+        container.innerHTML = rooms.map(room => `
+            <div class="bc-room-card-select ${selectedRooms.has(room.id) ? 'is-selected' : ''}"
+                 onclick="toggleRoomSelection(this, ${room.id}, '${room.name}')"
+                 data-room-number="${room.name}"
+                 data-room-type="${room.room_type || ''}"
+                 data-room-floor="${room.floor_name || ''}"
+                 data-room-status="available">
+                <span class="bc-rcs-num">${room.name}</span>
+                <span class="bc-rcs-type">${room.room_type || 'N/A'}</span>
+                <span class="bc-rcs-price">${new Intl.NumberFormat('vi-VN').format(room.daily_price || 0)} đ</span>
+                <div class="bc-rcs-check">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+            </div>
+        `).join('');
     }
 
     function filterRooms() {
@@ -442,14 +534,17 @@
             return;
         }
         
-        if (new Date(checkinDate) >= new Date(checkoutDate)) {
-            alert('Ngày trả phòng phải sau ngày nhận phòng');
+        if (new Date(checkinDate) > new Date(checkoutDate)) {
+            alert('Ngày trả phòng phải bằng hoặc sau ngày nhận phòng');
             return;
         }
         
         // Build arrays for each room with same dates (can be customized per room later)
         const checkinDates = Array(roomIds.length).fill(checkinDate);
         const checkoutDates = Array(roomIds.length).fill(checkoutDate);
+        const totalDays = Math.max(1, Math.ceil((new Date(checkoutDate) - new Date(checkinDate)) / (1000 * 60 * 60 * 24)));
+        const hourlyPrices = [];
+        const dailyPrices = [];
         
         document.getElementById('roomIds').value = JSON.stringify(roomIds);
         document.getElementById('checkinDates').value = JSON.stringify(checkinDates);
@@ -462,12 +557,23 @@
         // Update payment sidebar
         const paymentRoomsList = document.getElementById('paymentRoomsList');
         paymentRoomsList.innerHTML = '';
-        
-        const roomElements = document.querySelectorAll('.bc-room-card-select.is-selected');
-        roomElements.forEach((el, index) => {
-            const roomNum = el.querySelector('.bc-rcs-num').textContent;
-            const roomType = el.querySelector('.bc-rcs-type').textContent;
-            const roomPrice = el.querySelector('.bc-rcs-price').textContent;
+
+        const selectedRoomData = roomIds
+            .map(id => roomCatalog.find(room => Number(room.id) === Number(id)))
+            .filter(Boolean);
+
+        let totalRoomAmount = 0;
+
+        selectedRoomData.forEach((room) => {
+            const roomNum = room.name;
+            const roomType = room.room_type || 'N/A';
+            const unitHourlyPrice = Number(room.hourly_price || 0);
+            const unitDailyPrice = Number(room.daily_price || 0);
+            const linePrice = unitDailyPrice * totalDays;
+
+            hourlyPrices.push(unitHourlyPrice);
+            dailyPrices.push(unitDailyPrice);
+            totalRoomAmount += linePrice;
             
             // Left column: room item
             container.innerHTML += `
@@ -483,17 +589,26 @@
             // Right column: payment item
             paymentRoomsList.innerHTML += `
                 <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; font-size:12px; color:#64748b;">
-                    <span>${roomType} (x${Math.ceil((new Date(checkoutDate) - new Date(checkinDate)) / (1000 * 60 * 60 * 24))} đêm)</span>
-                    <span style="color:#0f172a; font-weight:600;">${roomPrice}</span>
+                    <span>${roomType} (${new Intl.NumberFormat('vi-VN').format(unitDailyPrice)} đ x ${totalDays} ngày)</span>
+                    <span style="color:#0f172a; font-weight:600;">${new Intl.NumberFormat('vi-VN').format(linePrice)} đ</span>
                 </div>
             `;
         });
+
+        document.getElementById('hourlyPrices').value = JSON.stringify(hourlyPrices);
+        document.getElementById('dailyPrices').value = JSON.stringify(dailyPrices);
+
+        const hiddenRoomAmount = document.getElementById('hiddenRoomAmount');
+        if (hiddenRoomAmount) hiddenRoomAmount.value = totalRoomAmount;
         
         // Update payment totals
         updatePaymentSummary();
         
         closeRoomModal();
     }
+
+    document.getElementById('checkinDate').addEventListener('change', resetRoomSelection);
+    document.getElementById('checkoutDate').addEventListener('change', resetRoomSelection);
     
     function updatePaymentSummary() {
         const totalRoomAmount    = parseFloat(document.getElementById('hiddenRoomAmount')?.value) || 0;

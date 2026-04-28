@@ -22,7 +22,9 @@
             </a>
 
             <div class="ra-header-box">
-                <h1 class="ra-title">Phòng 401 - Deluxe</h1>
+                <h1 class="ra-title">
+                    Phòng {{ $room->name ?? '--' }} - {{ $roomType->name ?? 'N/A' }}
+                </h1>
                 <div class="ra-subtitle">Cung cấp thông tin chi tiết để quản lý phòng Urban Luxe hiệu quả hơn.</div>
             </div>
 
@@ -36,50 +38,34 @@
                 <div class="ra-info-grid">
                     <div class="ra-info-box">
                         <div class="ra-info-label">DIỆN TÍCH</div>
-                        <div class="ra-info-val">35 <span>m²</span></div>
+                        <div class="ra-info-val">{{ number_format((float) (($roomType->width ?? 0) * ($roomType->height ?? 0)), 2) }} <span>m²</span></div>
                     </div>
                     <div class="ra-info-box">
                         <div class="ra-info-label">LOẠI GIƯỜNG</div>
-                        <div class="ra-info-val">King Size</div>
+                        <div class="ra-info-val">{{ $bedDescription }}</div>
                     </div>
                 </div>
 
                 <div class="ra-price-row">
                     <span>Giá theo giờ</span>
-                    <span class="ra-price-val">250.000 đ</span>
+                    <span class="ra-price-val">{{ number_format((float) ($roomType->hourly_price ?? 0), 0, ',', '.') }} đ</span>
                 </div>
                 <div class="ra-price-row">
                     <span>Giá theo ngày</span>
-                    <span class="ra-price-val">1.200.000 đ</span>
+                    <span class="ra-price-val">{{ number_format((float) ($roomType->daily_price ?? 0), 0, ',', '.') }} đ</span>
                 </div>
 
                 <div class="ra-amenities-group">
                     <div class="ra-am-title">TRANG THIẾT BỊ</div>
                     <div class="ra-am-list">
-                        
-                        {{-- Tiện ích 1 --}}
-                        <div class="ra-am-item">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
-                            Smart TV 4K
-                        </div>
-
-                        {{-- Tiện ích 2 --}}
-                        <div class="ra-am-item">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="5" y1="10" x2="19" y2="10"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="9" y1="6" x2="9" y2="6.01"/></svg>
-                            Tủ lạnh mini
-                        </div>
-
-                        {{-- Tiện ích 3 --}}
-                        <div class="ra-am-item">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="16" height="6" rx="2" ry="2"/><path d="M7 16v3"/><path d="M11 16v3"/><path d="M15 16v3"/><path d="M12 2A4 4 0 0 0 8 6"/></svg>
-                            Điều hòa 2 chiều
-                        </div>
-
-                        {{-- Tiện ích 4 --}}
-                        <div class="ra-am-item">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-                            High Speed WiFi
-                        </div>
+                        @forelse($facilityNames as $facilityName)
+                            <div class="ra-am-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/></svg>
+                                {{ $facilityName }}
+                            </div>
+                        @empty
+                            <div class="ra-am-item">Chưa có dữ liệu trang thiết bị</div>
+                        @endforelse
 
                     </div>
                 </div>

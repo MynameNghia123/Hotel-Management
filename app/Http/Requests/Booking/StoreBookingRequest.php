@@ -36,6 +36,18 @@ class StoreBookingRequest extends FormRequest
             $merge['checkout_dates'] = is_array($decoded) ? $decoded : [];
         }
 
+        // hourly_prices
+        if ($this->has('hourly_prices') && is_string($this->hourly_prices)) {
+            $decoded = json_decode($this->hourly_prices, true);
+            $merge['hourly_prices'] = is_array($decoded) ? $decoded : [];
+        }
+
+        // daily_prices
+        if ($this->has('daily_prices') && is_string($this->daily_prices)) {
+            $decoded = json_decode($this->daily_prices, true);
+            $merge['daily_prices'] = is_array($decoded) ? $decoded : [];
+        }
+
         // booking_date: default to today if not provided
         if (empty($this->booking_date)) {
             $merge['booking_date'] = now()->toDateString();

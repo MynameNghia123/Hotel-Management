@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\RoomMap;
 
+use App\Enums\RoomStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRoomRequest extends FormRequest
 {
@@ -17,7 +19,7 @@ class UpdateRoomRequest extends FormRequest
             'name' => 'required|string|max:255',
             'room_type_id' => 'required|integer|exists:room_types,id',
             'floor_id' => 'required|integer|exists:floors,id',
-            'status' => 'nullable|string|in:available,maintenance,occupied,blocked'
+            'status' => ['nullable', 'string', Rule::in(array_map(fn (RoomStatus $status) => $status->value, RoomStatus::cases()))],
         ];
     }
 

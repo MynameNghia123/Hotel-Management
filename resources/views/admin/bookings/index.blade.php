@@ -106,11 +106,13 @@
                                     <td class="bk-price">{{ number_format($booking->final_amount, 0, ',', '.') }} đ</td>
                                     <td>
                                         @php
+                                            // dd($booking->status);
                                             $statusEnum = \App\Enums\BookingStatus::from($booking->status);
                                             $badgeClass = match($statusEnum->value) {
                                                 'pending' => 'pending',
                                                 'confirmed' => 'confirmed',
                                                 'occupied' => 'staying',
+                                                'paid' => 'paid',
                                                 'cancelled' => 'cancelled',
                                                 default => 'pending'
                                             };

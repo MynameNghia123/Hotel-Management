@@ -15,8 +15,11 @@ return new class extends Migration {
             $table->dateTime('checkout_date');
             $table->decimal('hourly_price', 15, 2);
             $table->decimal('daily_price', 15, 2);
+            $table->decimal('room_amount', 15, 2)->default(0);
             $table->decimal('service_amount', 15, 2)->default(0);
             $table->decimal('surcharge_amount', 15, 2)->default(0);
+            $table->string('payment_status')->default('unpaid');
+            $table->dateTime('paid_at')->nullable();
         });
     }
 

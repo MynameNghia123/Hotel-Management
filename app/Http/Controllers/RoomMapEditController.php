@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoomStatus;
 use Illuminate\Http\Request;
 use App\Services\Contracts\RoomTypeServiceInterface;
 use App\Services\Contracts\FloorServiceInterface;
@@ -84,7 +85,7 @@ class RoomMapEditController extends Controller
     public function storeRoom(StoreRoomRequest $request)
     {
         $data = $request->validated();
-        $data['status'] ??= 'available';
+        $data['status'] ??= RoomStatus::EMPTY->value;
 
         $this->roomService->create($data);
 

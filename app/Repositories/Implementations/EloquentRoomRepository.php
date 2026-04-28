@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Implementations;
 
+use App\Enums\BookingStatus;
 use App\Models\Room;
 use App\Repositories\Contracts\RoomRepositoryInterface;
 
@@ -52,10 +53,15 @@ class EloquentRoomRepository implements RoomRepositoryInterface
     public function getAvailableRooms($checkInDate, $checkOutDate)
     {
         return $this->model->with(['roomType', 'floor'])
-            ->whereNotIn('id', function ($query) use ($checkInDate, $checkOutDate) {
-                $query->select('room_id')
-                    ->from('booking_details')
-                    ->whereRaw('? < checkout_date AND ? > checkin_date', [$checkInDate, $checkOutDate]);
+            ->whereDoesntHave('bookingDetails', function ($query) use ($checkInDate, $checkOutDate) {
+                $query->where('checkin_date', '<', $checkOutDate)
+                    ->where('checkout_date', '>', $checkInDate);
+                $query->whereHas('booking', function ($bookingQuery) {
+                    $bookingQuery->whereNotIn('status', [
+                        BookingStatus::CANCELLED->value,
+                        BookingStatus::PAID->value,
+                    ]);
+                });
             })
             ->get();
     }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Booking;
 
+use App\Enums\BookingStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBookingStatusRequest extends FormRequest
 {
@@ -14,7 +16,14 @@ class UpdateBookingStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|string',
+            'status' => [
+                'required',
+                'string',
+                Rule::in(array_map(
+                    fn (BookingStatus $status) => $status->value,
+                    BookingStatus::cases()
+                )),
+            ],
         ];
     }
 
@@ -22,6 +31,7 @@ class UpdateBookingStatusRequest extends FormRequest
     {
         return [
             'status.required' => 'Vui lòng chọn trạng thái đặt phòng',
+            'status.in' => 'Trạng thái đặt phòng không hợp lệ',
         ];
     }
 }

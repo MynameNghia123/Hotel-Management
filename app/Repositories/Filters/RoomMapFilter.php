@@ -35,6 +35,20 @@ class RoomMapFilter
             $query->where('room_type_id', $filters['room_type_id']);
         }
 
+        $dateFrom = $filters['date_from'] ?? null;
+        $dateTo = $filters['date_to'] ?? null;
+
+        if (!empty($dateFrom) || !empty($dateTo)) {
+            $start = !empty($dateFrom) ? ($dateFrom . ' 00:00:00') : '1970-01-01 00:00:00';
+            $end = !empty($dateTo) ? ($dateTo . ' 23:59:59') : '2999-12-31 23:59:59';
+
+            $query->whereHas('bookingDetails', function ($bookingDetailQuery) use ($start, $end) {
+                $bookingDetailQuery
+                    ->where('checkin_date', '<=', $end)
+                    ->where('checkout_date', '>=', $start);
+            });
+        }
+
         return $query;
     }
 }

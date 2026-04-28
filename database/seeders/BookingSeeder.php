@@ -10,10 +10,10 @@ class BookingSeeder extends Seeder
     public function run(): void
     {
         // customer_id: 1-5 | staff_id: 1-4 (nullable)
-        // Status: pending | confirmed | checked_in | checked_out | cancelled
+        // Status: pending | confirmed | occupied | paid | cancelled
         $bookings = [
             [
-                // Khách 1 — đã check-out (lịch sử)
+                // Khách 1 — đã thanh toán (lịch sử)
                 'customer_id'           => 1,
                 'booking_date'          => '2026-03-18 14:00:00',
                 'staff_id'              => 2,
@@ -21,10 +21,10 @@ class BookingSeeder extends Seeder
                 'total_room_amount'     => 1000000,
                 'surcharge_amount'      => 0,
                 'final_amount'          => 1200000,
-                'status'                => 'checked_out',
+                'status'                => 'paid',
             ],
             [
-                // Khách 2 — đang ở (checked_in)
+                // Khách 2 — đang ở
                 'customer_id'           => 2,
                 'booking_date'          => '2026-03-27 09:00:00',
                 'staff_id'              => 2,
@@ -32,7 +32,7 @@ class BookingSeeder extends Seeder
                 'total_room_amount'     => 1600000,
                 'surcharge_amount'      => 0,
                 'final_amount'          => 2020000,
-                'status'                => 'checked_in',
+                'status'                => 'occupied',
             ],
             [
                 // Khách 3 — đã xác nhận, chờ check-in
@@ -57,7 +57,7 @@ class BookingSeeder extends Seeder
                 'status'                => 'pending',
             ],
             [
-                // Khách 5 — đang ở (checked_in)
+                // Khách 5 — đang ở
                 'customer_id'           => 5,
                 'booking_date'          => '2026-03-26 16:00:00',
                 'staff_id'              => 2,
@@ -65,7 +65,7 @@ class BookingSeeder extends Seeder
                 'total_room_amount'     => 2400000,
                 'surcharge_amount'      => 50000,
                 'final_amount'          => 2800000,
-                'status'                => 'checked_in',
+                'status'                => 'occupied',
             ],
         ];
 
