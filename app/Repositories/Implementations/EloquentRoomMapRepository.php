@@ -11,24 +11,46 @@ use App\Models\Room;
 use App\Models\ServiceUsage;
 use App\Repositories\Contracts\RoomMapRepositoryInterface;
 use App\Repositories\Filters\RoomMapFilter;
+use Carbon\Carbon;
 
 class EloquentRoomMapRepository implements RoomMapRepositoryInterface
 {
+    private const BOOKING_RELATED_ROOM_STATUSES = [
+        RoomStatus::BOOKED->value,
+        RoomStatus::CONFIRMED->value,
+        RoomStatus::INCOMING->value,
+        RoomStatus::OCCUPIED->value,
+        RoomStatus::CHECKOUT->value,
+    ];
+
     public function getFilteredRooms(array $filters = [])
     {
         $query = Room::with([
             'roomType',
             'floor',
-            'bookingDetails' => function ($bookingDetailQuery) {
+            'bookingDetails' => function ($bookingDetailQuery) use ($filters) {
                 $bookingDetailQuery
                     ->with(['booking.customer', 'serviceUsages.service'])
-                    ->orderByDesc('checkin_date');
+                    ->whereHas('booking', function ($bookingQuery) {
+                        $bookingQuery->whereNotIn('status', [
+                            BookingStatus::CANCELLED->value,
+                            BookingStatus::PAID->value,
+                        ]);
+                    });
+
+                $this->applyBookingDateRange($bookingDetailQuery, $filters);
+
+                $bookingDetailQuery
+                    ->orderBy('checkin_date')
+                    ->orderBy('id');
             },
         ]);
 
-        $query = RoomMapFilter::apply($query, $filters);
+        $query = RoomMapFilter::apply($query, $this->removeDateFilters($filters));
 
-        return $query->orderBy('name')->get();
+        return $query->orderBy('name')
+            ->get()
+            ->each(fn ($room) => $this->applyRoomMapDisplayState($room));
     }
 
     public function getRoomStatusCounts(array $filters = []): array
@@ -37,6 +59,8 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
 
         $statusAgnosticFilters = $filters;
         unset($statusAgnosticFilters['status']);
+
+        $statusAgnosticFilters = $this->removeDateFilters($statusAgnosticFilters);
 
         $query = RoomMapFilter::apply($query, $statusAgnosticFilters);
         $rawCounts = $query->selectRaw('status, COUNT(*) as total')
@@ -153,16 +177,74 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
         ])->find($id);
     }
 
-    public function findLatestBookingDetailByRoomId(int $roomId)
+    public function findLatestBookingDetailByRoomId(int $roomId, array $filters = [])
     {
-        return BookingDetail::with([
+        $relations = [
             'room.roomType.amenities',
             'room.roomType.equipments',
             'booking.customer',
             'booking.bookingDetails.room.roomType',
             'booking.bookingDetails.serviceUsages.service',
             'serviceUsages.service',
-        ])
+        ];
+
+        $bookingDetailId = (int) ($filters['booking_detail_id'] ?? 0);
+        if ($bookingDetailId > 0) {
+            $bookingDetail = BookingDetail::with($relations)
+                ->where('room_id', $roomId)
+                ->where('id', $bookingDetailId)
+                ->first();
+
+            if ($bookingDetail) {
+                return $bookingDetail;
+            }
+        }
+
+        if ($this->hasDateFilters($filters)) {
+            return BookingDetail::with($relations)
+                ->where('room_id', $roomId)
+                ->whereHas('booking', function ($bookingQuery) {
+                    $bookingQuery->whereNotIn('status', [
+                        BookingStatus::CANCELLED->value,
+                        BookingStatus::PAID->value,
+                    ]);
+                })
+                ->where(function ($bookingDetailQuery) use ($filters) {
+                    $this->applyBookingDateRange($bookingDetailQuery, $filters);
+                })
+                ->orderBy('checkin_date')
+                ->orderBy('id')
+                ->first();
+        }
+
+        $now = now();
+        $nowValue = $now->toDateTimeString();
+        $todayStart = $now->copy()->startOfDay();
+        $todayEnd = $now->copy()->endOfDay();
+
+        $todayBookingDetail = BookingDetail::with($relations)
+            ->where('room_id', $roomId)
+            ->whereHas('booking', function ($bookingQuery) {
+                $bookingQuery->whereNotIn('status', [
+                    BookingStatus::CANCELLED->value,
+                    BookingStatus::PAID->value,
+                ]);
+            })
+            ->where('checkin_date', '<=', $todayEnd)
+            ->where('checkout_date', '>=', $todayStart)
+            ->orderByRaw(
+                'CASE WHEN checkin_date <= ? AND checkout_date > ? THEN 0 ELSE 1 END',
+                [$nowValue, $nowValue]
+            )
+            ->orderByDesc('checkin_date')
+            ->orderByDesc('id')
+            ->first();
+
+        if ($todayBookingDetail) {
+            return $todayBookingDetail;
+        }
+
+        return BookingDetail::with($relations)
             ->where('room_id', $roomId)
             ->orderByDesc('checkin_date')
             ->orderByDesc('id')
@@ -342,5 +424,85 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
         $booking->surcharge_amount = $totalSurchargeAmount;
         $booking->final_amount = $totalRoomAmount + $totalServiceAmount + $totalSurchargeAmount;
         $booking->save();
+    }
+
+    private function applyBookingDateRange($bookingDetailQuery, array $filters): void
+    {
+        [$start, $end] = $this->resolveBookingDateRange($filters);
+
+        if (!$start || !$end) {
+            return;
+        }
+
+        $bookingDetailQuery
+            ->where('checkin_date', '<=', $end)
+            ->where('checkout_date', '>=', $start);
+    }
+
+    private function resolveBookingDateRange(array $filters): array
+    {
+        $dateFrom = $filters['date_from'] ?? null;
+        $dateTo = $filters['date_to'] ?? null;
+
+        if (empty($dateFrom) && empty($dateTo)) {
+            return [null, null];
+        }
+
+        $start = !empty($dateFrom)
+            ? Carbon::parse($dateFrom)->startOfDay()
+            : Carbon::create(1970, 1, 1)->startOfDay();
+        $end = !empty($dateTo)
+            ? Carbon::parse($dateTo)->endOfDay()
+            : Carbon::create(2999, 12, 31)->endOfDay();
+
+        if ($start->greaterThan($end)) {
+            return [$end->copy()->startOfDay(), $start->copy()->endOfDay()];
+        }
+
+        return [$start, $end];
+    }
+
+    private function removeDateFilters(array $filters): array
+    {
+        unset($filters['date_from'], $filters['date_to']);
+
+        return $filters;
+    }
+
+    private function hasDateFilters(array $filters): bool
+    {
+        return !empty($filters['date_from']) || !empty($filters['date_to']);
+    }
+
+    private function applyRoomMapDisplayState(Room $room): void
+    {
+        $displayBookingDetail = collect($room->bookingDetails ?? [])->first();
+
+        if ($displayBookingDetail) {
+            $room->setAttribute('room_map_status', $this->resolveRoomStatusFromBookingDetail($displayBookingDetail));
+            $room->setRelation('roomMapBookingDetail', $displayBookingDetail);
+            return;
+        }
+
+        $currentStatus = $room->status instanceof RoomStatus
+            ? $room->status->value
+            : (string) $room->status;
+
+        $displayStatus = in_array($currentStatus, self::BOOKING_RELATED_ROOM_STATUSES, true)
+            ? RoomStatus::EMPTY->value
+            : ($currentStatus ?: RoomStatus::EMPTY->value);
+
+        $room->setAttribute('room_map_status', $displayStatus);
+        $room->unsetRelation('roomMapBookingDetail');
+    }
+
+    private function resolveRoomStatusFromBookingDetail($bookingDetail): string
+    {
+        return match ((string) ($bookingDetail->booking->status ?? '')) {
+            BookingStatus::PENDING->value => RoomStatus::BOOKED->value,
+            BookingStatus::CONFIRMED->value => RoomStatus::CONFIRMED->value,
+            BookingStatus::OCCUPIED->value => RoomStatus::OCCUPIED->value,
+            default => RoomStatus::EMPTY->value,
+        };
     }
 }

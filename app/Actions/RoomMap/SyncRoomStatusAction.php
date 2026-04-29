@@ -44,7 +44,11 @@ class SyncRoomStatusAction
             return $this->determineStatusFromActiveDetail($latestActiveDetail, $now);
         }
 
-        if (in_array($currentRoomStatus, [RoomStatus::BOOKED->value, RoomStatus::CONFIRMED->value, RoomStatus::INCOMING->value], true)) {
+        if (in_array($currentRoomStatus, [
+            RoomStatus::BOOKED->value,
+            RoomStatus::CONFIRMED->value,
+            RoomStatus::INCOMING->value,
+        ], true)) {
             return RoomStatus::EMPTY->value;
         }
 
@@ -53,15 +57,21 @@ class SyncRoomStatusAction
 
     private function findLatestActiveBookingDetail($room, $now)
     {
+        $todayEnd = $now->copy()->endOfDay();
+
         return collect($room->bookingDetails ?? [])
-            ->first(function ($detail) use ($now) {
+            ->first(function ($detail) use ($now, $todayEnd) {
                 $bookingStatus = (string) ($detail->booking->status ?? '');
 
                 if (in_array($bookingStatus, [BookingStatus::CANCELLED->value, BookingStatus::PAID->value], true)) {
                     return false;
                 }
 
-                return Carbon::parse($detail->checkout_date)->greaterThan($now);
+                $checkInAt = Carbon::parse($detail->checkin_date);
+                $checkOutAt = Carbon::parse($detail->checkout_date);
+
+                return $checkOutAt->greaterThan($now)
+                    && $checkInAt->lessThanOrEqualTo($todayEnd);
             });
     }
 

@@ -113,9 +113,13 @@
                                         $nextRoomStatus = \App\Enums\RoomStatus::EMPTY->value;
                                         $nextRoomActionLabel = 'Chuyển về trống';
                                     }
+                                    $roomRouteParams = ['id' => $roomCard['id'], 'filters' => $filters];
+                                    if (!empty($roomCard['booking_detail_id'])) {
+                                        $roomRouteParams['booking_detail_id'] = $roomCard['booking_detail_id'];
+                                    }
                                 @endphp
                                 <div class="rm-card-shell" data-room-card-shell>
-                                <a href="{{ route($roomCard['route_name'], ['id' => $roomCard['id']]) }}" class="rm-card-link">
+                                <a href="{{ route($roomCard['route_name'], $roomRouteParams) }}" class="rm-card-link">
                                     <div class="rm-card {{ $roomCard['card_class'] }}" style="cursor:pointer;">
                                         <div class="rm-card-header" style="margin-bottom:0;">
                                             <div>

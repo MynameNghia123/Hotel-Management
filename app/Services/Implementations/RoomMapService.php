@@ -40,9 +40,9 @@ class RoomMapService implements RoomMapServiceInterface
         return $this->prepareIndexAction->execute($filters);
     }
 
-    public function prepareDataForDetail(?int $roomId): array
+    public function prepareDataForDetail(?int $roomId, array $filters = []): array
     {
-        return $this->prepareDetailAction->execute($roomId);
+        return $this->prepareDetailAction->execute($roomId, $filters);
     }
 
     public function prepareDataForAvailableDetail(?int $roomId): array
@@ -50,9 +50,9 @@ class RoomMapService implements RoomMapServiceInterface
         return $this->prepareAvailableDetailAction->execute($roomId);
     }
 
-    public function prepareDataForIncomingDetail(?int $roomId): array
+    public function prepareDataForIncomingDetail(?int $roomId, array $filters = []): array
     {
-        return $this->prepareIncomingDetailAction->execute($roomId);
+        return $this->prepareIncomingDetailAction->execute($roomId, $filters);
     }
 
     public function prepareDataForInvoice(?int $roomId = null, array $roomIds = []): array

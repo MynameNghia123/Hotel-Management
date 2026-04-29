@@ -25,7 +25,7 @@ interface RoomMapRepositoryInterface
     // Find methods
     public function findFloorById($id);
     public function findRoomById($id);
-    public function findLatestBookingDetailByRoomId(int $roomId);
+    public function findLatestBookingDetailByRoomId(int $roomId, array $filters = []);
     public function getOtherBookingRooms(int $bookingId, int $excludedRoomId);
     public function getBookingRoomIds(int $bookingId);
 

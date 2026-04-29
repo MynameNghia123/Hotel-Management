@@ -5,9 +5,9 @@ namespace App\Services\Contracts;
 interface RoomMapServiceInterface
 {
     public function prepareDataForIndex(array $filters = []): array;
-    public function prepareDataForDetail(?int $roomId): array;
+    public function prepareDataForDetail(?int $roomId, array $filters = []): array;
     public function prepareDataForAvailableDetail(?int $roomId): array;
-    public function prepareDataForIncomingDetail(?int $roomId): array;
+    public function prepareDataForIncomingDetail(?int $roomId, array $filters = []): array;
     public function prepareDataForInvoice(?int $roomId = null, array $roomIds = []): array;
     public function updateRoomStatus(int $roomId, string $status): void;
     public function cancelIncomingBooking(int $roomId): void;

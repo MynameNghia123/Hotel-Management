@@ -18,10 +18,10 @@ class PrepareDetailAction
         protected ServiceServiceInterface $serviceService,
     ) {}
 
-    public function execute(?int $roomId): array
+    public function execute(?int $roomId, array $filters = []): array
     {
         $room = $roomId ? $this->roomMapRepository->findRoomById($roomId) : null;
-        $latestBookingDetail = $roomId ? $this->roomMapRepository->findLatestBookingDetailByRoomId($roomId) : null;
+        $latestBookingDetail = $roomId ? $this->roomMapRepository->findLatestBookingDetailByRoomId($roomId, $filters) : null;
         $booking = $latestBookingDetail?->booking;
         $customer = $booking?->customer;
         $customerName = $customer?->full_name ?: 'Khách lẻ';

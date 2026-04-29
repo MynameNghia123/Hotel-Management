@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Booking;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class StoreBookingRequest extends FormRequest
 {
@@ -88,6 +90,45 @@ class StoreBookingRequest extends FormRequest
             'surcharge_amount' => 'nullable|numeric|min:0',
             'final_amount' => 'nullable|numeric|min:0',
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            $roomIds = $this->input('room_ids', []);
+            $checkinDates = $this->input('checkin_dates', []);
+            $checkoutDates = $this->input('checkout_dates', []);
+
+            if (!is_array($roomIds) || !is_array($checkinDates) || !is_array($checkoutDates)) {
+                return;
+            }
+
+            if (count($checkinDates) !== count($roomIds) || count($checkoutDates) !== count($roomIds)) {
+                $validator->errors()->add('room_ids', 'Moi phong phai co du ngay nhan va ngay tra phong.');
+                return;
+            }
+
+            foreach ($roomIds as $index => $_roomId) {
+                $checkinDate = $checkinDates[$index] ?? null;
+                $checkoutDate = $checkoutDates[$index] ?? null;
+
+                if (!$checkinDate || !$checkoutDate) {
+                    $validator->errors()->add("checkin_dates.{$index}", "Thieu ngay nhan/tra phong cho phong da chon.");
+                    continue;
+                }
+
+                try {
+                    $checkinAt = Carbon::parse($checkinDate)->startOfDay();
+                    $checkoutAt = Carbon::parse($checkoutDate)->startOfDay();
+                } catch (\Throwable) {
+                    continue;
+                }
+
+                if ($checkoutAt->lessThanOrEqualTo($checkinAt)) {
+                    $validator->errors()->add("checkout_dates.{$index}", 'Ngay tra phong phai sau ngay nhan phong.');
+                }
+            }
+        });
     }
 
     public function messages(): array

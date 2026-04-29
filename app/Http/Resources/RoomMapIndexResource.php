@@ -35,7 +35,7 @@ class RoomMapIndexResource
             'rooms' => $rooms,
             'roomStatusCounts' => $statusCounts,
             'floors' => $floors,
-            'totalRooms' => $rooms->count(),
+            'totalRooms' => array_sum($statusCounts),
             'activeStatus' => $filters['status'] ?? null,
             'statusMeta' => $statusMeta,
             'groupBy' => $groupBy,

@@ -60,9 +60,9 @@ class RoomMapController extends Controller
         ));
     }
 
-    public function detail(?int $id = null): View
+    public function detail(Request $request, ?int $id = null): View
     {
-        return view('admin.room-map.detail', $this->roomMapService->prepareDataForDetail($id));
+        return view('admin.room-map.detail', $this->roomMapService->prepareDataForDetail($id, $this->roomMapContextFilters($request)));
     }
 
     public function availableDetail(?int $id = null): View
@@ -70,9 +70,20 @@ class RoomMapController extends Controller
         return view('admin.room-map.available-detail', $this->roomMapService->prepareDataForAvailableDetail($id));
     }
 
-    public function incomingDetail(?int $id = null): View
+    public function incomingDetail(Request $request, ?int $id = null): View
     {
-        return view('admin.room-map.incoming-detail', $this->roomMapService->prepareDataForIncomingDetail($id));
+        return view('admin.room-map.incoming-detail', $this->roomMapService->prepareDataForIncomingDetail($id, $this->roomMapContextFilters($request)));
+    }
+
+    private function roomMapContextFilters(Request $request): array
+    {
+        $filters = $request->input('filters', []);
+
+        if ($request->filled('booking_detail_id')) {
+            $filters['booking_detail_id'] = (int) $request->query('booking_detail_id');
+        }
+
+        return $filters;
     }
 
     public function updateRoomStatus(UpdateRoomStatusRequest $request, int $id)

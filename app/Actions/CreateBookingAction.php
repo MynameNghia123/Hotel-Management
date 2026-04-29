@@ -70,6 +70,13 @@ class CreateBookingAction
                     throw new \Exception("Thiếu ngày nhận/trả phòng cho phòng {$room->name}.");
                 }
 
+                $checkInAt = Carbon::parse($checkInDate)->startOfDay();
+                $checkOutAt = Carbon::parse($checkOutDate)->startOfDay();
+
+                if ($checkOutAt->lessThanOrEqualTo($checkInAt)) {
+                    throw new \Exception("Ngay tra phong cua phong {$room->name} phai sau ngay nhan phong.");
+                }
+
                 $availableRoomIds = $this->roomService->getAvailableRooms($checkInDate, $checkOutDate)
                     ->pluck('id')
                     ->map(fn ($id) => (int) $id)

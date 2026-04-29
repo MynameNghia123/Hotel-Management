@@ -534,8 +534,8 @@
             return;
         }
         
-        if (new Date(checkinDate) > new Date(checkoutDate)) {
-            alert('Ngày trả phòng phải bằng hoặc sau ngày nhận phòng');
+        if (new Date(checkinDate) >= new Date(checkoutDate)) {
+            alert('Ngay tra phong phai sau ngay nhan phong');
             return;
         }
         

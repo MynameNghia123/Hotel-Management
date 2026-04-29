@@ -9,16 +9,21 @@ class RoomMapResource extends JsonResource
 {
     public function toArray($request): array
     {
-        $status = $this->status instanceof RoomStatus
-            ? $this->status
-            : RoomStatus::tryFrom((string) $this->status);
+        $statusValue = $this->getAttribute('room_map_status');
+        $status = $statusValue
+            ? RoomStatus::tryFrom((string) $statusValue)
+            : ($this->status instanceof RoomStatus
+                ? $this->status
+                : RoomStatus::tryFrom((string) $this->status));
 
-        $latestBookingDetail = $this->relationLoaded('bookingDetails')
-            ? $this->bookingDetails->first()
-            : $this->bookingDetails()
-                ->with('booking.customer')
-                ->orderByDesc('checkin_date')
-                ->first();
+        $latestBookingDetail = $this->relationLoaded('roomMapBookingDetail')
+            ? $this->getRelation('roomMapBookingDetail')
+            : ($this->relationLoaded('bookingDetails')
+                ? $this->bookingDetails->first()
+                : $this->bookingDetails()
+                    ->with('booking.customer')
+                    ->orderByDesc('checkin_date')
+                    ->first());
 
         return [
             'id' => $this->id,
@@ -28,8 +33,9 @@ class RoomMapResource extends JsonResource
             'status_label' => $status?->label() ?? 'Không xác định',
             'card_class' => $status?->cardClass() ?? RoomStatus::EMPTY->cardClass(),
             'route_name' => $status?->routeName() ?? RoomStatus::OCCUPIED->routeName(),
-            'show_indicator' => $this->show_indicator,
-            'is_empty' => $this->is_empty,
+            'booking_detail_id' => $latestBookingDetail?->id,
+            'show_indicator' => $status !== RoomStatus::EMPTY,
+            'is_empty' => $status === RoomStatus::EMPTY,
             'is_maintenance' => $status === RoomStatus::MAINTENANCE,
             'is_confirmed' => $status === RoomStatus::CONFIRMED,
             'guest_name' => $latestBookingDetail?->booking?->customer?->full_name,

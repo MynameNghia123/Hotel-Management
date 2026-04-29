@@ -3,8 +3,10 @@
 namespace App\Repositories\Implementations;
 
 use App\Enums\BookingStatus;
+use App\Enums\RoomStatus;
 use App\Models\Room;
 use App\Repositories\Contracts\RoomRepositoryInterface;
+use Carbon\Carbon;
 
 class EloquentRoomRepository implements RoomRepositoryInterface
 {
@@ -52,10 +54,14 @@ class EloquentRoomRepository implements RoomRepositoryInterface
 
     public function getAvailableRooms($checkInDate, $checkOutDate)
     {
+        $checkInAt = Carbon::parse($checkInDate)->startOfDay();
+        $checkOutAt = Carbon::parse($checkOutDate)->startOfDay();
+
         return $this->model->with(['roomType', 'floor'])
-            ->whereDoesntHave('bookingDetails', function ($query) use ($checkInDate, $checkOutDate) {
-                $query->where('checkin_date', '<', $checkOutDate)
-                    ->where('checkout_date', '>', $checkInDate);
+            ->where('status', '!=', RoomStatus::MAINTENANCE->value)
+            ->whereDoesntHave('bookingDetails', function ($query) use ($checkInAt, $checkOutAt) {
+                $query->where('checkin_date', '<', $checkOutAt)
+                    ->where('checkout_date', '>', $checkInAt);
                 $query->whereHas('booking', function ($bookingQuery) {
                     $bookingQuery->whereNotIn('status', [
                         BookingStatus::CANCELLED->value,
@@ -63,6 +69,7 @@ class EloquentRoomRepository implements RoomRepositoryInterface
                     ]);
                 });
             })
+            ->when($checkOutAt->lessThanOrEqualTo($checkInAt), fn ($query) => $query->whereRaw('1 = 0'))
             ->get();
     }
 
