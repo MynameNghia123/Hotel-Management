@@ -139,7 +139,7 @@
                                         <td>{{ $customer->email }}</td>
                                         <td>
                                             <div class="cs-actions">
-                                                <a href="{{ route('admin.customers.show', $customer->id) }}" class="cs-btn-action view" title="Xem chi tiết">
+                                                <a href="javascript:void(0)" class="cs-btn-action view" title="Xem chi tiết (Chưa có tuyến đường)">
                                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                         stroke-linejoin="round">

@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\AuthClientController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Đăng nhập / Đăng xuất Khách hàng (OTP)
@@ -51,10 +52,11 @@ Route::get('/success', function () {
     return view('client.pages.success');
 })->name('success');
 
-// Tài khoản khách hàng
-Route::get('/profile', function () {
-    return view('client.pages.profile');
-})->name('profile');
+// Tài khoản khách hàng (yêu cầu đăng nhập)
+Route::middleware('auth:web')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 // Xác thực
 Route::get('/register', function () {
