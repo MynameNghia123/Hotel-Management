@@ -24,11 +24,46 @@
         <!-- Right actions -->
         <div class="nav-actions">
             @auth
-                <span class="sign-in-link" style="margin-right: 15px; color: white;">Chào bạn, {{ trim(Auth::user()->last_name . ' ' . Auth::user()->first_name) ?: 'Khách' }}</span>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="sign-in-link">Đăng Xuất</a>
-                <form id="logout-form" action="{{ route('client.logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
+                <!-- User Dropdown -->
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="user-dropdown-trigger" id="userDropdownBtn" type="button">
+                        <div class="user-avatar">
+                            {{ strtoupper(substr(Auth::user()->first_name ?: Auth::user()->email, 0, 1)) }}
+                        </div>
+                        <span class="user-name-label">{{ trim(Auth::user()->last_name . ' ' . Auth::user()->first_name) ?: 'Khách' }}</span>
+                        <svg class="dropdown-chevron" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <div class="dropdown-user-info">
+                            <div class="dropdown-avatar-lg">
+                                {{ strtoupper(substr(Auth::user()->first_name ?: Auth::user()->email, 0, 1)) }}
+                            </div>
+                            <div>
+                                <div class="dropdown-full-name">{{ trim(Auth::user()->last_name . ' ' . Auth::user()->first_name) ?: 'Khách' }}</div>
+                                <div class="dropdown-email">{{ Auth::user()->email }}</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ route('profile') }}" class="dropdown-item">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+                            </svg>
+                            Hồ Sơ Cá Nhân
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-item-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Đăng Xuất
+                        </a>
+                        <form id="logout-form" action="{{ route('client.logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                </div>
             @else
                 <a href="{{ route('login') }}" class="sign-in-link">Đăng Nhập</a>
                 <span style="color: rgba(255,255,255,0.2)">/</span>
