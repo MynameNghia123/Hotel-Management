@@ -51,7 +51,7 @@ class ServiceController extends Controller
     {
         return view('admin.services.edit', [
             'service' => $this->serviceService->findById($id),
-            'serviceGroups' => $serviceGroups
+            'serviceGroups' => $this->serviceGroupService->getAll()
         ]);
     }
 

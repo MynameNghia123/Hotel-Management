@@ -80,5 +80,10 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\RoomMapRepositoryInterface::class,
             \App\Repositories\Implementations\EloquentRoomMapRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\RepairTicketRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentRepairTicketRepository::class
+        );
     }
 }

@@ -85,5 +85,10 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\BookingDetailServiceInterface::class,
             \App\Services\Implementations\BookingDetailService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\RepairTicketServiceInterface::class,
+            \App\Services\Implementations\RepairTicketService::class
+        );
     }
 }

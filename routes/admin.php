@@ -15,6 +15,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AmenityController;
+use App\Http\Controllers\RepairTicketController;
 use App\Http\Middleware\CheckAdminPermission;
 
 // ============== Auth & Dashboard ==============
@@ -123,17 +124,11 @@ Route::group(['prefix' => 'equipment-types', 'as' => 'equipment-types.'], functi
 });
 
 Route::group(['prefix' => 'repair-ticket', 'as' => 'repair-ticket.'], function () {
-    Route::get('/', function () {
-        return view('admin.repair-ticket.index');
-    })->name('index');
-
-    Route::get('/create', function () {
-        return view('admin.repair-ticket.add');
-    })->name('create');
-
-    Route::get('/detail', function () {
-        return view('admin.repair-ticket.detail');
-    })->name('detail');
+    Route::get('/', [RepairTicketController::class, 'index'])->name('index');
+    Route::get('/create', [RepairTicketController::class, 'create'])->name('create');
+    Route::post('/', [RepairTicketController::class, 'store'])->name('store');
+    Route::get('/{id}', [RepairTicketController::class, 'show'])->name('show');
+    Route::patch('/{id}/status', [RepairTicketController::class, 'updateStatus'])->name('updateStatus');
 });
 
 // ============== Khách hàng ==============
