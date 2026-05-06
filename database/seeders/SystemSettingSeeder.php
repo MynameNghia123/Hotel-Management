@@ -42,6 +42,6 @@ class SystemSettingSeeder extends Seeder
             ],
         ];
 
-        DB::table('system_settings')->insert($settings);
+        DB::table('system_settings')->insertOrIgnore($settings);
     }
 }

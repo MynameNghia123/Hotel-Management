@@ -33,6 +33,6 @@ class SurchargePolicySeeder extends Seeder
             ],
         ];
 
-        DB::table('surcharge_policies')->insert($policies);
+        DB::table('surcharge_policies')->insertOrIgnore($policies);
     }
 }

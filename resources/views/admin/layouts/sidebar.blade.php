@@ -1,5 +1,17 @@
 <aside class="sb">
 
+    @php
+        $admin = Auth::guard('admin')->user();
+        $can = fn (string $permission): bool => $admin?->hasPermission($permission) ?? false;
+        $canAny = fn (array $permissions): bool => $admin?->hasAnyPermission($permissions) ?? false;
+    @endphp
+
+    <style>
+        .sb-group:not(:has(.sb-item)) {
+            display: none;
+        }
+    </style>
+
     <a href="#" class="sb-logo">
         <div class="sb-logo-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
@@ -39,7 +51,9 @@
         {{-- Vận hành --}}
         <div class="sb-group">
             <span class="sb-label">Vận hành</span>
+            @if($canAny(['room-map.view', 'room-map-edit.view', 'bookings.view']))
             <ul>
+                @if($can('room-map.view'))
                 <li>
                     <a href="{{ route('admin.room-map.index') }}"
                         class="sb-item {{ request()->routeIs('admin.room-map.*') ? 'active' : '' }}">
@@ -53,6 +67,8 @@
                         Sơ đồ phòng
                     </a>
                 </li>
+                @endif
+                @if($can('room-map-edit.view'))
                 <li>
                     <a href="{{ route('admin.room-map-edit.index') }}"
                         class="sb-item {{ request()->routeIs('admin.room-map-edit.*') ? 'active' : '' }}">
@@ -65,6 +81,8 @@
                         Chỉnh sửa sơ đồ phòng
                     </a>
                 </li>
+                @endif
+                @if($can('bookings.view'))
                 <li>
                     <a href="{{ route('admin.bookings.index') }}"
                         class="sb-item {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
@@ -79,13 +97,16 @@
                         <span class="sb-badge sb-badge-blue">12</span>
                     </a>
                 </li>
+                @endif
             </ul>
+            @endif
         </div>
 
         {{-- Phòng --}}
         <div class="sb-group">
             <span class="sb-label">Quản lý phòng</span>
             <ul>
+                @if($can('rooms.view'))
                 <li>
                     <a href="{{ route('admin.rooms.index') }}"
                         class="sb-item {{ request()->routeIs('admin.rooms.*') || request()->routeIs('admin.room-map.detail') ? 'active' : '' }}">
@@ -97,6 +118,7 @@
                         Danh sách phòng
                     </a>
                 </li>
+                @endif
 
             </ul>
         </div>
@@ -105,6 +127,7 @@
         <div class="sb-group">
             <span class="sb-label">Quản lý tài sản</span>
             <ul>
+                @if($can('equipment.view'))
                 <li>
                     <a href="{{ route('admin.equipment.index') }}"
                         class="sb-item {{ request()->routeIs('admin.equipment.index') ? 'active' : '' }}">
@@ -126,6 +149,8 @@
                         Nhóm thiết bị
                     </a>
                 </li>
+                @endif
+                @if($can('repair-ticket.view'))
                 <li>
                     <a href="{{ route('admin.repair-ticket.index') }}"
                         class="sb-item {{ request()->routeIs('admin.repair-ticket.index') ? 'active' : '' }}">
@@ -138,6 +163,7 @@
                         <span class="sb-badge sb-badge-orange">2</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
 
@@ -145,6 +171,7 @@
         <div class="sb-group">
             <span class="sb-label">Khách hàng</span>
             <ul>
+                @if($can('customers.view'))
                 <li>
                     <a href="{{ route('admin.customers.index') }}"
                         class="sb-item {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
@@ -158,6 +185,7 @@
                         Quản lý khách hàng
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
 
@@ -165,6 +193,7 @@
         <div class="sb-group">
             <span class="sb-label">Dịch vụ &amp; Tiện ích</span>
             <ul>
+                @if($can('services.view'))
                 <li>
                     <a href="{{ route('admin.services.index') }}"
                         class="sb-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
@@ -193,6 +222,8 @@
                         Loại dịch vụ
                     </a>
                 </li>
+                @endif
+                @if($can('amenities.view'))
                 <li>
                     <a href="{{ route('admin.amenities.index') }}"
                         class="sb-item {{ request()->routeIs('admin.amenities.*') ? 'active' : '' }}">
@@ -203,6 +234,7 @@
                         Quản lý tiện ích
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
 
@@ -210,6 +242,7 @@
         <div class="sb-group">
             <span class="sb-label">Hệ thống</span>
             <ul>
+                @if($can('employees.view'))
                 <li>
                     <a href="{{ route('admin.staffs.index') }}"
                         class="sb-item {{ request()->routeIs('admin.staffs.*') ? 'active' : '' }}">
@@ -223,6 +256,8 @@
                         Quản lý nhân viên
                     </a>
                 </li>
+                @endif
+                @if($can('roles.view'))
                 <li>
                     <a href="{{ route('admin.roles.index') }}"
                         class="sb-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
@@ -233,6 +268,8 @@
                         Quản lý vai trò
                     </a>
                 </li>
+                @endif
+                @if($can('configuration.view'))
                 <li>
                     <a href="{{ route('admin.configuration.index') }}"
                         class="sb-item {{ request()->routeIs('admin.configuration.*') ? 'active' : '' }}">
@@ -245,6 +282,8 @@
                         Cấu hình chung
                     </a>
                 </li>
+                @endif
+                @if($can('statistical.view'))
                 <li>
                     <a href="{{ route('admin.statistical.index') }}"
                         class="sb-item {{ request()->routeIs('admin.statistical.*') ? 'active' : '' }}">
@@ -255,6 +294,7 @@
                         Thống kê
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
 

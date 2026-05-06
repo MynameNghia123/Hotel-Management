@@ -21,13 +21,14 @@
     </div>
 
     <div class="surcharge-list" id="early-checkin-list">
+        @foreach($data['early_checkin_policies'] ?? [] as $policy)
         <div class="surcharge-row">
             <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="01:00" placeholder="00:00">
+                <input type="text" class="surcharge-input" value="{{ \App\Helpers\TimeHelper::formatHourMark($policy->hour_mark) }}" placeholder="VD: 1h30p">
             </div>
             <div class="surcharge-currency-badge">VND</div>
             <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="60,000">
+                <input type="text" class="surcharge-input surcharge-input--amount" value="{{ number_format($policy->price, 0, ',', '.') }}">
             </div>
             <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -35,62 +36,7 @@
                 </svg>
             </button>
         </div>
-        <div class="surcharge-row">
-            <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="02:00" placeholder="00:00">
-            </div>
-            <div class="surcharge-currency-badge">VND</div>
-            <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="120,000">
-            </div>
-            <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        </div>
-        <div class="surcharge-row">
-            <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="03:00" placeholder="00:00">
-            </div>
-            <div class="surcharge-currency-badge">VND</div>
-            <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="180,000">
-            </div>
-            <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        </div>
-        <div class="surcharge-row">
-            <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="04:00" placeholder="00:00">
-            </div>
-            <div class="surcharge-currency-badge">VND</div>
-            <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="240,000">
-            </div>
-            <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        </div>
-        <div class="surcharge-row">
-            <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="05:00" placeholder="00:00">
-            </div>
-            <div class="surcharge-currency-badge">VND</div>
-            <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="300,000">
-            </div>
-            <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        </div>
+        @endforeach
     </div>
 </div>
 
@@ -115,13 +61,14 @@
     </div>
 
     <div class="surcharge-list" id="late-checkout-list">
+        @foreach($data['late_checkout_policies'] ?? [] as $policy)
         <div class="surcharge-row">
             <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="01:00" placeholder="00:00">
+                <input type="text" class="surcharge-input" value="{{ \App\Helpers\TimeHelper::formatHourMark($policy->hour_mark) }}" placeholder="VD: 1h30p">
             </div>
             <div class="surcharge-currency-badge">VND</div>
             <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="60,000">
+                <input type="text" class="surcharge-input surcharge-input--amount" value="{{ number_format($policy->price, 0, ',', '.') }}">
             </div>
             <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -129,62 +76,7 @@
                 </svg>
             </button>
         </div>
-        <div class="surcharge-row">
-            <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="02:00" placeholder="00:00">
-            </div>
-            <div class="surcharge-currency-badge">VND</div>
-            <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="120,000">
-            </div>
-            <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        </div>
-        <div class="surcharge-row">
-            <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="03:00" placeholder="00:00">
-            </div>
-            <div class="surcharge-currency-badge">VND</div>
-            <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="180,000">
-            </div>
-            <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        </div>
-        <div class="surcharge-row">
-            <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="04:00" placeholder="00:00">
-            </div>
-            <div class="surcharge-currency-badge">VND</div>
-            <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="240,000">
-            </div>
-            <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        </div>
-        <div class="surcharge-row">
-            <div class="surcharge-time-input">
-                <input type="text" class="surcharge-input" value="05:00" placeholder="00:00">
-            </div>
-            <div class="surcharge-currency-badge">VND</div>
-            <div class="surcharge-amount-input">
-                <input type="text" class="surcharge-input surcharge-input--amount" value="300,000">
-            </div>
-            <button class="surcharge-btn-del" onclick="removeSurchargeRow(this)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-        </div>
+        @endforeach
     </div>
 </div>
 
@@ -195,20 +87,22 @@ function addSurchargeRow(listId) {
     const rows = list.querySelectorAll('.surcharge-row');
     const lastRow = rows[rows.length - 1];
 
-    // Calculate next time slot
-    let nextTime = '00:00';
+    // Calculate next time slot (format: 1h, 2h, 3h30p...)
+    let nextTime = '1h';
     if (lastRow) {
         const lastTimeVal = lastRow.querySelector('.surcharge-time-input input').value;
-        const parts = lastTimeVal.split(':');
-        let hours = parseInt(parts[0]) + 1;
-        nextTime = String(hours).padStart(2, '0') + ':00';
+        const timeMatch = lastTimeVal.match(/(\d+)h(?:(\d+)p)?/);
+        if (timeMatch) {
+            const hours = parseInt(timeMatch[1]);
+            nextTime = (hours + 1) + 'h';
+        }
     }
 
     const newRow = document.createElement('div');
     newRow.className = 'surcharge-row surcharge-row--new';
     newRow.innerHTML = `
         <div class="surcharge-time-input">
-            <input type="text" class="surcharge-input" value="${nextTime}" placeholder="00:00">
+            <input type="text" class="surcharge-input" value="${nextTime}" placeholder="VD: 1h30p">
         </div>
         <div class="surcharge-currency-badge">VND</div>
         <div class="surcharge-amount-input">
@@ -235,5 +129,76 @@ function removeSurchargeRow(btn) {
     row.style.transition = 'all 0.25s ease';
     setTimeout(() => row.remove(), 250);
 }
+
+// Save surcharges
+document.addEventListener('DOMContentLoaded', function() {
+    const btnSave = document.querySelector('.btn-save-config');
+    
+    if (btnSave) {
+        btnSave.addEventListener('click', function(e) {
+            // Only proceed if surcharge list exists
+            const earlyCheckinList = document.getElementById('early-checkin-list');
+            if (!earlyCheckinList) return;
+
+            e.preventDefault();
+            
+            const earlyCheckinPolicies = [];
+            const lateCheckoutPolicies = [];
+
+            // Parse early check-in policies
+            document.querySelectorAll('#early-checkin-list .surcharge-row').forEach(row => {
+                const time = row.querySelector('.surcharge-time-input input').value;
+                const price = row.querySelector('.surcharge-amount-input input').value.replace(/[.,]/g, '');
+                
+                if (time && price) {
+                    earlyCheckinPolicies.push({
+                        hour_mark: time,  // Send as string "1h30p", controller will parse
+                        price: parseInt(price)
+                    });
+                }
+            });
+
+            // Parse late checkout policies
+            document.querySelectorAll('#late-checkout-list .surcharge-row').forEach(row => {
+                const time = row.querySelector('.surcharge-time-input input').value;
+                const price = row.querySelector('.surcharge-amount-input input').value.replace(/[.,]/g, '');
+                
+                if (time && price) {
+                    lateCheckoutPolicies.push({
+                        hour_mark: time,  // Send as string "1h30p", controller will parse
+                        price: parseInt(price)
+                    });
+                }
+            });
+
+            const formData = {
+                early_checkin_policies: earlyCheckinPolicies,
+                late_checkout_policies: lateCheckoutPolicies,
+            };
+
+            fetch('{{ route("admin.configuration.update-surcharges") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Lỗi: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi khi lưu!');
+            });
+        });
+    }
+});
 </script>
 @endpush

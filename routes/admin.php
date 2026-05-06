@@ -16,6 +16,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AmenityController;
 use App\Http\Controllers\RepairTicketController;
+use App\Http\Controllers\ConfigurationController;
 use App\Http\Middleware\CheckAdminPermission;
 
 // ============== Auth & Dashboard ==============
@@ -194,9 +195,9 @@ Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
 });
 
 Route::group(['prefix' => 'configuration', 'as' => 'configuration.'], function () {
-    Route::get('/', function () {
-        return view('admin.configuration.index');
-    })->name('index');
+    Route::get('/', [ConfigurationController::class, 'index'])->name('index');
+    Route::post('/general', [ConfigurationController::class, 'updateGeneralSettings'])->name('update-general');
+    Route::post('/surcharges', [ConfigurationController::class, 'updateSurchargePolicies'])->name('update-surcharges');
 });
 
 // ============== Thống kê ==============

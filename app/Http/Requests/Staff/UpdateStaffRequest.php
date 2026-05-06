@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Requests\Staff;
+
+use App\Models\Staff;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateStaffRequest extends FormRequest
 {
@@ -14,7 +17,12 @@ class UpdateStaffRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'role_id' => 'required|exists:roles,id',
             'password' => 'nullable|string|min:6|confirmed',
-            'email' => 'required|email|unique:staff,email,' . $staffId,
+            'email' => [
+                'sometimes',
+                'required',
+                'email',
+                Rule::unique('staff', 'email')->ignore($staffId),
+            ],
             'phone_number' => 'required|string|max:20',
             'is_active' => 'nullable|boolean',
         ];
@@ -44,6 +52,15 @@ class UpdateStaffRequest extends FormRequest
         if (empty($this->password)) {
             $this->request->remove('password');
             $this->request->remove('password_confirmation');
+        }
+
+        $staff = Staff::find($this->route('id'));
+        $email = trim((string) $this->input('email', ''));
+
+        if ($this->has('email') && $staff && ($email === '' || $email === (string) $staff->email)) {
+            $this->request->remove('email');
+        } elseif ($this->has('email')) {
+            $this->merge(['email' => $email]);
         }
     }
 

@@ -90,5 +90,15 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\RepairTicketServiceInterface::class,
             \App\Services\Implementations\RepairTicketService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\SystemSettingServiceInterface::class,
+            \App\Services\Implementations\SystemSettingService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Contracts\SurchargePolicyServiceInterface::class,
+            \App\Services\Implementations\SurchargePolicyService::class
+        );
     }
 }

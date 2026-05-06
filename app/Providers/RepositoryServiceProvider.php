@@ -85,5 +85,15 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\RepairTicketRepositoryInterface::class,
             \App\Repositories\Implementations\EloquentRepairTicketRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\SystemSettingRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentSystemSettingRepository::class
+        );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\SurchargePolicyRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentSurchargePolicyRepository::class
+        );
     }
 }

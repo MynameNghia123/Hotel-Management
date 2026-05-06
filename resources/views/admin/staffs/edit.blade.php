@@ -125,15 +125,16 @@
 
                         <div class="staff-form-group @error('email') has-error @enderror">
                             <label for="email">
-                                EMAIL <span class="required">*</span>
+                                EMAIL
                             </label>
                             <input 
                                 id="email" 
                                 name="email" 
-                                type="email" 
+                                type="text" 
+                                inputmode="email"
+                                autocomplete="email"
                                 placeholder="example@urbanluxe.com" 
                                 value="{{ old('email', $staff->email) }}"
-                                required
                             >
                             @error('email')
                                 <span class="error-message">{{ $message }}</span>
