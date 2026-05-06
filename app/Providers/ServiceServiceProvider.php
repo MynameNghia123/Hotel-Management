@@ -100,5 +100,10 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\SurchargePolicyServiceInterface::class,
             \App\Services\Implementations\SurchargePolicyService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\StatisticalServiceInterface::class,
+            \App\Services\Implementations\StatisticalService::class
+        );
     }
 }

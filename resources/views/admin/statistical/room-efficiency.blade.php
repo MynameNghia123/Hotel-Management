@@ -8,43 +8,24 @@
 @endpush
 
 @section('content')
-<div class="admin-layout">
+@php
+    $range = $report['range'];
+    $metrics = $report['metrics'];
+    $moneyCompact = fn ($value) => round((float) $value / 1000000, 1) . 'M';
+@endphp
 
-    {{-- SIDEBAR --}}
+<div class="admin-layout">
     @include('admin.layouts.sidebar')
 
-    {{-- CONTENT --}}
     <main class="admin-main">
+        @include('admin.layouts.header')
 
-         {{-- HEADER --}}
-        <header class="admin-header">
-            <div class="admin-header-left">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012-2h10a2 2 0 012 2v14M9 21v-6h6v6"/></svg>
-                16819 &middot; Urban Luxe Hotel
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-            <div class="admin-header-right">
-                <div style="font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-right: 20px; letter-spacing: 0.5px;">Ngày làm việc: 24 tháng 03, 2024</div>
-                <button class="admin-header-notification">
-                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-                    <span class="admin-header-notification-dot"></span>
-                </button>
-                <div class="admin-header-divider" style="margin: 0 5px;"></div>
-                <div class="admin-header-user">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Duc&background=f0642f&color=fff&size=80" class="admin-header-user-avatar" alt="Admin">
-                </div>
-            </div>
-        </header>
-
-        {{-- MAIN CONTENT --}}
         <div class="admin-content">
-
             <div class="stats-title-group">
                 <h1 class="stats-title">Thống kê Hiệu suất phòng</h1>
-                <p class="stats-date">Dữ liệu tính đến 24 tháng 03, 2024</p>
+                <p class="stats-date">{{ $report['generated_at'] }} · {{ $range['label'] }}</p>
             </div>
 
-            {{-- NAV TABS --}}
             <nav class="stats-tabs">
                 <a href="{{ route('admin.statistical.index') }}" class="stats-tab {{ request()->routeIs('admin.statistical.index') ? 'active' : '' }}" style="text-decoration: none;">Tổng quan</a>
                 <a href="{{ route('admin.statistical.revenue') }}" class="stats-tab {{ request()->routeIs('admin.statistical.revenue') ? 'active' : '' }}" style="text-decoration: none;">Doanh thu</a>
@@ -52,184 +33,139 @@
                 <a href="{{ route('admin.statistical.customers') }}" class="stats-tab {{ request()->routeIs('admin.statistical.customers') ? 'active' : '' }}" style="text-decoration: none;">Khách hàng</a>
             </nav>
 
-            {{-- FILTERS --}}
-            <div class="eff-filters">
+            <form method="GET" action="{{ route('admin.statistical.room-efficiency') }}" class="eff-filters">
                 <div class="eff-filter-group">
-                    <span class="eff-label">Khoảng thời gian</span>
-                    <select class="eff-select">
-                        <option>20/03 - 26/03</option>
-                        <option>Tháng này</option>
-                    </select>
+                    <span class="eff-label">Từ ngày</span>
+                    <input type="date" class="eff-date-input" name="start_date" value="{{ $range['start_date'] }}">
+                </div>
+                <div class="eff-filter-group">
+                    <span class="eff-label">Đến ngày</span>
+                    <input type="date" class="eff-date-input" name="end_date" value="{{ $range['end_date'] }}">
                 </div>
                 <div class="eff-filter-group">
                     <span class="eff-label">Loại phòng</span>
-                    <select class="eff-select">
-                        <option>Tất cả loại phòng</option>
-                        <option>Standard</option>
-                        <option>Deluxe</option>
+                    <select class="eff-select" name="room_type_id">
+                        <option value="">Tất cả loại phòng</option>
+                        @foreach($report['room_types'] as $roomType)
+                            <option value="{{ $roomType->id }}" {{ $report['filters']['room_type_id'] === $roomType->id ? 'selected' : '' }}>
+                                {{ $roomType->name }} ({{ $roomType->code }})
+                            </option>
+                        @endforeach
                     </select>
                 </div>
-                <div class="eff-filter-group">
-                    <span class="eff-label">Trạng thái đặt phòng</span>
-                    <select class="eff-select">
-                        <option>Tất cả trạng thái</option>
-                        <option>Đã hoàn thành</option>
-                        <option>Đang sử dụng</option>
-                    </select>
-                </div>
-                <button class="eff-btn-filter">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    Lọc dữ liệu
-                </button>
-            </div>
+                <button class="eff-btn-filter" type="submit">Lọc dữ liệu</button>
+            </form>
 
-            {{-- STATS CARDS --}}
             <div class="eff-stats-grid">
                 <div class="eff-card">
                     <div class="eff-card-title">Hiệu suất phòng (%)</div>
                     <div class="eff-card-val-row">
-                        <div class="eff-card-val">84.5%</div>
-                        <div class="eff-card-plus">+2%</div>
+                        <div class="eff-card-val">{{ $metrics['occupancy_rate'] }}%</div>
+                        <div class="{{ $metrics['occupancy_growth'] >= 0 ? 'eff-card-plus' : 'eff-card-minus' }}">{{ $metrics['occupancy_growth'] >= 0 ? '+' : '' }}{{ $metrics['occupancy_growth'] }}%</div>
                     </div>
                     <div class="eff-progress-container">
-                        <div class="eff-progress-bar" style="width: 84.5%"></div>
+                        <div class="eff-progress-bar" style="width: {{ min(100, $metrics['occupancy_rate']) }}%"></div>
                     </div>
                 </div>
 
                 <div class="eff-card">
                     <div class="eff-card-title">Tổng số đặt phòng</div>
                     <div class="eff-card-val-row">
-                        <div class="eff-card-val">1,248</div>
+                        <div class="eff-card-val">{{ number_format($metrics['booking_count']) }}</div>
                     </div>
                     <div class="eff-card-footer">
-                        <span>Tháng này</span>
-                        <span style="color:#10b981;">Tăng trưởng tốt</span>
+                        <span>{{ $range['label'] }}</span>
                     </div>
                 </div>
 
                 <div class="eff-card">
-                    <div class="eff-card-title">Số lượng đặt phòng</div>
+                    <div class="eff-card-title">Đêm phòng đã bán</div>
                     <div class="eff-card-val-row">
-                        <div class="eff-card-val">42</div>
-                        <div class="eff-card-minus">-5%</div>
+                        <div class="eff-card-val">{{ number_format($metrics['occupied_room_nights']) }}</div>
                     </div>
                     <div class="eff-card-footer">
-                        <span>Hôm nay vs PQ</span>
+                        <span>/ {{ number_format($metrics['available_room_nights']) }} đêm phòng khả dụng</span>
                     </div>
                 </div>
 
                 <div class="eff-card">
-                    <div class="eff-card-title">Doanh thu dự kiến (Tháng)</div>
+                    <div class="eff-card-title">Doanh thu dự kiến</div>
                     <div class="eff-card-val-row">
-                        <div class="eff-card-val">450.2M</div>
+                        <div class="eff-card-val">{{ $moneyCompact($metrics['estimated_revenue']) }}</div>
                         <span style="font-size:11px; font-weight:700; color:#94a3b8; margin-left:4px;">VNĐ</span>
                     </div>
                     <div class="eff-card-footer">
-                        <span>Cần lưu ý thu hồi</span>
+                        <span>Theo khoảng lọc</span>
                     </div>
                 </div>
             </div>
 
-            {{-- ROW STATUS --}}
             <div class="eff-row">
-                {{-- LEFT STATUS CHART --}}
                 <div class="eff-status-card">
                     <div class="eff-status-header">
                         <h3>Trạng thái phòng hiện tại</h3>
-                        <a href="#" style="font-size: 13px; font-weight: 700; color: #2a3f8a; text-decoration: none;">Xem chi tiết</a>
+                        <a href="{{ route('admin.room-map.index') }}" style="font-size: 13px; font-weight: 700; color: #2a3f8a; text-decoration: none;">Xem chi tiết</a>
                     </div>
                     <div style="display:flex; align-items:center; justify-content:space-around; padding: 20px 0;">
                         <div class="doughnut-wrapper" style="width: 220px; height: 220px; margin: 0;">
                             <svg class="doughnut-svg" width="220" height="220" viewBox="0 0 100 100">
-                                 <!-- Maintenance: Red (12%) -->
-                                 <circle class="donut-ring" cx="50" cy="50" r="40" fill="transparent" stroke="#ef4444" stroke-width="12" stroke-dasharray="30.1 221" stroke-dashoffset="-221"/>
-                                 <!-- Empty: Blue (19%) -->
-                                 <circle class="donut-ring" cx="50" cy="50" r="40" fill="transparent" stroke="#93c5fd" stroke-width="12" stroke-dasharray="47.7 203.5" stroke-dashoffset="-173.3"/>
-                                 <!-- In-house: Dark Blue (69%) -->
-                                 <circle class="donut-ring" cx="50" cy="50" r="40" fill="transparent" stroke="#1e2e6b" stroke-width="12" stroke-dasharray="173.3 77.9" stroke-dashoffset="0"/>
+                                @php $offset = 0; $circumference = 251.2; @endphp
+                                @foreach($report['room_status']['items'] as $item)
+                                    @php
+                                        $length = $report['room_status']['total'] > 0 ? round(($item['count'] / $report['room_status']['total']) * $circumference, 1) : 0;
+                                        $dash = $length . ' ' . round($circumference - $length, 1);
+                                    @endphp
+                                    <circle class="donut-ring" cx="50" cy="50" r="40" fill="transparent" stroke="{{ $item['color'] }}" stroke-width="12" stroke-dasharray="{{ $dash }}" stroke-dashoffset="{{ -$offset }}"/>
+                                    @php $offset += $length; @endphp
+                                @endforeach
                             </svg>
                             <div class="doughnut-center" style="transform: translate(-50%, -60%);">
-                                <span class="doughnut-percent" style="font-size: 28px;">250</span>
+                                <span class="doughnut-percent" style="font-size: 28px;">{{ $report['room_status']['total'] }}</span>
                                 <span class="doughnut-label" style="font-size: 9px; opacity:0.7;">TỔNG SỐ PHÒNG</span>
                             </div>
                         </div>
                         <div style="display:flex; flex-direction:column; gap:16px;">
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <span style="width:10px; height:10px; border-radius:3px; background:#1e2e6b;"></span>
-                                <span style="font-size: 13px; font-weight: 700; color:#64748b; width:100px;">Đang ở:</span>
-                                <span style="font-size: 14px; font-weight: 800; color:#1e293b;">185</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <span style="width:10px; height:10px; border-radius:3px; background:#93c5fd;"></span>
-                                <span style="font-size: 13px; font-weight: 700; color:#64748b; width:100px;">Phòng trống:</span>
-                                <span style="font-size: 14px; font-weight: 800; color:#1e293b;">42</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <span style="width:10px; height:10px; border-radius:3px; background:#ef4444;"></span>
-                                <span style="font-size: 13px; font-weight: 700; color:#64748b; width:100px;">Bảo trì:</span>
-                                <span style="font-size: 14px; font-weight: 800; color:#1e293b;">23</span>
-                            </div>
+                            @foreach($report['room_status']['items'] as $item)
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <span style="width:10px; height:10px; border-radius:3px; background:{{ $item['color'] }};"></span>
+                                    <span style="font-size: 13px; font-weight: 700; color:#64748b; width:100px;">{{ $item['label'] }}:</span>
+                                    <span style="font-size: 14px; font-weight: 800; color:#1e293b;">{{ $item['count'] }}</span>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
 
-                {{-- RIGHT PROGRESS LIST --}}
                 <div class="eff-status-card">
                     <div class="eff-status-header">
                         <h3>Loại phòng được đặt nhiều nhất</h3>
-                        <div class="filter-btns" style="padding: 2px;">
-                            <button class="filter-btn-sub" style="font-size: 11px; padding: 4px 12px; height:auto;">Tuần này</button>
-                        </div>
                     </div>
                     <div class="progress-list">
-                        <div class="progress-item">
-                            <div class="progress-label-row">
-                                <span>SUITE (SUI)</span>
-                                <span>98 <span class="progress-unit">Lượt</span></span>
+                        @forelse($report['top_room_types'] as $roomType)
+                            <div class="progress-item">
+                                <div class="progress-label-row">
+                                    <span>{{ strtoupper($roomType['name']) }} ({{ $roomType['code'] }})</span>
+                                    <span>{{ $roomType['bookings_count'] }} <span class="progress-unit">Lượt</span></span>
+                                </div>
+                                <div class="eff-progress-container" style="height: 10px;">
+                                    <div class="eff-progress-bar" style="width: {{ $roomType['percent'] }}%; background:{{ $roomType['color'] }};"></div>
+                                </div>
                             </div>
-                            <div class="eff-progress-container" style="height: 10px;">
-                                <div class="eff-progress-bar" style="width: 90%; background:#1e2e6b;"></div>
+                        @empty
+                            <div class="progress-item">
+                                <div class="progress-label-row">
+                                    <span>Chưa có dữ liệu đặt phòng</span>
+                                    <span>0 <span class="progress-unit">Lượt</span></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-label-row">
-                                <span>DELUXE (DLX)</span>
-                                <span>75 <span class="progress-unit">Lượt</span></span>
-                            </div>
-                            <div class="eff-progress-container" style="height: 10px;">
-                                <div class="eff-progress-bar" style="width: 70%; background:#3b82f6;"></div>
-                            </div>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-label-row">
-                                <span>STANDARD (STD)</span>
-                                <span>53 <span class="progress-unit">Lượt</span></span>
-                            </div>
-                            <div class="eff-progress-container" style="height: 10px;">
-                                <div class="eff-progress-bar" style="width: 50%; background:#6366f1;"></div>
-                            </div>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-label-row">
-                                <span>SUPERIOR (SUP)</span>
-                                <span>21 <span class="progress-unit">Lượt</span></span>
-                            </div>
-                            <div class="eff-progress-container" style="height: 10px;">
-                                <div class="eff-progress-bar" style="width: 30%; background:#94a3b8;"></div>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
 
-            {{-- DETAIL TABLE --}}
             <div class="eff-table-card">
                 <div class="table-header-group">
                     <h3 class="table-title">Chi tiết trạng thái phòng</h3>
-                    <div class="table-actions">
-                        <button class="btn-export">Xuất Excel</button>
-                        <button class="btn-export">In báo cáo</button>
-                    </div>
                 </div>
                 <table class="eff-table">
                     <thead>
@@ -237,62 +173,37 @@
                             <th>Mã phòng</th>
                             <th>Loại phòng</th>
                             <th>Tầng</th>
-                            <th>Tỉ lệ lấp đầy (7 ngày)</th>
+                            <th>Tỉ lệ lấp đầy</th>
                             <th>Trạng thái hiện tại</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>P-101</td>
-                            <td>Standard</td>
-                            <td>Tầng 1</td>
-                            <td>
-                                <div style="display:flex; align-items:center; gap:10px;">
-                                    <span style="font-size:12px; color:#64748b; font-weight:700; width:30px;">92%</span>
-                                    <div class="eff-progress-container" style="flex:1;">
-                                        <div class="eff-progress-bar" style="width: 92%; background:#10b981;"></div>
+                        @forelse($report['room_rows'] as $room)
+                            <tr>
+                                <td>{{ $room['room_name'] }}</td>
+                                <td>{{ $room['room_type'] }}</td>
+                                <td>{{ $room['floor'] }}</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <span style="font-size:12px; color:#64748b; font-weight:700; width:40px;">{{ $room['occupancy_rate'] }}%</span>
+                                        <div class="eff-progress-container" style="flex:1;">
+                                            <div class="eff-progress-bar" style="width: {{ $room['occupancy_rate'] }}%; background:{{ $room['progress_color'] }};"></div>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td><span class="eff-badge badge-green">ĐANG Ở</span></td>
-                        </tr>
-                        <tr>
-                            <td>P-205</td>
-                            <td>Deluxe</td>
-                            <td>Tầng 2</td>
-                            <td>
-                                <div style="display:flex; align-items:center; gap:10px;">
-                                    <span style="font-size:12px; color:#64748b; font-weight:700; width:30px;">45%</span>
-                                    <div class="eff-progress-container" style="flex:1;">
-                                        <div class="eff-progress-bar" style="width: 45%; background:#f59e0b;"></div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="eff-badge badge-blue">TRỐNG</span></td>
-                        </tr>
-                        <tr>
-                            <td>P-403</td>
-                            <td>Suite</td>
-                            <td>Tầng 4</td>
-                            <td>
-                                <div style="display:flex; align-items:center; gap:10px;">
-                                    <span style="font-size:12px; color:#64748b; font-weight:700; width:30px;">12%</span>
-                                    <div class="eff-progress-container" style="flex:1;">
-                                        <div class="eff-progress-bar" style="width: 12%; background:#ef4444;"></div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="eff-badge badge-orange">BẢO TRÌ</span></td>
-                        </tr>
+                                </td>
+                                <td><span class="eff-badge {{ $room['badge_class'] }}">{{ $room['status_label'] }}</span></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" style="text-align:center; color:#94a3b8;">Không có phòng phù hợp với bộ lọc.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
 
-             {{-- FOOTER --}}
             @include('admin.layouts.footer')
-
         </div>
-
     </main>
 </div>
 @endsection

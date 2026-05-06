@@ -17,6 +17,7 @@ use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AmenityController;
 use App\Http\Controllers\RepairTicketController;
 use App\Http\Controllers\ConfigurationController;
+use App\Http\Controllers\StatisticalController;
 use App\Http\Middleware\CheckAdminPermission;
 
 // ============== Auth & Dashboard ==============
@@ -202,21 +203,10 @@ Route::group(['prefix' => 'configuration', 'as' => 'configuration.'], function (
 
 // ============== Thống kê ==============
 Route::group(['prefix' => 'statistical', 'as' => 'statistical.'], function () {
-    Route::get('/', function () {
-        return view('admin.statistical.index');
-    })->name('index');
-
-    Route::get('/revenue', function () {
-        return view('admin.statistical.revenue');
-    })->name('revenue');
-
-    Route::get('/room-efficiency', function () {
-        return view('admin.statistical.room-efficiency');
-    })->name('room-efficiency');
-
-    Route::get('/customers', function () {
-        return view('admin.statistical.customers');
-    })->name('customers');
+    Route::get('/', [StatisticalController::class, 'index'])->name('index');
+    Route::get('/revenue', [StatisticalController::class, 'revenue'])->name('revenue');
+    Route::get('/room-efficiency', [StatisticalController::class, 'roomEfficiency'])->name('room-efficiency');
+    Route::get('/customers', [StatisticalController::class, 'customers'])->name('customers');
 });
 
 }); // Close protected routes middleware group

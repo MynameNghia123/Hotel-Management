@@ -4,29 +4,33 @@
 
 @push('styles')
     @vite('resources/css/admin/statistical.css')
+    @vite('resources/css/admin/statisical-revenue.css')
 @endpush
 
 @section('content')
-<div class="admin-layout">
+@php
+    $summary = $report['summary'];
+    $range = $report['range'];
+    $money = fn ($value) => number_format((float) $value, 0, ',', '.') . 'đ';
+    $compactMoney = fn ($value) => (float) $value >= 1000000000
+        ? round($value / 1000000000, 1) . 'B'
+        : round($value / 1000000, 1) . 'M';
+    $trend = fn ($value) => ($value >= 0 ? '+' : '') . $value . '%';
+    $labelStep = max(1, (int) floor(max(1, $report['daily_revenue']->count()) / 5));
+@endphp
 
-    {{-- SIDEBAR --}}
+<div class="admin-layout">
     @include('admin.layouts.sidebar')
 
-    {{-- CONTENT --}}
     <main class="admin-main">
-
-         {{-- HEADER --}}
         @include('admin.layouts.header')
 
-        {{-- MAIN CONTENT --}}
         <div class="admin-content">
-
             <div class="stats-title-group">
                 <h1 class="stats-title">Thống kê Tổng quan</h1>
-                <p class="stats-date">Dữ liệu tính đến 24 tháng 03, 2024</p>
+                <p class="stats-date">{{ $report['generated_at'] }} · {{ $range['label'] }}</p>
             </div>
 
-            {{-- NAV TABS --}}
             <nav class="stats-tabs">
                 <a href="{{ route('admin.statistical.index') }}" class="stats-tab {{ request()->routeIs('admin.statistical.index') ? 'active' : '' }}" style="text-decoration: none;">Tổng quan</a>
                 <a href="{{ route('admin.statistical.revenue') }}" class="stats-tab {{ request()->routeIs('admin.statistical.revenue') ? 'active' : '' }}" style="text-decoration: none;">Doanh thu</a>
@@ -34,62 +38,63 @@
                 <a href="{{ route('admin.statistical.customers') }}" class="stats-tab {{ request()->routeIs('admin.statistical.customers') ? 'active' : '' }}" style="text-decoration: none;">Khách hàng</a>
             </nav>
 
-            {{-- QUICK STATS --}}
+            <form method="GET" action="{{ route('admin.statistical.index') }}" class="filters-card" style="margin-bottom:20px;">
+                <div class="filter-group">
+                    <span class="filter-label">Từ ngày</span>
+                    <input type="date" class="filter-select" name="start_date" value="{{ $range['start_date'] }}">
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Đến ngày</span>
+                    <input type="date" class="filter-select" name="end_date" value="{{ $range['end_date'] }}">
+                </div>
+                <button class="btn-apply" type="submit">Áp dụng</button>
+            </form>
+
             <div class="stats-grid">
                 <div class="stat-card revenue">
-                    <div class="stat-label">Tổng doanh thu/tháng</div>
+                    <div class="stat-label">Tổng doanh thu</div>
                     <div class="stat-value-group">
-                        <div class="stat-value">1.2B VNĐ</div>
-                        <div class="stat-trending up">+12.5%</div>
+                        <div class="stat-value">{{ $compactMoney($summary['revenue']) }} VNĐ</div>
+                        <div class="stat-trending {{ $summary['revenue_growth'] >= 0 ? 'up' : 'down' }}">{{ $trend($summary['revenue_growth']) }}</div>
                     </div>
                 </div>
 
                 <div class="stat-card occupancy">
                     <div class="stat-label">Công suất phòng TB</div>
                     <div class="stat-value-group">
-                        <div class="stat-value">85%</div>
-                        <div class="stat-trending up">+5.2%</div>
+                        <div class="stat-value">{{ $summary['occupancy_rate'] }}%</div>
+                        <div class="stat-trending {{ $summary['occupancy_growth'] >= 0 ? 'up' : 'down' }}">{{ $trend($summary['occupancy_growth']) }}</div>
                     </div>
                 </div>
 
                 <div class="stat-card guests">
                     <div class="stat-label">Tổng lượt khách</div>
                     <div class="stat-value-group">
-                        <div class="stat-value">1,240</div>
-                        <div class="stat-trending up">+8.1%</div>
+                        <div class="stat-value">{{ number_format($summary['guest_visits']) }}</div>
+                        <div class="stat-trending {{ $summary['guest_growth'] >= 0 ? 'up' : 'down' }}">{{ $trend($summary['guest_growth']) }}</div>
                     </div>
                 </div>
 
                 <div class="stat-card rating">
-                    <div class="stat-label">Đánh giá trung bình</div>
+                    <div class="stat-label">Tổng đặt phòng</div>
                     <div class="stat-value-group">
-                        <div class="stat-value">4.8/5</div>
-                        <div class="stat-trending up">+0.2%</div>
-                    </div>
-                    <div class="stat-rating-stars">
-                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <div class="stat-value">{{ number_format($summary['bookings_count']) }}</div>
+                        <div class="stat-trending up">Live</div>
                     </div>
                 </div>
             </div>
 
-            {{-- CHARTS ROW --}}
             <div class="charts-row">
                 <div class="chart-card">
                     <div class="chart-header">
                         <div class="chart-title-group">
-                            <h3>Doanh thu & Chi phí</h3>
-                            <p>Thống kê số tiền thực tế trong 30 ngày qua</p>
+                            <h3>Doanh thu theo ngày</h3>
+                            <p>Dữ liệu thực tế trong khoảng lọc</p>
                         </div>
                         <div class="chart-legend">
                             <div class="legend-item"><span class="legend-dot" style="background:#f0642f;"></span> Doanh thu</div>
-                            <div class="legend-item"><span class="legend-dot" style="background:#94a3b8;"></span> Chi phí</div>
                         </div>
                     </div>
-                    {{-- SVG CHART MOCK --}}
                     <div class="chart-mock" style="height: 250px; position:relative; margin-top:20px;">
                         <svg width="100%" height="100%" viewBox="0 0 600 200" preserveAspectRatio="none">
                             <defs>
@@ -98,17 +103,15 @@
                                     <stop offset="100%" style="stop-color:#f0642f;stop-opacity:0" />
                                 </linearGradient>
                             </defs>
-                            <path d="M0,150 Q75,150 100,120 T200,140 T300,80 T400,140 T500,120 T600,60" fill="transparent" stroke="#f0642f" stroke-width="3" />
-                            <path d="M0,150 Q75,150 100,120 T200,140 T300,80 T400,140 T500,120 T600,60 L600,200 L0,200 Z" fill="url(#gradRevenue)" />
-                            <path d="M0,180 Q75,170 150,175 T300,165 T450,170 T600,160" fill="transparent" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4" />
+                            <path d="{{ $report['line_chart']['area_path'] }}" fill="url(#gradRevenue)" />
+                            <path d="{{ $report['line_chart']['path'] }}" fill="transparent" stroke="#f0642f" stroke-width="3" />
                         </svg>
                         <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:#94a3b8;">
-                            <span>01/3</span>
-                            <span>07/3</span>
-                            <span>14/3</span>
-                            <span>21/3</span>
-                            <span>28/3</span>
-                            <span>31/3</span>
+                            @foreach($report['daily_revenue']->values() as $point)
+                                @if($loop->first || $loop->last || $loop->index % $labelStep === 0)
+                                    <span>{{ $point['label'] }}</span>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -121,12 +124,9 @@
                     </div>
                     <div class="doughnut-wrapper">
                         <svg class="doughnut-svg" width="180" height="180" viewBox="0 0 100 100">
-                            <!-- Green: Food/Bev (10%) -->
-                            <circle class="donut-ring" cx="50" cy="50" r="40" fill="transparent" stroke="#10b981" stroke-width="12" stroke-dasharray="25.1 226"/>
-                            <!-- Blue: Service (15%) -->
-                            <circle class="donut-ring" cx="50" cy="50" r="40" fill="transparent" stroke="#4f46e5" stroke-width="12" stroke-dasharray="37.7 213.4" stroke-dashoffset="-25.1"/>
-                            <!-- Orange: Rooms (75%) -->
-                            <circle class="donut-ring" cx="50" cy="50" r="40" fill="transparent" stroke="#f0642f" stroke-width="12" stroke-dasharray="188.4 62.8" stroke-dashoffset="-62.8"/>
+                            @foreach($report['revenue_mix'] as $item)
+                                <circle class="donut-ring" cx="50" cy="50" r="40" fill="transparent" stroke="{{ $item['color'] }}" stroke-width="12" stroke-dasharray="{{ $item['dasharray'] }}" stroke-dashoffset="{{ $item['dashoffset'] }}"/>
+                            @endforeach
                         </svg>
                         <div class="doughnut-center">
                             <span class="doughnut-percent">100%</span>
@@ -134,80 +134,46 @@
                         </div>
                     </div>
                     <div class="revenue-mix-list">
-                        <div class="mix-item">
-                            <div class="mix-label-group"><span class="legend-dot" style="background:#f0642f;"></span> Đặt phòng (Room)</div>
-                            <div class="mix-val">75%</div>
-                        </div>
-                        <div class="mix-item">
-                            <div class="mix-label-group"><span class="legend-dot" style="background:#4f46e5;"></span> Dịch vụ (FB)</div>
-                            <div class="mix-val">15%</div>
-                        </div>
-                        <div class="mix-item">
-                            <div class="mix-label-group"><span class="legend-dot" style="background:#10b981;"></span> Khác (Other)</div>
-                            <div class="mix-val">10%</div>
-                        </div>
+                        @foreach($report['revenue_mix'] as $item)
+                            <div class="mix-item">
+                                <div class="mix-label-group"><span class="legend-dot" style="background:{{ $item['color'] }};"></span> {{ $item['label'] }}</div>
+                                <div class="mix-val">{{ $item['percent'] }}%</div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
-            {{-- RECENT ACTIVITIES --}}
             <div class="activities-card">
                 <div class="activities-header">
                     <h3>Hoạt động gần đây</h3>
-                    <a href="#" class="btn-view-all">Xem tất cả</a>
+                    <a href="{{ route('admin.bookings.index') }}" class="btn-view-all">Xem tất cả</a>
                 </div>
                 <div class="activities-list">
-                    <div class="activity-item">
-                        <div class="activity-icon" style="background:rgba(240,100,47,0.1); color:#f0642f;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                    @forelse($report['activities'] as $activity)
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background:{{ $activity['color'] }}1a; color:{{ $activity['color'] }};">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                            </div>
+                            <div class="activity-info">
+                                <div class="activity-title">{{ $activity['title'] }}</div>
+                                <div class="activity-desc">{{ $activity['description'] }}</div>
+                            </div>
+                            <div class="activity-time">{{ $activity['time'] }}</div>
                         </div>
-                        <div class="activity-info">
-                            <div class="activity-title">Phòng 102 - Out/Check out</div>
-                            <div class="activity-desc">Khách hàng: Nguyễn Lâm Anh</div>
+                    @empty
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-title">Chưa có hoạt động trong hệ thống</div>
+                                <div class="activity-desc">Dữ liệu sẽ xuất hiện khi có đặt phòng.</div>
+                            </div>
                         </div>
-                        <div class="activity-time">Vừa mới đây</div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon" style="background:rgba(16,185,129,0.1); color:#10b981;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
-                        </div>
-                        <div class="activity-info">
-                            <div class="activity-title">Đơn đặt phòng mới - Suite 101</div>
-                            <div class="activity-desc">Thời gian: 10/05 - 12/05</div>
-                        </div>
-                        <div class="activity-time">15 phút trước</div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon" style="background:rgba(79,70,229,0.1); color:#4f46e5;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        </div>
-                        <div class="activity-info">
-                            <div class="activity-title">Yêu cầu dọn phòng - Deluxe 203</div>
-                            <div class="activity-desc">Từ: Trần Văn Hoàng</div>
-                        </div>
-                        <div class="activity-time">1 giờ trước</div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon" style="background:rgba(168,85,247,0.1); color:#a855f7;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10V7a4 4 0 00-8 0v3h8z"/><rect x="4" y="10" width="16" height="11" rx="2"/><circle cx="12" cy="15" r="2"/></svg>
-                        </div>
-                        <div class="activity-info">
-                            <div class="activity-title">Dịch vụ Spa - Phòng 302</div>
-                            <div class="activity-desc">Khách hàng: Thảo Vy</div>
-                        </div>
-                        <div class="activity-time">2 giờ trước</div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
 
-             {{-- FOOTER --}}
             @include('admin.layouts.footer')
-
         </div>
-
     </main>
 </div>
 @endsection
