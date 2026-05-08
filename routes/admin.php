@@ -19,6 +19,8 @@ use App\Http\Controllers\RepairTicketController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\StatisticalController;
 use App\Http\Middleware\CheckAdminPermission;
+use App\Enums\BookingStatus;
+use App\Models\BookingDetail;
 
 // ============== Auth & Dashboard ==============
 Route::get('/', function () {
@@ -32,7 +34,20 @@ Route::post('/logout', [AuthAdminController::class, 'logout'])->name('logout');
 
 // Dashboard (cần quyền admin)
 Route::get('/dashboard', function () {
-    return view('admin.dashboard.index');
+    $upcomingGuests = BookingDetail::with(['booking.customer', 'room.roomType'])
+        ->whereHas('booking', function ($query) {
+            $query->whereIn('status', [
+                BookingStatus::PENDING->value,
+                BookingStatus::CONFIRMED->value,
+            ]);
+        })
+        ->where('checkin_date', '>=', now()->startOfDay())
+        ->orderBy('checkin_date')
+        ->orderBy('id')
+        ->limit(10)
+        ->get();
+
+    return view('admin.dashboard.index', compact('upcomingGuests'));
 })->middleware(CheckAdminPermission::class)->name('dashboard');
 
 // ============== Protected Routes - Cần đăng nhập ==============
