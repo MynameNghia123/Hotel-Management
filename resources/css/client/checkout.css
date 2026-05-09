@@ -77,10 +77,11 @@
 
 /* Verify Email Box */
 .verify-email-box {
-    background: #f1f5f9;
-    padding: 25px;
+    background: #f8fafc;
+    padding: 20px;
     border-radius: 8px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    border: 1px solid #e2e8f0;
 }
 
 .verify-label {
@@ -99,9 +100,11 @@
 .form-control-custom {
     flex: 1;
     padding: 14px 20px;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 0.95rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #0f172a;
+    width: 100%;
 }
 
 .btn-verify {
@@ -112,6 +115,12 @@
     font-weight: 600;
     border: none;
     cursor: pointer;
+}
+
+.form-control-custom:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .verify-note {
@@ -133,16 +142,16 @@
 
 .details-form-card label {
     display: block;
-    font-size: 0.65rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: #64748b;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     text-transform: uppercase;
 }
 
 .details-form-card label span { color: #ef4444; }
 
-.form-group-full { margin-bottom: 30px; }
+.form-group-full { margin-bottom: 20px; }
 
 .phone-input-group {
     display: flex;
@@ -165,6 +174,7 @@
 .summary-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 25px;
     padding-bottom: 20px;
     border-bottom: 1px solid #f1f5f9;
@@ -191,6 +201,13 @@
     height: 60px;
     border-radius: 6px;
     object-fit: cover;
+}
+
+.room-item-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .room-item-name {
@@ -228,6 +245,7 @@
 .p-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 12px;
     font-size: 0.85rem;
     color: #64748b;

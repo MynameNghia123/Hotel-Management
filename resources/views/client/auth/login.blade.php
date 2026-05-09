@@ -124,7 +124,7 @@
             });
             const data = await res.json();
 
-            if (data.success) {
+            if (res.ok && data.success) {
                 // Chuyển sang bước nhập OTP
                 document.getElementById('step-email').style.display = 'none';
                 document.getElementById('step-otp').style.display = 'block';
@@ -133,6 +133,9 @@
                 showAlert(data.message, false);
             } else {
                 showAlert(data.message || 'Có lỗi xảy ra, vui lòng thử lại.');
+                if (data.redirect) {
+                    setTimeout(() => window.location.href = data.redirect, 2000);
+                }
             }
         } catch (e) {
             showAlert('Không thể kết nối máy chủ, vui lòng thử lại.');
@@ -158,11 +161,14 @@
             });
             const data = await res.json();
 
-            if (data.success) {
+            if (res.ok && data.success) {
                 showAlert('Đăng nhập thành công! Đang chuyển hướng...', false);
                 setTimeout(() => window.location.href = data.redirect, 1000);
             } else {
                 showAlert(data.message || 'Mã OTP không hợp lệ.');
+                if (data.redirect) {
+                    setTimeout(() => window.location.href = data.redirect, 2000);
+                }
             }
         } catch (e) {
             showAlert('Không thể kết nối máy chủ, vui lòng thử lại.');

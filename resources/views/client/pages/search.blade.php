@@ -8,188 +8,132 @@
 <main class="search-page">
     <!-- Header Search Bar -->
     <section class="search-header-container" style="background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('{{ asset('img/backgroundhomepage.png') }}');">
-        <div class="search-bar-inline">
+        <form action="{{ route('search') }}" method="GET" class="search-bar-inline">
             <div class="sb-item">
                 <span class="sb-label">Check In</span>
                 <div class="sb-input-group">
                     <i class="far fa-calendar-alt"></i>
-                    <span>Oct 24, 2024</span>
+                    <input type="text" name="checkin" value="{{ $checkin }}" onfocus="(this.type='date')" onblur="(this.type='text')" style="background:transparent; border:none; color:#1e293b; outline:none; font-family:inherit; cursor:pointer; width: 100%;">
                 </div>
             </div>
             <div class="sb-item">
                 <span class="sb-label">Check Out</span>
                 <div class="sb-input-group">
                     <i class="far fa-calendar-alt"></i>
-                    <span>Oct 27, 2024</span>
+                    <input type="text" name="checkout" value="{{ $checkout }}" onfocus="(this.type='date')" onblur="(this.type='text')" style="background:transparent; border:none; color:#1e293b; outline:none; font-family:inherit; cursor:pointer; width: 100%;">
                 </div>
             </div>
             <div class="sb-item">
                 <span class="sb-label">Guests</span>
                 <div class="sb-input-group">
                     <i class="fas fa-users"></i>
-                    <span>2 Adults, 0 Children, 2 rooms</span>
+                    <input type="text" name="guests" value="{{ $guests }}" onfocus="(this.type='number')" onblur="(this.type='text')" style="background:transparent; border:none; color:#1e293b; outline:none; font-family:inherit; width: 50px; cursor:pointer;">
+                    <span style="color:#64748b;">Khách</span>
                 </div>
             </div>
-            <button class="btn-update-search">
+            <button type="submit" class="btn-update-search">
                 <i class="fas fa-search"></i>
                 Update Search
             </button>
-        </div>
+        </form>
     </section>
 
     <!-- Results Section -->
     <section class="results-container">
+        @if(session('error'))
+            <div style="padding: 15px; margin-bottom: 20px; background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; border-radius: 8px;">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="results-header">
             <div class="results-title">
                 <h2>Hãy chọn phòng</h2>
-                <p>Hiện có 3 phòng phù hợp với bạn</p>
-            </div>
-            <div class="results-actions">
-                <button class="btn-action-outline"><i class="fas fa-sliders-h"></i> Filter</button>
-                <button class="btn-action-outline"><i class="fas fa-sort-amount-down"></i> Sort</button>
+                <p>Hiện có {{ count($availableRoomTypes) }} loại phòng phù hợp với bạn</p>
             </div>
         </div>
 
-        <!-- Room List Table -->
-        <div class="room-result-table">
-            <!-- Table Header -->
-            <div class="table-header">
-                <div class="th-label">Thông tin phòng</div>
-                <div class="th-label">Tiện nghi</div>
-                <div class="th-label">Sức chứa</div>
-                <div class="th-label">Giá & Giá trị</div>
-                <div class="th-label">Đặt phòng</div>
-            </div>
+        <form action="{{ route('checkout.init') }}" method="POST">
+            @csrf
+            <input type="hidden" name="checkin" value="{{ $checkin }}">
+            <input type="hidden" name="checkout" value="{{ $checkout }}">
 
-            <!-- Room 1: King Deluxe Room -->
-            <div class="room-row">
-                <div class="col-info">
-                    <img src="{{ asset('img/room-deluxe.png') }}" alt="King Deluxe Room" class="room-thumb-small">
-                    <div>
-                        <h3 class="room-name-small">King Deluxe Room</h3>
-                        <div class="room-meta-small">
-                            <span><i class="fas fa-expand"></i> 35 m² / 376 ft²</span>
-                            <span><i class="fas fa-user-friends"></i> Max 2 adults</span>
-                            <span><i class="fas fa-bed"></i> 1 King bed</span>
+            <!-- Room List Table -->
+            <div class="room-result-table">
+                <!-- Table Header -->
+                <div class="table-header">
+                    <div class="th-label">Thông tin phòng</div>
+                    <div class="th-label">Tiện nghi</div>
+                    <div class="th-label">Sức chứa</div>
+                    <div class="th-label">Giá & Giá trị</div>
+                    <div class="th-label">Đặt phòng</div>
+                </div>
+
+                @forelse($availableRoomTypes as $roomType)
+                <div class="room-row">
+                    <div class="col-info">
+                        @php
+                            $imageUrl = asset('img/room-deluxe.png'); // Default image
+                            if ($roomType->images && $roomType->images->count() > 0) {
+                                $imageUrl = asset('storage/' . $roomType->images->first()->image_path);
+                            }
+                        @endphp
+                        <img src="{{ $imageUrl }}" alt="{{ $roomType->name }}" class="room-thumb-small">
+                        <div>
+                            <h3 class="room-name-small">{{ $roomType->name }}</h3>
+                            <div class="room-meta-small">
+                                <span><i class="fas fa-expand"></i> {{ $roomType->width * $roomType->height }} m²</span>
+                                <span><i class="fas fa-user-friends"></i> Max {{ $roomType->adult_quantity }} adults</span>
+                                <span><i class="fas fa-bed"></i> {{ $roomType->single_bed_quantity + $roomType->double_bed_quantity }} beds</span>
+                            </div>
+                            <a href="#" class="link-photos">See photos <i class="fas fa-arrow-right"></i></a>
                         </div>
-                        <a href="#" class="link-photos">See photos <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="col-amenities">
+                        @foreach($roomType->amenities->take(6) as $amenity)
+                            <div class="amenity-mini"><i class="fas fa-check"></i> {{ $amenity->name }}</div>
+                        @endforeach
+                    </div>
+                    <div class="col-capacity">
+                        @for($i = 0; $i < $roomType->adult_quantity; $i++)
+                            <i class="fas fa-user"></i>
+                        @endfor
+                    </div>
+                    <div class="col-price">
+                        <div class="price-main">{{ number_format($roomType->daily_price, 0, ',', '.') }} đ</div>
+                        <div class="price-sub">mỗi đêm</div>
+                        <div class="badge-tag badge-suggest"><i class="fas fa-check"></i> Có sẵn {{ $roomType->available_count }} phòng</div>
+                    </div>
+                    <div class="col-booking">
+                        <span class="sb-label">Số lượng</span>
+                        <select name="room_qty[{{ $roomType->id }}]" class="select-qty">
+                            @for($i = 0; $i <= $roomType->available_count; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        </select>
                     </div>
                 </div>
-                <div class="col-amenities">
-                    <div class="amenity-mini"><i class="fas fa-wifi"></i> Wi-Fi Miễn phí</div>
-                    <div class="amenity-mini"><i class="fas fa-snowflake"></i> Điều hòa</div>
-                    <div class="amenity-mini"><i class="fas fa-shower"></i> Tắm riêng</div>
-                    <div class="amenity-mini"><i class="fas fa-wind"></i> Máy sấy tóc</div>
-                    <div class="amenity-mini"><i class="fas fa-wine-bottle"></i> Mini bar</div>
-                    <div class="amenity-mini"><i class="fas fa-glass-whiskey"></i> Nước uống</div>
+                @empty
+                <div style="padding: 40px; text-align: center; color: #94a3b8; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    Xin lỗi, không có phòng nào trống trong khoảng thời gian này. Vui lòng chọn ngày khác.
                 </div>
-                <div class="col-capacity">
-                    <i class="fas fa-user"></i> <i class="fas fa-user"></i>
-                </div>
-                <div class="col-price">
-                    <div class="price-main">6,200,000 đ</div>
-                    <div class="price-sub">mỗi đêm</div>
-                    <div class="badge-tag badge-best"><i class="fas fa-check"></i> Giá tốt nhất</div>
-                    <div class="badge-tag badge-suggest"><i class="fas fa-thumbs-up"></i> Được đề xuất</div>
-                </div>
-                <div class="col-booking">
-                    <span class="sb-label">Số lượng</span>
-                    <select class="select-qty">
-                        <option>1</option>
-                        <option>2</option>
-                    </select>
-                </div>
+                @endforelse
             </div>
 
-            <!-- Room 2: Executive Suite -->
-            <div class="room-row">
-                <div class="col-info">
-                    <img src="{{ asset('img/room-suite.png') }}" alt="Executive Suite" class="room-thumb-small">
-                    <div>
-                        <h3 class="room-name-small">Executive Suite</h3>
-                        <div class="room-meta-small">
-                            <span><i class="fas fa-expand"></i> 55 m² / 592 ft²</span>
-                            <span><i class="fas fa-user-friends"></i> Max 3 adults</span>
-                            <span><i class="fas fa-bed"></i> 1 King + Sofa</span>
-                        </div>
-                        <a href="#" class="link-photos">See photos <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-amenities">
-                    <div class="amenity-mini"><i class="fas fa-wifi"></i> Wi-Fi Miễn phí</div>
-                    <div class="amenity-mini"><i class="fas fa-snowflake"></i> Điều hòa</div>
-                    <div class="amenity-mini"><i class="fas fa-mug-hot"></i> Espresso</div>
-                    <div class="amenity-mini"><i class="fas fa-hot-tub"></i> Bồn tắm</div>
-                    <div class="amenity-mini"><i class="fas fa-shower"></i> Rain Shower</div>
-                </div>
-                <div class="col-capacity">
-                    <i class="fas fa-user"></i> <i class="fas fa-user"></i> <i class="fas fa-user-plus"></i>
-                </div>
-                <div class="col-price">
-                    <div class="price-main">11,500,000 đ</div>
-                    <div class="price-sub">mỗi đêm</div>
-                    <div class="badge-tag badge-couple"><i class="fas fa-heart"></i> Lựa chọn của cặp đôi</div>
-                </div>
-                <div class="col-booking">
-                    <span class="sb-label">Số lượng</span>
-                    <select class="select-qty">
-                        <option>0</option>
-                        <option>1</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Room 3: Urban Penthouse -->
-            <div class="room-row">
-                <div class="col-info">
-                    <img src="{{ asset('img/room-penthouse.png') }}" alt="Urban Penthouse" class="room-thumb-small">
-                    <div>
-                        <h3 class="room-name-small">Urban Penthouse</h3>
-                        <div class="room-meta-small">
-                            <span><i class="fas fa-expand"></i> 120 m² / 1291 ft²</span>
-                            <span><i class="fas fa-user-friends"></i> Max 4 adults</span>
-                            <span><i class="fas fa-bed"></i> 2 King beds</span>
-                        </div>
-                        <a href="#" class="link-photos">See photos <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-amenities">
-                    <div class="amenity-mini"><i class="fas fa-swimmer"></i> Hồ bơi riêng</div>
-                    <div class="amenity-mini"><i class="fas fa-spa"></i> Spa tại phòng</div>
-                    <div class="amenity-mini"><i class="fas fa-glass-cheers"></i> Quầy bar</div>
-                    <div class="amenity-mini"><i class="fas fa-couch"></i> Ban công</div>
-                </div>
-                <div class="col-capacity">
-                    <i class="fas fa-user"></i> <i class="fas fa-user"></i> <i class="fas fa-user"></i> <i class="fas fa-user"></i>
-                </div>
-                <div class="col-price">
-                    <div class="price-main">29,900,000 đ</div>
-                    <div class="price-sub">mỗi đêm</div>
-                    <div class="badge-tag badge-suggest"><i class="fas fa-star"></i> Top Rated</div>
-                </div>
-                <div class="col-booking">
-                    <span class="sb-label">Số lượng</span>
-                    <select class="select-qty">
-                        <option>0</option>
-                        <option>1</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- COMPACT BOOKING SUMMARY CARD -->
-        <div class="booking-summary-wrapper">
-            <div class="booking-summary-card">
-                <span class="summary-total-label">TỔNG GIÁ (3 ĐÊM)</span>
-                <span class="summary-total-value">18,600,000 đ</span>
-                <a href="{{ route('payment') }}" style="text-decoration: none; width: 100%;">
-                    <button class="btn-book-now-final">
-                        Đặt phòng ngay
+            <!-- COMPACT BOOKING SUMMARY CARD -->
+            @if(count($availableRoomTypes) > 0)
+            <div class="booking-summary-wrapper">
+                <div class="booking-summary-card">
+                    <span class="summary-total-label">ĐẶT PHÒNG TỪ {{ \Carbon\Carbon::parse($checkin)->format('d/m') }} ĐẾN {{ \Carbon\Carbon::parse($checkout)->format('d/m') }}</span>
+                    <span class="summary-total-value"></span>
+                    <button type="submit" class="btn-book-now-final">
+                        Tiếp tục Checkout
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                </a>
+                </div>
             </div>
-        </div>
+            @endif
+        </form>
     </section>
 </main>
 @endsection

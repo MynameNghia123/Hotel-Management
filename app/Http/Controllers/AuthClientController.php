@@ -19,6 +19,16 @@ class AuthClientController extends Controller
 
         $email = $request->email;
 
+        // Kiểm tra xem email đã được đăng ký chưa
+        $customer = Customer::where('email', $email)->first();
+        if (!$customer) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email này chưa được đăng ký. Vui lòng tạo tài khoản trước.',
+                'redirect' => route('register'),
+            ], 422);
+        }
+
         // Tạo ngẫu nhiên 6 số
         $otp = rand(100000, 999999);
 
@@ -55,11 +65,19 @@ class AuthClientController extends Controller
 
         Cache::forget('login_otp_' . $email);
 
-        // Tìm khách hàng theo email (nếu chưa có thì tạo mới với chỉ email)
-        $customer = Customer::firstOrCreate(['email' => $email]);
+        // Tìm khách hàng theo email — không tự động tạo tài khoản rỗng
+        $customer = Customer::where('email', $email)->first();
+
+        if (!$customer) {
+            return response()->json([
+                'success'  => false,
+                'message'  => 'Email này chưa được đăng ký. Vui lòng tạo tài khoản trước.',
+                'redirect' => route('register'),
+            ], 422);
+        }
 
         // Đăng nhập
-        Auth::login($customer); // true = remember me
+        Auth::login($customer);
 
         return response()->json([
             'success'  => true,
