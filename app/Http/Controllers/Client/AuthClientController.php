@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
-use App\Models\Customer;
+use App\Http\Controllers\Controller;
 use App\Mail\LoginOtpMail;
 use App\Mail\WelcomeMail;
+use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
 
 class AuthClientController extends Controller
 {

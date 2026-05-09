@@ -95,5 +95,15 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\SurchargePolicyRepositoryInterface::class,
             \App\Repositories\Implementations\EloquentSurchargePolicyRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\StatisticalRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentStatisticalRepository::class
+        );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\HomeRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentHomeRepository::class
+        );
     }
 }

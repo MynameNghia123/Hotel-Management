@@ -3,6 +3,10 @@
 @section('title', 'Urban Luxe | Khách sạn Nghỉ dưỡng Sang trọng Trung tâm Thành phố')
 @section('meta_description', 'Khám phá Urban Luxe - Khách sạn 5 sao với thiết kế thanh lịch, tiện nghi đẳng cấp và dịch vụ nghỉ dưỡng thượng lưu ngay tại trung tâm thành phố.')
 
+@push('styles')
+@vite(['resources/js/client/homepage.js'])
+@endpush
+
 @section('content')
     <section class="hero" style="background-image: url('{{ asset('img/backgroundhomepage.png') }}');">
         <!-- Lớp phủ tối cho phần ảnh nền từ bên trái mờ dần -->
@@ -26,94 +30,98 @@
                 </p>
             </div>
 
-            <!-- === Widget Đặt Phòng === -->
-            <div class="booking-widget">
-                <form action="{{ route('search') }}" method="GET" class="booking-form">
+        <!-- === Widget Đặt Phòng === -->
+        <div class="booking-widget">
+            <form class="booking-form js-home-booking-form" action="{{ route('search') }}" method="GET">
+                
+                <!-- CHECK IN -->
+                <div class="form-group">
+                    <label>NHẬN PHÒNG</label>
+                    <div class="input-wrapper js-date-trigger" data-picker="checkin">
+                        <!-- Calendar Icon -->
+                        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <input type="text" id="homeCheckinDisplay" placeholder="Chọn Ngày" class="input-field" readonly style="cursor: pointer;">
+                        <input type="date" id="homeCheckinPicker" name="checkin" value="{{ now()->format('Y-m-d') }}" min="{{ now()->format('Y-m-d') }}" class="native-date-picker" tabindex="-1" aria-hidden="true">
+                    </div>
+                </div>
 
-                    <!-- CHECK IN -->
-                    <div class="form-group">
-                        <label>NHẬN PHÒNG</label>
-                        <div class="input-wrapper">
-                            <!-- Calendar Icon -->
-                            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                            <input type="date" name="checkin" value="{{ now()->format('Y-m-d') }}"
-                                min="{{ now()->format('Y-m-d') }}" class="input-field date-input-custom"
-                                style="cursor: pointer;">
+                <!-- CHECK OUT -->
+                <div class="form-group">
+                    <label>TRẢ PHÒNG</label>
+                    <div class="input-wrapper js-date-trigger" data-picker="checkout">
+                        <!-- Calendar Icon -->
+                        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <input type="text" id="homeCheckoutDisplay" placeholder="Chọn Ngày" class="input-field" readonly style="cursor: pointer;">
+                        <input type="date" id="homeCheckoutPicker" name="checkout" value="{{ now()->addDay()->format('Y-m-d') }}" min="{{ now()->addDay()->format('Y-m-d') }}" class="native-date-picker" tabindex="-1" aria-hidden="true">
+                    </div>
+                </div>
+
+                <!-- GUESTS -->
+                <div class="form-group guest-group">
+                    <label>SỐ KHÁCH</label>
+                    <div class="input-wrapper js-guest-trigger" style="cursor: pointer;">
+                        <!-- User Icon -->
+                        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <input type="text" id="homeGuestsDisplay" value="2 Người lớn, 0 Trẻ em, 1 Phòng" class="input-field" readonly style="cursor: pointer;">
+                        <!-- Down Chevron -->
+                        <svg class="icon-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+
+                    <div class="guest-dropdown" id="homeGuestDropdown" hidden>
+                        <div class="guest-control-row">
+                            <div class="guest-control-label">
+                                <strong>Người lớn</strong>
+                                <small>Từ 13 tuổi</small>
+                            </div>
+                            <div class="guest-stepper">
+                                <button type="button" class="guest-step-btn" data-guest-target="adults" data-action="decrease">-</button>
+                                <span class="guest-count" data-count-for="adults">2</span>
+                                <button type="button" class="guest-step-btn" data-guest-target="adults" data-action="increase">+</button>
+                            </div>
+                        </div>
+
+                        <div class="guest-control-row">
+                            <div class="guest-control-label">
+                                <strong>Trẻ em</strong>
+                                <small>0 - 12 tuổi</small>
+                            </div>
+                            <div class="guest-stepper">
+                                <button type="button" class="guest-step-btn" data-guest-target="children" data-action="decrease">-</button>
+                                <span class="guest-count" data-count-for="children">0</span>
+                                <button type="button" class="guest-step-btn" data-guest-target="children" data-action="increase">+</button>
+                            </div>
+                        </div>
+
+                        <div class="guest-control-row">
+                            <div class="guest-control-label">
+                                <strong>Phòng</strong>
+                                <small>Số lượng phòng</small>
+                            </div>
+                            <div class="guest-stepper">
+                                <button type="button" class="guest-step-btn" data-guest-target="rooms" data-action="decrease">-</button>
+                                <span class="guest-count" data-count-for="rooms">1</span>
+                                <button type="button" class="guest-step-btn" data-guest-target="rooms" data-action="increase">+</button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- CHECK OUT -->
-                    <div class="form-group">
-                        <label>TRẢ PHÒNG</label>
-                        <div class="input-wrapper">
-                            <!-- Calendar Icon -->
-                            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                            <input type="date" name="checkout" value="{{ now()->addDay()->format('Y-m-d') }}"
-                                min="{{ now()->addDay()->format('Y-m-d') }}" class="input-field date-input-custom"
-                                style="cursor: pointer;">
-                        </div>
-                    </div>
+                    <input type="hidden" name="adults" id="homeAdults" value="2">
+                    <input type="hidden" name="children" id="homeChildren" value="0">
+                    <input type="hidden" name="rooms" id="homeRooms" value="1">
+                    <input type="hidden" name="room_type" id="homeRoomType" value="{{ $featuredRoomTypes->first()?->id }}">
+                </div>
 
-                    <!-- GUESTS -->
-                    <div class="form-group">
-                        <label>SỐ KHÁCH</label>
-                        <div class="input-wrapper" style="cursor: pointer;">
-                            <!-- User Icon -->
-                            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                            <input type="number" name="guests" value="1" min="1" class="input-field"
-                                style="cursor: pointer;">
-                        </div>
-                    </div>
+                <!-- NÚT SUBMIT -->
+                <div class="form-group submit-group">
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        <!-- Search Icon -->
+                        <svg class="icon-search" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        Kiểm Tra Phòng
+                    </button>
+                </div>
 
-                    <style>
-                        /* Ẩn icon lịch mặc định của trình duyệt để dùng SVG icon có sẵn */
-                        .date-input-custom::-webkit-calendar-picker-indicator {
-                            opacity: 0;
-                            cursor: pointer;
-                            position: absolute;
-                            right: 0;
-                            width: 100%;
-                            height: 100%;
-                        }
-
-                        .date-input-custom {
-                            position: relative;
-                            color: var(--text-white);
-                            /* Giữ text màu sáng */
-                        }
-                    </style>
-
-                    <!-- NÚT SUMBIT -->
-                    <div class="form-group submit-group">
-                        <button type="submit" class="btn btn-primary submit-btn">
-                            <!-- Search Icon -->
-                            <svg class="icon-search" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                            Kiểm Tra Phòng
-                        </button>
-                    </div>
-
-                </form>
-            </div>
+            </form>
+        </div>
 
         </div>
     </section>
@@ -132,7 +140,7 @@
                     </p>
                 </div>
                 <div class="section-actions">
-                    <a href="#" class="btn-explore">Khám Phá Tất Cả &rarr;</a>
+                    <a href="{{ route('amenities') }}" class="btn-explore">Khám Phá Tất Cả &rarr;</a>
                 </div>
             </div>
 
@@ -172,74 +180,101 @@
                 <p class="section-desc">Khám phá không gian hoàn hảo dành cho bạn ngay giữa trung tâm thành phố.</p>
             </div>
 
-            <div class="stays-grid">
-                <!-- Card 1: Deluxe Room -->
-                <div class="stay-card">
-                    <div class="stay-image">
-                        <img src="{{ asset('img/room-deluxe.png') }}" alt="Deluxe Room">
-                    </div>
-                    <div class="stay-content">
-                        <span class="stay-badge category-blue">HƯỚNG THÀNH PHỐ</span>
-                        <h3 class="stay-title">Phòng Deluxe Cao Cấp</h3>
-                        <p class="stay-description">
-                            Không gian rộng 35m² với giường cỡ lớn, bàn làm việc và tầm nhìn thành phố tuyệt đẹp.
-                        </p>
-                        <div class="stay-footer">
-                            <div class="stay-price-wrapper">
-                                <span class="price-label">Từ</span>
-                                <span class="price-amount">VNĐ 500.000</span>
-                                <span class="price-unit">/ đêm</span>
-                            </div>
-                            <a href="#" class="btn-book-ghost">Đặt ngay</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="stays-grid js-stays-grid">
+                @forelse($featuredRoomTypes as $index => $roomType)
+                    @php
+                        $firstImage = $roomType->images->first();
+                        $imagePath = $firstImage?->image_url ? ltrim($firstImage->image_url, '/') : 'img/room-deluxe.png';
+                        $description = $roomType->description ?: 'Không gian nghỉ dưỡng tinh tế với tiện nghi hiện đại và dịch vụ chuẩn cao cấp.';
+                        $nameLower = \Illuminate\Support\Str::lower($roomType->name);
+                        $fallbackImage = str_contains($nameLower, 'suite')
+                            ? asset('img/room-suite.png')
+                            : (str_contains($nameLower, 'penthouse') ? asset('img/room-penthouse.png') : asset('img/room-deluxe.png'));
+                    @endphp
 
-                <!-- Card 2: Executive Suite -->
-                <div class="stay-card">
-                    <div class="stay-image">
-                        <img src="{{ asset('img/room-suite.png') }}" alt="The Executive Suite">
-                    </div>
-                    <div class="stay-content">
-                        <span class="stay-badge category-blue">HẠNG SUITE</span>
-                        <h3 class="stay-title">Phòng Suite Thương Gia</h3>
-                        <p class="stay-description">
-                            Thiết kế lý tưởng cho công việc và nghỉ dưỡng với phòng khách riêng và tiện ích cao cấp.
-                        </p>
-                        <div class="stay-footer">
-                            <div class="stay-price-wrapper">
-                                <span class="price-label">Từ</span>
-                                <span class="price-amount">$450</span>
-                                <span class="price-unit">/ đêm</span>
+                    <article
+                        class="stay-card js-stay-card {{ $index === 0 ? 'is-active' : '' }}"
+                        role="button"
+                        tabindex="0"
+                        data-room-type-id="{{ $roomType->id }}"
+                        data-room-type-name="{{ $roomType->name }}"
+                        data-room-type-code="{{ $roomType->code ?: 'PHÒNG' }}"
+                        data-room-price="{{ number_format((float) $roomType->daily_price, 0, ',', '.') }} VNĐ"
+                        data-room-meta="{{ (int) $roomType->adult_quantity }} người lớn • {{ (int) $roomType->child_quantity }} trẻ em • {{ (int) $roomType->amenities_count }} tiện ích"
+                        data-room-url="{{ route('search', ['room_type' => $roomType->id]) }}"
+                    >
+                        <div class="stay-image">
+                            <img
+                                src="{{ asset($imagePath) }}"
+                                alt="{{ $roomType->name }}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
+                            >
+                            @if($index === 0)
+                                <span class="top-pick-badge">LỰA CHỌN TỐT NHẤT</span>
+                            @endif
+                        </div>
+                        <div class="stay-content">
+                            <span class="stay-badge category-blue">{{ $roomType->code ? 'HẠNG ' . $roomType->code : 'HẠNG PHÒNG' }}</span>
+                            <h3 class="stay-title">{{ $roomType->name }}</h3>
+                            <p class="stay-description">
+                                {{ \Illuminate\Support\Str::limit(strip_tags((string) $description), 130) }}
+                            </p>
+                            <div class="stay-metrics">
+                                <span>{{ (int) $roomType->adult_quantity + (int) $roomType->child_quantity }} khách</span>
+                                <span>{{ (int) $roomType->rooms_count }} phòng</span>
+                                <span>{{ (int) $roomType->amenities_count }} tiện ích</span>
                             </div>
-                            <a href="#" class="btn-book-ghost">Đặt ngay</a>
+                            <div class="stay-footer">
+                                <div class="stay-price-wrapper">
+                                    <span class="price-label">Từ</span>
+                                    <span class="price-amount">{{ number_format((float) $roomType->daily_price, 0, ',', '.') }} VNĐ</span>
+                                    <span class="price-unit">/ đêm</span>
+                                </div>
+                                <a href="{{ route('search', ['room_type' => $roomType->id]) }}" class="{{ $index === 0 ? 'btn btn-primary btn-book-solid' : 'btn-book-ghost' }} js-stay-book-btn">Đặt ngay</a>
+                            </div>
+                        </div>
+                    </article>
+                @empty
+                    <div class="stay-card">
+                        <div class="stay-image">
+                            <img src="{{ asset('img/room-deluxe.png') }}" alt="Phòng nghỉ">
+                        </div>
+                        <div class="stay-content">
+                            <span class="stay-badge category-blue">URBAN LUXE</span>
+                            <h3 class="stay-title">Không gian nghỉ dưỡng đẳng cấp</h3>
+                            <p class="stay-description">
+                                Dữ liệu hạng phòng đang được cập nhật. Vui lòng quay lại sau hoặc khám phá danh sách phòng hiện có.
+                            </p>
+                            <div class="stay-footer">
+                                <div class="stay-price-wrapper">
+                                    <span class="price-label">Từ</span>
+                                    <span class="price-amount">Liên hệ</span>
+                                </div>
+                                <a href="{{ route('room') }}" class="btn-book-ghost">Xem phòng</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Card 3: Urban Penthouse -->
-                <div class="stay-card">
-                    <div class="stay-image">
-                        <img src="{{ asset('img/room-penthouse.png') }}" alt="The Urban Penthouse">
-                        <span class="top-pick-badge">LỰA CHỌN TỐT NHẤT</span>
-                    </div>
-                    <div class="stay-content">
-                        <span class="stay-badge category-blue">HẠNG PENTHOUSE</span>
-                        <h3 class="stay-title">Penthouse Sang Trọng</h3>
-                        <p class="stay-description">
-                            Đỉnh cao của sự xa hoa với tầm nhìn panorama toàn cảnh, sân thượng riêng và dịch vụ quản gia.
-                        </p>
-                        <div class="stay-footer">
-                            <div class="stay-price-wrapper">
-                                <span class="price-label">Từ</span>
-                                <span class="price-amount">$1200</span>
-                                <span class="price-unit">/ đêm</span>
-                            </div>
-                            <a href="#" class="btn btn-primary btn-book-solid">Đặt ngay</a>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
+
+            @if($featuredRoomTypes->isNotEmpty())
+                @php
+                    $defaultRoom = $featuredRoomTypes->first();
+                @endphp
+                <div class="stay-selection-panel js-stay-selection-panel">
+                    <div class="stay-selection-content">
+                        <span class="stay-selection-label">Đang chọn</span>
+                        <h3 class="stay-selection-title js-selected-room-name">{{ $defaultRoom->name }}</h3>
+                        <p class="stay-selection-meta js-selected-room-meta">
+                            {{ (int) $defaultRoom->adult_quantity }} người lớn • {{ (int) $defaultRoom->child_quantity }} trẻ em • {{ (int) $defaultRoom->amenities_count }} tiện ích
+                        </p>
+                    </div>
+                    <a href="{{ route('search', ['room_type' => $defaultRoom->id]) }}" class="btn btn-primary stay-selection-action js-selected-room-action">
+                        Đặt {{ $defaultRoom->name }}
+                    </a>
+                </div>
+            @endif
         </div>
     </section>
 
