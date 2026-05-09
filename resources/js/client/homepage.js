@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    initBookingWidget();
+    initStayCards();
+});
+
+function initBookingWidget() {
     const form = document.querySelector('.js-home-booking-form');
 
     if (!form) {
@@ -221,4 +226,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initializeDates();
     renderGuestState();
-});
+}
+
+function initStayCards() {
+    const cards = Array.from(document.querySelectorAll('.js-stay-card'));
+    const selectionName = document.querySelector('.js-selected-room-name');
+    const selectionMeta = document.querySelector('.js-selected-room-meta');
+    const selectionAction = document.querySelector('.js-selected-room-action');
+    const roomTypeInput = document.getElementById('homeRoomType');
+
+    if (cards.length === 0) {
+        return;
+    }
+
+    const updateSelectedCard = (card) => {
+        cards.forEach((item) => item.classList.toggle('is-active', item === card));
+
+        const roomId = card.dataset.roomTypeId || '';
+        const roomName = card.dataset.roomTypeName || '';
+        const roomMeta = card.dataset.roomMeta || '';
+        const roomUrl = card.dataset.roomUrl || '#';
+
+        if (roomTypeInput) {
+            roomTypeInput.value = roomId;
+        }
+
+        if (selectionName) {
+            selectionName.textContent = roomName;
+        }
+
+        if (selectionMeta) {
+            selectionMeta.textContent = roomMeta;
+        }
+
+        if (selectionAction) {
+            selectionAction.href = roomUrl;
+            selectionAction.textContent = `Đặt ${roomName}`;
+        }
+    };
+
+    cards.forEach((card) => {
+        card.addEventListener('click', (event) => {
+            if (event.target instanceof HTMLElement && event.target.closest('.js-stay-book-btn')) {
+                return;
+            }
+
+            updateSelectedCard(card);
+        });
+
+        card.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter' && event.key !== ' ') {
+                return;
+            }
+
+            event.preventDefault();
+            updateSelectedCard(card);
+        });
+    });
+
+    const activeCard = cards.find((card) => card.classList.contains('is-active')) || cards[0];
+    updateSelectedCard(activeCard);
+}

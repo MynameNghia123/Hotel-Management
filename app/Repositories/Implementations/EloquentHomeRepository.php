@@ -37,6 +37,10 @@ class EloquentHomeRepository implements HomeRepositoryInterface
             ->with([
                 'images' => fn ($query) => $query->orderBy('order'),
             ])
+            ->withCount([
+                'rooms',
+                'amenities',
+            ])
             ->orderByDesc('daily_price')
             ->orderBy('name');
     }

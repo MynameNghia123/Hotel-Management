@@ -107,6 +107,7 @@
                     <input type="hidden" name="adults" id="homeAdults" value="2">
                     <input type="hidden" name="children" id="homeChildren" value="0">
                     <input type="hidden" name="rooms" id="homeRooms" value="1">
+                    <input type="hidden" name="room_type" id="homeRoomType" value="{{ $featuredRoomTypes->first()?->id }}">
                 </div>
 
                 <!-- NÚT SUBMIT -->
@@ -178,17 +179,36 @@
                 <p class="section-desc">Khám phá không gian hoàn hảo dành cho bạn ngay giữa trung tâm thành phố.</p>
             </div>
 
-            <div class="stays-grid">
+            <div class="stays-grid js-stays-grid">
                 @forelse($featuredRoomTypes as $index => $roomType)
                     @php
                         $firstImage = $roomType->images->first();
                         $imagePath = $firstImage?->image_url ? ltrim($firstImage->image_url, '/') : 'img/room-deluxe.png';
                         $description = $roomType->description ?: 'Không gian nghỉ dưỡng tinh tế với tiện nghi hiện đại và dịch vụ chuẩn cao cấp.';
+                        $nameLower = \Illuminate\Support\Str::lower($roomType->name);
+                        $fallbackImage = str_contains($nameLower, 'suite')
+                            ? asset('img/room-suite.png')
+                            : (str_contains($nameLower, 'penthouse') ? asset('img/room-penthouse.png') : asset('img/room-deluxe.png'));
                     @endphp
 
-                    <div class="stay-card">
+                    <article
+                        class="stay-card js-stay-card {{ $index === 0 ? 'is-active' : '' }}"
+                        role="button"
+                        tabindex="0"
+                        data-room-type-id="{{ $roomType->id }}"
+                        data-room-type-name="{{ $roomType->name }}"
+                        data-room-type-code="{{ $roomType->code ?: 'PHÒNG' }}"
+                        data-room-price="{{ number_format((float) $roomType->daily_price, 0, ',', '.') }} VNĐ"
+                        data-room-meta="{{ (int) $roomType->adult_quantity }} người lớn • {{ (int) $roomType->child_quantity }} trẻ em • {{ (int) $roomType->amenities_count }} tiện ích"
+                        data-room-url="{{ route('search', ['room_type' => $roomType->id]) }}"
+                    >
                         <div class="stay-image">
-                            <img src="{{ asset($imagePath) }}" alt="{{ $roomType->name }}">
+                            <img
+                                src="{{ asset($imagePath) }}"
+                                alt="{{ $roomType->name }}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='{{ $fallbackImage }}';"
+                            >
                             @if($index === 0)
                                 <span class="top-pick-badge">LỰA CHỌN TỐT NHẤT</span>
                             @endif
@@ -199,16 +219,21 @@
                             <p class="stay-description">
                                 {{ \Illuminate\Support\Str::limit(strip_tags((string) $description), 130) }}
                             </p>
+                            <div class="stay-metrics">
+                                <span>{{ (int) $roomType->adult_quantity + (int) $roomType->child_quantity }} khách</span>
+                                <span>{{ (int) $roomType->rooms_count }} phòng</span>
+                                <span>{{ (int) $roomType->amenities_count }} tiện ích</span>
+                            </div>
                             <div class="stay-footer">
                                 <div class="stay-price-wrapper">
                                     <span class="price-label">Từ</span>
                                     <span class="price-amount">{{ number_format((float) $roomType->daily_price, 0, ',', '.') }} VNĐ</span>
                                     <span class="price-unit">/ đêm</span>
                                 </div>
-                                <a href="{{ route('search', ['room_type' => $roomType->id]) }}" class="{{ $index === 0 ? 'btn btn-primary btn-book-solid' : 'btn-book-ghost' }}">Đặt ngay</a>
+                                <a href="{{ route('search', ['room_type' => $roomType->id]) }}" class="{{ $index === 0 ? 'btn btn-primary btn-book-solid' : 'btn-book-ghost' }} js-stay-book-btn">Đặt ngay</a>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 @empty
                     <div class="stay-card">
                         <div class="stay-image">
@@ -231,6 +256,24 @@
                     </div>
                 @endforelse
             </div>
+
+            @if($featuredRoomTypes->isNotEmpty())
+                @php
+                    $defaultRoom = $featuredRoomTypes->first();
+                @endphp
+                <div class="stay-selection-panel js-stay-selection-panel">
+                    <div class="stay-selection-content">
+                        <span class="stay-selection-label">Đang chọn</span>
+                        <h3 class="stay-selection-title js-selected-room-name">{{ $defaultRoom->name }}</h3>
+                        <p class="stay-selection-meta js-selected-room-meta">
+                            {{ (int) $defaultRoom->adult_quantity }} người lớn • {{ (int) $defaultRoom->child_quantity }} trẻ em • {{ (int) $defaultRoom->amenities_count }} tiện ích
+                        </p>
+                    </div>
+                    <a href="{{ route('search', ['room_type' => $defaultRoom->id]) }}" class="btn btn-primary stay-selection-action js-selected-room-action">
+                        Đặt {{ $defaultRoom->name }}
+                    </a>
+                </div>
+            @endif
         </div>
     </section>
 
