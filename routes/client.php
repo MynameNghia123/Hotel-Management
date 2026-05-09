@@ -1,8 +1,9 @@
 <?php
 
 
-use App\Http\Controllers\AuthClientController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Client\AuthClientController;
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Đăng nhập / Đăng xuất Khách hàng (OTP)
@@ -15,9 +16,7 @@ Route::post('/logout', [AuthClientController::class, 'logout'])->name('client.lo
 
 
 // Trang chủ và thông tin chung
-Route::get('/', function () {
-    return view('client.pages.homepage');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/room', function () {
     return view('client.pages.room');

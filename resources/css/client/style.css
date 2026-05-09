@@ -303,6 +303,88 @@ input {
     color: var(--text-white);
 }
 
+.native-date-picker {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.guest-group {
+    position: relative;
+}
+
+.guest-group.is-open .input-wrapper {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.guest-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 320px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #152238;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+    padding: 8px 14px;
+    z-index: 20;
+}
+
+.guest-control-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+}
+
+.guest-control-row + .guest-control-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.guest-control-label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: var(--text-white);
+    font-size: 0.85rem;
+}
+
+.guest-control-label small {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+}
+
+.guest-stepper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.guest-step-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: transparent;
+    color: var(--text-white);
+    font-size: 1.05rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.guest-step-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.guest-count {
+    min-width: 22px;
+    text-align: center;
+    color: var(--text-white);
+    font-weight: 600;
+}
+
 /* Button Nút Check */
 .submit-group {
     height: 52px;
@@ -446,6 +528,10 @@ input {
 
     .stays-grid {
         grid-template-columns: 1fr;
+    }
+
+    .guest-dropdown {
+        width: 100%;
     }
 }
 

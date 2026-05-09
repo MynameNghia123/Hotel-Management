@@ -105,5 +105,10 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\StatisticalServiceInterface::class,
             \App\Services\Implementations\StatisticalService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\HomeServiceInterface::class,
+            \App\Services\Implementations\HomeService::class
+        );
     }
 }
