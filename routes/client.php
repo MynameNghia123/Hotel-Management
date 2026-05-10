@@ -4,6 +4,7 @@
 use App\Http\Controllers\Client\AuthClientController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ProfileController;
+use App\Http\Controllers\Client\SearchController;
 use Illuminate\Support\Facades\Route;
 
 // Đăng nhập / Đăng xuất Khách hàng (OTP)
@@ -35,9 +36,7 @@ Route::get('/dining', function () {
 })->name('dining');
 
 // Đặt phòng
-Route::get('/search', function () {
-    return view('client.pages.search');
-})->name('search');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 Route::get('/checkout', function () {
     return view('client.pages.checkout');

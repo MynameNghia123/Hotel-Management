@@ -63,6 +63,33 @@
     color: #94a3b8;
 }
 
+.sb-input-group input {
+    border: 0;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e293b;
+    width: 100%;
+    outline: none;
+}
+
+.sb-item-guests {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+    gap: 12px;
+    align-items: end;
+}
+
+.sb-guest-input input {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
 .btn-update-search {
     background: #2563eb;
     color: white;
@@ -105,6 +132,12 @@
 .results-title p {
     color: #64748b;
     margin-top: 5px;
+}
+
+.results-note {
+    margin-top: 10px;
+    color: #0f4c81 !important;
+    font-weight: 600;
 }
 
 /* Room Row Styles */
@@ -194,6 +227,59 @@
     padding: 6px 12px;
 }
 
+.col-capacity {
+    display: flex;
+    align-items: center;
+}
+
+.capacity-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.capacity-number {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.capacity-detail {
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.capacity-icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #1e293b;
+}
+
+.capacity-more {
+    margin-left: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.room-qty-input {
+    width: 90px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.col-booking small {
+    margin-top: 8px;
+    display: block;
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
 /* COMPACT BOOKING SUMMARY CARD - LIGHT TRANSLUCENT */
 .booking-summary-wrapper {
     display: flex;
@@ -232,6 +318,13 @@
     font-family: 'Inter', sans-serif;
 }
 
+.summary-selection {
+    margin-bottom: 16px;
+    color: #64748b;
+    font-size: 0.88rem;
+    text-align: right;
+}
+
 .btn-book-now-final {
     background: #2563eb;
     color: white;
@@ -251,6 +344,15 @@
 
 .btn-book-now-final:hover {
     background: #1d4ed8;
+}
+
+.summary-action-link.is-disabled {
+    pointer-events: none;
+}
+
+.summary-action-link.is-disabled .btn-book-now-final {
+    background: #94a3b8;
+    cursor: not-allowed;
 }
 
 
@@ -312,6 +414,7 @@
 @media (max-width: 1024px) {
     .search-bar-inline { flex-direction: column; position: static; transform: none; width: 100%; margin-top: 30px; }
     .sb-item { border-right: none; border-bottom: 1px solid #f1f5f9; width: 100%; }
+    .sb-item-guests { grid-template-columns: 1fr; }
     .room-row { grid-template-columns: 1fr; }
     .table-header { display: none; }
 }
