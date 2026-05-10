@@ -16,162 +16,138 @@
         </div>
     </header>
 
-    <div class="guest-content-grid">
-        <!-- Left: Details Form -->
-        <div class="details-column">
-            <div class="details-form-card">
-                <div class="card-title">
-                    Nhập thông tin của bạn
-                    <span class="required-note">Các trường có dấu (*) là bắt buộc</span>
-                </div>
+    @if(session('error'))
+        <div style="max-width: 1200px; margin: 20px auto; padding: 15px; background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; border-radius: 8px;">
+            {{ session('error') }}
+        </div>
+    @endif
 
-                <!-- Verify Email section -->
-                <div class="verify-email-box">
-                    <label class="verify-label">Xác nhận email để tự động điền thông tin</label>
-                    <div class="input-with-button">
-                        <input type="email" placeholder="Nhập địa chỉ email của bạn" class="form-control-custom">
-                        <button class="btn-verify">Xác nhận Email</button>
+    <form action="{{ route('checkout.store') }}" method="POST" id="checkout-form">
+        @csrf
+        <div class="guest-content-grid">
+            <!-- Left: Details Form -->
+            <div class="details-column">
+                <div class="details-form-card">
+                    <div class="card-title">
+                        Nhập thông tin của bạn
+                        <span class="required-note">Các trường có dấu (*) là bắt buộc</span>
                     </div>
-                    <p class="verify-note" style="color: #64748b;">
-                        <i class="fas fa-info-circle"></i>
-                        Không tìm thấy tài khoản? Vui lòng nhập thông tin bên dưới để tạo tài khoản mới.
-                    </p>
-                </div>
 
-                <!-- Personal Info Form -->
-                <form action="#" method="POST">
+                    @if(!$user)
+                    <!-- Verify Email section -->
+                    <div class="verify-email-box">
+                        <label class="verify-label">Bạn đã có tài khoản?</label>
+                        <p class="verify-note" style="color: #64748b; margin-top: 5px;">
+                            <a href="{{ route('login') }}" style="color: #2563eb; text-decoration: underline;">Đăng nhập ngay</a> để tự động điền thông tin và tích lũy điểm thưởng.
+                        </p>
+                    </div>
+                    @endif
+
+                    <!-- Personal Info Form -->
                     <div class="form-row">
                         <div class="form-col">
                             <label>HỌ <span>*</span></label>
-                            <input type="text" placeholder="VD: Nguyễn" class="form-control-custom">
+                            <input type="text" name="last_name" value="{{ old('last_name', $user ? $user->last_name : '') }}" placeholder="VD: Nguyễn" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
                         </div>
                         <div class="form-col">
                             <label>TÊN <span>*</span></label>
-                            <input type="text" placeholder="VD: Văn An" class="form-control-custom">
+                            <input type="text" name="first_name" value="{{ old('first_name', $user ? $user->first_name : '') }}" placeholder="VD: Văn An" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
                         </div>
                     </div>
 
-                    <div class="form-group-full">
-                        <label>QUỐC GIA / VÙNG LÃNH THỔ <span>*</span></label>
-                        <select class="form-control-custom">
-                            <option value="VN">Việt Nam</option>
-                            <option value="US">Hoa Kỳ</option>
-                            <option value="JP">Nhật Bản</option>
-                        </select>
+                    <div class="form-group-full" style="margin-top: 15px;">
+                        <label>ĐỊA CHỈ EMAIL <span>*</span></label>
+                        <input type="email" name="email" value="{{ old('email', $user ? $user->email : '') }}" placeholder="email@example.com" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
                     </div>
 
-                    <div class="form-group-full">
+                    <div class="form-group-full" style="margin-top: 15px;">
                         <label>SỐ ĐIỆN THOẠI <span>*</span></label>
-                        <div class="phone-input-group">
-                            <select class="form-control-custom">
-                                <option value="+84">VN +84</option>
-                                <option value="+1">US +1</option>
-                                <option value="+44">UK +44</option>
-                            </select>
-                            <input type="text" placeholder="Nhanh số thoại của bạn" class="form-control-custom">
-                        </div>
+                        <input type="text" name="phone" value="{{ old('phone', $user ? $user->phone_number : '') }}" placeholder="Nhập số điện thoại của bạn" class="form-control-custom" required>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
 
-        <!-- Right: Stay Summary (Sticky) -->
-        <aside class="summary-column">
-            <div class="stay-summary-card">
-                <div class="summary-header">
-                    <span class="summary-title">Tóm tắt kỳ nghỉ</span>
-                    <a href="{{ route('search') }}" class="link-edit">Chỉnh sửa</a>
-                </div>
+            <!-- Right: Stay Summary (Sticky) -->
+            <aside class="summary-column">
+                <div class="stay-summary-card">
+                    <div class="summary-header">
+                        <span class="summary-title">Tóm tắt kỳ nghỉ</span>
+                        <a href="{{ route('search') }}" class="link-edit">Chỉnh sửa</a>
+                    </div>
 
-                <!-- Selected Rooms List -->
-                <div class="summary-rooms-list">
-                    <!-- Room 1 -->
-                    <div class="summary-room-item">
-                        <img src="{{ asset('img/room-deluxe.png') }}" alt="Room" class="room-mini-thumb">
-                        <div class="room-item-details">
-                            <div class="room-item-name">
-                                King Deluxe Room
-                                <span>12.4M</span>
+                    <!-- Selected Rooms List -->
+                    <div class="summary-rooms-list">
+                        @foreach($roomDetails as $detail)
+                        <div class="summary-room-item">
+                            @php
+                                $imageUrl = asset('img/room-deluxe.png');
+                                if ($detail['roomType']->images && $detail['roomType']->images->count() > 0) {
+                                    $imageUrl = asset('storage/' . $detail['roomType']->images->first()->image_path);
+                                }
+                            @endphp
+                            <img src="{{ $imageUrl }}" alt="Room" class="room-mini-thumb">
+                            <div class="room-item-details">
+                                <div class="room-item-name">
+                                    {{ $detail['roomType']->name }}
+                                    <span>{{ number_format($detail['subTotal'], 0, ',', '.') }} đ</span>
+                                </div>
+                                <div class="room-item-meta">{{ $detail['roomType']->width * $detail['roomType']->height }}m² (x{{ $detail['qty'] }})</div>
+                                <span class="room-tag-green">GIÁ TỐT NHẤT</span>
                             </div>
-                            <div class="room-item-meta">Hướng Phố • 35m² (x2)</div>
-                            <span class="room-tag-green">GIÁ TỐT NHẤT</span>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Stay Details Info -->
+                    <div class="stay-dates-summary">
+                        <div class="date-box">
+                            <span class="date-label">NGÀY NHẬN</span>
+                            <span class="date-val">{{ $checkin->format('d/m/Y') }}</span>
+                        </div>
+                        <div class="date-box">
+                            <span class="date-label">NGÀY TRẢ</span>
+                            <span class="date-val">{{ $checkout->format('d/m/Y') }}</span>
                         </div>
                     </div>
 
-                    <!-- Room 2 -->
-                    <div class="summary-room-item">
-                        <img src="{{ asset('img/room-suite.png') }}" alt="Room" class="room-mini-thumb">
-                        <div class="room-item-details">
-                            <div class="room-item-name">
-                                Executive Suite
-                                <span>18.2M</span>
+                    <div class="extra-info-small">
+                        <span>{{ $nights }} Đêm • {{ collect($roomDetails)->sum('qty') }} Phòng</span>
+                    </div>
+
+                    <!-- Pricing Breakdown -->
+                    <div class="pricing-breakdown">
+                        <div class="p-total-line">
+                            <div class="p-item" style="margin-top: 15px;">
+                                <span style="font-weight: 700; color: #0f172a;">TỔNG THANH TOÁN</span>
+                                <span class="total-amount-val">{{ number_format($totalAmount, 0, ',', '.') }} đ</span>
                             </div>
-                            <div class="room-item-meta">Hướng Biển • 52m² (x2)</div>
-                            <span class="room-tag-green">BAO GỒM BỮA SÁNG</span>
                         </div>
                     </div>
-                </div>
 
-                <!-- Stay Details Info -->
-                <div class="stay-dates-summary">
-                    <div class="date-box">
-                        <span class="date-label">NGÀY NHẬN</span>
-                        <span class="date-val">24 Th10</span>
-                    </div>
-                    <div class="date-box">
-                        <span class="date-label">NGÀY TRẢ</span>
-                        <span class="date-val">27 Th10</span>
-                    </div>
-                </div>
-
-                <div class="extra-info-small">
-                    <span><i class="fas fa-users"></i> 8 Người lớn, 2 Trẻ em</span>
-                    <span>3 Đêm • 5 Phòng</span>
-                </div>
-
-                <!-- Pricing Breakdown -->
-                <div class="pricing-breakdown">
-                    <div class="p-total-line">
-                        <div class="p-item">
-                            <span>Tạm tính (3 đêm)</span>
-                            <span>75.600.000 đ</span>
-                        </div>
-                        <div class="p-item">
-                            <span>Thuế & Phí (10%)</span>
-                            <span>7.560.000 đ</span>
-                        </div>
-                        <div class="p-item" style="margin-top: 15px;">
-                            <span style="font-weight: 700; color: #0f172a;">TỔNG THANH TOÁN</span>
-                            <span class="total-amount-val">79.380.000 đ</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Button -->
-                <a href="{{ route('payment') }}" style="text-decoration: none;">
-                    <button class="btn-continue-long">
-                        TIẾP TỤC THANH TOÁN
+                    <!-- Action Button -->
+                    <button type="submit" class="btn-continue-long" style="width: 100%; border: none; cursor: pointer;">
+                        XÁC NHẬN ĐẶT PHÒNG
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                </a>
 
-                <div class="security-footer">
-                    <i class="fas fa-lock"></i>
-                    Đặt phòng an toàn • Mã hóa SSL
+                    <div class="security-footer">
+                        <i class="fas fa-lock"></i>
+                        Đặt phòng an toàn • Mã hóa SSL
+                    </div>
                 </div>
-            </div>
 
-            <!-- Assistance Box -->
-            <div class="assistance-card">
-                <div class="assistance-icon">
-                    <i class="fas fa-headset"></i>
+                <!-- Assistance Box -->
+                <div class="assistance-card">
+                    <div class="assistance-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="assistance-text">
+                        <strong>Bạn cần hỗ trợ?</strong>
+                        Liên hệ đội ngũ hỗ trợ 24/7 của chúng tôi tại 1900 1234
+                    </div>
                 </div>
-                <div class="assistance-text">
-                    <strong>Bạn cần hỗ trợ?</strong>
-                    Liên hệ đội ngũ hỗ trợ 24/7 của chúng tôi tại +1 (800) 123-4567
-                </div>
-            </div>
-        </aside>
-    </div>
+            </aside>
+        </div>
+    </form>
 </main>
 @endsection

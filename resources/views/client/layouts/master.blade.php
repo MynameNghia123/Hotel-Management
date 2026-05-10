@@ -31,5 +31,7 @@
     
     <!-- AI Chat Box Widget -->
     @include('client.layouts.chat-ai')
+
+    @stack('scripts')
 </body>
 </html>

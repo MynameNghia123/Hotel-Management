@@ -57,4 +57,12 @@ class Booking extends Model
     {
         return $this->belongsTo(Staff::class);
     }
+
+    /**
+     * Relationship: Booking has many Payments
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\ClientBookingController;
 use App\Http\Controllers\Client\AuthClientController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ProfileController;
@@ -35,20 +35,21 @@ Route::get('/dining', function () {
     return view('client.pages.dining');
 })->name('dining');
 
+
+
 // Đặt phòng
-Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::get('/search', [ClientBookingController::class, 'search'])->name('search');
 
-Route::get('/checkout', function () {
-    return view('client.pages.checkout');
-})->name('checkout');
+// Các bước checkout cần có dữ liệu truyền vào
+Route::post('/checkout/init', [ClientBookingController::class, 'initCheckout'])->name('checkout.init');
+Route::get('/checkout', [ClientBookingController::class, 'checkout'])->name('checkout');
+Route::post('/checkout', [ClientBookingController::class, 'store'])->name('checkout.store');
 
-Route::get('/payment', function () {
-    return view('client.pages.payment');
-})->name('payment');
+Route::get('/payment', [ClientBookingController::class, 'payment'])->name('payment');
+Route::post('/payment/process', [ClientBookingController::class, 'processPayment'])->name('payment.process');
+Route::get('/vnpay-return', [ClientBookingController::class, 'vnpayReturn'])->name('vnpay.return');
 
-Route::get('/success', function () {
-    return view('client.pages.success');
-})->name('success');
+Route::get('/success', [ClientBookingController::class, 'success'])->name('success');
 
 // Tài khoản khách hàng (yêu cầu đăng nhập)
 Route::middleware('auth:web')->group(function () {

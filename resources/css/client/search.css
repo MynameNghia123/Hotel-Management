@@ -169,13 +169,17 @@
 }
 
 /* Column Content Detail */
-.col-info { padding-right: 30px; }
+.col-info { 
+    display: flex;
+    gap: 20px;
+    padding-right: 30px; 
+}
 .col-info img {
-    width: 100%;
-    height: 200px;
+    width: 160px;
+    height: 120px;
     border-radius: 12px;
     object-fit: cover;
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 
 .room-name-small {
@@ -212,6 +216,55 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.col-capacity {
+    display: flex;
+    gap: 6px;
+    color: #94a3b8;
+    align-items: start;
+    flex-wrap: wrap;
+    align-content: start;
+}
+
+.col-booking {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.select-qty {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #1e293b;
+    width: 100%;
+    cursor: pointer;
+    background-color: white;
+}
+
+.select-qty:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.link-photos {
+    color: #2563eb;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.link-photos:hover {
+    text-decoration: underline;
 }
 
 /* Price Badges & Styles */

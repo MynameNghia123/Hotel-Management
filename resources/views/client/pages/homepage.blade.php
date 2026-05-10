@@ -8,26 +8,27 @@
 @endpush
 
 @section('content')
-<section class="hero" style="background-image: url('{{ asset('img/backgroundhomepage.png') }}');">
-    <!-- Lớp phủ tối cho phần ảnh nền từ bên trái mờ dần -->
-    <div class="hero-overlay"></div>
-    
-    <div class="hero-container">
-        
-        <!-- === Nội Dung Chữ === -->
-        <div class="hero-content">
-            <!-- Badge: Điểm nhấn, Now open -->
-            <div class="hero-badge">
-                <span class="dot"></span>
-                <span>NAY ĐÃ CÓ MẶT TẠI TRUNG TÂM</span>
+    <section class="hero" style="background-image: url('{{ asset('img/backgroundhomepage.png') }}');">
+        <!-- Lớp phủ tối cho phần ảnh nền từ bên trái mờ dần -->
+        <div class="hero-overlay"></div>
+
+        <div class="hero-container">
+
+            <!-- === Nội Dung Chữ === -->
+            <div class="hero-content">
+                <!-- Badge: Điểm nhấn, Now open -->
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    <span>NAY ĐÃ CÓ MẶT TẠI TRUNG TÂM</span>
+                </div>
+
+                <h1 class="hero-title">Chốn Bình Yên<br>Giữa Lòng Thành Phố.</h1>
+
+                <p class="hero-description">
+                    Trải nghiệm sự xa hoa chốn thành thị với thiết kế thanh lịch và tiện nghi. Điểm<br>dừng chân hoàn hảo
+                    dành riêng cho những tín đồ xê dịch hiện đại.
+                </p>
             </div>
-            
-            <h1 class="hero-title">Chốn Bình Yên<br>Giữa Lòng Thành Phố.</h1>
-            
-            <p class="hero-description">
-                Trải nghiệm sự xa hoa chốn thành thị với thiết kế thanh lịch và tiện nghi. Điểm<br>dừng chân hoàn hảo dành riêng cho những tín đồ xê dịch hiện đại.
-            </p>
-        </div>
 
         <!-- === Widget Đặt Phòng === -->
         <div class="booking-widget">
@@ -40,7 +41,7 @@
                         <!-- Calendar Icon -->
                         <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         <input type="text" id="homeCheckinDisplay" placeholder="Chọn Ngày" class="input-field" readonly style="cursor: pointer;">
-                        <input type="date" id="homeCheckinPicker" name="checkin" class="native-date-picker" tabindex="-1" aria-hidden="true">
+                        <input type="date" id="homeCheckinPicker" name="checkin" value="{{ now()->format('Y-m-d') }}" min="{{ now()->format('Y-m-d') }}" class="native-date-picker" tabindex="-1" aria-hidden="true">
                     </div>
                 </div>
 
@@ -51,7 +52,7 @@
                         <!-- Calendar Icon -->
                         <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         <input type="text" id="homeCheckoutDisplay" placeholder="Chọn Ngày" class="input-field" readonly style="cursor: pointer;">
-                        <input type="date" id="homeCheckoutPicker" name="checkout" class="native-date-picker" tabindex="-1" aria-hidden="true">
+                        <input type="date" id="homeCheckoutPicker" name="checkout" value="{{ now()->addDay()->format('Y-m-d') }}" min="{{ now()->addDay()->format('Y-m-d') }}" class="native-date-picker" tabindex="-1" aria-hidden="true">
                     </div>
                 </div>
 
@@ -122,8 +123,8 @@
             </form>
         </div>
 
-    </div>
-</section>
+        </div>
+    </section>
 
     <!-- === Amenities Section (Dark Theme) === -->
     <section class="section amenities-section">
@@ -166,9 +167,9 @@
                 </div>
             </div>
         </div>
-        
+
     </section>
-    
+
     <hr class="section-divider">
 
     <!-- === Curated Stays Section (Dark Theme) === -->
