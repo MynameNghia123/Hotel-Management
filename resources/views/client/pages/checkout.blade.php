@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const lookupUrl = "{{ route('checkout.customer.lookup') }}";
+    const lookupUrl = "{{ route('checkout.customer.lookup', [], false) }}";
     let debounceTimer = null;
     let activeLookup = 0;
     let lastMatchedCustomerId = customerIdInput.value ? Number(customerIdInput.value) : null;
@@ -366,4 +366,3 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endpush
 @endif
-
