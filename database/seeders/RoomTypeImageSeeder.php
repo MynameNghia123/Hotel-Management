@@ -4,34 +4,57 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class RoomTypeImageSeeder extends Seeder
 {
     public function run(): void
     {
-        // Mỗi loại phòng có 3 ảnh. URL dạng placeholder để thay sau.
-        $data = [
-            // Standard (room_type_id = 1)
-            ['room_type_id' => 1, 'image_url' => 'images/room-types/standard/standard-1.jpg', 'order' => 1],
-            ['room_type_id' => 1, 'image_url' => 'images/room-types/standard/standard-2.jpg', 'order' => 2],
-            ['room_type_id' => 1, 'image_url' => 'images/room-types/standard/standard-3.jpg', 'order' => 3],
+        $roomTypeIds = [1, 2, 3, 4];
+        $rows = [];
 
-            // Superior (room_type_id = 2)
-            ['room_type_id' => 2, 'image_url' => 'images/room-types/superior/superior-1.jpg', 'order' => 1],
-            ['room_type_id' => 2, 'image_url' => 'images/room-types/superior/superior-2.jpg', 'order' => 2],
-            ['room_type_id' => 2, 'image_url' => 'images/room-types/superior/superior-3.jpg', 'order' => 3],
+        $storageDir = public_path('storage/room-types');
+        $storageImages = [];
 
-            // Deluxe (room_type_id = 3)
-            ['room_type_id' => 3, 'image_url' => 'images/room-types/deluxe/deluxe-1.jpg', 'order' => 1],
-            ['room_type_id' => 3, 'image_url' => 'images/room-types/deluxe/deluxe-2.jpg', 'order' => 2],
-            ['room_type_id' => 3, 'image_url' => 'images/room-types/deluxe/deluxe-3.jpg', 'order' => 3],
+        if (File::exists($storageDir)) {
+            $storageImages = collect(File::files($storageDir))
+                ->filter(
+                    fn (\SplFileInfo $file) => in_array(
+                        strtolower($file->getExtension()),
+                        ['jpg', 'jpeg', 'png', 'webp'],
+                        true
+                    )
+                )
+                ->sortBy(fn (\SplFileInfo $file) => $file->getFilename())
+                ->map(fn (\SplFileInfo $file) => '/storage/room-types/' . $file->getFilename())
+                ->values()
+                ->all();
+        }
 
-            // Suite (room_type_id = 4)
-            ['room_type_id' => 4, 'image_url' => 'images/room-types/suite/suite-1.jpg', 'order' => 1],
-            ['room_type_id' => 4, 'image_url' => 'images/room-types/suite/suite-2.jpg', 'order' => 2],
-            ['room_type_id' => 4, 'image_url' => 'images/room-types/suite/suite-3.jpg', 'order' => 3],
+        // Fallback when storage images are not present (keeps seeder runnable on fresh setup).
+        $fallbackImages = [
+            '/img/room-deluxe.png',
+            '/img/room-suite.png',
+            '/img/room-penthouse.png',
         ];
 
-        DB::table('room_type_images')->insert($data);
+        foreach ($roomTypeIds as $roomTypeId) {
+            for ($order = 1; $order <= 3; $order++) {
+                $index = (($roomTypeId - 1) * 3) + ($order - 1);
+
+                $rows[] = [
+                    'room_type_id' => $roomTypeId,
+                    'image_url' => $storageImages[$index] ?? $fallbackImages[($order - 1) % count($fallbackImages)],
+                    'order' => $order,
+                ];
+            }
+        }
+
+        // Prevent duplicated rows when running this seeder multiple times.
+        DB::table('room_type_images')
+            ->whereIn('room_type_id', $roomTypeIds)
+            ->delete();
+
+        DB::table('room_type_images')->insert($rows);
     }
 }

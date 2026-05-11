@@ -130,8 +130,8 @@
                         <span class="price-unit">/ đêm</span>
                     </div>
                     <div class="room-actions">
-                        <a href="#" class="btn-room-detail">KHÁM PHÁ</a>
-                        <a href="#" class="btn-room-book">ĐẶT NGAY</a>
+                        <a href="{{ route('room.detail', ['roomType' => 3]) }}" class="btn-room-detail">KHÁM PHÁ</a>
+                        <a href="{{ route('search', ['room_type' => 3]) }}" class="btn-room-book">ĐẶT NGAY</a>
                     </div>
                 </div>
             </div>
@@ -177,8 +177,8 @@
                         <span class="price-unit">/ đêm</span>
                     </div>
                     <div class="room-actions">
-                        <a href="#" class="btn-room-detail">KHÁM PHÁ</a>
-                        <a href="#" class="btn-room-book">ĐẶT NGAY</a>
+                        <a href="{{ route('room.detail', ['roomType' => 4]) }}" class="btn-room-detail">KHÁM PHÁ</a>
+                        <a href="{{ route('search', ['room_type' => 4]) }}" class="btn-room-book">ĐẶT NGAY</a>
                     </div>
                 </div>
             </div>
@@ -218,8 +218,8 @@
                         <span class="price-unit">/ đêm</span>
                     </div>
                     <div class="room-actions">
-                        <a href="#" class="btn-room-detail">KHÁM PHÁ</a>
-                        <a href="#" class="btn-room-book">ĐẶT NGAY</a>
+                        <a href="{{ route('room.detail', ['roomType' => 4]) }}" class="btn-room-detail">KHÁM PHÁ</a>
+                        <a href="{{ route('search', ['room_type' => 4]) }}" class="btn-room-book">ĐẶT NGAY</a>
                     </div>
                 </div>
             </div>

@@ -110,5 +110,10 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\SearchRepositoryInterface::class,
             \App\Repositories\Implementations\EloquentSearchRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\ClientBookingRepositoryInterface::class,
+            \App\Repositories\Implementations\EloquentClientBookingRepository::class
+        );
     }
 }

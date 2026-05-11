@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientBookingController;
 use App\Http\Controllers\Client\AuthClientController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ProfileController;
+use App\Http\Controllers\Client\RoomController;
 use App\Http\Controllers\Client\SearchController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,9 +20,8 @@ Route::post('/logout', [AuthClientController::class, 'logout'])->name('client.lo
 // Trang chủ và thông tin chung
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/room', function () {
-    return view('client.pages.room');
-})->name('room');
+Route::get('/room', [RoomController::class, 'index'])->name('room');
+Route::get('/room/{roomType}', [RoomController::class, 'show'])->name('room.detail');
 
 Route::get('/gallery', function () {
     return view('client.pages.gallery');
@@ -38,11 +38,14 @@ Route::get('/dining', function () {
 
 
 // Đặt phòng
-Route::get('/search', [ClientBookingController::class, 'search'])->name('search');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 // Các bước checkout cần có dữ liệu truyền vào
 Route::post('/checkout/init', [ClientBookingController::class, 'initCheckout'])->name('checkout.init');
 Route::get('/checkout', [ClientBookingController::class, 'checkout'])->name('checkout');
+Route::get('/checkout/customer-lookup', [ClientBookingController::class, 'lookupCustomerByEmail'])
+    ->name('checkout.customer.lookup')
+    ->middleware('throttle:30,1');
 Route::post('/checkout', [ClientBookingController::class, 'store'])->name('checkout.store');
 
 Route::get('/payment', [ClientBookingController::class, 'payment'])->name('payment');

@@ -115,5 +115,10 @@ class ServiceServiceProvider extends ServiceProvider
             \App\Services\Contracts\SearchServiceInterface::class,
             \App\Services\Implementations\SearchService::class
         );
+
+        $this->app->bind(
+            \App\Services\Contracts\ClientBookingServiceInterface::class,
+            \App\Services\Implementations\ClientBookingService::class
+        );
     }
 }

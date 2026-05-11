@@ -13,8 +13,8 @@
     <div class="container">
         <!-- Room Breadcrumbs (Simple & Elegant) -->
         <div class="breadcrumbs" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 30px;">
-            <a href="/" style="color: var(--text-muted);">Trang Chủ</a> &nbsp;/&nbsp; 
-            <a href="/rooms" style="color: var(--text-muted);">Phòng Nghỉ</a> &nbsp;/&nbsp; 
+            <a href="{{ route('home') }}" style="color: var(--text-muted);">Trang Chủ</a> &nbsp;/&nbsp; 
+            <a href="{{ route('room') }}" style="color: var(--text-muted);">Phòng Nghỉ</a> &nbsp;/&nbsp; 
             <span style="color: var(--text-white);">Phòng Deluxe Cao Cấp</span>
         </div>
 
@@ -141,7 +141,7 @@
                     <h2 class="section-title">Các Loại Phòng Tương Tự</h2>
                 </div>
                 <div class="section-actions">
-                    <a href="/rooms" class="btn-explore">Xem Tất Cả &rarr;</a>
+                    <a href="{{ route('room') }}" class="btn-explore">Xem Tất Cả &rarr;</a>
                 </div>
             </div>
 
@@ -163,7 +163,7 @@
                                 <span class="price-amount">450.000 VNĐ</span>
                                 <span class="price-unit">/ đêm</span>
                             </div>
-                            <a href="#" class="btn-book-ghost">Xem chi tiết</a>
+                            <a href="{{ route('room.detail', ['roomType' => 3]) }}" class="btn-book-ghost">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
                                 <span class="price-amount">1.200.000 VNĐ</span>
                                 <span class="price-unit">/ đêm</span>
                             </div>
-                            <a href="#" class="btn-book-ghost">Xem chi tiết</a>
+                            <a href="{{ route('room.detail', ['roomType' => 4]) }}" class="btn-book-ghost">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>

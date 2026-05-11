@@ -132,6 +132,39 @@
     gap: 8px;
 }
 
+.customer-lookup-status {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    border: 1px solid transparent;
+}
+
+.customer-lookup-status.loading {
+    color: #1e3a8a;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.customer-lookup-status.success {
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.customer-lookup-status.info {
+    color: #155e75;
+    background: #ecfeff;
+    border-color: #a5f3fc;
+}
+
+.customer-lookup-status.error {
+    color: #991b1b;
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
 /* Row & Column Controls */
 .form-row {
     display: grid;

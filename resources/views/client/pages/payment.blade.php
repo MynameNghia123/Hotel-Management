@@ -80,9 +80,27 @@
                         @foreach($booking->bookingDetails as $detail)
                         <div class="summary-room-item">
                             @php
-                                $imageUrl = asset('img/room-deluxe.png');
-                                if ($detail->room->roomType->images && $detail->room->roomType->images->count() > 0) {
-                                    $imageUrl = asset('storage/' . $detail->room->roomType->images->first()->image_path);
+                                $imageUrl = '/img/room-deluxe.png';
+                                $primaryImagePath = $detail->room->roomType->images
+                                    ?->pluck('image_url')
+                                    ->map(fn ($path) => is_string($path) ? trim($path) : '')
+                                    ->filter(function ($path) {
+                                        if ($path === '') {
+                                            return false;
+                                        }
+
+                                        if (filter_var($path, FILTER_VALIDATE_URL)) {
+                                            return true;
+                                        }
+
+                                        return file_exists(public_path(ltrim($path, '/')));
+                                    })
+                                    ->first();
+
+                                if ($primaryImagePath) {
+                                    $imageUrl = filter_var($primaryImagePath, FILTER_VALIDATE_URL)
+                                        ? $primaryImagePath
+                                        : '/' . ltrim($primaryImagePath, '/');
                                 }
                             @endphp
                             <img src="{{ $imageUrl }}" alt="Room" class="room-mini-thumb">

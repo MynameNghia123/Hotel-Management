@@ -24,6 +24,7 @@
 
     <form action="{{ route('checkout.store') }}" method="POST" id="checkout-form">
         @csrf
+        <input type="hidden" name="customer_id" id="detected_customer_id" value="{{ old('customer_id') }}">
         <div class="guest-content-grid">
             <!-- Left: Details Form -->
             <div class="details-column">
@@ -47,22 +48,25 @@
                     <div class="form-row">
                         <div class="form-col">
                             <label>HỌ <span>*</span></label>
-                            <input type="text" name="last_name" value="{{ old('last_name', $user ? $user->last_name : '') }}" placeholder="VD: Nguyễn" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
+                            <input type="text" id="checkout_last_name" name="last_name" value="{{ old('last_name', $user ? $user->last_name : '') }}" placeholder="VD: Nguyễn" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
                         </div>
                         <div class="form-col">
                             <label>TÊN <span>*</span></label>
-                            <input type="text" name="first_name" value="{{ old('first_name', $user ? $user->first_name : '') }}" placeholder="VD: Văn An" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
+                            <input type="text" id="checkout_first_name" name="first_name" value="{{ old('first_name', $user ? $user->first_name : '') }}" placeholder="VD: Văn An" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
                         </div>
                     </div>
 
                     <div class="form-group-full" style="margin-top: 15px;">
                         <label>ĐỊA CHỈ EMAIL <span>*</span></label>
-                        <input type="email" name="email" value="{{ old('email', $user ? $user->email : '') }}" placeholder="email@example.com" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
+                        <input type="email" id="checkout_email" name="email" value="{{ old('email', $user ? $user->email : '') }}" placeholder="email@example.com" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
+                        @if(!$user)
+                            <div id="customer-lookup-status" class="customer-lookup-status" hidden></div>
+                        @endif
                     </div>
 
                     <div class="form-group-full" style="margin-top: 15px;">
                         <label>SỐ ĐIỆN THOẠI <span>*</span></label>
-                        <input type="text" name="phone" value="{{ old('phone', $user ? $user->phone_number : '') }}" placeholder="Nhập số điện thoại của bạn" class="form-control-custom" required>
+                        <input type="text" id="checkout_phone" name="phone" value="{{ old('phone', $user ? $user->phone_number : '') }}" placeholder="Nhập số điện thoại của bạn" class="form-control-custom" required>
                     </div>
                 </div>
             </div>
@@ -80,9 +84,27 @@
                         @foreach($roomDetails as $detail)
                         <div class="summary-room-item">
                             @php
-                                $imageUrl = asset('img/room-deluxe.png');
-                                if ($detail['roomType']->images && $detail['roomType']->images->count() > 0) {
-                                    $imageUrl = asset('storage/' . $detail['roomType']->images->first()->image_path);
+                                $imageUrl = '/img/room-deluxe.png';
+                                $primaryImagePath = $detail['roomType']->images
+                                    ?->pluck('image_url')
+                                    ->map(fn ($path) => is_string($path) ? trim($path) : '')
+                                    ->filter(function ($path) {
+                                        if ($path === '') {
+                                            return false;
+                                        }
+
+                                        if (filter_var($path, FILTER_VALIDATE_URL)) {
+                                            return true;
+                                        }
+
+                                        return file_exists(public_path(ltrim($path, '/')));
+                                    })
+                                    ->first();
+
+                                if ($primaryImagePath) {
+                                    $imageUrl = filter_var($primaryImagePath, FILTER_VALIDATE_URL)
+                                        ? $primaryImagePath
+                                        : '/' . ltrim($primaryImagePath, '/');
                                 }
                             @endphp
                             <img src="{{ $imageUrl }}" alt="Room" class="room-mini-thumb">
@@ -151,3 +173,141 @@
     </form>
 </main>
 @endsection
+
+@if(!$user)
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const emailInput = document.getElementById('checkout_email');
+    const firstNameInput = document.getElementById('checkout_first_name');
+    const lastNameInput = document.getElementById('checkout_last_name');
+    const phoneInput = document.getElementById('checkout_phone');
+    const customerIdInput = document.getElementById('detected_customer_id');
+    const statusBox = document.getElementById('customer-lookup-status');
+
+    if (!emailInput || !firstNameInput || !lastNameInput || !phoneInput || !customerIdInput || !statusBox) {
+        return;
+    }
+
+    const lookupUrl = "{{ route('checkout.customer.lookup') }}";
+    let debounceTimer = null;
+    let activeLookup = 0;
+    let lastMatchedCustomerId = customerIdInput.value ? Number(customerIdInput.value) : null;
+
+    function setReadOnlyState(isReadOnly) {
+        firstNameInput.readOnly = isReadOnly;
+        lastNameInput.readOnly = isReadOnly;
+        phoneInput.readOnly = isReadOnly;
+    }
+
+    function setStatus(type, message) {
+        if (!message) {
+            statusBox.hidden = true;
+            statusBox.className = 'customer-lookup-status';
+            statusBox.textContent = '';
+            return;
+        }
+
+        statusBox.hidden = false;
+        statusBox.className = 'customer-lookup-status ' + type;
+        statusBox.textContent = message;
+    }
+
+    function clearMatchedCustomer() {
+        customerIdInput.value = '';
+        lastMatchedCustomerId = null;
+        setReadOnlyState(false);
+    }
+
+    if (lastMatchedCustomerId) {
+        setReadOnlyState(true);
+    }
+
+    async function lookupCustomerByEmail(rawEmail) {
+        const email = String(rawEmail || '').trim().toLowerCase();
+        if (email === '') {
+            clearMatchedCustomer();
+            setStatus('', '');
+            return;
+        }
+
+        const isValidEmailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!isValidEmailFormat) {
+            clearMatchedCustomer();
+            setStatus('info', 'Nhập email hợp lệ để kiểm tra khách hàng.');
+            return;
+        }
+
+        activeLookup += 1;
+        const lookupId = activeLookup;
+        setStatus('loading', 'Đang kiểm tra email...');
+
+        try {
+            const response = await fetch(lookupUrl + '?email=' + encodeURIComponent(email), {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            if (lookupId !== activeLookup) {
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error('lookup_failed');
+            }
+
+            const payload = await response.json();
+            if (payload.exists && payload.customer) {
+                const customer = payload.customer;
+
+                customerIdInput.value = String(customer.id || '');
+                firstNameInput.value = customer.first_name || '';
+                lastNameInput.value = customer.last_name || '';
+                phoneInput.value = customer.phone_number || '';
+                setReadOnlyState(true);
+                lastMatchedCustomerId = customer.id || null;
+
+                setStatus('success', 'Đã xác nhận khách hàng tồn tại: ' + (customer.full_name || customer.email) + '.');
+                return;
+            }
+
+            if (lastMatchedCustomerId) {
+                firstNameInput.value = '';
+                lastNameInput.value = '';
+                phoneInput.value = '';
+            }
+
+            clearMatchedCustomer();
+            setStatus('info', 'Email chưa có trong hệ thống. Thông tin này sẽ được dùng để tạo khách hàng mới.');
+        } catch (error) {
+            if (lookupId !== activeLookup) {
+                return;
+            }
+
+            clearMatchedCustomer();
+            setStatus('error', 'Không thể kiểm tra email lúc này. Bạn vẫn có thể nhập thông tin để tạo khách hàng mới.');
+        }
+    }
+
+    function queueLookup() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () {
+            lookupCustomerByEmail(emailInput.value);
+        }, 450);
+    }
+
+    emailInput.addEventListener('input', queueLookup);
+    emailInput.addEventListener('blur', function () {
+        clearTimeout(debounceTimer);
+        lookupCustomerByEmail(emailInput.value);
+    });
+
+    if (emailInput.value && !customerIdInput.value) {
+        lookupCustomerByEmail(emailInput.value);
+    }
+});
+</script>
+@endpush
+@endif

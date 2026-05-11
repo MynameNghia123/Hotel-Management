@@ -7,21 +7,6 @@
 @endpush
 
 @section('content')
-@php
-    $amenityIconMap = [
-        'wifi' => 'fa-wifi',
-        'air-conditioner' => 'fa-snowflake',
-        'tv' => 'fa-tv',
-        'fridge' => 'fa-temperature-low',
-        'safe' => 'fa-shield-halved',
-        'bathtub' => 'fa-bath',
-        'shower' => 'fa-shower',
-        'balcony' => 'fa-building',
-        'coffee' => 'fa-mug-hot',
-        'minibar' => 'fa-wine-bottle',
-    ];
-@endphp
-
 <main class="search-page">
     <section class="search-header-container" style="background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('{{ asset('img/backgroundhomepage.png') }}');">
         <form action="{{ route('search') }}" method="GET" class="search-bar-inline">
@@ -55,7 +40,6 @@
         </form>
     </section>
 
-    <!-- Results Section -->
     <section class="results-container">
         @if(session('error'))
             <div style="padding: 15px; margin-bottom: 20px; background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; border-radius: 8px;">
@@ -75,9 +59,7 @@
             <input type="hidden" name="checkin" value="{{ $checkin }}">
             <input type="hidden" name="checkout" value="{{ $checkout }}">
 
-            <!-- Room List Table -->
             <div class="room-result-table">
-                <!-- Table Header -->
                 <div class="table-header">
                     <div class="th-label">Thông tin phòng</div>
                     <div class="th-label">Tiện nghi</div>
@@ -90,10 +72,25 @@
                 <div class="room-row">
                     <div class="col-info">
                         @php
-                            $imageUrl = asset('img/room-deluxe.png'); // Default image
-                            if ($roomType->images && $roomType->images->count() > 0) {
-                                $imageUrl = asset('storage/' . $roomType->images->first()->image_path);
-                            }
+                            $imagePath = $roomType->images
+                                ->pluck('image_url')
+                                ->first(function ($path) {
+                                    if (!$path) {
+                                        return false;
+                                    }
+
+                                    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+                                        return true;
+                                    }
+
+                                    return file_exists(public_path(ltrim($path, '/')));
+                                });
+
+                            $imageUrl = $imagePath
+                                ? (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://')
+                                    ? $imagePath
+                                    : asset(ltrim($imagePath, '/')))
+                                : asset('img/room-deluxe.png');
                         @endphp
                         <img src="{{ $imageUrl }}" alt="{{ $roomType->name }}" class="room-thumb-small">
                         <div>
@@ -137,11 +134,10 @@
                 @endforelse
             </div>
 
-            <!-- COMPACT BOOKING SUMMARY CARD -->
             @if(count($availableRoomTypes) > 0)
             <div class="booking-summary-wrapper">
                 <div class="booking-summary-card">
-                    <span class="summary-total-label">ĐẶT PHÒNG TỪ {{ \Carbon\Carbon::parse($checkin)->format('d/m') }} ĐẾN {{ \Carbon\Carbon::parse($checkout)->format('d/m') }}</span>
+                    <span class="summary-total-label">ĐẶT PHÒNG TỪ {{ $checkinLabel ?? \Carbon\Carbon::parse($checkin)->format('d/m') }} ĐẾN {{ $checkoutLabel ?? \Carbon\Carbon::parse($checkout)->format('d/m') }}</span>
                     <span class="summary-total-value"></span>
                     <button type="submit" class="btn-book-now-final">
                         Tiếp tục Checkout

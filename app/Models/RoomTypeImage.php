@@ -18,9 +18,9 @@ class RoomTypeImage extends Model
     /**
      * Normalize image_url to always return a valid relative path.
      * Handles 3 formats in DB:
-     *   1) Seed data: "images/room-types/standard/standard-3.jpg"
+     *   1) Public image path: "/img/room-deluxe.png"
      *   2) Old absolute: "http://localhost/storage/room-types/xxx.jpg"
-     *   3) New relative: "/storage/room-types/xxx.jpg"
+     *   3) Storage relative: "/storage/room-types/xxx.jpg"
      */
     protected function imageUrl(): Attribute
     {
