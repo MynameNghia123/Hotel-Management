@@ -69,6 +69,7 @@ class ClientBookingController extends Controller
                 'full_name' => trim(($customer->last_name ?? '') . ' ' . ($customer->first_name ?? '')),
                 'email' => $customer->email,
                 'phone_number' => $customer->phone_number,
+                'country' => $customer->country,
             ] : null,
         ]);
     }
@@ -81,16 +82,18 @@ class ClientBookingController extends Controller
         }
 
         $request->validate([
-            'first_name' => 'required|string|max:100',
-            'last_name' => 'required|string|max:100',
-            'email' => 'required|email',
+            'email' => 'required|email|max:255',
+            'customer_id' => 'nullable|integer|exists:customers,id',
+            'first_name' => 'nullable|string|max:100',
+            'last_name' => 'nullable|string|max:100',
             'phone' => 'nullable|string|max:20',
+            'country' => 'nullable|string|max:100',
         ]);
 
         try {
             $booking = $this->clientBookingService->createBookingFromCart(
                 $cart,
-                $request->only(['first_name', 'last_name', 'email', 'phone']),
+                $request->only(['first_name', 'last_name', 'email', 'phone', 'country']),
                 Auth::guard('web')->check() ? (int) Auth::guard('web')->id() : null
             );
 

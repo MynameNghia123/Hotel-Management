@@ -199,10 +199,20 @@ class ClientBookingService implements ClientBookingServiceInterface
             if ($existingCustomer) {
                 $bookingData['customer_id'] = (int) $existingCustomer->id;
             } else {
+                $firstName = trim((string) ($customerData['first_name'] ?? ''));
+                $lastName = trim((string) ($customerData['last_name'] ?? ''));
+                $phone = trim((string) ($customerData['phone'] ?? ''));
+                $country = trim((string) ($customerData['country'] ?? ''));
+
+                if ($firstName === '' || $lastName === '' || $phone === '') {
+                    throw new RuntimeException('Vui long nhap day du ho, ten va so dien thoai de tao khach hang moi.');
+                }
+
                 $bookingData['customer_new_email'] = $email;
-                $bookingData['customer_first_name'] = trim((string) ($customerData['first_name'] ?? ''));
-                $bookingData['customer_last_name'] = trim((string) ($customerData['last_name'] ?? ''));
-                $bookingData['customer_phone'] = trim((string) ($customerData['phone'] ?? ''));
+                $bookingData['customer_first_name'] = $firstName;
+                $bookingData['customer_last_name'] = $lastName;
+                $bookingData['customer_phone'] = $phone;
+                $bookingData['customer_country'] = $country !== '' ? $country : null;
             }
         }
 

@@ -1,4 +1,4 @@
-@extends('client.layouts.master')
+﻿@extends('client.layouts.master')
 @section('title', 'Thông Tin Khách Hàng | Urban Luxe Hotel')
 
 @push('styles')
@@ -39,22 +39,10 @@
                     <div class="verify-email-box">
                         <label class="verify-label">Bạn đã có tài khoản?</label>
                         <p class="verify-note" style="color: #64748b; margin-top: 5px;">
-                            <a href="{{ route('login') }}" style="color: #2563eb; text-decoration: underline;">Đăng nhập ngay</a> để tự động điền thông tin và tích lũy điểm thưởng.
+                            <a href="{{ route('login') }}" style="color: #2563eb; text-decoration: underline;">Đăng nhập ngay</a>
                         </p>
                     </div>
                     @endif
-
-                    <!-- Personal Info Form -->
-                    <div class="form-row">
-                        <div class="form-col">
-                            <label>HỌ <span>*</span></label>
-                            <input type="text" id="checkout_last_name" name="last_name" value="{{ old('last_name', $user ? $user->last_name : '') }}" placeholder="VD: Nguyễn" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
-                        </div>
-                        <div class="form-col">
-                            <label>TÊN <span>*</span></label>
-                            <input type="text" id="checkout_first_name" name="first_name" value="{{ old('first_name', $user ? $user->first_name : '') }}" placeholder="VD: Văn An" class="form-control-custom" required {{ $user ? 'readonly' : '' }}>
-                        </div>
-                    </div>
 
                     <div class="form-group-full" style="margin-top: 15px;">
                         <label>ĐỊA CHỈ EMAIL <span>*</span></label>
@@ -64,13 +52,39 @@
                         @endif
                     </div>
 
-                    <div class="form-group-full" style="margin-top: 15px;">
-                        <label>SỐ ĐIỆN THOẠI <span>*</span></label>
-                        <input type="text" id="checkout_phone" name="phone" value="{{ old('phone', $user ? $user->phone_number : '') }}" placeholder="Nhập số điện thoại của bạn" class="form-control-custom" required>
+                    @php
+                        $showCustomerDetails = $user
+                            || old('customer_id')
+                            || old('first_name')
+                            || old('last_name')
+                            || old('phone')
+                            || old('country');
+                    @endphp
+                    <div id="customer-details-section" class="customer-details-section" {{ $showCustomerDetails ? '' : 'hidden' }}>
+                        <!-- Personal Info Form -->
+                        <div class="form-row" style="margin-top: 15px;">
+                            <div class="form-col">
+                                <label>HỌ <span>*</span></label>
+                                <input type="text" id="checkout_last_name" name="last_name" value="{{ old('last_name', $user ? $user->last_name : '') }}" placeholder="VD: Nguyễn" class="form-control-custom" {{ $user ? 'required readonly' : '' }}>
+                            </div>
+                            <div class="form-col">
+                                <label>TÊN <span>*</span></label>
+                                <input type="text" id="checkout_first_name" name="first_name" value="{{ old('first_name', $user ? $user->first_name : '') }}" placeholder="VD: Văn An" class="form-control-custom" {{ $user ? 'required readonly' : '' }}>
+                            </div>
+                        </div>
+
+                        <div class="form-group-full" style="margin-top: 15px;">
+                            <label>SỐ ĐIỆN THOẠI <span>*</span></label>
+                            <input type="text" id="checkout_phone" name="phone" value="{{ old('phone', $user ? $user->phone_number : '') }}" placeholder="Nhập số điện thoại của bạn" class="form-control-custom" {{ $user ? 'required readonly' : '' }}>
+                        </div>
+
+                        <div class="form-group-full" style="margin-top: 15px;">
+                            <label>QUỐC GIA</label>
+                            <input type="text" id="checkout_country" name="country" value="{{ old('country', $user ? $user->country : '') }}" placeholder="VD: Viet Nam" class="form-control-custom" {{ $user ? 'readonly' : '' }}>
+                        </div>
                     </div>
                 </div>
             </div>
-
             <!-- Right: Stay Summary (Sticky) -->
             <aside class="summary-column">
                 <div class="stay-summary-card">
@@ -182,10 +196,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const firstNameInput = document.getElementById('checkout_first_name');
     const lastNameInput = document.getElementById('checkout_last_name');
     const phoneInput = document.getElementById('checkout_phone');
+    const countryInput = document.getElementById('checkout_country');
+    const detailsSection = document.getElementById('customer-details-section');
     const customerIdInput = document.getElementById('detected_customer_id');
     const statusBox = document.getElementById('customer-lookup-status');
 
-    if (!emailInput || !firstNameInput || !lastNameInput || !phoneInput || !customerIdInput || !statusBox) {
+    if (!emailInput || !firstNameInput || !lastNameInput || !phoneInput || !countryInput || !detailsSection || !customerIdInput || !statusBox) {
         return;
     }
 
@@ -198,6 +214,17 @@ document.addEventListener('DOMContentLoaded', function () {
         firstNameInput.readOnly = isReadOnly;
         lastNameInput.readOnly = isReadOnly;
         phoneInput.readOnly = isReadOnly;
+        countryInput.readOnly = isReadOnly;
+    }
+
+    function setRequiredState(isRequired) {
+        firstNameInput.required = isRequired;
+        lastNameInput.required = isRequired;
+        phoneInput.required = isRequired;
+    }
+
+    function toggleDetails(shouldShow) {
+        detailsSection.hidden = !shouldShow;
     }
 
     function setStatus(type, message) {
@@ -217,16 +244,56 @@ document.addEventListener('DOMContentLoaded', function () {
         customerIdInput.value = '';
         lastMatchedCustomerId = null;
         setReadOnlyState(false);
+        setRequiredState(false);
+    }
+
+    function clearCustomerFields() {
+        firstNameInput.value = '';
+        lastNameInput.value = '';
+        phoneInput.value = '';
+        countryInput.value = '';
+    }
+
+    function useExistingCustomer(customer) {
+        customerIdInput.value = String(customer.id || '');
+        firstNameInput.value = customer.first_name || '';
+        lastNameInput.value = customer.last_name || '';
+        phoneInput.value = customer.phone_number || '';
+        countryInput.value = customer.country || '';
+        setReadOnlyState(true);
+        setRequiredState(false);
+        toggleDetails(true);
+        lastMatchedCustomerId = customer.id || null;
+    }
+
+    function useNewCustomerForm(clearFields) {
+        if (clearFields) {
+            clearCustomerFields();
+        }
+        clearMatchedCustomer();
+        setReadOnlyState(false);
+        setRequiredState(true);
+        toggleDetails(true);
     }
 
     if (lastMatchedCustomerId) {
+        toggleDetails(true);
         setReadOnlyState(true);
+        setRequiredState(false);
+    } else if (firstNameInput.value || lastNameInput.value || phoneInput.value || countryInput.value) {
+        toggleDetails(true);
+        setReadOnlyState(false);
+        setRequiredState(true);
+    } else {
+        toggleDetails(false);
+        setRequiredState(false);
     }
 
     async function lookupCustomerByEmail(rawEmail) {
         const email = String(rawEmail || '').trim().toLowerCase();
         if (email === '') {
             clearMatchedCustomer();
+            toggleDetails(false);
             setStatus('', '');
             return;
         }
@@ -234,6 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const isValidEmailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         if (!isValidEmailFormat) {
             clearMatchedCustomer();
+            toggleDetails(false);
             setStatus('info', 'Nhập email hợp lệ để kiểm tra khách hàng.');
             return;
         }
@@ -261,32 +329,19 @@ document.addEventListener('DOMContentLoaded', function () {
             const payload = await response.json();
             if (payload.exists && payload.customer) {
                 const customer = payload.customer;
-
-                customerIdInput.value = String(customer.id || '');
-                firstNameInput.value = customer.first_name || '';
-                lastNameInput.value = customer.last_name || '';
-                phoneInput.value = customer.phone_number || '';
-                setReadOnlyState(true);
-                lastMatchedCustomerId = customer.id || null;
-
+                useExistingCustomer(customer);
                 setStatus('success', 'Đã xác nhận khách hàng tồn tại: ' + (customer.full_name || customer.email) + '.');
                 return;
             }
 
-            if (lastMatchedCustomerId) {
-                firstNameInput.value = '';
-                lastNameInput.value = '';
-                phoneInput.value = '';
-            }
-
-            clearMatchedCustomer();
+            useNewCustomerForm(!!lastMatchedCustomerId);
             setStatus('info', 'Email chưa có trong hệ thống. Thông tin này sẽ được dùng để tạo khách hàng mới.');
         } catch (error) {
             if (lookupId !== activeLookup) {
                 return;
             }
 
-            clearMatchedCustomer();
+            useNewCustomerForm(false);
             setStatus('error', 'Không thể kiểm tra email lúc này. Bạn vẫn có thể nhập thông tin để tạo khách hàng mới.');
         }
     }
@@ -311,3 +366,4 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endpush
 @endif
+
