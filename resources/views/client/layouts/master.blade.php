@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Urban Luxe - Khách sạn sang trọng giữa lòng thành phố')</title>
     <meta name="description" content="@yield('meta_description', 'Chào mừng bạn đến với Urban Luxe, nơi cung cấp trải nghiệm nghỉ dưỡng đẳng cấp với phòng nghỉ sang trọng, ẩm thực tinh hoa và tiện ích hiện đại.')">
@@ -16,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     
     <!-- Sử dụng Vite để quản lý CSS và JS cho Client -->
-    @vite(['resources/css/client/app.css', 'resources/js/client/app.js', 'resources/css/client/chat-ai.css', 'resources/css/client/animations.css', 'resources/js/client/animations.js'])
+    @vite(['resources/css/client/app.css', 'resources/js/client/app.js', 'resources/css/client/chat-ai.css', 'resources/css/client/animations.css', 'resources/js/client/animations.js', 'resources/js/client/chat.js'])
     @stack('styles')
     
 </head>

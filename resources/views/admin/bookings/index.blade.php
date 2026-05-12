@@ -138,7 +138,9 @@
                 </div>
             </div>
         </div>
+        @include('admin.layouts.footer')
     </main>
+   
 </div>
 
 @endsection

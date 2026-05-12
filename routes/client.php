@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientBookingController;
 use App\Http\Controllers\Client\AuthClientController;
+use App\Http\Controllers\Client\ChatController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RoomController;
@@ -59,6 +60,11 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
+
+// ─── AI Chat Routes ───────────────────────────────────────────────
+Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send')->middleware('throttle:30,1');
+Route::get('/chat/history', [ChatController::class, 'getHistory'])->name('chat.history');
+Route::post('/chat/resume', [ChatController::class, 'resumeSession'])->name('chat.resume');
 
 // Xác thực
 Route::get('/register', function () {

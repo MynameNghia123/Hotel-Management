@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Parallax Effect for Hero Image (Optional but Premium)
     window.addEventListener('scroll', () => {
         const scrolled = window.scrollY;
-        const hero = document.querySelector('.hero');
+        const hero = document.querySelector('');
         if (hero) {
             hero.style.backgroundPositionY = `${scrolled * 0.5}px`;
         }

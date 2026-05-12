@@ -42,4 +42,9 @@ return [
         'return_url' => env('VNP_RETURN_URL', 'http://127.0.0.1:8000/vnpay-return'),
     ],
 
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+        'model'   => env('GEMINI_MODEL', 'gemini-2.0-flash'),
+    ],
+
 ];

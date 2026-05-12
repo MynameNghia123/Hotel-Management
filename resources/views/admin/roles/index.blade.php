@@ -66,7 +66,7 @@
                             <tr>
                                 <th>MÃ VAI TRÒ (ID)</th>
                                 <th>TÊN VAI TRÒ (ROLE NAME)</th>
-                                <th>SỐ NHÂN VIÊN (STAFF COUNT)</th>
+                                <!-- <th>SỐ NHÂN VIÊN (STAFF COUNT)</th> -->
                                 <th>TRẠNG THÁI (STATUS)</th>
                                 <th style="text-align: right;">THAO TÁC</th>
                             </tr>
@@ -81,7 +81,7 @@
                                         <div class="sr-role-name">{{ $role->name }}</div>
                                     </div>
                                 </td>
-                                <td class="sr-staff-count">0</td>
+                               
                                 <td>
                                     <span class="sr-status-badge">ĐANG KÍCH HOẠT</span>
                                 </td>

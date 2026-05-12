@@ -4,7 +4,7 @@
     $currentPage = $paginator->currentPage();
     $lastPage = $paginator->lastPage();
     $pageRange = $pageRange;
-    $maxVisible = $maxVisible; //  Ngương hiển thị
+    $maxVisible = $maxVisible; 
     $total = $paginator->total();
     $perPage = $paginator->perPage();
     $from = ($currentPage - 1) * $perPage + 1;
