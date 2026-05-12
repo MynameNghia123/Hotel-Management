@@ -69,7 +69,8 @@
                 <span style="color: rgba(255,255,255,0.2)">/</span>
                 <a href="{{ route('register') }}" class="sign-in-link">Đăng Ký</a>
             @endauth
-            <a href="#" class="btn btn-primary" style="margin-left: 10px;">Đặt Phòng Ngay</a>
+            <a href="{{ route('search') }}" id="headerBookNowBtn" data-search-url="{{ route('search') }}"
+                class="btn btn-primary" style="margin-left: 10px;">Đặt Phòng Ngay</a>
         </div>
     </div>
 </header>
