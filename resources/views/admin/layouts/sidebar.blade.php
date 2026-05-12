@@ -1,4 +1,4 @@
-<aside class="sb">
+<aside class="sb" id="adminSidebar">
 
     @php
         $admin = Auth::guard('admin')->user();

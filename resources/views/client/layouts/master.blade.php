@@ -19,6 +19,7 @@
     <!-- Sử dụng Vite để quản lý CSS và JS cho Client -->
     @vite(['resources/css/client/app.css', 'resources/js/client/app.js', 'resources/css/client/chat-ai.css', 'resources/css/client/animations.css', 'resources/js/client/animations.js', 'resources/js/client/chat.js'])
     @stack('styles')
+    @vite(['resources/css/client/responsive.css'])
     
 </head>
 <body>  

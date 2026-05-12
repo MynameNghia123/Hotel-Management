@@ -1,0 +1,584 @@
+/* Global responsive overrides for all client pages */
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+}
+
+@media (max-width: 1280px) {
+    .nav-container,
+    .hero-container,
+    .container,
+    .amenities-container,
+    .dining-container,
+    .gallery-grid-container,
+    .gallery-header-container,
+    .results-container,
+    .profile-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .guest-content-grid,
+    .payment-content-grid {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        height: auto;
+        padding: 12px 0;
+    }
+
+    .nav-container {
+        flex-wrap: wrap;
+        row-gap: 12px;
+    }
+
+    .nav-links {
+        order: 3;
+        width: 100%;
+        margin: 0;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-actions {
+        margin-left: auto;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .nav-actions .btn {
+        padding: 9px 14px;
+    }
+
+    .user-dropdown-menu {
+        max-width: min(92vw, 300px);
+    }
+
+    .hero {
+        min-height: 680px;
+        background-attachment: scroll;
+    }
+
+    .hero-container {
+        margin-top: 0;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-description br {
+        display: none;
+    }
+
+    .booking-widget {
+        padding: 20px;
+    }
+
+    .booking-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .submit-group {
+        grid-column: 1 / -1;
+    }
+
+    .section-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .stays-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .search-header-container {
+        background-attachment: scroll;
+        padding: 60px 0 80px;
+    }
+
+    .search-bar-inline {
+        width: calc(100% - 32px);
+        padding: 14px 18px;
+    }
+
+    .results-container {
+        margin-top: 48px;
+        padding: 0 16px;
+    }
+
+    .room-row {
+        padding: 24px 16px;
+        gap: 16px;
+    }
+
+    .col-info {
+        padding-right: 0;
+    }
+
+    .col-amenities {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-summary-wrapper {
+        justify-content: center;
+    }
+
+    .booking-summary-card {
+        width: 100%;
+        max-width: 480px;
+        text-align: left;
+    }
+
+    .rooms-hero {
+        padding: 140px 0 90px;
+        background-attachment: scroll;
+    }
+
+    .rooms-hero h1 {
+        font-size: 3.2rem;
+    }
+
+    .room-card-large,
+    .room-card-large:nth-child(even) {
+        grid-template-columns: 1fr;
+    }
+
+    .room-card-large:nth-child(even) .room-image-wrapper {
+        order: 0;
+    }
+
+    .room-image-wrapper {
+        height: 360px;
+    }
+
+    .room-info-content {
+        padding: 32px 24px;
+    }
+
+    .room-title {
+        font-size: 2.1rem;
+    }
+
+    .room-card-footer {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .room-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .room-gallery {
+        grid-template-rows: 360px repeat(2, 180px);
+    }
+
+    .room-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .room-meta {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .amenities-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .guest-content-grid,
+    .payment-content-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-top: 36px;
+    }
+
+    .details-form-card,
+    .payment-option-card,
+    .stay-summary-card {
+        padding: 26px 20px;
+    }
+
+    .card-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .form-row,
+    .form-row-payment {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .stay-dates-summary {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .profile-hero {
+        padding: 72px 0;
+    }
+
+    .profile-hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .profile-content {
+        padding: 36px 0 56px;
+    }
+
+    .profile-container {
+        gap: 18px;
+    }
+
+    .profile-card {
+        padding: 24px 18px;
+    }
+
+    .summary-main-card {
+        margin: -120px 16px 0;
+    }
+
+    .card-top-actions {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .reservation-info-grid {
+        padding: 24px 20px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .room-details-block {
+        padding: 24px 20px;
+    }
+
+    .final-actions-row {
+        padding: 0 20px 24px;
+        flex-direction: column;
+    }
+
+    .btn-success-main {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .search-header-container,
+    .rooms-hero,
+    .testimonial-section {
+        background-attachment: scroll;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-container,
+    .hero-container,
+    .container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-actions .btn {
+        margin-left: 0 !important;
+    }
+
+    .user-name-label {
+        max-width: 90px;
+    }
+
+    .hero {
+        min-height: 600px;
+        padding-top: 40px;
+    }
+
+    .hero-title {
+        font-size: 1.9rem;
+        line-height: 1.2;
+    }
+
+    .hero-description {
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+    }
+
+    .booking-form {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .submit-group {
+        grid-column: auto;
+    }
+
+    .guest-dropdown {
+        width: 100%;
+        right: 0;
+    }
+
+    .stays-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .stay-content {
+        padding: 18px;
+    }
+
+    .stay-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .search-bar-inline {
+        width: calc(100% - 24px);
+        margin-top: 20px;
+        border-radius: 10px;
+    }
+
+    .sb-item {
+        padding: 10px 4px;
+    }
+
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .results-title h2 {
+        font-size: 1.7rem;
+    }
+
+    .col-info {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .col-info img {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+    }
+
+    .room-name-small {
+        font-size: 1.15rem;
+    }
+
+    .price-main {
+        font-size: 1.25rem;
+    }
+
+    .summary-total-value {
+        font-size: 1.8rem;
+    }
+
+    .rooms-hero h1 {
+        font-size: 2.4rem;
+    }
+
+    .room-title {
+        font-size: 1.8rem;
+    }
+
+    .room-image-wrapper {
+        height: 280px;
+    }
+
+    .room-amenities-list {
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .btn-room-book {
+        width: 100%;
+        text-align: center;
+    }
+
+    .room-gallery {
+        grid-template-columns: 1fr;
+        grid-template-rows: 280px repeat(2, 150px);
+    }
+
+    .amenities-list {
+        grid-template-columns: 1fr;
+    }
+
+    .guest-header h1,
+    .payment-header h1,
+    .success-header h1 {
+        font-size: 2.1rem;
+    }
+
+    .guest-header p,
+    .payment-header p,
+    .success-header p {
+        font-size: 0.95rem;
+    }
+
+    .details-form-card,
+    .payment-option-card,
+    .stay-summary-card {
+        padding: 20px 16px;
+    }
+
+    .profile-container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .profile-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+
+    .booking-item-header {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .booking-meta {
+        gap: 10px;
+    }
+
+    .auth-card {
+        padding: 28px 20px;
+        border-radius: 16px;
+    }
+
+    .form-grid,
+    .social-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .register-section,
+    .login-section,
+    .auth-section {
+        padding: 24px 14px 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a {
+        font-size: 0.82rem;
+    }
+
+    .nav-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero {
+        min-height: 540px;
+    }
+
+    .hero-title {
+        font-size: 1.65rem;
+    }
+
+    .hero-badge {
+        font-size: 0.5rem;
+        letter-spacing: 0.4px;
+    }
+
+    .booking-widget {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .input-wrapper {
+        height: 48px;
+    }
+
+    .section-title {
+        font-size: 1.7rem !important;
+    }
+
+    .search-page {
+        padding-bottom: 60px;
+    }
+
+    .results-title h2 {
+        font-size: 1.45rem;
+    }
+
+    .booking-summary-card {
+        padding: 20px 16px;
+    }
+
+    .rooms-hero {
+        padding: 120px 0 70px;
+    }
+
+    .rooms-hero h1 {
+        font-size: 2rem;
+    }
+
+    .room-info-content {
+        padding: 20px 16px;
+    }
+
+    .room-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .summary-main-card {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .reservation-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sub-rooms-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rd-thumb-large {
+        width: 100%;
+        height: auto;
+    }
+
+    .final-actions-row {
+        gap: 12px;
+    }
+}
