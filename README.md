@@ -8,14 +8,20 @@ Dự án này là một ứng dụng web toàn diện giúp tự động hóa qu
 
 ### Giao diện Khách hàng (Client)
 ![Trang chủ](screenshots/home.png)
+
 ![Giao diện Đăng nhập](screenshots/signin.png)
+
 ![Luồng Đăng nhập & OTP](screenshots/signin.gif)
+
 ![Email OTP](screenshots/mail.png)
+
 ![Thanh toán VNPAY](screenshots/payment.gif)
 
 ### Giao diện Quản trị (Admin)
 ![Dashboard](screenshots/dashboard.png)
+
 ![Quản lý Nhân viên](screenshots/staff.png)
+
 ![Phân quyền (Roles)](screenshots/role.png)
 
 ---
