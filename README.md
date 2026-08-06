@@ -6,11 +6,9 @@ Dự án này là một ứng dụng web giúp tự động hóa quy trình đ�
 
 ## 📸 Hình ảnh Demo
 
-*(Thêm hình ảnh giao diện trang chủ tại đây)*
-> `![Trang chủ](link-anh-trang-chu.png)`
+![Trang chủ](screenshots/home.png)
 
-*(Thêm hình ảnh giao diện Dashboard/Quản trị tại đây)*
-> `![Dashboard](link-anh-dashboard.png)`
+![Dashboard](screenshots/dashboard.png)
 
 *(Thêm GIF mô tả luồng đặt phòng tại đây)*
 > `![Luồng đặt phòng](link-gif-dat-phong.gif)`
