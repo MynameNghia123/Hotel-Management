@@ -8,21 +8,29 @@ Dự án này là một ứng dụng web toàn diện giúp tự động hóa qu
 
 ### Giao diện Khách hàng (Client)
 ![Trang chủ](screenshots/home.png)
+*Giao diện trang chủ *
 
 ![Giao diện Đăng nhập](screenshots/signin.png)
+*Form Đăng nhập *
 
 ![Luồng Đăng nhập & OTP](screenshots/signin.gif)
+*Quy trình xác thực đăng nhập.*
 
 ![Email OTP](screenshots/mail.png)
+*Mã OTP được hệ thống gửi tự động về hòm thư Email.*
 
 ![Thanh toán VNPAY](screenshots/payment.gif)
+*Mô phỏng quá trình khách hàng thanh toán trực tuyến qua cổng VNPAY.*
 
 ### Giao diện Quản trị (Admin)
 ![Dashboard](screenshots/dashboard.png)
+*Bảng điều khiển (Dashboard).*
 
 ![Quản lý Nhân viên](screenshots/staff.png)
+*Giao diện quản lý danh sách nhân sự của khách sạn.*
 
 ![Phân quyền (Roles)](screenshots/role.png)
+*Hệ thống quản lý nhóm quyền và phân quyền chi tiết cho từng nhân viên.*
 
 ---
 
