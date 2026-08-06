@@ -1,20 +1,19 @@
-# 🏨 Hệ thống Quản lý Khách sạn (Hotel Management)
+# Hệ thống Quản lý Khách sạn (Hotel Management)
 
-Dự án này là một ứng dụng web toàn diện giúp tự động hóa quy trình đặt phòng, quản lý nhân sự, theo dõi doanh thu và đặc biệt là tích hợp thanh toán trực tuyến qua cổng VNPAY dành cho các khách sạn quy mô vừa và nhỏ.
-
----
-
-## 📸 Hình ảnh Demo
-
-*(Chèn ảnh giao diện đặt phòng của khách)*
-![Giao diện đặt phòng](screenshots/booking-page.png)
-
-*(Chèn ảnh giao diện thanh toán VNPAY)*
-![Giao diện thanh toán](screenshots/vnpay-payment.png)
+Dự án này là một ứng dụng web toàn diện giúp tự động hóa quy trình đặt phòng, quản lý nhân sự, theo dõi doanh thu và đặc biệt là tích hợp thanh toán trực tuyến qua cổng VNPAY dành cho các khách sạn quy quy mô vừa và nhỏ.
 
 ---
 
-## 🛠️ Công nghệ sử dụng
+## Hình ảnh Demo
+
+![Trang chủ](screenshots/home.png)
+
+![Dashboard](screenshots/dashboard.png)
+
+
+---
+
+## Công nghệ sử dụng
 
 Dự án được xây dựng với kiến trúc hiện đại, phân tách rõ ràng giữa Frontend và Backend.
 - **Backend:** Laravel 11 (PHP 8.2)
@@ -25,25 +24,25 @@ Dự án được xây dựng với kiến trúc hiện đại, phân tách rõ 
 
 ---
 
-## 🌟 Tính năng nổi bật
+## Tính năng nổi bật
 
 ### Dành cho Khách hàng (Client):
-- 🔍 Tìm kiếm phòng trống theo ngày check-in / check-out.
-- 🛏️ Xem thông tin chi tiết các loại phòng (Tiện ích, giá cả, hình ảnh).
-- 🛒 Quy trình đặt phòng (Booking) mượt mà với giỏ hàng.
-- 💳 **Tích hợp thanh toán VNPAY:** Khách hàng có thể quẹt thẻ ATM hoặc quét mã QR để thanh toán online an toàn. Hệ thống tự động xác thực chữ ký (hash) và cập nhật trạng thái đơn hàng.
-- 🔐 Đăng nhập/Đăng ký tài khoản (hỗ trợ xác thực bằng OTP).
-- 🤖 Tích hợp AI Chatbot hỗ trợ giải đáp thắc mắc tự động.
+- Tìm kiếm phòng trống theo ngày check-in / check-out.
+- Xem thông tin chi tiết các loại phòng (Tiện ích, giá cả, hình ảnh).
+- Quy trình đặt phòng (Booking) mượt mà với giỏ hàng.
+- **Tích hợp thanh toán VNPAY:** Khách hàng có thể quẹt thẻ ATM hoặc quét mã QR để thanh toán online an toàn. Hệ thống tự động xác thực chữ ký (hash) và cập nhật trạng thái đơn hàng.
+- Đăng nhập/Đăng ký tài khoản (hỗ trợ xác thực bằng OTP).
+- Tích hợp AI Chatbot hỗ trợ giải đáp thắc mắc tự động.
 
 ### Dành cho Quản trị viên (Admin):
-- 📊 Dashboard thống kê doanh thu và lượt đặt phòng.
-- 🏨 Quản lý Sơ đồ phòng (Room Map): Check-in, Check-out, dọn phòng trực quan.
-- 👥 Quản lý Nhân viên & Phân quyền (Roles & Permissions).
-- 🧾 Quản lý Hóa đơn và theo dõi trạng thái thanh toán.
+- Dashboard thống kê doanh thu và lượt đặt phòng.
+- Quản lý Sơ đồ phòng (Room Map): Check-in, Check-out, dọn phòng trực quan.
+- Quản lý Nhân viên & Phân quyền (Roles & Permissions).
+- Quản lý Hóa đơn và theo dõi trạng thái thanh toán.
 
 ---
 
-## 🚀 Hướng dẫn Cài đặt & Chạy dự án (Local)
+## Hướng dẫn Cài đặt & Chạy dự án (Local)
 
 Làm theo các bước sau để chạy dự án trên máy tính cá nhân của bạn (khuyên dùng **Laragon** hoặc XAMPP).
 
@@ -94,7 +93,7 @@ npm run dev
 
 ---
 
-## 💡 Những gì tôi học được từ dự án này?
+## Những gì tôi học được từ dự án này?
 
 Qua quá trình thực hiện đồ án này, tôi đã đúc kết được những kinh nghiệm thực chiến quý giá:
 1. **Kiến trúc Repository - Service Pattern:** Không viết toàn bộ logic vào Controller, mà tách biệt tầng xử lý dữ liệu (Repository) và tầng nghiệp vụ (Service). Điều này giúp code gọn gàng và dễ dàng tái sử dụng.
