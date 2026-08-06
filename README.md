@@ -7,30 +7,63 @@ Dự án này là một ứng dụng web toàn diện giúp tự động hóa qu
 ## Hình ảnh Demo
 
 ### Giao diện Khách hàng (Client)
-![Trang chủ](screenshots/home.png)
-*Giao diện trang chủ *
 
-![Giao diện Đăng nhập](screenshots/signin.png)
-*Form Đăng nhập *
+<div align="center">
+    <img src="screenshots/home.png" alt="Trang chủ">
+    <br><br>
+    <i>Hình 1: Giao diện trang chủ</i>
+</div>
+<br>
 
-![Luồng Đăng nhập & OTP](screenshots/signin.gif)
-*Quy trình xác thực đăng nhập.*
+<div align="center">
+    <img src="screenshots/signin.png" alt="Giao diện Đăng nhập">
+    <br><br>
+    <i>Hình 2: Form Đăng nhập</i>
+</div>
+<br>
 
-![Email OTP](screenshots/mail.png)
-*Mã OTP được hệ thống gửi tự động về hòm thư Email.*
+<div align="center">
+    <img src="screenshots/signin.gif" alt="Luồng Đăng nhập & OTP">
+    <br><br>
+    <i>Hình 3: Quy trình xác thực đăng nhập.</i>
+</div>
+<br>
 
-![Thanh toán VNPAY](screenshots/payment.gif)
-*Mô phỏng quá trình khách hàng thanh toán trực tuyến qua cổng VNPAY.*
+<div align="center">
+    <img src="screenshots/mail.png" alt="Email OTP">
+    <br><br>
+    <i>Hình 4: Mã OTP được hệ thống gửi tự động về hòm thư Email.</i>
+</div>
+<br>
+
+<div align="center">
+    <img src="screenshots/payment.gif" alt="Thanh toán VNPAY">
+    <br><br>
+    <i>Hình 5: Mô phỏng quá trình khách hàng thanh toán trực tuyến qua cổng VNPAY.</i>
+</div>
+<br>
 
 ### Giao diện Quản trị (Admin)
-![Dashboard](screenshots/dashboard.png)
-*Bảng điều khiển (Dashboard).*
 
-![Quản lý Nhân viên](screenshots/staff.png)
-*Giao diện quản lý danh sách nhân sự của khách sạn.*
+<div align="center">
+    <img src="screenshots/dashboard.png" alt="Dashboard">
+    <br><br>
+    <i>Hình 6: Bảng điều khiển (Dashboard).</i>
+</div>
+<br>
 
-![Phân quyền (Roles)](screenshots/role.png)
-*Hệ thống quản lý nhóm quyền và phân quyền chi tiết cho từng nhân viên.*
+<div align="center">
+    <img src="screenshots/staff.png" alt="Quản lý Nhân viên">
+    <br><br>
+    <i>Hình 7: Giao diện quản lý danh sách nhân sự của khách sạn.</i>
+</div>
+<br>
+
+<div align="center">
+    <img src="screenshots/role.png" alt="Phân quyền (Roles)">
+    <br><br>
+    <i>Hình 8: Hệ thống quản lý nhóm quyền và phân quyền chi tiết cho từng nhân viên.</i>
+</div>
 
 ---
 
@@ -60,6 +93,18 @@ Dự án được xây dựng với kiến trúc hiện đại, phân tách rõ 
 - Quản lý Sơ đồ phòng (Room Map): Check-in, Check-out, dọn phòng trực quan.
 - Quản lý Nhân viên & Phân quyền (Roles & Permissions).
 - Quản lý Hóa đơn và theo dõi trạng thái thanh toán.
+
+---
+
+## 🗄️ Kiến trúc Database (Database Schema)
+
+Hệ thống được thiết kế với cơ sở dữ liệu chuẩn hóa cao (Normalization), chia thành 5 cụm chức năng chính:
+
+1. **Cụm Đặt phòng & Thanh toán (Core Business):** Gồm `customers`, `users`, `bookings`, `booking_details`, `payments`. Quản lý toàn bộ vòng đời từ lúc khách đặt phòng đến khi thanh toán thành công (VNPAY/Tiền mặt).
+2. **Cụm Quản lý Phòng (Room Management):** Gồm `room_types`, `rooms`, `floors`, `amenities`, `surcharge_policies`. Quản lý danh mục phòng, tiện ích và các chính sách phụ thu tự động.
+3. **Cụm Dịch vụ & Cơ sở vật chất (Services & Equipments):** Gồm `services`, `service_usages`, `equipments`, `repair_tickets`. Theo dõi việc khách sử dụng dịch vụ ăn uống và quản lý tài sản, bảo trì của khách sạn.
+4. **Cụm Nhân sự & Phân quyền (Staff & Security):** Gồm `staffs`, `roles`, `role_claims`. Áp dụng mô hình RBAC phân quyền cực kỳ chặt chẽ cho từng cấp bậc nhân viên (Quản lý, Lễ tân, Kế toán...).
+5. **Cụm Hỗ trợ (Misc):** Gồm `chat_sessions`, `chat_messages`, `system_settings`. Lưu trữ tin nhắn AI Chatbot và các cấu hình động của toàn hệ thống.
 
 ---
 
