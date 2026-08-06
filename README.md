@@ -6,12 +6,11 @@ Dự án này là một ứng dụng web giúp tự động hóa quy trình đ�
 
 ## 📸 Hình ảnh Demo
 
-![Trang chủ](screenshots/home.png)
+<img src="screenshots/home.png" width="100%" alt="Trang chủ">
 
-![Dashboard](screenshots/dashboard.png)
+<img src="screenshots/dashboard.png" width="100%" alt="Dashboard">
 
-*(Thêm GIF mô tả luồng đặt phòng tại đây)*
-> `![Luồng đặt phòng](link-gif-dat-phong.gif)`
+<img src="screenshots/rooms.png" width="100%" alt="Danh sách phòng">
 
 ---
 
