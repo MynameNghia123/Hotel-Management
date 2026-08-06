@@ -6,10 +6,17 @@ Dự án này là một ứng dụng web toàn diện giúp tự động hóa qu
 
 ## Hình ảnh Demo
 
+### Giao diện Khách hàng (Client)
 ![Trang chủ](screenshots/home.png)
+![Giao diện Đăng nhập](screenshots/signin.png)
+![Luồng Đăng nhập & OTP](screenshots/signin.gif)
+![Email OTP](screenshots/mail.png)
+![Thanh toán VNPAY](screenshots/payment.gif)
 
+### Giao diện Quản trị (Admin)
 ![Dashboard](screenshots/dashboard.png)
-
+![Quản lý Nhân viên](screenshots/staff.png)
+![Phân quyền (Roles)](screenshots/role.png)
 
 ---
 
@@ -86,9 +93,14 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-Mở thêm 1 terminal khác để chạy frontend:
+Mở thêm 1 terminal thứ 2 để chạy frontend:
 ```bash
 npm run dev
+```
+
+Mở thêm 1 terminal thứ 3 để chạy hàng đợi (Queue xử lý gửi Email, v.v.):
+```bash
+php artisan queue:work
 ```
 
 ---
