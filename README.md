@@ -6,11 +6,10 @@ Dự án này là một ứng dụng web giúp tự động hóa quy trình đ�
 
 ## 📸 Hình ảnh Demo
 
-<img src="screenshots/home.png" width="100%" alt="Trang chủ">
+![Trang chủ](screenshots/home.png)
 
-<img src="screenshots/dashboard.png" width="100%" alt="Dashboard">
+![Dashboard](screenshots/dashboard.png)
 
-<img src="screenshots/rooms.png" width="100%" alt="Danh sách phòng">
 
 ---
 
