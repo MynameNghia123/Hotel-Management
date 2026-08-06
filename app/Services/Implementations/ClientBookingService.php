@@ -257,11 +257,24 @@ class ClientBookingService implements ClientBookingServiceInterface
 
         ksort($inputData);
 
-        $hashData = http_build_query($inputData, '', '&', PHP_QUERY_RFC3986);
-        $secureHash = hash_hmac('sha512', $hashData, $vnpHashSecret);
-        $queryString = $hashData . '&vnp_SecureHash=' . $secureHash;
+        $hashData = '';
+        $query = '';
+        $i = 0;
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashData .= '&' . urlencode($key) . '=' . urlencode($value);
+            } else {
+                $hashData .= urlencode($key) . '=' . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . '=' . urlencode($value) . '&';
+        }
 
-        return $vnpUrl . '?' . $queryString;
+        $vnpUrl = $vnpUrl . '?' . $query;
+        $secureHash = hash_hmac('sha512', $hashData, $vnpHashSecret);
+        $vnpUrl .= 'vnp_SecureHash=' . $secureHash;
+
+        return $vnpUrl;
     }
 
     public function handleVnpayReturn(array $payload): array
@@ -294,7 +307,16 @@ class ClientBookingService implements ClientBookingServiceInterface
         }
 
         ksort($inputData);
-        $hashData = http_build_query($inputData, '', '&', PHP_QUERY_RFC3986);
+        $hashData = '';
+        $i = 0;
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashData .= '&' . urlencode($key) . '=' . urlencode($value);
+            } else {
+                $hashData .= urlencode($key) . '=' . urlencode($value);
+                $i = 1;
+            }
+        }
         $calculatedHash = hash_hmac('sha512', $hashData, $vnpHashSecret);
 
         $txnRef = (string) ($payload['vnp_TxnRef'] ?? '');

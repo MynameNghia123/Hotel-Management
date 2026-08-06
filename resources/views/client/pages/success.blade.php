@@ -53,7 +53,11 @@
             <div class="info-item">
                 <span class="info-box-label">TRẠNG THÁI</span>
                 <span class="status-pill">• {{ $booking->status }}</span>
-                <span class="info-box-sub" style="color: #16a34a; font-weight: 700;">Chưa thanh toán</span>
+                @if($booking->payments->isNotEmpty())
+                    <span class="info-box-sub" style="color: #16a34a; font-weight: 700;">Đã thanh toán (VNPAY)</span>
+                @else
+                    <span class="info-box-sub" style="color: #ea580c; font-weight: 700;">Chưa thanh toán</span>
+                @endif
             </div>
         </div>
 
