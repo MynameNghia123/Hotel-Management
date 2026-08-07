@@ -37,7 +37,7 @@ Dự án này là một ứng dụng web toàn diện giúp tự động hóa qu
 <br>
 
 <div align="center">
-    <img src="screenshots/payment.gif" alt="Thanh toán VNPAY">
+    <img src="screenshots/payment.gif" alt="Thanh toán VNPAY" width="100%">
     <br><br>
     <i>Hình 5: Mô phỏng quá trình khách hàng thanh toán trực tuyến qua cổng VNPAY.</i>
 </div>
@@ -63,6 +63,13 @@ Dự án này là một ứng dụng web toàn diện giúp tự động hóa qu
     <img src="screenshots/role.png" alt="Phân quyền (Roles)">
     <br><br>
     <i>Hình 8: Hệ thống quản lý nhóm quyền và phân quyền chi tiết cho từng nhân viên.</i>
+</div>
+<br>
+
+<div align="center">
+    <img src="screenshots/them_nv_phan_quyen.gif" alt="Thêm Nhân viên & Phân quyền" width="100%">
+    <br><br>
+    <i>Hình 9: Thao tác thêm nhân viên mới và cấp phát quyền hạn trên hệ thống.</i>
 </div>
 
 ---
