@@ -150,7 +150,17 @@ VNP_TMN_CODE=Mã_Website_Sandbox_Của_Bạn
 VNP_HASH_SECRET=Chuỗi_Bí_Mật_Của_Bạn
 VNP_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
 VNP_RETURN_URL=http://127.0.0.1:8000/vnpay-return
+
+# AI GEMINI CONFIGURATION (BẮT BUỘC ĐỂ TEST CHATBOT)
+# 1. Truy cập https://aistudio.google.com/app/apikey để lấy API Key miễn phí
+# 2. Thay chuỗi mã lấy được vào dòng bên dưới:
+GEMINI_API_KEY=YOUR_API_KEY_HERE
+GEMINI_MODEL=gemini-2.5-flash-lite
 ```
+
+> [!IMPORTANT]
+> Sau khi chỉnh sửa file `.env`, bạn bắt buộc phải chạy lệnh `php artisan config:clear` để hệ thống cập nhật cấu hình mới, nếu không AI hoặc VNPAY sẽ báo lỗi kết nối.
+
 
 **Bước 4: Khởi tạo dữ liệu & Chạy Server**
 ```bash
