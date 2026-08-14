@@ -248,6 +248,7 @@ class EloquentStatisticalRepository implements StatisticalRepositoryInterface
     {
         if ($status && $status !== 'all') {
             $query->where('status', $status);
+
             return;
         }
 

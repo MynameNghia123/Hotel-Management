@@ -20,12 +20,12 @@ class CancelBookingAction
         $latestBookingDetail = $this->roomMapRepository->findLatestBookingDetailByRoomId($roomId);
         $booking = $latestBookingDetail?->booking;
 
-        if (!$room || !$booking) {
+        if (! $room || ! $booking) {
             throw new RuntimeException('Không tìm thấy booking để hủy.');
         }
 
         $currentStatus = BookingStatus::tryFrom((string) $booking->status);
-        if (!$currentStatus || !$currentStatus->canTransitionTo(BookingStatus::CANCELLED)) {
+        if (! $currentStatus || ! $currentStatus->canTransitionTo(BookingStatus::CANCELLED)) {
             $statusLabel = $currentStatus?->label() ?? (string) $booking->status;
             throw new RuntimeException("Không thể hủy booking ở trạng thái {$statusLabel}.");
         }
@@ -36,6 +36,7 @@ class CancelBookingAction
 
             if ($bookingDetailRoomIds->isEmpty()) {
                 $this->roomMapRepository->updateRoomStatusById($roomId, RoomStatus::EMPTY->value);
+
                 return;
             }
 

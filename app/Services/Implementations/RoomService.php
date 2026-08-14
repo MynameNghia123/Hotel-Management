@@ -34,10 +34,12 @@ class RoomService implements RoomServiceInterface
     {
         return $this->roomRepository->delete($id);
     }
+
     public function getPaginated(array $filters = [], $perPage = 10)
     {
         throw new \Exception('Not implemented');
     }
+
     public function getAll()
     {
         return $this->roomRepository->getAll();

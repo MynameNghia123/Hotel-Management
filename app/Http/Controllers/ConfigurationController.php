@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\TimeHelper;
-use App\Services\Contracts\SystemSettingServiceInterface;
 use App\Services\Contracts\SurchargePolicyServiceInterface;
+use App\Services\Contracts\SystemSettingServiceInterface;
 use Illuminate\Http\Request;
 
 class ConfigurationController extends Controller
 {
     protected $systemSettingService;
+
     protected $surchargePolicyService;
 
     public function __construct(
@@ -55,12 +56,12 @@ class ConfigurationController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Cập nhật cấu hình chung thành công!'
+                'message' => 'Cập nhật cấu hình chung thành công!',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi khi cập nhật cấu hình: ' . $e->getMessage()
+                'message' => 'Lỗi khi cập nhật cấu hình: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -81,14 +82,14 @@ class ConfigurationController extends Controller
             $validated['early_checkin_policies'] = array_map(function ($policy) {
                 return [
                     'hour_mark' => TimeHelper::parseHourMark($policy['hour_mark']),
-                    'price' => $policy['price']
+                    'price' => $policy['price'],
                 ];
             }, $validated['early_checkin_policies']);
 
             $validated['late_checkout_policies'] = array_map(function ($policy) {
                 return [
                     'hour_mark' => TimeHelper::parseHourMark($policy['hour_mark']),
-                    'price' => $policy['price']
+                    'price' => $policy['price'],
                 ];
             }, $validated['late_checkout_policies']);
 
@@ -96,12 +97,12 @@ class ConfigurationController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Cập nhật quy định phụ phí thành công!'
+                'message' => 'Cập nhật quy định phụ phí thành công!',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi khi cập nhật phụ phí: ' . $e->getMessage()
+                'message' => 'Lỗi khi cập nhật phụ phí: '.$e->getMessage(),
             ], 500);
         }
     }

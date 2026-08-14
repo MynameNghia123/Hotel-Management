@@ -23,8 +23,9 @@ class CreateBookingAction
     /**
      * Create booking with customer and booking details.
      *
-     * @param array $validated Validated request data
+     * @param  array  $validated  Validated request data
      * @return object Created booking
+     *
      * @throws \Exception
      */
     public function execute(array $validated)
@@ -35,8 +36,8 @@ class CreateBookingAction
             if ($validated['customer_id'] ?? null) {
                 $customer = $this->customerService->findById($validated['customer_id']);
 
-                if (!$customer) {
-                    throw new \Exception('Khách hàng không tồn tại (id=' . $validated['customer_id'] . ')');
+                if (! $customer) {
+                    throw new \Exception('Khách hàng không tồn tại (id='.$validated['customer_id'].')');
                 }
             } elseif ($validated['customer_new_email'] ?? null) {
                 $customer = $this->customerService->create([
@@ -48,7 +49,7 @@ class CreateBookingAction
                 ]);
             }
 
-            if (!$customer) {
+            if (! $customer) {
                 throw new \Exception('Vui lòng xác thực email khách hàng');
             }
 
@@ -62,11 +63,11 @@ class CreateBookingAction
                 $room = $this->roomService->findById($roomId);
                 $roomIndex = array_search($roomId, $roomIds, true);
                 // tìm kiếm room index trong mảng roomIds để lấy ngày checkin/checkout tương ứng
-                
+
                 $checkInDate = $validated['checkin_dates'][$roomIndex] ?? null;
                 $checkOutDate = $validated['checkout_dates'][$roomIndex] ?? null;
 
-                if (!$checkInDate || !$checkOutDate) {
+                if (! $checkInDate || ! $checkOutDate) {
                     throw new \Exception("Thiếu ngày nhận/trả phòng cho phòng {$room->name}.");
                 }
 
@@ -82,7 +83,7 @@ class CreateBookingAction
                     ->map(fn ($id) => (int) $id)
                     ->all();
 
-                if (!in_array((int) $roomId, $availableRoomIds, true)) {
+                if (! in_array((int) $roomId, $availableRoomIds, true)) {
                     throw new \Exception("Phòng {$room->name} đã có lịch trong khoảng ngày đã chọn. Vui lòng chọn phòng khác.");
                 }
             }

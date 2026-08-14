@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 
 class RoomTypeImage extends Model
 {
@@ -26,7 +26,9 @@ class RoomTypeImage extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                if (!$value) return $value;
+                if (! $value) {
+                    return $value;
+                }
 
                 // Already a proper relative path starting with /storage/
                 if (str_starts_with($value, '/storage/')) {
@@ -35,12 +37,12 @@ class RoomTypeImage extends Model
 
                 // Absolute URL containing /storage/ - extract the relative part
                 if (str_contains($value, '/storage/')) {
-                    return '/storage/' . substr($value, strpos($value, '/storage/') + strlen('/storage/'));
+                    return '/storage/'.substr($value, strpos($value, '/storage/') + strlen('/storage/'));
                 }
 
                 // Seed data or other relative path without /storage/ prefix
                 // These are in public/ directory
-                return '/' . ltrim($value, '/');
+                return '/'.ltrim($value, '/');
             },
         );
     }

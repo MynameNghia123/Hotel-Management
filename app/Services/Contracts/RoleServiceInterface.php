@@ -1,8 +1,8 @@
-<?php 
+<?php
+
 namespace App\Services\Contracts;
 
-
-interface RoleServiceInterface extends BaseServiceInterface{
+interface RoleServiceInterface extends BaseServiceInterface
+{
     //
 }
-?>

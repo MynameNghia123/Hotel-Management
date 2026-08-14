@@ -10,8 +10,7 @@ class StatisticalController extends Controller
 {
     public function __construct(
         private readonly StatisticalServiceInterface $statisticalService
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): View
     {

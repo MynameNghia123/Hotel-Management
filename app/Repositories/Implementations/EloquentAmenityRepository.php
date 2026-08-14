@@ -33,6 +33,7 @@ class EloquentAmenityRepository implements AmenityRepositoryInterface
     {
         $record = $this->findById($id);
         $record->update($data);
+
         return $record;
     }
 
@@ -40,16 +41,18 @@ class EloquentAmenityRepository implements AmenityRepositoryInterface
     {
         $record = $this->findById($id);
         $record->roomTypes()->detach();
+
         return $record->delete();
     }
+
     public function getPaginated(array $filters = [], $perPage = 5)
-        {
-            $query = $this->model->query();
-    
-            if (isset($filters['name'])) {
-                $query->where('name', 'like', '%' . $filters['name'] . '%');
-            }
-    
-            return $query->paginate($perPage);
+    {
+        $query = $this->model->query();
+
+        if (isset($filters['name'])) {
+            $query->where('name', 'like', '%'.$filters['name'].'%');
         }
+
+        return $query->paginate($perPage);
+    }
 }

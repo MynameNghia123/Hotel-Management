@@ -10,13 +10,13 @@ class RoleFilter
     public static function apply($query, array $filters = [])
     {
         // Lọc theo search - tìm kiếm theo tên role
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
             // $query->where('name', 'like', "%{$search}%");
-                $query->where(function($q) use ($search) {
-                    $q->where('id', $search)  // Tìm id chính xác
-                    ->orWhereRaw("name LIKE ?", ["%{$search}%"]);  // tim theo ten
-                });
+            $query->where(function ($q) use ($search) {
+                $q->where('id', $search)  // Tìm id chính xác
+                    ->orWhereRaw('name LIKE ?', ["%{$search}%"]);  // tim theo ten
+            });
         }
 
         return $query;

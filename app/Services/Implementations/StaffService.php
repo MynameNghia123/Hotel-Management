@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Services\Implementations;
-use App\Services\Contracts\StaffServiceInterface;
+
 use App\Repositories\Contracts\StaffRepositoryInterface;
-use Illuminate\Support\Arr;
+use App\Services\Contracts\StaffServiceInterface;
 use Illuminate\Support\Facades\Hash;
 
 class StaffService implements StaffServiceInterface
@@ -22,6 +23,7 @@ class StaffService implements StaffServiceInterface
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
+
         return $this->staffRepository->create($data);
     }
 
@@ -33,13 +35,14 @@ class StaffService implements StaffServiceInterface
     public function update($id, array $data)
     {
         // Hash password nếu có
-        if (isset($data['password']) && !empty($data['password'])) {
+        if (isset($data['password']) && ! empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
+
         return $this->staffRepository->update($id, $data);
     }
-    
-    public function delete($id) : bool
+
+    public function delete($id): bool
     {
         return $this->staffRepository->delete($id);
     }

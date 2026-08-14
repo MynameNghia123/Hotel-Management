@@ -20,7 +20,7 @@ class UploadImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120'
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ];
     }
 
@@ -33,7 +33,7 @@ class UploadImageRequest extends FormRequest
             'image.required' => 'Vui lòng chọn ảnh.',
             'image.image' => 'Tệp phải là một hình ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, hoặc gif.',
-            'image.max' => 'Kích thước ảnh không được vượt quá 5MB.'
+            'image.max' => 'Kích thước ảnh không được vượt quá 5MB.',
         ];
     }
 }

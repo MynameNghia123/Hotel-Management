@@ -3,8 +3,8 @@
 namespace App\Repositories\Implementations;
 
 use App\Models\Service;
-use App\Repositories\Filters\ServiceFilter;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
+use App\Repositories\Filters\ServiceFilter;
 
 class EloquentServiceRepository implements ServiceRepositoryInterface
 {
@@ -34,12 +34,14 @@ class EloquentServiceRepository implements ServiceRepositoryInterface
     {
         $record = $this->findById($id);
         $record->update($data);
+
         return $record;
     }
 
     public function delete($id)
     {
         $record = $this->findById($id);
+
         return $record->delete();
     }
 
@@ -49,7 +51,6 @@ class EloquentServiceRepository implements ServiceRepositoryInterface
 
         $query = ServiceFilter::apply($query, $filters);
 
-        return $query->paginate($perPage);   
+        return $query->paginate($perPage);
     }
 }
-

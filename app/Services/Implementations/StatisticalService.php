@@ -12,8 +12,7 @@ class StatisticalService implements StatisticalServiceInterface
 {
     public function __construct(
         private readonly StatisticalRepositoryInterface $statisticalRepository
-    ) {
-    }
+    ) {}
 
     public function overview(array $filters = []): array
     {
@@ -138,11 +137,11 @@ class StatisticalService implements StatisticalServiceInterface
     private function resolveDateRange(array $filters, string $defaultPeriod): array
     {
         $latestBusinessDate = $this->statisticalRepository->latestBusinessDate() ?? now();
-        $end = !empty($filters['end_date'])
+        $end = ! empty($filters['end_date'])
             ? Carbon::parse($filters['end_date'])
             : $latestBusinessDate->copy();
 
-        $start = !empty($filters['start_date'])
+        $start = ! empty($filters['start_date'])
             ? Carbon::parse($filters['start_date'])
             : match ($defaultPeriod) {
                 'week' => $end->copy()->subDays(6),
@@ -159,7 +158,7 @@ class StatisticalService implements StatisticalServiceInterface
             'end' => $end->copy()->endOfDay(),
             'start_date' => $start->toDateString(),
             'end_date' => $end->toDateString(),
-            'label' => $start->format('d/m/Y') . ' - ' . $end->format('d/m/Y'),
+            'label' => $start->format('d/m/Y').' - '.$end->format('d/m/Y'),
         ];
     }
 
@@ -196,7 +195,7 @@ class StatisticalService implements StatisticalServiceInterface
     private function monthlySeries(int $year, Collection $values): Collection
     {
         return collect(range(1, 12))->map(fn ($month) => [
-            'label' => 'Tháng ' . $month,
+            'label' => 'Tháng '.$month,
             'month' => $month,
             'year' => $year,
             'value' => (float) ($values[$month] ?? 0),
@@ -232,7 +231,7 @@ class StatisticalService implements StatisticalServiceInterface
 
             return $item + [
                 'percent' => $percent,
-                'dasharray' => $length . ' ' . round($circumference - $length, 1),
+                'dasharray' => $length.' '.round($circumference - $length, 1),
                 'dashoffset' => $dashOffset,
             ];
         })->all();
@@ -258,10 +257,10 @@ class StatisticalService implements StatisticalServiceInterface
         }
 
         $path = collect($points)
-            ->map(fn ($point, $index) => ($index === 0 ? 'M' : 'L') . $point[0] . ',' . $point[1])
+            ->map(fn ($point, $index) => ($index === 0 ? 'M' : 'L').$point[0].','.$point[1])
             ->implode(' ');
 
-        $areaPath = $path . ' L' . $width . ',' . $height . ' L0,' . $height . ' Z';
+        $areaPath = $path.' L'.$width.','.$height.' L0,'.$height.' Z';
 
         return [
             'path' => $path,
@@ -362,12 +361,12 @@ class StatisticalService implements StatisticalServiceInterface
     private function formatActivities(Collection $bookings): Collection
     {
         return $bookings->map(function ($booking) {
-            $customerName = trim(($booking->first_name ?? '') . ' ' . ($booking->last_name ?? '')) ?: 'Khách lẻ';
-            $roomName = $booking->room_name ? 'Phòng ' . $booking->room_name : 'Chưa gán phòng';
+            $customerName = trim(($booking->first_name ?? '').' '.($booking->last_name ?? '')) ?: 'Khách lẻ';
+            $roomName = $booking->room_name ? 'Phòng '.$booking->room_name : 'Chưa gán phòng';
 
             return [
-                'title' => $roomName . ' - ' . $this->bookingStatusLabel($booking->status),
-                'description' => 'Khách hàng: ' . $customerName,
+                'title' => $roomName.' - '.$this->bookingStatusLabel($booking->status),
+                'description' => 'Khách hàng: '.$customerName,
                 'time' => Carbon::parse($booking->booking_date)->diffForHumans(),
                 'color' => $this->bookingStatusColor($booking->status),
             ];
@@ -432,6 +431,6 @@ class StatisticalService implements StatisticalServiceInterface
 
     private function generatedAtLabel(Carbon $date): string
     {
-        return 'Dữ liệu tính đến ' . $date->format('d/m/Y');
+        return 'Dữ liệu tính đến '.$date->format('d/m/Y');
     }
 }

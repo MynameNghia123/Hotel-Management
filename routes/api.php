@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BookingApiController;
 use App\Http\Controllers\Api\RoomTypeApiController;
+use Illuminate\Support\Facades\Route;
 
 // ============== Booking API ==============
 Route::prefix('bookings')->group(function () {

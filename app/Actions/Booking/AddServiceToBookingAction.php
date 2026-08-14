@@ -21,11 +21,11 @@ class AddServiceToBookingAction
         $booking = $latestBookingDetail?->booking;
         $service = $this->serviceService->findById($serviceId);
 
-        if (!$room || !$latestBookingDetail || !$booking) {
+        if (! $room || ! $latestBookingDetail || ! $booking) {
             throw new RuntimeException('Không tìm thấy booking detail để thêm dịch vụ.');
         }
 
-        if (!$service) {
+        if (! $service) {
             throw new RuntimeException('Dịch vụ không tồn tại.');
         }
 

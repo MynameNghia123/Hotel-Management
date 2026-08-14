@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RoomStatus;
-use Illuminate\Http\Request;
-use App\Services\Contracts\RoomTypeServiceInterface;
-use App\Services\Contracts\FloorServiceInterface;
-use App\Services\Contracts\RoomServiceInterface;
 use App\Http\Requests\RoomMap\StoreFloorRequest;
 use App\Http\Requests\RoomMap\StoreRoomRequest;
+use App\Services\Contracts\FloorServiceInterface;
+use App\Services\Contracts\RoomServiceInterface;
+use App\Services\Contracts\RoomTypeServiceInterface;
+use Illuminate\Http\Request;
 
 class RoomMapEditController extends Controller
 {
     public function __construct(
         private readonly RoomTypeServiceInterface $roomTypeService,
-        private readonly FloorServiceInterface    $floorService,
-        private readonly RoomServiceInterface     $roomService
+        private readonly FloorServiceInterface $floorService,
+        private readonly RoomServiceInterface $roomService
     ) {}
 
     // ============================================
@@ -27,12 +27,12 @@ class RoomMapEditController extends Controller
         $selectedTypeId = $request->query('type_id');
 
         return view('admin.room-map-edit.index', [
-            'roomTypes'    => $this->roomTypeService->getAllWithRoomCount(),
+            'roomTypes' => $this->roomTypeService->getAllWithRoomCount(),
             'selectedType' => $selectedTypeId
                 ? $this->roomTypeService->findWithDetails($selectedTypeId)
                 : null,
-            'floors'       => $this->floorService->getAll(),
-            'rooms'        => $this->roomService->getAll(),
+            'floors' => $this->floorService->getAll(),
+            'rooms' => $this->roomService->getAll(),
         ]);
     }
 
@@ -75,10 +75,10 @@ class RoomMapEditController extends Controller
     public function createRoom(Request $request)
     {
         return view('admin.room-map-edit.create-room', [
-            'floors'    => $this->floorService->getAll(),
+            'floors' => $this->floorService->getAll(),
             'roomTypes' => $this->roomTypeService->getAll(),
-            'floorId'   => $request->query('floor_id'),
-            'typeId'    => $request->query('type_id'),
+            'floorId' => $request->query('floor_id'),
+            'typeId' => $request->query('type_id'),
         ]);
     }
 

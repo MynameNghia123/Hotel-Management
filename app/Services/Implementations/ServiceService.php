@@ -7,7 +7,7 @@ use App\Services\Contracts\ServiceServiceInterface;
 
 /**
  * ServiceService - Implement ServiceServiceInterface (extends BaseServiceInterface)
- * 
+ *
  * Quản lý logic nghiệp vụ cho dịch vụ, bao gồm:
  * - Lấy tất cả dịch vụ
  * - Tạo dịch vụ mới
@@ -24,6 +24,7 @@ class ServiceService implements ServiceServiceInterface
 
     /**
      * Lấy tất cả dịch vụ
+     *
      * @return mixed
      */
     public function getAll()
@@ -33,7 +34,7 @@ class ServiceService implements ServiceServiceInterface
 
     /**
      * Tạo dịch vụ mới
-     * @param array $data
+     *
      * @return mixed
      */
     public function create(array $data)
@@ -43,7 +44,7 @@ class ServiceService implements ServiceServiceInterface
 
     /**
      * Tìm dịch vụ theo ID
-     * @param $id
+     *
      * @return mixed
      */
     public function findById($id)
@@ -53,8 +54,7 @@ class ServiceService implements ServiceServiceInterface
 
     /**
      * Cập nhật dịch vụ
-     * @param $id
-     * @param array $data
+     *
      * @return mixed
      */
     public function update($id, array $data)
@@ -64,7 +64,7 @@ class ServiceService implements ServiceServiceInterface
 
     /**
      * Xóa dịch vụ
-     * @param $id
+     *
      * @return mixed
      */
     public function delete($id)
@@ -74,8 +74,8 @@ class ServiceService implements ServiceServiceInterface
 
     /**
      * Lấy dịch vụ có phân trang
-     * @param array $filters
-     * @param int $perPage
+     *
+     * @param  int  $perPage
      * @return mixed
      */
     public function getPaginated(array $filters = [], $perPage = 10)

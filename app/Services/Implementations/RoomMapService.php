@@ -2,19 +2,19 @@
 
 namespace App\Services\Implementations;
 
-use App\Actions\RoomMap\PrepareIndexAction;
-use App\Actions\RoomMap\PrepareDetailAction;
-use App\Actions\RoomMap\PrepareInvoiceAction;
-use App\Actions\RoomMap\PrepareAvailableDetailAction;
-use App\Actions\RoomMap\PrepareIncomingDetailAction;
-use App\Actions\RoomMap\PreviewCheckoutAction;
-use App\Actions\RoomMap\UpdateRoomStatusAction;
-use App\Actions\RoomMap\SyncRoomStatusAction;
-use App\Actions\RoomMap\FormatCheckoutResultAction;
 use App\Actions\Booking\AddServiceToBookingAction;
 use App\Actions\Booking\CancelBookingAction;
 use App\Actions\Booking\CheckInAction;
 use App\Actions\Booking\CheckoutAction;
+use App\Actions\RoomMap\FormatCheckoutResultAction;
+use App\Actions\RoomMap\PrepareAvailableDetailAction;
+use App\Actions\RoomMap\PrepareDetailAction;
+use App\Actions\RoomMap\PrepareIncomingDetailAction;
+use App\Actions\RoomMap\PrepareIndexAction;
+use App\Actions\RoomMap\PrepareInvoiceAction;
+use App\Actions\RoomMap\PreviewCheckoutAction;
+use App\Actions\RoomMap\SyncRoomStatusAction;
+use App\Actions\RoomMap\UpdateRoomStatusAction;
 use App\Services\Contracts\RoomMapServiceInterface;
 
 class RoomMapService implements RoomMapServiceInterface
@@ -88,6 +88,7 @@ class RoomMapService implements RoomMapServiceInterface
     public function checkoutSelectedRooms(int $roomId, array $selectedRoomIds, string $pricingMode): array
     {
         $result = $this->checkoutAction->execute($roomId, $selectedRoomIds, $pricingMode);
+
         return $this->formatCheckoutResultAction->execute($result, $roomId);
     }
 }

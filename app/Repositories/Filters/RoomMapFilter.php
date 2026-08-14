@@ -6,7 +6,7 @@ class RoomMapFilter
 {
     public static function apply($query, array $filters = [])
     {
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = trim($filters['search']);
             $query->where(function ($q) use ($search) {
                 if (is_numeric($search)) {
@@ -23,24 +23,24 @@ class RoomMapFilter
             });
         }
 
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
 
-        if (!empty($filters['floor_id'])) {
+        if (! empty($filters['floor_id'])) {
             $query->where('floor_id', $filters['floor_id']);
         }
 
-        if (!empty($filters['room_type_id'])) {
+        if (! empty($filters['room_type_id'])) {
             $query->where('room_type_id', $filters['room_type_id']);
         }
 
         $dateFrom = $filters['date_from'] ?? null;
         $dateTo = $filters['date_to'] ?? null;
 
-        if (!empty($dateFrom) || !empty($dateTo)) {
-            $start = !empty($dateFrom) ? ($dateFrom . ' 00:00:00') : '1970-01-01 00:00:00';
-            $end = !empty($dateTo) ? ($dateTo . ' 23:59:59') : '2999-12-31 23:59:59';
+        if (! empty($dateFrom) || ! empty($dateTo)) {
+            $start = ! empty($dateFrom) ? ($dateFrom.' 00:00:00') : '1970-01-01 00:00:00';
+            $end = ! empty($dateTo) ? ($dateTo.' 23:59:59') : '2999-12-31 23:59:59';
 
             $query->whereHas('bookingDetails', function ($bookingDetailQuery) use ($start, $end) {
                 $bookingDetailQuery

@@ -2,7 +2,4 @@
 
 namespace App\Services\Contracts;
 
-interface ServiceGroupServiceInterface extends BaseServiceInterface
-{
-
-}
+interface ServiceGroupServiceInterface extends BaseServiceInterface {}

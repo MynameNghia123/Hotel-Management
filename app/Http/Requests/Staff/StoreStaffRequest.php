@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests\Staff;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreStaffRequest extends FormRequest

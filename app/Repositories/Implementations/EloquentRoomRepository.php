@@ -36,12 +36,14 @@ class EloquentRoomRepository implements RoomRepositoryInterface
     {
         $record = $this->model->findOrFail($id);
         $record->update($data);
+
         return $record;
     }
 
     public function delete($id)
     {
         $record = $this->model->findOrFail($id);
+
         return $record->delete();
     }
 
@@ -78,7 +80,7 @@ class EloquentRoomRepository implements RoomRepositoryInterface
         $query = $this->model->with(['roomType', 'floor']);
 
         if (isset($filters['number'])) {
-            $query->where('number', 'like', '%' . $filters['number'] . '%');
+            $query->where('number', 'like', '%'.$filters['number'].'%');
         }
 
         if (isset($filters['room_type_id'])) {

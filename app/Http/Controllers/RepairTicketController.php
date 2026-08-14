@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RepairTicketStatus;
 use App\Http\Requests\RepairTicket\StoreRepairTicketRequest;
 use App\Http\Requests\RepairTicket\UpdateRepairTicketStatusRequest;
 use App\Http\Traits\PaginationTrait;
 use App\Services\Contracts\RepairTicketServiceInterface;
 use App\Services\Contracts\RoomServiceInterface;
 use App\Services\Contracts\StaffServiceInterface;
-use App\Enums\RepairTicketStatus;
 use Illuminate\Http\Request;
 
 class RepairTicketController extends Controller
 {
     use PaginationTrait;
+
     public function __construct(
         private readonly RepairTicketServiceInterface $repairTicketService,
         private readonly RoomServiceInterface $roomService,
@@ -26,13 +27,13 @@ class RepairTicketController extends Controller
     public function index(Request $request)
     {
         $repairTickets = $this->repairTicketService->getPaginated(
-            $request->input('filter', []), 
+            $request->input('filter', []),
             $request->input('per_page', 15)
         );
 
         $this->validatePageNumber(
-            $repairTickets->currentPage(), 
-            $repairTickets->lastPage(), 
+            $repairTickets->currentPage(),
+            $repairTickets->lastPage(),
             'abort'
         );
 
@@ -79,7 +80,7 @@ class RepairTicketController extends Controller
     {
         $repairTicket = $this->repairTicketService->findById($id);
 
-        if (!$repairTicket) {
+        if (! $repairTicket) {
             return redirect()
                 ->route('admin.repair-ticket.index')
                 ->with('error', 'Phiếu sửa chữa không tồn tại');
@@ -103,7 +104,7 @@ class RepairTicketController extends Controller
 
         $result = $this->repairTicketService->transitionStatus($id, $newStatus, $notes);
 
-        if (!$result['success']) {
+        if (! $result['success']) {
             return redirect()
                 ->back()
                 ->with('error', $result['message']);

@@ -14,8 +14,7 @@ class EloquentClientBookingRepository implements ClientBookingRepositoryInterfac
         private readonly RoomType $roomTypeModel,
         private readonly Booking $bookingModel,
         private readonly Payment $paymentModel
-    ) {
-    }
+    ) {}
 
     public function getRoomTypesByIds(array $roomTypeIds): Collection
     {

@@ -20,15 +20,18 @@ class RoomAvailabilityTest extends TestCase
     use RefreshDatabase;
 
     private EloquentRoomRepository $repository;
+
     private Room $room1;
+
     private Room $room2;
+
     private Room $room3;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
-        $this->repository = new EloquentRoomRepository(new Room());
+
+        $this->repository = new EloquentRoomRepository(new Room);
 
         // Create base data
         $floor = Floor::create(['name' => 'Floor 1']);
@@ -73,7 +76,7 @@ class RoomAvailabilityTest extends TestCase
         $customer = Customer::create([
             'first_name' => 'Test',
             'last_name' => 'Customer',
-            'email' => uniqid() . '@example.com',
+            'email' => uniqid().'@example.com',
             'phone_number' => uniqid(),
         ]);
 

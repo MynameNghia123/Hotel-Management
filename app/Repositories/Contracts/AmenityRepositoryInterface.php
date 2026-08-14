@@ -2,6 +2,4 @@
 
 namespace App\Repositories\Contracts;
 
-interface AmenityRepositoryInterface extends BaseRepositoryInterface
-{
-}
+interface AmenityRepositoryInterface extends BaseRepositoryInterface {}

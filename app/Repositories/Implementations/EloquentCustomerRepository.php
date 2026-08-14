@@ -31,28 +31,32 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
     {
         $record = $this->findById($id);
         $record->update($data);
+
         return $record;
     }
 
     public function delete($id)
     {
         $record = $this->findById($id);
+
         return $record->delete();
     }
+
     public function getPaginated(array $filters = [], $perPage = 5)
     {
         $query = $this->model->query();
         $query = CustomerFilter::apply($query, $filters);
+
         return $query->paginate($perPage);
     }
 
     public function getDistinctCountries()
     {
         return $this->model->distinct('country')
-                           ->whereNotNull('country')
-                           ->pluck('country')
-                           ->sort()
-                           ->values();
+            ->whereNotNull('country')
+            ->pluck('country')
+            ->sort()
+            ->values();
     }
 
     public function findByEmail($email)

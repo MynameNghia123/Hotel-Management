@@ -45,6 +45,6 @@ class Room extends Model
 
     public function getShowIndicatorAttribute(): bool
     {
-        return !$this->is_empty;
+        return ! $this->is_empty;
     }
 }

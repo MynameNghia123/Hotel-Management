@@ -22,8 +22,7 @@ class ClientBookingService implements ClientBookingServiceInterface
         private readonly CreateBookingAction $createBookingAction,
         private readonly ClientBookingRepositoryInterface $clientBookingRepository,
         private readonly CustomerServiceInterface $customerService
-    ) {
-    }
+    ) {}
 
     public function buildCheckoutCart(array $payload): array
     {
@@ -60,7 +59,7 @@ class ClientBookingService implements ClientBookingServiceInterface
 
     public function prepareCheckoutData(array $cart): array
     {
-        if (!isset($cart['checkin'], $cart['checkout'], $cart['rooms']) || !is_array($cart['rooms'])) {
+        if (! isset($cart['checkin'], $cart['checkout'], $cart['rooms']) || ! is_array($cart['rooms'])) {
             throw new InvalidArgumentException('Gio hang dat phong khong hop le.');
         }
 
@@ -89,7 +88,7 @@ class ClientBookingService implements ClientBookingServiceInterface
             }
 
             $roomType = $roomTypesById->get($roomTypeId);
-            if (!$roomType) {
+            if (! $roomType) {
                 continue;
             }
 
@@ -118,7 +117,7 @@ class ClientBookingService implements ClientBookingServiceInterface
 
     public function createBookingFromCart(array $cart, array $customerData, ?int $customerId = null): Booking
     {
-        if (!isset($cart['checkin'], $cart['checkout'], $cart['rooms']) || !is_array($cart['rooms'])) {
+        if (! isset($cart['checkin'], $cart['checkout'], $cart['rooms']) || ! is_array($cart['rooms'])) {
             throw new RuntimeException('Gio hang dat phong khong hop le.');
         }
 
@@ -235,7 +234,7 @@ class ClientBookingService implements ClientBookingServiceInterface
             throw new RuntimeException('Cau hinh VNPAY chua day du.');
         }
 
-        $txnRef = $booking->id . '_' . time();
+        $txnRef = $booking->id.'_'.time();
         $inputData = [
             'vnp_Version' => '2.1.0',
             'vnp_TmnCode' => $vnpTmnCode,
@@ -245,7 +244,7 @@ class ClientBookingService implements ClientBookingServiceInterface
             'vnp_CurrCode' => 'VND',
             'vnp_IpAddr' => $ipAddress,
             'vnp_Locale' => 'vn',
-            'vnp_OrderInfo' => 'Thanh toan dat phong Urban Luxe Hotel cho booking ' . $booking->id,
+            'vnp_OrderInfo' => 'Thanh toan dat phong Urban Luxe Hotel cho booking '.$booking->id,
             'vnp_OrderType' => 'billpayment',
             'vnp_ReturnUrl' => $vnpReturnUrl,
             'vnp_TxnRef' => $txnRef,
@@ -262,17 +261,17 @@ class ClientBookingService implements ClientBookingServiceInterface
         $i = 0;
         foreach ($inputData as $key => $value) {
             if ($i == 1) {
-                $hashData .= '&' . urlencode($key) . '=' . urlencode($value);
+                $hashData .= '&'.urlencode($key).'='.urlencode($value);
             } else {
-                $hashData .= urlencode($key) . '=' . urlencode($value);
+                $hashData .= urlencode($key).'='.urlencode($value);
                 $i = 1;
             }
-            $query .= urlencode($key) . '=' . urlencode($value) . '&';
+            $query .= urlencode($key).'='.urlencode($value).'&';
         }
 
-        $vnpUrl = $vnpUrl . '?' . $query;
+        $vnpUrl = $vnpUrl.'?'.$query;
         $secureHash = hash_hmac('sha512', $hashData, $vnpHashSecret);
-        $vnpUrl .= 'vnp_SecureHash=' . $secureHash;
+        $vnpUrl .= 'vnp_SecureHash='.$secureHash;
 
         return $vnpUrl;
     }
@@ -311,9 +310,9 @@ class ClientBookingService implements ClientBookingServiceInterface
         $i = 0;
         foreach ($inputData as $key => $value) {
             if ($i == 1) {
-                $hashData .= '&' . urlencode($key) . '=' . urlencode($value);
+                $hashData .= '&'.urlencode($key).'='.urlencode($value);
             } else {
-                $hashData .= urlencode($key) . '=' . urlencode($value);
+                $hashData .= urlencode($key).'='.urlencode($value);
                 $i = 1;
             }
         }
@@ -331,7 +330,7 @@ class ClientBookingService implements ClientBookingServiceInterface
             ];
         }
 
-        if (!hash_equals($calculatedHash, $vnpSecureHash)) {
+        if (! hash_equals($calculatedHash, $vnpSecureHash)) {
             return [
                 'ok' => false,
                 'route' => 'payment',
@@ -343,12 +342,12 @@ class ClientBookingService implements ClientBookingServiceInterface
             return [
                 'ok' => false,
                 'route' => 'payment',
-                'message' => 'Giao dich khong thanh cong hoac bi huy (Ma loi: ' . ($payload['vnp_ResponseCode'] ?? 'N/A') . ')',
+                'message' => 'Giao dich khong thanh cong hoac bi huy (Ma loi: '.($payload['vnp_ResponseCode'] ?? 'N/A').')',
             ];
         }
 
         $booking = $this->clientBookingRepository->findBookingById($bookingId);
-        if (!$booking) {
+        if (! $booking) {
             return [
                 'ok' => false,
                 'route' => 'home',
@@ -365,7 +364,7 @@ class ClientBookingService implements ClientBookingServiceInterface
                 BookingStatus::CONFIRMED->value
             );
 
-            if ($transactionCode !== '' && !$this->clientBookingRepository->paymentTransactionExists($bookingId, $transactionCode)) {
+            if ($transactionCode !== '' && ! $this->clientBookingRepository->paymentTransactionExists($bookingId, $transactionCode)) {
                 $this->clientBookingRepository->createPayment([
                     'booking_id' => $bookingId,
                     'amount' => $amount,
@@ -401,7 +400,7 @@ class ClientBookingService implements ClientBookingServiceInterface
 
     private function parseDate(?string $value, Carbon $fallback): Carbon
     {
-        if (!$value) {
+        if (! $value) {
             return $fallback->copy();
         }
 
@@ -411,5 +410,4 @@ class ClientBookingService implements ClientBookingServiceInterface
             return $fallback->copy();
         }
     }
-
 }

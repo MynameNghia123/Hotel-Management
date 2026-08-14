@@ -35,6 +35,7 @@ class ServiceGroupService implements ServiceGroupServiceInterface
     {
         return $this->serviceGroupRepository->delete($id);
     }
+
     public function getPaginated(array $filters = [], $perPage = 10)
     {
         return $this->serviceGroupRepository->getPaginated($filters, $perPage);

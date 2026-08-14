@@ -10,8 +10,7 @@ class HomeController extends Controller
 {
     public function __construct(
         private readonly HomeServiceInterface $homeService
-    ) {
-    }
+    ) {}
 
     public function index(): View
     {

@@ -69,21 +69,21 @@ class StoreBookingRequest extends FormRequest
             'customer_account_id' => 'nullable|string|max:255',
             'customer_phone' => 'nullable|string|max:20',
             'customer_country' => 'nullable|string|max:255',
-            
+
             // Booking info
             'booking_date' => 'nullable|date',
             'staff_id' => 'nullable|exists:staff,id',
-            
+
             // Rooms
-            'room_ids'        => 'required|array|min:1',
-            'room_ids.*'      => 'exists:rooms,id',
-            'checkin_dates'   => 'nullable|array',
+            'room_ids' => 'required|array|min:1',
+            'room_ids.*' => 'exists:rooms,id',
+            'checkin_dates' => 'nullable|array',
             'checkin_dates.*' => 'nullable|date',
-            'checkout_dates'   => 'nullable|array',
+            'checkout_dates' => 'nullable|array',
             'checkout_dates.*' => 'nullable|date',
             'hourly_prices.*' => 'nullable|numeric|min:0',
             'daily_prices.*' => 'nullable|numeric|min:0',
-            
+
             // Payment
             'total_service_amount' => 'nullable|numeric|min:0',
             'total_room_amount' => 'nullable|numeric|min:0',
@@ -99,12 +99,13 @@ class StoreBookingRequest extends FormRequest
             $checkinDates = $this->input('checkin_dates', []);
             $checkoutDates = $this->input('checkout_dates', []);
 
-            if (!is_array($roomIds) || !is_array($checkinDates) || !is_array($checkoutDates)) {
+            if (! is_array($roomIds) || ! is_array($checkinDates) || ! is_array($checkoutDates)) {
                 return;
             }
 
             if (count($checkinDates) !== count($roomIds) || count($checkoutDates) !== count($roomIds)) {
                 $validator->errors()->add('room_ids', 'Moi phong phai co du ngay nhan va ngay tra phong.');
+
                 return;
             }
 
@@ -112,8 +113,9 @@ class StoreBookingRequest extends FormRequest
                 $checkinDate = $checkinDates[$index] ?? null;
                 $checkoutDate = $checkoutDates[$index] ?? null;
 
-                if (!$checkinDate || !$checkoutDate) {
-                    $validator->errors()->add("checkin_dates.{$index}", "Thieu ngay nhan/tra phong cho phong da chon.");
+                if (! $checkinDate || ! $checkoutDate) {
+                    $validator->errors()->add("checkin_dates.{$index}", 'Thieu ngay nhan/tra phong cho phong da chon.');
+
                     continue;
                 }
 

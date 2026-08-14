@@ -13,8 +13,7 @@ class EloquentSearchRepository implements SearchRepositoryInterface
 {
     public function __construct(
         private readonly RoomType $roomTypeModel
-    ) {
-    }
+    ) {}
 
     public function searchRoomTypes(array $criteria): Collection
     {

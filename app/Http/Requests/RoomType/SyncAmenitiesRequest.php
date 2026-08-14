@@ -21,7 +21,7 @@ class SyncAmenitiesRequest extends FormRequest
     {
         return [
             'amenity_ids' => 'nullable|array',
-            'amenity_ids.*' => 'integer|exists:amenities,id'
+            'amenity_ids.*' => 'integer|exists:amenities,id',
         ];
     }
 
@@ -33,7 +33,7 @@ class SyncAmenitiesRequest extends FormRequest
         return [
             'amenity_ids.array' => 'Danh sách tiện ích phải là một mảng.',
             'amenity_ids.*.integer' => 'ID tiện ích phải là một số nguyên.',
-            'amenity_ids.*.exists' => 'ID tiện ích không tồn tại.'
+            'amenity_ids.*.exists' => 'ID tiện ích không tồn tại.',
         ];
     }
 }

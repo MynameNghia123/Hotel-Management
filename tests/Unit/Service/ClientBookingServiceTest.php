@@ -17,7 +17,7 @@ class ClientBookingServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // We can mock dependencies since we are only testing buildCheckoutCart logic
         $roomService = $this->createMock(RoomServiceInterface::class);
         $createBookingAction = $this->createMock(CreateBookingAction::class);

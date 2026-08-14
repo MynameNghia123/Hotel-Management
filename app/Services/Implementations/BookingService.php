@@ -5,11 +5,11 @@ namespace App\Services\Implementations;
 use App\Enums\BookingStatus;
 use App\Enums\RoomStatus;
 use App\Repositories\Contracts\BookingRepositoryInterface;
-use App\Services\Contracts\BookingServiceInterface;
-use App\Services\Contracts\RoomServiceInterface;
-use App\Services\Contracts\CustomerServiceInterface;
-use App\Services\Contracts\StaffServiceInterface;
 use App\Services\Contracts\BookingDetailServiceInterface;
+use App\Services\Contracts\BookingServiceInterface;
+use App\Services\Contracts\CustomerServiceInterface;
+use App\Services\Contracts\RoomServiceInterface;
+use App\Services\Contracts\StaffServiceInterface;
 
 class BookingService implements BookingServiceInterface
 {
@@ -29,9 +29,10 @@ class BookingService implements BookingServiceInterface
     public function create(array $data)
     {
         // Set default status as PENDING if not provided
-        if (!isset($data['status'])) {
+        if (! isset($data['status'])) {
             $data['status'] = BookingStatus::PENDING->value;
         }
+
         return $this->bookingRepository->create($data);
     }
 
@@ -76,14 +77,14 @@ class BookingService implements BookingServiceInterface
         $currentStatus = BookingStatus::from($booking->status);
 
         // Validate transition
-        if (!$currentStatus->canTransitionTo($newStatus)) {
+        if (! $currentStatus->canTransitionTo($newStatus)) {
             throw new \Exception(
                 "Cannot transition from {$currentStatus->label()} to {$newStatus->label()}"
             );
         }
 
         // Keep check-in timestamp consistent when booking is marked as occupied.
-        if ($newStatus === BookingStatus::OCCUPIED && !$booking->checked_in_at) {
+        if ($newStatus === BookingStatus::OCCUPIED && ! $booking->checked_in_at) {
             $this->bookingRepository->update($bookingId, ['checked_in_at' => now()]);
         }
 
@@ -104,7 +105,7 @@ class BookingService implements BookingServiceInterface
         }
 
         if ($newStatus === BookingStatus::PAID) {
-            if (!$booking->checked_out_at) {
+            if (! $booking->checked_out_at) {
                 $this->bookingRepository->update($bookingId, ['checked_out_at' => now()]);
             }
 
@@ -129,6 +130,7 @@ class BookingService implements BookingServiceInterface
         foreach (BookingStatus::cases() as $status) {
             $statusCounts[$status->value] = count($this->getByStatus($status->value) ?? []);
         }
+
         return $statusCounts;
     }
 

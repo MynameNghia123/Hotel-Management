@@ -41,10 +41,10 @@ class UpdateRepairTicketStatusRequest extends FormRequest
     {
         // Get the new status enum value
         $newStatus = RepairTicketStatus::tryFrom($newStatusValue);
-        if (!$newStatus) {
+        if (! $newStatus) {
             return [
                 'success' => false,
-                'message' => 'Trạng thái không hợp lệ'
+                'message' => 'Trạng thái không hợp lệ',
             ];
         }
 
@@ -52,20 +52,20 @@ class UpdateRepairTicketStatusRequest extends FormRequest
         $currentStatus = $ticket->status;
         $allowedTransitions = $currentStatus->allowedTransitions();
 
-        if (!in_array($newStatus, $allowedTransitions)) {
+        if (! in_array($newStatus, $allowedTransitions)) {
             return [
                 'success' => false,
                 'message' => sprintf(
                     'Không thể chuyển từ %s sang %s',
                     $currentStatus->label(),
                     $newStatus->label()
-                )
+                ),
             ];
         }
 
         return [
             'success' => true,
-            'status' => $newStatus
+            'status' => $newStatus,
         ];
     }
 }

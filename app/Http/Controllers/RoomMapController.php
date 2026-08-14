@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RoomMap\UpdateRoomStatusRequest;
 use App\Http\Requests\RoomMap\AddCheckoutServiceRequest;
 use App\Http\Requests\RoomMap\CheckoutSelectedRoomsRequest;
 use App\Http\Requests\RoomMap\PreviewCheckoutSelectedRoomsRequest;
-use App\Enums\RoomStatus;
+use App\Http\Requests\RoomMap\UpdateRoomStatusRequest;
 use App\Services\Contracts\RoomMapServiceInterface;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class RoomMapController extends Controller
@@ -24,21 +22,21 @@ class RoomMapController extends Controller
         $filters = $request->input('filters', []);
 
         [
-            'rooms'            => $rooms,
+            'rooms' => $rooms,
             'roomStatusCounts' => $roomStatusCounts,
-            'floors'           => $floors,
-            'totalRooms'       => $totalRooms,
-            'activeStatus'     => $activeStatus,
-            'statusMeta'       => $statusMeta,
-            'groupBy'          => $groupBy,
-            'groups'           => $groups,
+            'floors' => $floors,
+            'totalRooms' => $totalRooms,
+            'activeStatus' => $activeStatus,
+            'statusMeta' => $statusMeta,
+            'groupBy' => $groupBy,
+            'groups' => $groups,
             'filtersWithoutStatus' => $filtersWithoutStatus,
             'filtersWithoutSearch' => $filtersWithoutSearch,
             'filtersWithoutDate' => $filtersWithoutDate,
-            'roomTypes'        => $roomTypes,
-            'customers'        => $customers,
-            'recentBookings'   => $recentBookings,
-            'filters'          => $filters,
+            'roomTypes' => $roomTypes,
+            'customers' => $customers,
+            'recentBookings' => $recentBookings,
+            'filters' => $filters,
         ] = $this->roomMapService->prepareDataForIndex($filters);
 
         return view('admin.room-map.index', compact(
@@ -169,6 +167,7 @@ class RoomMapController extends Controller
     {
         try {
             $validated = $request->validated();
+
             return response()->json($this->roomMapService->previewCheckoutSelectedRooms(
                 $id,
                 $validated['selected_room_ids'] ?? [],

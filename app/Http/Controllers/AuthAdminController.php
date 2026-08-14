@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Auth\AuthRequest;
 use App\Services\Contracts\AuthServiceInterface;
+use Illuminate\Support\Facades\Auth;
 
 class AuthAdminController extends Controller
 {
@@ -25,6 +24,7 @@ class AuthAdminController extends Controller
         if (Auth::guard('admin')->check()) {
             return redirect()->route('admin.dashboard');
         }
+
         return view('admin.auth.login');
     }
 
@@ -38,7 +38,7 @@ class AuthAdminController extends Controller
         // Gọi service để authenticate
         $staff = $this->authService->login($validated['email'], $validated['password']);
 
-        if (!$staff) {
+        if (! $staff) {
             return redirect()->back()
                 ->with('error', 'Email hoặc mật khẩu không đúng, hoặc tài khoản đã bị vô hiệu hóa')
                 ->withInput($request->only('email'));
@@ -46,7 +46,7 @@ class AuthAdminController extends Controller
 
         // Đăng nhập thành công
         return redirect()->route('admin.dashboard')
-            ->with('success', 'Đăng nhập thành công! Xin chào ' . $staff->first_name . ' ' . $staff->last_name);
+            ->with('success', 'Đăng nhập thành công! Xin chào '.$staff->first_name.' '.$staff->last_name);
     }
 
     /**
@@ -55,9 +55,8 @@ class AuthAdminController extends Controller
     public function logout()
     {
         $this->authService->logout();
-        
+
         return redirect()->route('admin.login')
             ->with('success', 'Đã đăng xuất thành công');
     }
 }
-

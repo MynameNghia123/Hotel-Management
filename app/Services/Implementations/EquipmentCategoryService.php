@@ -2,8 +2,8 @@
 
 namespace App\Services\Implementations;
 
-use App\Services\Contracts\EquipmentCategoryServiceInterface;
 use App\Repositories\Contracts\EquipmentCategoryRepositoryInterface;
+use App\Services\Contracts\EquipmentCategoryServiceInterface;
 
 class EquipmentCategoryService implements EquipmentCategoryServiceInterface
 {

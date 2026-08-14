@@ -35,7 +35,7 @@ class StoreRoomRequest extends FormRequest
             'floor_id.required' => 'Tầng không được để trống',
             'floor_id.integer' => 'Tầng phải là số',
             'floor_id.exists' => 'Tầng không tồn tại',
-            'status.in' => 'Trạng thái không hợp lệ'
+            'status.in' => 'Trạng thái không hợp lệ',
         ];
     }
 }

@@ -1,14 +1,17 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Http\Requests\Amenity\StoreAmenityRequest;
 use App\Http\Requests\Amenity\UpdateAmenityRequest;
-use App\Services\Contracts\AmenityServiceInterface;
 use App\Http\Traits\PaginationTrait;
+use App\Services\Contracts\AmenityServiceInterface;
 use Illuminate\Http\Request;
 
 class AmenityController extends Controller
 {
     use PaginationTrait;
+
     public function __construct(
         private readonly AmenityServiceInterface $amenityService
     ) {}
@@ -19,7 +22,7 @@ class AmenityController extends Controller
         $filters = $request->input('filter', []);
 
         $amenities = $this->amenityService->getPaginated($filters, $perpage);
-        
+
         $this->validatePageNumber($amenities->currentPage(), $amenities->lastPage(), 'abort');
 
         return view('admin.amenities.index', compact('amenities'));
@@ -34,15 +37,17 @@ class AmenityController extends Controller
     {
         try {
             $this->amenityService->create($request->validated());
+
             return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã được tạo thành công.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Lỗi: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Lỗi: '.$e->getMessage());
         }
     }
 
     public function edit($id)
     {
         $amenity = $this->amenityService->findById($id);
+
         return view('admin.amenities.edit', compact('amenity'));
     }
 
@@ -50,9 +55,10 @@ class AmenityController extends Controller
     {
         try {
             $this->amenityService->update($id, $request->validated());
+
             return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã được cập nhật.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Lỗi: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Lỗi: '.$e->getMessage());
         }
     }
 
@@ -60,9 +66,10 @@ class AmenityController extends Controller
     {
         try {
             $this->amenityService->delete($id);
+
             return redirect()->route('admin.amenities.index')->with('success', 'Tiện ích đã bị xoá.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Lỗi: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Lỗi: '.$e->getMessage());
         }
     }
 }

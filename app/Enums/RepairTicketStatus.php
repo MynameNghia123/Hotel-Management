@@ -13,7 +13,7 @@ enum RepairTicketStatus: string
      */
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => 'Đang chờ xử lý',
             self::IN_PROGRESS => 'Đang sửa chữa',
             self::COMPLETED => 'Đã hoàn thành',
@@ -25,7 +25,7 @@ enum RepairTicketStatus: string
      */
     public function badgeClass(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => 'yellow',
             self::IN_PROGRESS => 'blue',
             self::COMPLETED => 'green',
@@ -37,7 +37,7 @@ enum RepairTicketStatus: string
      */
     public function allowedTransitions(): array
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => [self::IN_PROGRESS],           // Chờ → Sửa chữa
             self::IN_PROGRESS => [self::COMPLETED],         // Sửa → Hoàn thành
             self::COMPLETED => [],                           // Hoàn thành: không thể chuyển đổi

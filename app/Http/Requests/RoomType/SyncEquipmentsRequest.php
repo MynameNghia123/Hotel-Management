@@ -22,7 +22,7 @@ class SyncEquipmentsRequest extends FormRequest
         return [
             'equipment_data' => 'nullable|array',
             'equipment_data.*.equipment_id' => 'integer|exists:equipments,id',
-            'equipment_data.*.quantity' => 'integer|min:1'
+            'equipment_data.*.quantity' => 'integer|min:1',
         ];
     }
 
@@ -36,7 +36,7 @@ class SyncEquipmentsRequest extends FormRequest
             'equipment_data.*.equipment_id.integer' => 'ID tài sản phải là một số nguyên.',
             'equipment_data.*.equipment_id.exists' => 'ID tài sản không tồn tại.',
             'equipment_data.*.quantity.integer' => 'Số lượng phải là một số nguyên.',
-            'equipment_data.*.quantity.min' => 'Số lượng phải tối thiểu là 1.'
+            'equipment_data.*.quantity.min' => 'Số lượng phải tối thiểu là 1.',
         ];
     }
 }

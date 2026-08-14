@@ -10,8 +10,7 @@ class RoomController extends Controller
 {
     public function __construct(
         private readonly RoomType $roomTypeModel
-    ) {
-    }
+    ) {}
 
     public function index(): View
     {

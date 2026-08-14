@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\RoomStatus;
 use App\Models\RoomType;
 use App\Models\Service;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -12,13 +13,15 @@ use Illuminate\Support\Facades\Log;
 class GeminiService
 {
     private string $apiKey;
+
     private string $model;
+
     private string $apiUrl;
 
     public function __construct()
     {
         $this->apiKey = config('services.gemini.api_key');
-        $this->model  = config('services.gemini.model', 'gemini-2.5-flash-lite');
+        $this->model = config('services.gemini.model', 'gemini-2.5-flash-lite');
         $this->apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent";
     }
 
@@ -30,12 +33,12 @@ class GeminiService
         $contents = [];
         foreach ($history as $msg) {
             $contents[] = [
-                'role'  => $msg['role'],
+                'role' => $msg['role'],
                 'parts' => [['text' => $msg['content']]],
             ];
         }
         $contents[] = [
-            'role'  => 'user',
+            'role' => 'user',
             'parts' => [['text' => $newMessage]],
         ];
 
@@ -45,9 +48,9 @@ class GeminiService
             'system_instruction' => [
                 'parts' => [['text' => $systemPrompt]],
             ],
-            'contents'         => $contents,
+            'contents' => $contents,
             'generationConfig' => [
-                'temperature'     => 0.7,
+                'temperature' => 0.7,
                 'maxOutputTokens' => 600,
             ],
         ];
@@ -57,23 +60,26 @@ class GeminiService
 
             if ($response->failed()) {
                 Log::error('Gemini API error', [
-                    'status'        => $response->status(),
-                    'body'          => substr($response->body(), 0, 500),
+                    'status' => $response->status(),
+                    'body' => substr($response->body(), 0, 500),
                     'prompt_length' => strlen($systemPrompt),
                 ]);
 
                 if ($response->status() === 429) {
                     return 'Hệ thống AI đang bận do nhiều người dùng cùng lúc. Vui lòng thử lại sau vài giây! ⏳';
                 }
+
                 return 'Xin lỗi, tôi đang gặp sự cố kỹ thuật. Vui lòng thử lại sau hoặc liên hệ lễ tân để được hỗ trợ. 🙏';
             }
 
             $data = $response->json();
+
             return $data['candidates'][0]['content']['parts'][0]['text']
                 ?? 'Xin lỗi, tôi không thể xử lý yêu cầu này. Vui lòng thử lại.';
 
         } catch (\Exception $e) {
             Log::error('Gemini Service exception', ['message' => $e->getMessage()]);
+
             return 'Xin lỗi, dịch vụ AI tạm thời không khả dụng. Vui lòng thử lại sau.';
         }
     }
@@ -81,7 +87,7 @@ class GeminiService
     /**
      * Gọi Gemini API — thử lần lượt các model khi bị rate limit.
      */
-    private function callApi(array $payload): \Illuminate\Http\Client\Response
+    private function callApi(array $payload): Response
     {
         // Danh sách model fallback theo ưu tiên
         $models = array_unique([
@@ -103,6 +109,7 @@ class GeminiService
                 if ($model !== $this->model) {
                     Log::info('Gemini fallback to model', ['model' => $model]);
                 }
+
                 return $res;
             }
 
@@ -112,6 +119,7 @@ class GeminiService
             if ($res->status() === 429) {
                 Log::warning('Gemini rate limit, trying next model', ['tried' => $model]);
                 sleep(2);
+
                 continue;
             }
 
@@ -129,31 +137,32 @@ class GeminiService
     {
         return Cache::remember('gemini_system_prompt', 600, function () {
             // Giới hạn độ dài để tránh vượt token limit
-            $roomInfo    = mb_substr($this->buildRoomInfo(), 0, 3000);
+            $roomInfo = mb_substr($this->buildRoomInfo(), 0, 3000);
             $serviceInfo = mb_substr($this->buildServiceInfo(), 0, 800);
 
             $prompt = "Bạn là trợ lý ảo thân thiện của khách sạn **Urban Luxe** - khách sạn 5 sao sang trọng tại trung tâm thành phố.\n\n"
-                . "## NHIỆM VỤ\n"
-                . "- Tư vấn chi tiết về các loại phòng, giá, tiện ích dựa trên dữ liệu thực tế bên dưới\n"
-                . "- Hỗ trợ khách đặt phòng, giải thích quy trình đặt phòng trên website\n"
-                . "- Giải đáp chính sách hủy, thanh toán, check-in/check-out\n\n"
-                . "## THÔNG TIN KHÁCH SẠN\n"
-                . "- Hotline: 1900-xxxx | Email: info@urbanluxe.vn\n"
-                . "- Check-in: 14:00 | Check-out: 12:00\n"
-                . "- Chính sách hủy: Miễn phí trước 24h; mất 1 đêm nếu hủy trong 24h\n"
-                . "- Thanh toán: Tiền mặt, thẻ, VNPay\n\n"
-                . "## DANH SÁCH PHÒNG\n" . $roomInfo . "\n\n"
-                . "## DỊCH VỤ BỔ SUNG\n" . $serviceInfo . "\n\n"
-                . "## CÁCH ĐẶT PHÒNG\n"
-                . "Vào trang Tìm kiếm → chọn ngày → chọn phòng → điền thông tin → thanh toán.\n\n"
-                . "## PHONG CÁCH\n"
-                . "- Lịch sự, thân thiện, dùng emoji phù hợp 😊\n"
-                . "- Tiếng Việt ưu tiên; tiếng Anh nếu khách hỏi tiếng Anh\n"
-                . "- Tối đa 200 từ/câu trả lời\n"
-                . "- Nêu giá, sức chứa, tiện ích khi tư vấn phòng\n"
-                . "- Không biết thì đề nghị liên hệ lễ tân";
+                ."## NHIỆM VỤ\n"
+                ."- Tư vấn chi tiết về các loại phòng, giá, tiện ích dựa trên dữ liệu thực tế bên dưới\n"
+                ."- Hỗ trợ khách đặt phòng, giải thích quy trình đặt phòng trên website\n"
+                ."- Giải đáp chính sách hủy, thanh toán, check-in/check-out\n\n"
+                ."## THÔNG TIN KHÁCH SẠN\n"
+                ."- Hotline: 1900-xxxx | Email: info@urbanluxe.vn\n"
+                ."- Check-in: 14:00 | Check-out: 12:00\n"
+                ."- Chính sách hủy: Miễn phí trước 24h; mất 1 đêm nếu hủy trong 24h\n"
+                ."- Thanh toán: Tiền mặt, thẻ, VNPay\n\n"
+                ."## DANH SÁCH PHÒNG\n".$roomInfo."\n\n"
+                ."## DỊCH VỤ BỔ SUNG\n".$serviceInfo."\n\n"
+                ."## CÁCH ĐẶT PHÒNG\n"
+                ."Vào trang Tìm kiếm → chọn ngày → chọn phòng → điền thông tin → thanh toán.\n\n"
+                ."## PHONG CÁCH\n"
+                ."- Lịch sự, thân thiện, dùng emoji phù hợp 😊\n"
+                ."- Tiếng Việt ưu tiên; tiếng Anh nếu khách hỏi tiếng Anh\n"
+                ."- Tối đa 200 từ/câu trả lời\n"
+                ."- Nêu giá, sức chứa, tiện ích khi tư vấn phòng\n"
+                .'- Không biết thì đề nghị liên hệ lễ tân';
 
             Log::info('Gemini system prompt built', ['length' => strlen($prompt)]);
+
             return $prompt;
         });
     }
@@ -173,29 +182,29 @@ class GeminiService
 
         $lines = [];
         foreach ($roomTypes as $rt) {
-            $available   = $rt->rooms->filter(fn($r) => $r->status === RoomStatus::EMPTY)->count();
-            $total       = $rt->rooms->count();
-            $dailyPrice  = number_format($rt->daily_price, 0, ',', '.') . ' VNĐ/đêm';
+            $available = $rt->rooms->filter(fn ($r) => $r->status === RoomStatus::EMPTY)->count();
+            $total = $rt->rooms->count();
+            $dailyPrice = number_format($rt->daily_price, 0, ',', '.').' VNĐ/đêm';
             $hourlyPrice = $rt->hourly_price
-                ? number_format($rt->hourly_price, 0, ',', '.') . ' VNĐ/giờ'
+                ? number_format($rt->hourly_price, 0, ',', '.').' VNĐ/giờ'
                 : null;
-            $size        = ($rt->width && $rt->height) ? "{$rt->width}x{$rt->height}m" : '';
-            $beds        = array_filter([
+            $size = ($rt->width && $rt->height) ? "{$rt->width}x{$rt->height}m" : '';
+            $beds = array_filter([
                 $rt->single_bed_quantity ? "{$rt->single_bed_quantity} đơn" : null,
                 $rt->double_bed_quantity ? "{$rt->double_bed_quantity} đôi" : null,
             ]);
-            $amenities   = $rt->amenities->pluck('name')->implode(', ') ?: 'đang cập nhật';
-            $statusStr   = $available > 0 ? "còn {$available}/{$total} phòng" : 'hết phòng';
+            $amenities = $rt->amenities->pluck('name')->implode(', ') ?: 'đang cập nhật';
+            $statusStr = $available > 0 ? "còn {$available}/{$total} phòng" : 'hết phòng';
 
             $line = "- **{$rt->name}** ({$rt->code}): {$dailyPrice}"
-                . ($hourlyPrice ? " | {$hourlyPrice}" : '')
-                . ($size ? " | {$size}" : '')
-                . " | {$rt->adult_quantity} người lớn"
-                . (count($beds) ? ' | ' . implode(', ', $beds) : '')
-                . " | {$amenities} | {$statusStr}";
+                .($hourlyPrice ? " | {$hourlyPrice}" : '')
+                .($size ? " | {$size}" : '')
+                ." | {$rt->adult_quantity} người lớn"
+                .(count($beds) ? ' | '.implode(', ', $beds) : '')
+                ." | {$amenities} | {$statusStr}";
 
             if ($rt->description) {
-                $line .= "\n  " . mb_substr($rt->description, 0, 120);
+                $line .= "\n  ".mb_substr($rt->description, 0, 120);
             }
             $lines[] = $line;
         }
@@ -214,14 +223,15 @@ class GeminiService
             return 'Đang cập nhật. Vui lòng liên hệ lễ tân.';
         }
 
-        $grouped = $services->groupBy(fn($s) => $s->group?->name ?? 'Khác');
-        $lines   = [];
+        $grouped = $services->groupBy(fn ($s) => $s->group?->name ?? 'Khác');
+        $lines = [];
 
         foreach ($grouped as $groupName => $items) {
             $itemLines = $items->map(function ($s) {
                 $price = $s->unit_price
-                    ? number_format($s->unit_price, 0, ',', '.') . " VNĐ/{$s->unit}"
+                    ? number_format($s->unit_price, 0, ',', '.')." VNĐ/{$s->unit}"
                     : 'liên hệ';
+
                 return "  - {$s->name}: {$price}";
             })->implode("\n");
             $lines[] = "**{$groupName}**:\n{$itemLines}";

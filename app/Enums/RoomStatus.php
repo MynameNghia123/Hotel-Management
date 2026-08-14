@@ -18,7 +18,7 @@ enum RoomStatus: string
      */
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::EMPTY => 'Trống',
             self::BOOKED => 'Đã đặt',
             self::CONFIRMED => 'Đã xác nhận',
@@ -40,7 +40,7 @@ enum RoomStatus: string
 
     public function badgeColor(): string
     {
-        return match($this) {
+        return match ($this) {
             self::EMPTY => 'green',
             self::BOOKED => 'blue',
             self::CONFIRMED => 'cyan',
@@ -54,7 +54,7 @@ enum RoomStatus: string
 
     public function cardClass(): string
     {
-        return match($this) {
+        return match ($this) {
             self::EMPTY => 'empty',
             self::BOOKED => 'booked',
             self::CONFIRMED => 'confirmed',
@@ -68,7 +68,7 @@ enum RoomStatus: string
 
     public function routeName(): string
     {
-        return match($this) {
+        return match ($this) {
             self::EMPTY => 'admin.room-map.available-detail',
             self::BOOKED,
             self::CONFIRMED,

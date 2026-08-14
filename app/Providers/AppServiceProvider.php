@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\AuthRepositoryInterface;
+use App\Repositories\Implementations\EloquentAuthRepository;
+use App\Services\Contracts\AuthServiceInterface;
+use App\Services\Implementations\AuthService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,14 +17,14 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register Authentication Repository
         $this->app->bind(
-            \App\Repositories\Contracts\AuthRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentAuthRepository::class
+            AuthRepositoryInterface::class,
+            EloquentAuthRepository::class
         );
 
         // Register Authentication Service
         $this->app->bind(
-            \App\Services\Contracts\AuthServiceInterface::class,
-            \App\Services\Implementations\AuthService::class
+            AuthServiceInterface::class,
+            AuthService::class
         );
     }
 

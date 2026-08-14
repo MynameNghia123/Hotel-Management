@@ -2,14 +2,14 @@
 
 namespace App\Services\Implementations;
 
-use App\Services\Contracts\EquipmentServiceInterface;
-use App\Services\Contracts\EquipmentCategoryServiceInterface;
 use App\Repositories\Contracts\EquipmentRepositoryInterface;
+use App\Services\Contracts\EquipmentCategoryServiceInterface;
+use App\Services\Contracts\EquipmentServiceInterface;
 
 class EquipmentService implements EquipmentServiceInterface
 {
     public function __construct(
-        private readonly EquipmentRepositoryInterface    $equipmentRepository,
+        private readonly EquipmentRepositoryInterface $equipmentRepository,
         private readonly EquipmentCategoryServiceInterface $equipmentCategoryService
     ) {}
 
@@ -61,7 +61,7 @@ class EquipmentService implements EquipmentServiceInterface
     public function prepareDataForEdit($id): array
     {
         return [
-            'equipment'  => $this->findById($id),
+            'equipment' => $this->findById($id),
             'categories' => $this->equipmentCategoryService->getAll(),
         ];
     }

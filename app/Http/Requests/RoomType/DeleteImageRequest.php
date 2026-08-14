@@ -20,7 +20,7 @@ class DeleteImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'path' => 'required|string'
+            'path' => 'required|string',
         ];
     }
 
@@ -31,7 +31,7 @@ class DeleteImageRequest extends FormRequest
     {
         return [
             'path.required' => 'Đường dẫn ảnh là bắt buộc.',
-            'path.string' => 'Đường dẫn ảnh phải là một chuỗi.'
+            'path.string' => 'Đường dẫn ảnh phải là một chuỗi.',
         ];
     }
 }

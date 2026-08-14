@@ -47,8 +47,8 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
-            'vertify_peer'=>false, // tat chung chi ssl
-            'vertify_peer_name'=>false, // tat xac minh ten chung chi 
+            'vertify_peer' => false, // tat chung chi ssl
+            'vertify_peer_name' => false, // tat xac minh ten chung chi
 
         ],
 

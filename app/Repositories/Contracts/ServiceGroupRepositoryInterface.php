@@ -2,7 +2,4 @@
 
 namespace App\Repositories\Contracts;
 
-interface ServiceGroupRepositoryInterface extends BaseRepositoryInterface
-{
-
-}
+interface ServiceGroupRepositoryInterface extends BaseRepositoryInterface {}

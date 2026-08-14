@@ -5,10 +5,12 @@ namespace App\Actions\RoomMap;
 use App\Repositories\Contracts\RoomMapRepositoryInterface;
 use App\Services\Contracts\BookingServiceInterface;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class PrepareInvoiceAction
 {
     private const VAT_RATE = 0.1;
+
     private const MINUTES_IN_DAY = 1440;
 
     public function __construct(
@@ -42,7 +44,7 @@ class PrepareInvoiceAction
         ];
     }
 
-    private function filterInvoiceDetails($booking, ?int $roomId, array $roomIds, $latestBookingDetail): \Illuminate\Support\Collection
+    private function filterInvoiceDetails($booking, ?int $roomId, array $roomIds, $latestBookingDetail): Collection
     {
         $bookingDetails = collect($booking?->bookingDetails ?? [])->filter();
         $targetRoomIds = collect($roomIds)
@@ -64,7 +66,7 @@ class PrepareInvoiceAction
         return $filtered->isEmpty() && $latestBookingDetail ? collect([$latestBookingDetail]) : $filtered;
     }
 
-    private function buildInvoiceRooms($invoiceDetails): \Illuminate\Support\Collection
+    private function buildInvoiceRooms($invoiceDetails): Collection
     {
         return $invoiceDetails->map(function ($detail) {
             $detailRoom = $detail->room;
@@ -133,7 +135,7 @@ class PrepareInvoiceAction
 
     private function formatDateTime($dateTimeValue): ?string
     {
-        if (!$dateTimeValue) {
+        if (! $dateTimeValue) {
             return null;
         }
 
@@ -144,16 +146,16 @@ class PrepareInvoiceAction
 
     private function formatStayDuration($startAt, $endAt): string
     {
-        if (!$startAt || !$endAt) {
+        if (! $startAt || ! $endAt) {
             return '--';
         }
 
         $minutes = max(1, Carbon::parse($endAt)->diffInMinutes(Carbon::parse($startAt), true));
 
         if ($minutes < self::MINUTES_IN_DAY) {
-            return max(1, (int) ceil($minutes / 60)) . ' giờ';
+            return max(1, (int) ceil($minutes / 60)).' giờ';
         }
 
-        return max(1, (int) ceil($minutes / self::MINUTES_IN_DAY)) . ' ngày';
+        return max(1, (int) ceil($minutes / self::MINUTES_IN_DAY)).' ngày';
     }
 }

@@ -30,16 +30,19 @@ class EloquentStaffRepository implements StaffRepositoryInterface
     {
         return $this->model->with('role')->findOrFail($id);
     }
+
     public function update($id, array $data): Staff
     {
         $staff = $this->findById($id);
         $staff->update($data);
+
         return $staff;
     }
 
     public function delete($id): bool
     {
         $staff = $this->findById($id);
+
         return $staff->delete();
     }
 

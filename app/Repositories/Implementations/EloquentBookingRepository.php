@@ -4,8 +4,8 @@ namespace App\Repositories\Implementations;
 
 use App\Enums\BookingStatus;
 use App\Models\Booking;
-use App\Repositories\Filters\BookingFilter;
 use App\Repositories\Contracts\BookingRepositoryInterface;
+use App\Repositories\Filters\BookingFilter;
 
 class EloquentBookingRepository implements BookingRepositoryInterface
 {
@@ -35,12 +35,14 @@ class EloquentBookingRepository implements BookingRepositoryInterface
     {
         $record = $this->findById($id);
         $record->update($data);
+
         return $record;
     }
 
     public function delete($id)
     {
         $record = $this->findById($id);
+
         return $record->delete();
     }
 
@@ -78,7 +80,7 @@ class EloquentBookingRepository implements BookingRepositoryInterface
 
     public function checkRoomAvailability($roomId, $checkInDate, $checkOutDate)
     {
-        return !$this->model
+        return ! $this->model
             ->whereHas('bookingDetails', function ($q) use ($roomId, $checkInDate, $checkOutDate) {
                 $q->where('room_id', $roomId)
                     ->where('checkin_date', '<', $checkOutDate)
@@ -98,6 +100,7 @@ class EloquentBookingRepository implements BookingRepositoryInterface
         $record = $this->findById($id);
         $record->status = $status;
         $record->save();
+
         return $record;
     }
 }

@@ -10,7 +10,7 @@ trait HasRolePermissions
     {
         [$claimName, $claimValue] = $this->normalizePermission($claimName, $claimValue);
 
-        if (!$claimName || !$claimValue || !$this->role_id) {
+        if (! $claimName || ! $claimValue || ! $this->role_id) {
             return false;
         }
 
@@ -18,7 +18,7 @@ trait HasRolePermissions
             return true;
         }
 
-        return in_array($claimName . '.' . $claimValue, $this->getPermissions(), true);
+        return in_array($claimName.'.'.$claimValue, $this->getPermissions(), true);
     }
 
     public function hasAnyPermission(array $permissions): bool
@@ -38,13 +38,13 @@ trait HasRolePermissions
             return $this->cachedPermissions;
         }
 
-        if (!$this->role_id) {
+        if (! $this->role_id) {
             return [];
         }
 
         $role = $this->relationLoaded('role') ? $this->role : $this->role()->with('roleClaims')->first();
 
-        if (!$role) {
+        if (! $role) {
             return $this->cachedPermissions = [];
         }
 
@@ -53,7 +53,7 @@ trait HasRolePermissions
             : $role->roleClaims()->get();
 
         return $this->cachedPermissions = $claims
-            ->map(fn ($claim) => $claim->claim_name . '.' . $claim->claim_value)
+            ->map(fn ($claim) => $claim->claim_name.'.'.$claim->claim_value)
             ->values()
             ->all();
     }

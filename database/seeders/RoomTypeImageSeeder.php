@@ -26,7 +26,7 @@ class RoomTypeImageSeeder extends Seeder
                     )
                 )
                 ->sortBy(fn (\SplFileInfo $file) => $file->getFilename())
-                ->map(fn (\SplFileInfo $file) => '/storage/room-types/' . $file->getFilename())
+                ->map(fn (\SplFileInfo $file) => '/storage/room-types/'.$file->getFilename())
                 ->values()
                 ->all();
         }

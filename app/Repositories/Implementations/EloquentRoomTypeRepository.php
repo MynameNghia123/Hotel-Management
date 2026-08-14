@@ -61,6 +61,7 @@ class EloquentRoomTypeRepository implements RoomTypeRepositoryInterface
     {
         $record = $this->findById($id);
         $record->update($data);
+
         return $record;
     }
 
@@ -70,6 +71,7 @@ class EloquentRoomTypeRepository implements RoomTypeRepositoryInterface
     public function delete($id)
     {
         $record = $this->findById($id);
+
         return $record->delete();
     }
 
@@ -80,6 +82,7 @@ class EloquentRoomTypeRepository implements RoomTypeRepositoryInterface
     {
         $query = $this->model->query()->withCount('rooms');
         $query = RoomTypeFilter::apply($query, $filters);
+
         return $query->paginate($perPage);
     }
 }

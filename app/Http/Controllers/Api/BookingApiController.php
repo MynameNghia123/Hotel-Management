@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\Contracts\CustomerServiceInterface;
 use App\Services\Contracts\RoomServiceInterface;
+use Illuminate\Http\Request;
 
 class BookingApiController extends Controller
 {
@@ -20,7 +20,7 @@ class BookingApiController extends Controller
     public function verifyCustomer(Request $request)
     {
         $request->validate([
-            'email' => 'required|email'
+            'email' => 'required|email',
         ]);
 
         $email = $request->input('email');
@@ -34,13 +34,13 @@ class BookingApiController extends Controller
                     'name' => $customer->name,
                     'email' => $customer->email,
                     'phone' => $customer->phone,
-                ]
+                ],
             ]);
         }
 
         return response()->json([
             'exists' => false,
-            'message' => 'Khách hàng không tồn tại trong hệ thống'
+            'message' => 'Khách hàng không tồn tại trong hệ thống',
         ]);
     }
 

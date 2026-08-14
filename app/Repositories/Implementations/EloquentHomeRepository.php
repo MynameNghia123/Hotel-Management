@@ -11,8 +11,7 @@ class EloquentHomeRepository implements HomeRepositoryInterface
 {
     public function __construct(
         private readonly RoomType $roomTypeModel
-    ) {
-    }
+    ) {}
 
     public function getFeaturedRoomTypes(int $limit = 3): Collection
     {

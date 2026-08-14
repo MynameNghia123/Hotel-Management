@@ -27,19 +27,22 @@ class SystemSettingService implements SystemSettingServiceInterface
     public function getCheckInTime()
     {
         $setting = $this->getByKey('check_in_time');
+
         return $setting ? $setting->setting_value : '14:00';
     }
 
     public function getCheckOutTime()
     {
         $setting = $this->getByKey('check_out_time');
+
         return $setting ? $setting->setting_value : '12:00';
     }
 
     public function getRoundMinutes()
     {
         $setting = $this->getByKey('round_minutes');
-        return $setting ? (int)$setting->setting_value : 15;
+
+        return $setting ? (int) $setting->setting_value : 15;
     }
 
     public function updateGeneralSettings(array $data)

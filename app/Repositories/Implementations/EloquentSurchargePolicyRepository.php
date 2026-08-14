@@ -32,7 +32,7 @@ class EloquentSurchargePolicyRepository implements SurchargePolicyRepositoryInte
             $created[] = $this->model->create([
                 'policy_type' => $type,
                 'hour_mark' => $policy['hour_mark'] ?? 0,
-                'price' => $policy['price'] ?? 0
+                'price' => $policy['price'] ?? 0,
             ]);
         }
 

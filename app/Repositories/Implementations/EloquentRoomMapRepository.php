@@ -120,7 +120,7 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
     public function updateFloor($id, array $data)
     {
         $floor = Floor::find($id);
-        if (!$floor) {
+        if (! $floor) {
             return null;
         }
 
@@ -134,7 +134,7 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
     public function updateRoom($id, array $data)
     {
         $room = Room::find($id);
-        if (!$room) {
+        if (! $room) {
             return null;
         }
 
@@ -260,7 +260,7 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
             ->get()
             ->map(function ($bookingDetail) {
                 $linkedRoom = $bookingDetail->room;
-                if (!$linkedRoom) {
+                if (! $linkedRoom) {
                     return null;
                 }
 
@@ -390,7 +390,7 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
             ->where('payment_status', '!=', 'paid')
             ->exists();
 
-        if (!$hasUnpaidRooms) {
+        if (! $hasUnpaidRooms) {
             $bookingCheckout = Booking::findOrFail($bookingId);
             $bookingCheckout->checked_out_at = $billingEndAt;
             $bookingCheckout->status = BookingStatus::PAID->value;
@@ -430,7 +430,7 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
     {
         [$start, $end] = $this->resolveBookingDateRange($filters);
 
-        if (!$start || !$end) {
+        if (! $start || ! $end) {
             return;
         }
 
@@ -448,10 +448,10 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
             return [null, null];
         }
 
-        $start = !empty($dateFrom)
+        $start = ! empty($dateFrom)
             ? Carbon::parse($dateFrom)->startOfDay()
             : Carbon::create(1970, 1, 1)->startOfDay();
-        $end = !empty($dateTo)
+        $end = ! empty($dateTo)
             ? Carbon::parse($dateTo)->endOfDay()
             : Carbon::create(2999, 12, 31)->endOfDay();
 
@@ -471,7 +471,7 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
 
     private function hasDateFilters(array $filters): bool
     {
-        return !empty($filters['date_from']) || !empty($filters['date_to']);
+        return ! empty($filters['date_from']) || ! empty($filters['date_to']);
     }
 
     private function applyRoomMapDisplayState(Room $room): void
@@ -481,6 +481,7 @@ class EloquentRoomMapRepository implements RoomMapRepositoryInterface
         if ($displayBookingDetail) {
             $room->setAttribute('room_map_status', $this->resolveRoomStatusFromBookingDetail($displayBookingDetail));
             $room->setRelation('roomMapBookingDetail', $displayBookingDetail);
+
             return;
         }
 

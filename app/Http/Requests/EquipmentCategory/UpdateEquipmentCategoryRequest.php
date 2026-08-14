@@ -16,7 +16,7 @@ class UpdateEquipmentCategoryRequest extends FormRequest
         $id = $this->route('id');
 
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:equipment_categories,name,' . $id],
+            'name' => ['required', 'string', 'max:255', 'unique:equipment_categories,name,'.$id],
         ];
     }
 
@@ -24,8 +24,8 @@ class UpdateEquipmentCategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Vui lòng nhập tên phân loại.',
-            'name.unique'   => 'Tên phân loại này đã tồn tại.',
-            'name.max'      => 'Tên phân loại không được quá 255 ký tự.',
+            'name.unique' => 'Tên phân loại này đã tồn tại.',
+            'name.max' => 'Tên phân loại không được quá 255 ký tự.',
         ];
     }
 }

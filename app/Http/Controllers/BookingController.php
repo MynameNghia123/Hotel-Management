@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Actions\CreateBookingAction;
 use App\Enums\BookingStatus;
-use App\Http\Traits\PaginationTrait;
 use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Requests\Booking\UpdateBookingStatusRequest;
+use App\Http\Traits\PaginationTrait;
 use App\Services\Contracts\BookingServiceInterface;
-use App\Actions\CreateBookingAction;
+use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
@@ -30,11 +30,12 @@ class BookingController extends Controller
         );
 
         $this->validatePageNumber($bookings->currentPage(), $bookings->lastPage(), 'abort');
+
         // dd($bookings);
         return view('admin.bookings.index', [
             'bookings' => $bookings,
             'statuses' => BookingStatus::cases(),
-            'statusCounts' => $this->bookingService->getStatusCounts()
+            'statusCounts' => $this->bookingService->getStatusCounts(),
         ]);
     }
 
@@ -48,9 +49,9 @@ class BookingController extends Controller
             'customers' => $customers,
             'staffs' => $staffs
         ] = $this->bookingService->prepareDataForCreate();
+
         return view('admin.bookings.create', compact('rooms', 'customers', 'staffs'));
     }
-
 
     /**
      * Store new booking with customer and booking details
@@ -68,7 +69,7 @@ class BookingController extends Controller
                 ->with('success', 'Đặt phòng mới được tạo thành công.');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Lỗi: ' . $e->getMessage())
+                ->with('error', 'Lỗi: '.$e->getMessage())
                 ->withInput();
         }
     }
@@ -79,13 +80,14 @@ class BookingController extends Controller
     public function show($id)
     {
         [
-            'booking' => $booking, 
-            'bookingDetails' => $bookingDetails, 
+            'booking' => $booking,
+            'bookingDetails' => $bookingDetails,
             'statuses' => $statuses
         ] = $this->bookingService->getBookingWithDetails($id);
-        if (!$booking) {
+        if (! $booking) {
             abort(404);
         }
+
         return view('admin.bookings.show', compact('booking', 'bookingDetails', 'statuses'));
     }
 
@@ -102,7 +104,7 @@ class BookingController extends Controller
                 ->with('success', "Cập nhật trạng thái thành công: {$newStatus->label()}");
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Lỗi: ' . $e->getMessage());
+                ->with('error', 'Lỗi: '.$e->getMessage());
         }
     }
 }

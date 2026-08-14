@@ -33,12 +33,14 @@ class EloquentBookingDetailRepository implements BookingDetailRepositoryInterfac
     {
         $record = $this->findById($id);
         $record->update($data);
+
         return $record;
     }
 
     public function delete($id)
     {
         $record = $this->findById($id);
+
         return $record->delete();
     }
 
@@ -66,6 +68,7 @@ class EloquentBookingDetailRepository implements BookingDetailRepositoryInterfac
                 'room_id' => $roomId,
             ]);
         }
+
         return $records;
     }
 

@@ -2,6 +2,52 @@
 
 namespace App\Providers;
 
+use App\Services\Contracts\AmenityServiceInterface;
+use App\Services\Contracts\BookingDetailServiceInterface;
+use App\Services\Contracts\BookingServiceInterface;
+use App\Services\Contracts\ClientBookingServiceInterface;
+use App\Services\Contracts\CustomerServiceInterface;
+use App\Services\Contracts\EquipmentCategoryServiceInterface;
+use App\Services\Contracts\EquipmentServiceInterface;
+use App\Services\Contracts\FloorServiceInterface;
+use App\Services\Contracts\HomeServiceInterface;
+use App\Services\Contracts\RepairTicketServiceInterface;
+use App\Services\Contracts\RoleClaimServiceInterface;
+use App\Services\Contracts\RoleServiceInterface;
+use App\Services\Contracts\RoomMapServiceInterface;
+use App\Services\Contracts\RoomServiceInterface;
+use App\Services\Contracts\RoomTypeImageServiceInterface;
+use App\Services\Contracts\RoomTypeServiceInterface;
+use App\Services\Contracts\SearchServiceInterface;
+use App\Services\Contracts\ServiceGroupServiceInterface;
+use App\Services\Contracts\ServiceServiceInterface;
+use App\Services\Contracts\StaffServiceInterface;
+use App\Services\Contracts\StatisticalServiceInterface;
+use App\Services\Contracts\SurchargePolicyServiceInterface;
+use App\Services\Contracts\SystemSettingServiceInterface;
+use App\Services\Implementations\AmenityService;
+use App\Services\Implementations\BookingDetailService;
+use App\Services\Implementations\BookingService;
+use App\Services\Implementations\ClientBookingService;
+use App\Services\Implementations\CustomerService;
+use App\Services\Implementations\EquipmentCategoryService;
+use App\Services\Implementations\EquipmentService;
+use App\Services\Implementations\FloorService;
+use App\Services\Implementations\HomeService;
+use App\Services\Implementations\RepairTicketService;
+use App\Services\Implementations\RoleClaimService;
+use App\Services\Implementations\RoleService;
+use App\Services\Implementations\RoomMapService;
+use App\Services\Implementations\RoomService;
+use App\Services\Implementations\RoomTypeImageService;
+use App\Services\Implementations\RoomTypeService;
+use App\Services\Implementations\SearchService;
+use App\Services\Implementations\ServiceGroupService;
+use App\Services\Implementations\ServiceService;
+use App\Services\Implementations\StaffService;
+use App\Services\Implementations\StatisticalService;
+use App\Services\Implementations\SurchargePolicyService;
+use App\Services\Implementations\SystemSettingService;
 use Illuminate\Support\ServiceProvider;
 
 class ServiceServiceProvider extends ServiceProvider
@@ -9,116 +55,116 @@ class ServiceServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Services\Contracts\RoleServiceInterface::class,
-            \App\Services\Implementations\RoleService::class
+            RoleServiceInterface::class,
+            RoleService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\CustomerServiceInterface::class,
-            \App\Services\Implementations\CustomerService::class
+            CustomerServiceInterface::class,
+            CustomerService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\RoleClaimServiceInterface::class,
-            \App\Services\Implementations\RoleClaimService::class
+            RoleClaimServiceInterface::class,
+            RoleClaimService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\RoomTypeServiceInterface::class,
-            \App\Services\Implementations\RoomTypeService::class
+            RoomTypeServiceInterface::class,
+            RoomTypeService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\AmenityServiceInterface::class,
-            \App\Services\Implementations\AmenityService::class
+            AmenityServiceInterface::class,
+            AmenityService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\StaffServiceInterface::class,
-            \App\Services\Implementations\StaffService::class
+            StaffServiceInterface::class,
+            StaffService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\EquipmentServiceInterface::class,
-            \App\Services\Implementations\EquipmentService::class
+            EquipmentServiceInterface::class,
+            EquipmentService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\EquipmentCategoryServiceInterface::class,
-            \App\Services\Implementations\EquipmentCategoryService::class
+            EquipmentCategoryServiceInterface::class,
+            EquipmentCategoryService::class
         );
         $this->app->bind(
-            \App\Services\Contracts\ServiceServiceInterface::class,
-            \App\Services\Implementations\ServiceService::class
+            ServiceServiceInterface::class,
+            ServiceService::class
         );
         $this->app->bind(
-            \App\Services\Contracts\ServiceGroupServiceInterface::class,
-            \App\Services\Implementations\ServiceGroupService::class
-        );
-
-        $this->app->bind(
-            \App\Services\Contracts\FloorServiceInterface::class,
-            \App\Services\Implementations\FloorService::class
+            ServiceGroupServiceInterface::class,
+            ServiceGroupService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\RoomServiceInterface::class,
-            \App\Services\Implementations\RoomService::class
+            FloorServiceInterface::class,
+            FloorService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\RoomTypeImageServiceInterface::class,
-            \App\Services\Implementations\RoomTypeImageService::class
+            RoomServiceInterface::class,
+            RoomService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\RoomMapServiceInterface::class,
-            \App\Services\Implementations\RoomMapService::class
+            RoomTypeImageServiceInterface::class,
+            RoomTypeImageService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\BookingServiceInterface::class,
-            \App\Services\Implementations\BookingService::class
+            RoomMapServiceInterface::class,
+            RoomMapService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\BookingDetailServiceInterface::class,
-            \App\Services\Implementations\BookingDetailService::class
+            BookingServiceInterface::class,
+            BookingService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\RepairTicketServiceInterface::class,
-            \App\Services\Implementations\RepairTicketService::class
+            BookingDetailServiceInterface::class,
+            BookingDetailService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\SystemSettingServiceInterface::class,
-            \App\Services\Implementations\SystemSettingService::class
+            RepairTicketServiceInterface::class,
+            RepairTicketService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\SurchargePolicyServiceInterface::class,
-            \App\Services\Implementations\SurchargePolicyService::class
+            SystemSettingServiceInterface::class,
+            SystemSettingService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\StatisticalServiceInterface::class,
-            \App\Services\Implementations\StatisticalService::class
+            SurchargePolicyServiceInterface::class,
+            SurchargePolicyService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\HomeServiceInterface::class,
-            \App\Services\Implementations\HomeService::class
+            StatisticalServiceInterface::class,
+            StatisticalService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\SearchServiceInterface::class,
-            \App\Services\Implementations\SearchService::class
+            HomeServiceInterface::class,
+            HomeService::class
         );
 
         $this->app->bind(
-            \App\Services\Contracts\ClientBookingServiceInterface::class,
-            \App\Services\Implementations\ClientBookingService::class
+            SearchServiceInterface::class,
+            SearchService::class
+        );
+
+        $this->app->bind(
+            ClientBookingServiceInterface::class,
+            ClientBookingService::class
         );
     }
 }

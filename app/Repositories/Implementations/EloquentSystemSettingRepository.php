@@ -22,19 +22,20 @@ class EloquentSystemSettingRepository implements SystemSettingRepositoryInterfac
     public function setByKey(string $key, $value, $description = null)
     {
         $setting = $this->getByKey($key);
-        
+
         if ($setting) {
             $setting->update([
                 'setting_value' => $value,
-                'description' => $description ?? $setting->description
+                'description' => $description ?? $setting->description,
             ]);
+
             return $setting;
         }
 
         return $this->model->create([
             'setting_key' => $key,
             'setting_value' => $value,
-            'description' => $description
+            'description' => $description,
         ]);
     }
 }

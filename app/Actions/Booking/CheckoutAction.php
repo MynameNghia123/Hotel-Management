@@ -20,12 +20,12 @@ class CheckoutAction
         $latestBookingDetail = $this->roomMapRepository->findLatestBookingDetailByRoomId($roomId);
         $booking = $latestBookingDetail?->booking;
 
-        if (!$booking) {
+        if (! $booking) {
             throw new RuntimeException('Không tìm thấy booking để thanh toán.');
         }
 
         $currentStatus = BookingStatus::tryFrom((string) $booking->status);
-        if (!$currentStatus || !$currentStatus->canTransitionTo(BookingStatus::PAID)) {
+        if (! $currentStatus || ! $currentStatus->canTransitionTo(BookingStatus::PAID)) {
             $statusLabel = $currentStatus?->label() ?? (string) $booking->status;
             throw new RuntimeException("Chỉ booking ở trạng thái Đang ở mới được thanh toán. Trạng thái hiện tại: {$statusLabel}.");
         }
@@ -42,7 +42,7 @@ class CheckoutAction
             throw new RuntimeException('Vui lòng chọn ít nhất một phòng thuộc booking để thanh toán.');
         }
 
-        if (!$booking->checked_in_at) {
+        if (! $booking->checked_in_at) {
             if ((string) $booking->status === BookingStatus::OCCUPIED->value) {
                 $fallbackCheckInAt = $latestBookingDetail?->checkin_date ?? $booking->booking_date ?? now();
                 $this->roomMapRepository->updateBookingCheckInAt((int) $booking->id, $fallbackCheckInAt);

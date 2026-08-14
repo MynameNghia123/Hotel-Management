@@ -9,8 +9,7 @@ class HomeService implements HomeServiceInterface
 {
     public function __construct(
         private readonly HomeRepositoryInterface $homeRepository
-    ) {
-    }
+    ) {}
 
     public function getHomepageData(): array
     {

@@ -35,8 +35,8 @@ class PrepareIndexAction
     private function normalizeDateFilters(array $filters): array
     {
         $today = now()->toDateString();
-        $filters['date_from'] = !empty($filters['date_from']) ? $filters['date_from'] : $today;
-        $filters['date_to'] = !empty($filters['date_to']) ? $filters['date_to'] : $filters['date_from'];
+        $filters['date_from'] = ! empty($filters['date_from']) ? $filters['date_from'] : $today;
+        $filters['date_to'] = ! empty($filters['date_to']) ? $filters['date_to'] : $filters['date_from'];
 
         if ($filters['date_from'] > $filters['date_to']) {
             [$filters['date_from'], $filters['date_to']] = [$filters['date_to'], $filters['date_from']];

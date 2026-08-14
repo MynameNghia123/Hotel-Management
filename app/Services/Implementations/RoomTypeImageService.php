@@ -2,16 +2,18 @@
 
 namespace App\Services\Implementations;
 
-use App\Services\Contracts\RoomTypeImageServiceInterface;
 use App\Models\RoomTypeImage;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Session;
+use App\Services\Contracts\RoomTypeImageServiceInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class RoomTypeImageService implements RoomTypeImageServiceInterface
 {
     const TEMP_DIR_PREFIX = 'room-types/temp';
+
     const PERMANENT_DIR = 'room-types';
+
     const MAX_FILE_SIZE = 5120; // 5MB in KB
 
     /**
@@ -21,12 +23,12 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
     {
         try {
             // Validate file
-            if (!$file || !$file->isValid()) {
+            if (! $file || ! $file->isValid()) {
                 throw new \Exception('File không hợp lệ.');
             }
 
-            $tempDir = self::TEMP_DIR_PREFIX . "/{$sessionId}";
-            $filename = time() . '_' . $file->hashName();
+            $tempDir = self::TEMP_DIR_PREFIX."/{$sessionId}";
+            $filename = time().'_'.$file->hashName();
             $path = $file->storeAs($tempDir, $filename, 'public');
 
             Log::info('Image uploaded', [
@@ -34,7 +36,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
                 'filename' => $filename,
                 'path' => $path,
                 'url' => Storage::disk('public')->url($path),
-                'exists' => Storage::disk('public')->exists($path)
+                'exists' => Storage::disk('public')->exists($path),
             ]);
 
             // Store in session
@@ -42,18 +44,18 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
             $imageId = uniqid();
             $tempImages[] = [
                 'id' => $imageId,
-                'path' => $path
+                'path' => $path,
             ];
             Session::put('temp_images', $tempImages);
 
             return [
                 'success' => true,
                 'id' => $imageId,
-                'path' => '/storage/' . $path
+                'path' => '/storage/'.$path,
             ];
         } catch (\Exception $e) {
-            Log::error('RoomTypeImageService::uploadTempImage - ' . $e->getMessage(), [
-                'exception' => $e
+            Log::error('RoomTypeImageService::uploadTempImage - '.$e->getMessage(), [
+                'exception' => $e,
             ]);
             throw $e;
         }
@@ -65,7 +67,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
     public function deleteTempImage($path, $sessionId)
     {
         try {
-            if (!$path) {
+            if (! $path) {
                 throw new \Exception('Đường dẫn ảnh không hợp lệ.');
             }
 
@@ -90,10 +92,10 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
 
             return [
                 'success' => true,
-                'message' => 'Ảnh được xóa thành công!'
+                'message' => 'Ảnh được xóa thành công!',
             ];
         } catch (\Exception $e) {
-            Log::error('RoomTypeImageService::deleteTempImage - ' . $e->getMessage());
+            Log::error('RoomTypeImageService::deleteTempImage - '.$e->getMessage());
             throw $e;
         }
     }
@@ -104,31 +106,31 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
     public function uploadImage($file, $roomTypeId)
     {
         try {
-            if (!$file || !$file->isValid()) {
+            if (! $file || ! $file->isValid()) {
                 throw new \Exception('File không hợp lệ.');
             }
 
-            $filename = time() . '_' . $file->hashName();
+            $filename = time().'_'.$file->hashName();
             $path = $file->storeAs(self::PERMANENT_DIR, $filename, 'public');
 
             // Create image record
-            $imageUrl = '/storage/' . $path;
+            $imageUrl = '/storage/'.$path;
             $maxOrder = RoomTypeImage::where('room_type_id', $roomTypeId)->max('order') ?? 0;
 
             $image = RoomTypeImage::create([
                 'room_type_id' => $roomTypeId,
                 'image_url' => $imageUrl,
-                'order' => $maxOrder + 1
+                'order' => $maxOrder + 1,
             ]);
 
             return [
                 'success' => true,
                 'image' => $image,
                 'image_url' => $imageUrl,
-                'message' => 'Ảnh được tải lên thành công!'
+                'message' => 'Ảnh được tải lên thành công!',
             ];
         } catch (\Exception $e) {
-            Log::error('RoomTypeImageService::uploadImage - ' . $e->getMessage());
+            Log::error('RoomTypeImageService::uploadImage - '.$e->getMessage());
             throw $e;
         }
     }
@@ -141,7 +143,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
         try {
             $image = RoomTypeImage::find($imageId);
 
-            if (!$image || $image->room_type_id != $roomTypeId) {
+            if (! $image || $image->room_type_id != $roomTypeId) {
                 throw new \Exception('Ảnh không tồn tại.');
             }
 
@@ -150,7 +152,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
             if (strpos($imagePath, '/storage/') === 0) {
                 $imagePath = substr($imagePath, strlen('/storage/'));
             }
-            
+
             if (Storage::disk('public')->exists($imagePath)) {
                 Storage::disk('public')->delete($imagePath);
             }
@@ -159,10 +161,10 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
 
             return [
                 'success' => true,
-                'message' => 'Ảnh được xóa thành công!'
+                'message' => 'Ảnh được xóa thành công!',
             ];
         } catch (\Exception $e) {
-            Log::error('RoomTypeImageService::deleteImage - ' . $e->getMessage());
+            Log::error('RoomTypeImageService::deleteImage - '.$e->getMessage());
             throw $e;
         }
     }
@@ -179,7 +181,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
                 return [
                     'success' => true,
                     'count' => 0,
-                    'message' => 'Không có ảnh tạm để đính kèm.'
+                    'message' => 'Không có ảnh tạm để đính kèm.',
                 ];
             }
 
@@ -203,13 +205,14 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
                     // Create image record
                     RoomTypeImage::create([
                         'room_type_id' => $roomTypeId,
-                        'image_url' => '/storage/' . $permanentPath,
-                        'order' => $maxOrder + $index + 1
+                        'image_url' => '/storage/'.$permanentPath,
+                        'order' => $maxOrder + $index + 1,
                     ]);
 
                     $count++;
                 } catch (\Exception $e) {
-                    Log::warning('Failed to attach single image: ' . $e->getMessage());
+                    Log::warning('Failed to attach single image: '.$e->getMessage());
+
                     continue;
                 }
             }
@@ -223,10 +226,10 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
             return [
                 'success' => true,
                 'count' => $count,
-                'message' => "Đã đính kèm {$count} ảnh thành công!"
+                'message' => "Đã đính kèm {$count} ảnh thành công!",
             ];
         } catch (\Exception $e) {
-            Log::error('RoomTypeImageService::attachTempImagesToRoomType - ' . $e->getMessage());
+            Log::error('RoomTypeImageService::attachTempImagesToRoomType - '.$e->getMessage());
             throw $e;
         }
     }
@@ -241,7 +244,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
                 ->orderBy('order')
                 ->get();
         } catch (\Exception $e) {
-            Log::error('RoomTypeImageService::getImagesByRoomType - ' . $e->getMessage());
+            Log::error('RoomTypeImageService::getImagesByRoomType - '.$e->getMessage());
             throw $e;
         }
     }
@@ -260,10 +263,10 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
 
             return [
                 'success' => true,
-                'message' => 'Ảnh được sắp xếp lại thành công!'
+                'message' => 'Ảnh được sắp xếp lại thành công!',
             ];
         } catch (\Exception $e) {
-            Log::error('RoomTypeImageService::reorderImages - ' . $e->getMessage());
+            Log::error('RoomTypeImageService::reorderImages - '.$e->getMessage());
             throw $e;
         }
     }
@@ -274,7 +277,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
     private function cleanupTempDirectory($sessionId)
     {
         try {
-            $tempDir = self::TEMP_DIR_PREFIX . "/{$sessionId}";
+            $tempDir = self::TEMP_DIR_PREFIX."/{$sessionId}";
             if (Storage::disk('public')->exists($tempDir)) {
                 $files = Storage::disk('public')->files($tempDir);
                 if (empty($files)) {
@@ -282,7 +285,7 @@ class RoomTypeImageService implements RoomTypeImageServiceInterface
                 }
             }
         } catch (\Exception $e) {
-            Log::warning('Failed to cleanup temp directory: ' . $e->getMessage());
+            Log::warning('Failed to cleanup temp directory: '.$e->getMessage());
         }
     }
 }

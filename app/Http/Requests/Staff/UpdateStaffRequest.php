@@ -11,7 +11,7 @@ class UpdateStaffRequest extends FormRequest
     public function rules(): array
     {
         $staffId = $this->route('id');
-        
+
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -70,10 +70,10 @@ class UpdateStaffRequest extends FormRequest
     public function validated($key = null, $default = null)
     {
         $data = parent::validated($key, $default);
-        
+
         // Xóa password_confirmation khỏi dữ liệu trước khi return
         unset($data['password_confirmation']);
-        
+
         return $data;
     }
 }

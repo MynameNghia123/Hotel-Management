@@ -2,8 +2,8 @@
 
 namespace App\Services\Implementations;
 
-use App\Services\Contracts\AmenityServiceInterface;
 use App\Repositories\Contracts\AmenityRepositoryInterface;
+use App\Services\Contracts\AmenityServiceInterface;
 
 class AmenityService implements AmenityServiceInterface
 {

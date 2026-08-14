@@ -52,7 +52,7 @@ class RepairTicketService implements RepairTicketServiceInterface
     public function create(array $data)
     {
         $repairTicket = $this->repairTicketRepository->create($data);
-        
+
         // Automatically set room status to maintenance when creating repair ticket
         if ($repairTicket && isset($data['room_id'])) {
             $room = Room::find($data['room_id']);
@@ -60,7 +60,7 @@ class RepairTicketService implements RepairTicketServiceInterface
                 $room->update(['status' => RoomStatus::MAINTENANCE->value]);
             }
         }
-        
+
         return $repairTicket;
     }
 
@@ -102,18 +102,18 @@ class RepairTicketService implements RepairTicketServiceInterface
     public function transitionStatus($id, $newStatusValue, $notes = null)
     {
         $ticket = $this->repairTicketRepository->findById($id);
-        
-        if (!$ticket) {
+
+        if (! $ticket) {
             return [
                 'success' => false,
-                'message' => 'Phiếu sửa chữa không tồn tại'
+                'message' => 'Phiếu sửa chữa không tồn tại',
             ];
         }
 
         // Validate status transition using request validation logic
         $validation = UpdateRepairTicketStatusRequest::validateTransition($ticket, $newStatusValue);
-        
-        if (!$validation['success']) {
+
+        if (! $validation['success']) {
             return $validation;
         }
 
@@ -138,7 +138,7 @@ class RepairTicketService implements RepairTicketServiceInterface
             'message' => sprintf(
                 'Cập nhật trạng thái thành %s thành công',
                 $validation['status']->label()
-            )
+            ),
         ];
     }
 

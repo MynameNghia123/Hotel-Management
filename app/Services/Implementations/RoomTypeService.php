@@ -3,16 +3,16 @@
 namespace App\Services\Implementations;
 
 use App\Repositories\Contracts\RoomTypeRepositoryInterface;
-use App\Services\Contracts\RoomTypeServiceInterface;
 use App\Services\Contracts\AmenityServiceInterface;
 use App\Services\Contracts\EquipmentServiceInterface;
+use App\Services\Contracts\RoomTypeServiceInterface;
 
 class RoomTypeService implements RoomTypeServiceInterface
 {
     public function __construct(
         protected RoomTypeRepositoryInterface $roomTypeRepository,
-        protected AmenityServiceInterface     $amenityService,
-        protected EquipmentServiceInterface   $equipmentService
+        protected AmenityServiceInterface $amenityService,
+        protected EquipmentServiceInterface $equipmentService
     ) {}
 
     /**
@@ -54,8 +54,9 @@ class RoomTypeService implements RoomTypeServiceInterface
     {
         // Auto-generate code if missing
         if (empty($data['code'])) {
-            $data['code'] = 'RT-' . strtoupper(uniqid());
+            $data['code'] = 'RT-'.strtoupper(uniqid());
         }
+
         return $this->roomTypeRepository->create($data);
     }
 
@@ -89,7 +90,7 @@ class RoomTypeService implements RoomTypeServiceInterface
      */
     public function formatForEditForm($roomType)
     {
-        if (!$roomType) {
+        if (! $roomType) {
             return null;
         }
 
@@ -100,9 +101,9 @@ class RoomTypeService implements RoomTypeServiceInterface
             'selectedEquipments' => $roomType->equipments->map(function ($equip) {
                 return [
                     'id' => $equip->id,
-                    'quantity' => $equip->pivot->quantity
+                    'quantity' => $equip->pivot->quantity,
                 ];
-            })->keyBy('id')->toArray()
+            })->keyBy('id')->toArray(),
         ];
     }
 
@@ -116,7 +117,7 @@ class RoomTypeService implements RoomTypeServiceInterface
 
         foreach ($equipmentData as $item) {
             $syncData[$item['equipment_id']] = [
-                'quantity' => $item['quantity']
+                'quantity' => $item['quantity'],
             ];
         }
 
@@ -126,7 +127,7 @@ class RoomTypeService implements RoomTypeServiceInterface
     public function prepareDataForCreate(): array
     {
         return [
-            'allAmenities'  => $this->amenityService->getAll(),
+            'allAmenities' => $this->amenityService->getAll(),
             'allEquipments' => $this->equipmentService->getAll(),
         ];
     }
@@ -138,7 +139,7 @@ class RoomTypeService implements RoomTypeServiceInterface
         return array_merge(
             $this->formatForEditForm($roomType),
             [
-                'allAmenities'  => $this->amenityService->getAll(),
+                'allAmenities' => $this->amenityService->getAll(),
                 'allEquipments' => $this->equipmentService->getAll(),
             ]
         );

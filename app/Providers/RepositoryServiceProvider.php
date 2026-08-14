@@ -2,6 +2,50 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\AmenityRepositoryInterface;
+use App\Repositories\Contracts\BookingDetailRepositoryInterface;
+use App\Repositories\Contracts\BookingRepositoryInterface;
+use App\Repositories\Contracts\ClientBookingRepositoryInterface;
+use App\Repositories\Contracts\CustomerRepositoryInterface;
+use App\Repositories\Contracts\EquipmentCategoryRepositoryInterface;
+use App\Repositories\Contracts\EquipmentRepositoryInterface;
+use App\Repositories\Contracts\FloorRepositoryInterface;
+use App\Repositories\Contracts\HomeRepositoryInterface;
+use App\Repositories\Contracts\RepairTicketRepositoryInterface;
+use App\Repositories\Contracts\RoleClaimRepositoryInterface;
+use App\Repositories\Contracts\RoleRepositoryInterface;
+use App\Repositories\Contracts\RoomMapRepositoryInterface;
+use App\Repositories\Contracts\RoomRepositoryInterface;
+use App\Repositories\Contracts\RoomTypeRepositoryInterface;
+use App\Repositories\Contracts\SearchRepositoryInterface;
+use App\Repositories\Contracts\ServiceGroupRepositoryInterface;
+use App\Repositories\Contracts\ServiceRepositoryInterface;
+use App\Repositories\Contracts\StaffRepositoryInterface;
+use App\Repositories\Contracts\StatisticalRepositoryInterface;
+use App\Repositories\Contracts\SurchargePolicyRepositoryInterface;
+use App\Repositories\Contracts\SystemSettingRepositoryInterface;
+use App\Repositories\Implementations\EloquentAmenityRepository;
+use App\Repositories\Implementations\EloquentBookingDetailRepository;
+use App\Repositories\Implementations\EloquentBookingRepository;
+use App\Repositories\Implementations\EloquentClientBookingRepository;
+use App\Repositories\Implementations\EloquentCustomerRepository;
+use App\Repositories\Implementations\EloquentEquipmentCategoryRepository;
+use App\Repositories\Implementations\EloquentEquipmentRepository;
+use App\Repositories\Implementations\EloquentFloorRepository;
+use App\Repositories\Implementations\EloquentHomeRepository;
+use App\Repositories\Implementations\EloquentRepairTicketRepository;
+use App\Repositories\Implementations\EloquentRoleClaimRepository;
+use App\Repositories\Implementations\EloquentRoleRepository;
+use App\Repositories\Implementations\EloquentRoomMapRepository;
+use App\Repositories\Implementations\EloquentRoomRepository;
+use App\Repositories\Implementations\EloquentRoomTypeRepository;
+use App\Repositories\Implementations\EloquentSearchRepository;
+use App\Repositories\Implementations\EloquentServiceGroupRepository;
+use App\Repositories\Implementations\EloquentServiceRepository;
+use App\Repositories\Implementations\EloquentStaffRepository;
+use App\Repositories\Implementations\EloquentStatisticalRepository;
+use App\Repositories\Implementations\EloquentSurchargePolicyRepository;
+use App\Repositories\Implementations\EloquentSystemSettingRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -9,111 +53,111 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Repositories\Contracts\StaffRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentStaffRepository::class
+            StaffRepositoryInterface::class,
+            EloquentStaffRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\RoleRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentRoleRepository::class
+            RoleRepositoryInterface::class,
+            EloquentRoleRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\RoleClaimRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentRoleClaimRepository::class
+            RoleClaimRepositoryInterface::class,
+            EloquentRoleClaimRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\RoomTypeRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentRoomTypeRepository::class
+            RoomTypeRepositoryInterface::class,
+            EloquentRoomTypeRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\RoomRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentRoomRepository::class
+            RoomRepositoryInterface::class,
+            EloquentRoomRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\CustomerRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentCustomerRepository::class
+            CustomerRepositoryInterface::class,
+            EloquentCustomerRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\AmenityRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentAmenityRepository::class
+            AmenityRepositoryInterface::class,
+            EloquentAmenityRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\EquipmentRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentEquipmentRepository::class
+            EquipmentRepositoryInterface::class,
+            EloquentEquipmentRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\EquipmentCategoryRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentEquipmentCategoryRepository::class
+            EquipmentCategoryRepositoryInterface::class,
+            EloquentEquipmentCategoryRepository::class
         );
         $this->app->bind(
-            \App\Repositories\Contracts\ServiceGroupRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentServiceGroupRepository::class
+            ServiceGroupRepositoryInterface::class,
+            EloquentServiceGroupRepository::class
         );
         $this->app->bind(
-            \App\Repositories\Contracts\ServiceRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentServiceRepository::class
-        );
-
-        $this->app->bind(
-            \App\Repositories\Contracts\FloorRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentFloorRepository::class
+            ServiceRepositoryInterface::class,
+            EloquentServiceRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\BookingRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentBookingRepository::class
+            FloorRepositoryInterface::class,
+            EloquentFloorRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\BookingDetailRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentBookingDetailRepository::class
+            BookingRepositoryInterface::class,
+            EloquentBookingRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\RoomMapRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentRoomMapRepository::class
+            BookingDetailRepositoryInterface::class,
+            EloquentBookingDetailRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\RepairTicketRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentRepairTicketRepository::class
+            RoomMapRepositoryInterface::class,
+            EloquentRoomMapRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\SystemSettingRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentSystemSettingRepository::class
+            RepairTicketRepositoryInterface::class,
+            EloquentRepairTicketRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\SurchargePolicyRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentSurchargePolicyRepository::class
+            SystemSettingRepositoryInterface::class,
+            EloquentSystemSettingRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\StatisticalRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentStatisticalRepository::class
+            SurchargePolicyRepositoryInterface::class,
+            EloquentSurchargePolicyRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\HomeRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentHomeRepository::class
+            StatisticalRepositoryInterface::class,
+            EloquentStatisticalRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\SearchRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentSearchRepository::class
+            HomeRepositoryInterface::class,
+            EloquentHomeRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\ClientBookingRepositoryInterface::class,
-            \App\Repositories\Implementations\EloquentClientBookingRepository::class
+            SearchRepositoryInterface::class,
+            EloquentSearchRepository::class
+        );
+
+        $this->app->bind(
+            ClientBookingRepositoryInterface::class,
+            EloquentClientBookingRepository::class
         );
     }
 }

@@ -24,6 +24,7 @@ class EloquentEquipmentRepository implements EquipmentRepositoryInterface
     {
         $query = $this->model->with('category');
         $query = EquipmentFilter::apply($query, $filters);
+
         return $query->paginate($perPage);
     }
 
@@ -41,12 +42,14 @@ class EloquentEquipmentRepository implements EquipmentRepositoryInterface
     {
         $record = $this->findById($id);
         $record->update($data);
+
         return $record;
     }
 
     public function delete($id)
     {
         $record = $this->findById($id);
+
         return $record->delete();
     }
 }

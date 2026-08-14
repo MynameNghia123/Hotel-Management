@@ -15,7 +15,7 @@ enum BookingStatus: string
      */
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => 'Chờ xác nhận',
             self::CONFIRMED => 'Đã xác nhận',
             self::OCCUPIED => 'Đang ở',
@@ -29,7 +29,7 @@ enum BookingStatus: string
      */
     public function badgeClass(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => 'yellow',
             self::CONFIRMED => 'green',
             self::OCCUPIED => 'blue',
@@ -43,7 +43,7 @@ enum BookingStatus: string
      */
     public function allowedTransitions(): array
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => [self::CONFIRMED, self::CANCELLED],      // Chờ → Xác nhận hoặc Hủy
             self::CONFIRMED => [self::OCCUPIED, self::CANCELLED],     // Xác nhận → Đang ở hoặc Hủy
             self::OCCUPIED => [self::PAID],                           // Đang ở → Đã thanh toán

@@ -16,7 +16,7 @@ class UpdateRoomStatusAction
         $room = $this->roomMapRepository->findRoomById($roomId);
         $newStatus = RoomStatus::tryFrom($status);
 
-        if (!$room || !$newStatus) {
+        if (! $room || ! $newStatus) {
             throw new \RuntimeException('Trạng thái phòng không hợp lệ.');
         }
 
@@ -35,7 +35,7 @@ class UpdateRoomStatusAction
             RoomStatus::MAINTENANCE->value => [RoomStatus::EMPTY],
         ];
 
-        if (!$currentStatus || !in_array($newStatus, $allowedTransitions[$currentStatus->value] ?? [], true)) {
+        if (! $currentStatus || ! in_array($newStatus, $allowedTransitions[$currentStatus->value] ?? [], true)) {
             throw new \RuntimeException('Chỉ được chuyển giữa trạng thái Trống và Đang sửa chữa.');
         }
     }

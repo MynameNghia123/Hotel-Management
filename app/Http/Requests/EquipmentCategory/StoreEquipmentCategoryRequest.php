@@ -22,8 +22,8 @@ class StoreEquipmentCategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Vui lòng nhập tên phân loại.',
-            'name.unique'   => 'Tên phân loại này đã tồn tại.',
-            'name.max'      => 'Tên phân loại không được quá 255 ký tự.',
+            'name.unique' => 'Tên phân loại này đã tồn tại.',
+            'name.max' => 'Tên phân loại không được quá 255 ký tự.',
         ];
     }
 }

@@ -3,10 +3,9 @@
 namespace App\Http\Resources;
 
 use App\Enums\RoomStatus;
-use App\Services\Contracts\FloorServiceInterface;
-use App\Services\Contracts\RoomTypeServiceInterface;
-use App\Services\Contracts\CustomerServiceInterface;
 use App\Services\Contracts\BookingServiceInterface;
+use App\Services\Contracts\CustomerServiceInterface;
+use App\Services\Contracts\RoomTypeServiceInterface;
 use Illuminate\Support\Collection;
 
 class RoomMapIndexResource
@@ -70,6 +69,7 @@ class RoomMapIndexResource
     private function removeFilterKey(array $filters, string $key): array
     {
         unset($filters[$key]);
+
         return $filters;
     }
 
@@ -78,6 +78,7 @@ class RoomMapIndexResource
         foreach ($keys as $key) {
             unset($filters[$key]);
         }
+
         return $filters;
     }
 

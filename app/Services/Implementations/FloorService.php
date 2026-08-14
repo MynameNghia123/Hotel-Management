@@ -38,6 +38,7 @@ class FloorService implements FloorServiceInterface
     {
         return $this->floorRepository->delete($id);
     }
+
     public function getPaginated(array $filters = [], $perPage = 10)
     {
         throw new \Exception('Not implemented');

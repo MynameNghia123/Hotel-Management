@@ -2,11 +2,11 @@
 
 namespace App\Services\Implementations;
 
-use App\Services\Contracts\AuthServiceInterface;
-use App\Repositories\Contracts\AuthRepositoryInterface;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Staff;
+use App\Repositories\Contracts\AuthRepositoryInterface;
+use App\Services\Contracts\AuthServiceInterface;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthService implements AuthServiceInterface
 {
@@ -19,10 +19,6 @@ class AuthService implements AuthServiceInterface
 
     /**
      * Đăng nhập staff
-     * 
-     * @param string $email
-     * @param string $password
-     * @return Staff|null
      */
     public function login(string $email, string $password): ?Staff
     {
@@ -33,7 +29,7 @@ class AuthService implements AuthServiceInterface
         // 1. Staff tồn tại
         // 2. Mật khẩu đúng
         // 3. Tài khoản đang hoạt động (is_active = true)
-        if (!$staff || !Hash::check($password, $staff->password) || !$staff->is_active) {
+        if (! $staff || ! Hash::check($password, $staff->password) || ! $staff->is_active) {
             return null;
         }
 

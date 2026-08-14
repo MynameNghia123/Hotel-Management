@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 class ChatController extends Controller
 {
     private const COOKIE_NAME = 'chat_session_token';
+
     private const COOKIE_DAYS = 30;
 
     public function __construct(private GeminiService $gemini) {}
@@ -29,33 +30,33 @@ class ChatController extends Controller
             ->orderBy('created_at')
             ->take(20)
             ->get()
-            ->map(fn($m) => ['role' => $m->role, 'content' => $m->content])
+            ->map(fn ($m) => ['role' => $m->role, 'content' => $m->content])
             ->toArray();
 
         $userMessage = $request->input('message');
 
         ChatMessage::create([
             'chat_session_id' => $session->id,
-            'role'            => 'user',
-            'content'         => $userMessage,
+            'role' => 'user',
+            'content' => $userMessage,
         ]);
 
         $aiReply = $this->gemini->chat($history, $userMessage);
 
         ChatMessage::create([
             'chat_session_id' => $session->id,
-            'role'            => 'model',
-            'content'         => $aiReply,
+            'role' => 'model',
+            'content' => $aiReply,
         ]);
 
         $response = response()->json([
-            'success'       => true,
-            'reply'         => $aiReply,
+            'success' => true,
+            'reply' => $aiReply,
             'session_token' => $session->session_token,
         ]);
 
         // Guest → set cookie; Logged-in → xoá guest cookie nếu còn
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             $response->withCookie(
                 cookie(self::COOKIE_NAME, $session->session_token, self::COOKIE_DAYS * 24 * 60)
             );
@@ -71,7 +72,7 @@ class ChatController extends Controller
     {
         $session = $this->findOrMergeSession($request);
 
-        if (!$session) {
+        if (! $session) {
             return response()->json(['success' => true, 'messages' => [], 'session_token' => null]);
         }
 
@@ -80,8 +81,8 @@ class ChatController extends Controller
             ->get(['role', 'content', 'created_at']);
 
         $response = response()->json([
-            'success'       => true,
-            'messages'      => $messages,
+            'success' => true,
+            'messages' => $messages,
             'session_token' => Auth::check() ? null : $session->session_token,
         ]);
 
@@ -102,7 +103,7 @@ class ChatController extends Controller
             ->whereNull('customer_id')
             ->first();
 
-        if (!$session) {
+        if (! $session) {
             return response()->json([
                 'success' => false,
                 'message' => 'Mã token không hợp lệ hoặc đã hết hạn.',
@@ -114,8 +115,8 @@ class ChatController extends Controller
             ->get(['role', 'content', 'created_at']);
 
         return response()->json([
-            'success'       => true,
-            'messages'      => $messages,
+            'success' => true,
+            'messages' => $messages,
             'session_token' => $session->session_token,
         ])->withCookie(
             cookie(self::COOKIE_NAME, $session->session_token, self::COOKIE_DAYS * 24 * 60)
@@ -142,13 +143,15 @@ class ChatController extends Controller
             $session = ChatSession::where('session_token', $guestToken)
                 ->whereNull('customer_id')
                 ->first();
-            if ($session) return $session;
+            if ($session) {
+                return $session;
+            }
         }
 
         // Guest mới → tạo session
         return ChatSession::create([
             'session_token' => Str::random(32),
-            'customer_id'   => null,
+            'customer_id' => null,
         ]);
     }
 
@@ -181,10 +184,10 @@ class ChatController extends Controller
         $customerSession = ChatSession::where('customer_id', $customerId)->first();
 
         // Không có guest cookie → dùng/tạo customer session
-        if (!$guestToken) {
+        if (! $guestToken) {
             return $customerSession ?? ChatSession::create([
                 'session_token' => Str::random(32),
-                'customer_id'   => $customerId,
+                'customer_id' => $customerId,
             ]);
         }
 
@@ -193,11 +196,11 @@ class ChatController extends Controller
             ->whereNull('customer_id')
             ->first();
 
-        if (!$guestSession) {
+        if (! $guestSession) {
             // Guest cookie không hợp lệ → dùng/tạo customer session
             return $customerSession ?? ChatSession::create([
                 'session_token' => Str::random(32),
-                'customer_id'   => $customerId,
+                'customer_id' => $customerId,
             ]);
         }
 
@@ -208,11 +211,13 @@ class ChatController extends Controller
                 ->orderBy('created_at')
                 ->update(['chat_session_id' => $customerSession->id]);
             $guestSession->delete();
+
             return $customerSession;
         }
 
         // Customer chưa có session → claim luôn guest session
         $guestSession->update(['customer_id' => $customerId]);
+
         return $guestSession->fresh();
     }
 }

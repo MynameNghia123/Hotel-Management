@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\ClientBookingController;
 use App\Http\Controllers\Client\AuthClientController;
 use App\Http\Controllers\Client\ChatController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\RoomController;
 use App\Http\Controllers\Client\SearchController;
+use App\Http\Controllers\ClientBookingController;
 use Illuminate\Support\Facades\Route;
 
 // Đăng nhập / Đăng xuất Khách hàng (OTP)
@@ -16,7 +16,6 @@ Route::post('/login/verify-otp', [AuthClientController::class, 'verifyOtp'])->na
 // Gắn throttle cho đăng ký: 3 lần / 1 phút (chống spam bot tạo tài khoản)
 Route::post('/register', [AuthClientController::class, 'register'])->name('client.register')->middleware('throttle:3,1');
 Route::post('/logout', [AuthClientController::class, 'logout'])->name('client.logout');
-
 
 // Trang chủ và thông tin chung
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -35,8 +34,6 @@ Route::get('/amenities', function () {
 Route::get('/dining', function () {
     return view('client.pages.dining');
 })->name('dining');
-
-
 
 // Đặt phòng
 Route::get('/search', [SearchController::class, 'index'])->name('search');

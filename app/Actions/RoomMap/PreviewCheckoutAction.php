@@ -9,7 +9,9 @@ use Carbon\Carbon;
 class PreviewCheckoutAction
 {
     private const VAT_RATE = 0.1;
+
     private const MINUTES_IN_DAY = 1440;
+
     private const MINUTES_IN_HOUR = 60;
 
     public function __construct(
@@ -21,12 +23,12 @@ class PreviewCheckoutAction
         $latestBookingDetail = $this->roomMapRepository->findLatestBookingDetailByRoomId($roomId);
         $booking = $latestBookingDetail?->booking;
 
-        if (!$booking) {
+        if (! $booking) {
             throw new \RuntimeException('Không tìm thấy booking để tạm tính thanh toán.');
         }
 
         $this->validateBookingStatus($booking);
-        
+
         $bookingRoomIds = collect($booking->bookingDetails ?? [])->pluck('room_id')->map(fn ($id) => (int) $id)->all();
         $targetRoomIds = $this->filterTargetRoomIds($selectedRoomIds, $bookingRoomIds);
 
@@ -64,7 +66,7 @@ class PreviewCheckoutAction
     private function validateBookingStatus($booking): void
     {
         $currentStatus = BookingStatus::tryFrom((string) $booking->status);
-        if (!$currentStatus || !$currentStatus->canTransitionTo(BookingStatus::PAID)) {
+        if (! $currentStatus || ! $currentStatus->canTransitionTo(BookingStatus::PAID)) {
             $statusLabel = $currentStatus?->label() ?? (string) $booking->status;
             throw new \RuntimeException("Chỉ booking ở trạng thái Đang ở mới được tạm tính thanh toán. Trạng thái hiện tại: {$statusLabel}.");
         }
@@ -129,7 +131,7 @@ class PreviewCheckoutAction
 
     private function calculateEarlyCheckoutSurcharge($detail, $detailRoom, $billingEndAt): float
     {
-        if (!$detail->checkout_date) {
+        if (! $detail->checkout_date) {
             return 0.0;
         }
 
@@ -182,7 +184,7 @@ class PreviewCheckoutAction
 
     private function formatDateTime($dateTimeValue): ?string
     {
-        if (!$dateTimeValue) {
+        if (! $dateTimeValue) {
             return null;
         }
 

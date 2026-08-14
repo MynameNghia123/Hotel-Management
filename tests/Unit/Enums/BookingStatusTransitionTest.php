@@ -11,7 +11,7 @@ class BookingStatusTransitionTest extends TestCase
     {
         // PENDING -> CONFIRMED
         $this->assertTrue(BookingStatus::PENDING->canTransitionTo(BookingStatus::CONFIRMED));
-        
+
         // PENDING -> CANCELLED
         $this->assertTrue(BookingStatus::PENDING->canTransitionTo(BookingStatus::CANCELLED));
 
@@ -29,7 +29,7 @@ class BookingStatusTransitionTest extends TestCase
     {
         // PENDING -> OCCUPIED (must go through CONFIRMED first)
         $this->assertFalse(BookingStatus::PENDING->canTransitionTo(BookingStatus::OCCUPIED));
-        
+
         // PENDING -> PAID
         $this->assertFalse(BookingStatus::PENDING->canTransitionTo(BookingStatus::PAID));
 

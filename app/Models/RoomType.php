@@ -39,7 +39,7 @@ class RoomType extends Model
     public function equipments()
     {
         return $this->belongsToMany(Equipment::class, 'room_equipment', 'room_type_id', 'equipment_id')
-                    ->withPivot('quantity');
+            ->withPivot('quantity');
     }
 
     // RoomType có nhiều Images

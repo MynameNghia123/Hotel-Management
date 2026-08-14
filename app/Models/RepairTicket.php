@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\RepairTicketStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Enums\RepairTicketStatus;
 
 class RepairTicket extends Model
 {

@@ -5,6 +5,7 @@ namespace App\Repositories\Implementations;
 use App\Models\ServiceGroup;
 use App\Repositories\Contracts\ServiceGroupRepositoryInterface;
 use App\Repositories\Filters\ServiceGroupFilter;
+
 class EloquentServiceGroupRepository implements ServiceGroupRepositoryInterface
 {
     protected $model;
@@ -33,12 +34,14 @@ class EloquentServiceGroupRepository implements ServiceGroupRepositoryInterface
     {
         $record = $this->findById($id);
         $record->update($data);
+
         return $record;
     }
 
     public function delete($id)
     {
         $record = $this->findById($id);
+
         return $record->delete();
     }
 
@@ -48,6 +51,6 @@ class EloquentServiceGroupRepository implements ServiceGroupRepositoryInterface
 
         $query = ServiceGroupFilter::apply($query, $filters);
 
-        return $query->paginate($perPage);   
+        return $query->paginate($perPage);
     }
 }

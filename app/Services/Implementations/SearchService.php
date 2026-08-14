@@ -11,8 +11,7 @@ class SearchService implements SearchServiceInterface
 {
     public function __construct(
         private readonly SearchRepositoryInterface $searchRepository
-    ) {
-    }
+    ) {}
 
     public function prepareSearchData(array $params): array
     {
@@ -62,7 +61,7 @@ class SearchService implements SearchServiceInterface
 
     private function parseDate(?string $value, Carbon $fallback): Carbon
     {
-        if (!$value) {
+        if (! $value) {
             return $fallback->copy();
         }
 

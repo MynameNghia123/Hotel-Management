@@ -14,14 +14,14 @@ class TimeHelper
             return '0h';
         }
 
-        $hours = (int)$hourMark;
+        $hours = (int) $hourMark;
         $minutes = ($hourMark - $hours) * 60;
 
         if ($minutes == 0) {
-            return $hours . 'h';
+            return $hours.'h';
         }
 
-        return $hours . 'h' . (int)$minutes . 'p';
+        return $hours.'h'.(int) $minutes.'p';
     }
 
     /**
@@ -36,9 +36,9 @@ class TimeHelper
 
         // Match pattern: 1h30p or 1h or 0h45p etc
         if (preg_match('/^(\d+)h(?:(\d+)p)?$/', trim($timeString), $matches)) {
-            $hours = (int)$matches[1];
-            $minutes = isset($matches[2]) ? (int)$matches[2] : 0;
-            
+            $hours = (int) $matches[1];
+            $minutes = isset($matches[2]) ? (int) $matches[2] : 0;
+
             return $hours + ($minutes / 60);
         }
 

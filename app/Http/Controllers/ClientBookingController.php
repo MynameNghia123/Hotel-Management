@@ -11,8 +11,7 @@ class ClientBookingController extends Controller
 {
     public function __construct(
         private readonly ClientBookingServiceInterface $clientBookingService
-    ) {
-    }
+    ) {}
 
     public function initCheckout(Request $request)
     {
@@ -33,7 +32,7 @@ class ClientBookingController extends Controller
     public function checkout()
     {
         $cart = session('booking_cart');
-        if (!$cart) {
+        if (! $cart) {
             return redirect()->route('search')->with('error', 'Gio hang trong. Vui long chon phong.');
         }
 
@@ -66,7 +65,7 @@ class ClientBookingController extends Controller
                 'id' => (int) $customer->id,
                 'first_name' => $customer->first_name,
                 'last_name' => $customer->last_name,
-                'full_name' => trim(($customer->last_name ?? '') . ' ' . ($customer->first_name ?? '')),
+                'full_name' => trim(($customer->last_name ?? '').' '.($customer->first_name ?? '')),
                 'email' => $customer->email,
                 'phone_number' => $customer->phone_number,
                 'country' => $customer->country,
@@ -77,7 +76,7 @@ class ClientBookingController extends Controller
     public function store(Request $request)
     {
         $cart = session('booking_cart');
-        if (!$cart) {
+        if (! $cart) {
             return redirect()->route('search')->with('error', 'Gio hang trong.');
         }
 
@@ -109,12 +108,12 @@ class ClientBookingController extends Controller
     public function payment()
     {
         $bookingId = session('booking_id');
-        if (!$bookingId) {
+        if (! $bookingId) {
             return redirect()->route('home');
         }
 
         $booking = $this->clientBookingService->getBookingForPayment((int) $bookingId);
-        if (!$booking) {
+        if (! $booking) {
             return redirect()->route('home');
         }
 
@@ -124,12 +123,12 @@ class ClientBookingController extends Controller
     public function processPayment(Request $request)
     {
         $bookingId = session('booking_id');
-        if (!$bookingId) {
+        if (! $bookingId) {
             return redirect()->route('home');
         }
 
         $booking = $this->clientBookingService->getBookingForPayment((int) $bookingId);
-        if (!$booking) {
+        if (! $booking) {
             return redirect()->route('home');
         }
 
@@ -176,12 +175,12 @@ class ClientBookingController extends Controller
     public function success()
     {
         $bookingId = session('booking_id');
-        if (!$bookingId) {
+        if (! $bookingId) {
             return redirect()->route('home');
         }
 
         $booking = $this->clientBookingService->getBookingForSuccess((int) $bookingId);
-        if (!$booking) {
+        if (! $booking) {
             return redirect()->route('home');
         }
 

@@ -9,4 +9,4 @@ interface StaffServiceInterface extends BaseServiceInterface
      * Returns the success message string.
      */
     public function toggleStatus($id, $isActive): string;
-}
+}

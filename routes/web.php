@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
 // Client routes
 require __DIR__.'/client.php';
 

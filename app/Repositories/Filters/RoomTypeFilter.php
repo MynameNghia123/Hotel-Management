@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Filters;
 
-use Illuminate\Database\Query\Builder;
-
 class RoomTypeFilter
 {
     /**
@@ -12,8 +10,8 @@ class RoomTypeFilter
     public static function apply($query, array $filters = [])
     {
         // Search by name
-        if (!empty($filters['search'])) {
-            $searchTerm = '%' . $filters['search'] . '%';
+        if (! empty($filters['search'])) {
+            $searchTerm = '%'.$filters['search'].'%';
             $query->where('name', 'like', $searchTerm);
         }
 

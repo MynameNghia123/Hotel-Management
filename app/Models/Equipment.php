@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Equipment extends Model
 {
     protected $table = 'equipments';
+
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 
+        'name',
         'equipment_category_id',
         'import_price',
     ];

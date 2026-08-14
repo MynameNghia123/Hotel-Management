@@ -8,8 +8,7 @@ use App\Repositories\Filters\RepairTicketFilter;
 
 class EloquentRepairTicketRepository implements RepairTicketRepositoryInterface
 {
-    public function __construct(private readonly RepairTicket $model)
-    {}
+    public function __construct(private readonly RepairTicket $model) {}
 
     /**
      * Get all repair tickets
@@ -46,6 +45,7 @@ class EloquentRepairTicketRepository implements RepairTicketRepositoryInterface
         if ($model) {
             $model->update($data);
         }
+
         return $model;
     }
 
@@ -58,6 +58,7 @@ class EloquentRepairTicketRepository implements RepairTicketRepositoryInterface
         if ($model) {
             $model->delete();
         }
+
         return $model;
     }
 
@@ -116,6 +117,7 @@ class EloquentRepairTicketRepository implements RepairTicketRepositoryInterface
         if ($model) {
             $model->update(['status' => $status]);
         }
+
         return $model;
     }
 

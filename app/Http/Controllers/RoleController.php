@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Traits\PaginationTrait;
@@ -14,7 +13,7 @@ use Illuminate\View\View;
 class RoleController extends Controller
 {
     use PaginationTrait;
-    
+
     protected $roleService;
 
     public function __construct(RoleServiceInterface $roleService)
@@ -24,12 +23,12 @@ class RoleController extends Controller
 
     public function index(Request $request): View
     {
-        $filters =  $request->input('filter', []);
-        $perPage = $this->getPerPage(10); 
+        $filters = $request->input('filter', []);
+        $perPage = $this->getPerPage(10);
         $roles = $this->roleService->getPaginated($filters, $perPage);
 
         $this->validatePageNumber($roles->currentPage(), $roles->lastPage(), 'abort');
-        
+
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -42,16 +41,17 @@ class RoleController extends Controller
     {
         try {
             $this->roleService->create($request->mapped());
+
             return redirect()->route('admin.roles.index')->with('success', 'Tạo vai trò thành công!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Tạo vai trò thất bại: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Tạo vai trò thất bại: '.$e->getMessage())->withInput();
         }
     }
 
     public function edit($id): View
     {
-        return view('admin.roles.edit',[
-            'role' => $this->roleService->findById($id)
+        return view('admin.roles.edit', [
+            'role' => $this->roleService->findById($id),
         ]);
     }
 
@@ -59,9 +59,10 @@ class RoleController extends Controller
     {
         try {
             $this->roleService->update($id, $request->mapped());
+
             return redirect()->route('admin.roles.index')->with('success', 'Cập nhật vai trò thành công!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Cập nhật vai trò thất bại: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Cập nhật vai trò thất bại: '.$e->getMessage())->withInput();
         }
     }
 
@@ -69,9 +70,10 @@ class RoleController extends Controller
     {
         try {
             $this->roleService->delete($id);
+
             return redirect()->route('admin.roles.index')->with('success', 'Xóa vai trò thành công!');
         } catch (\Exception $e) {
-            return redirect()->route('admin.roles.index')->with('error', 'Xóa vai trò thất bại: ' . $e->getMessage());
+            return redirect()->route('admin.roles.index')->with('error', 'Xóa vai trò thất bại: '.$e->getMessage());
         }
     }
 }

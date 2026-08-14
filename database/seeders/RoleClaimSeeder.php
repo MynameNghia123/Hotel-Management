@@ -13,7 +13,7 @@ class RoleClaimSeeder extends Seeder
         $modules = [
             'room-map', 'room-map-edit', 'bookings', 'rooms',
             'room-types', 'equipment', 'repair-ticket', 'customers',
-            'services', 'amenities', 'employees', 'roles', 'configuration'
+            'services', 'amenities', 'employees', 'roles', 'configuration',
         ];
 
         $actions = ['view', 'edit', 'create', 'delete'];

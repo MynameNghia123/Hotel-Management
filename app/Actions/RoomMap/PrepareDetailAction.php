@@ -10,7 +10,9 @@ use Illuminate\Support\Collection;
 class PrepareDetailAction
 {
     private const VAT_RATE = 0.1;
+
     private const MINUTES_IN_DAY = 1440;
+
     private const MINUTES_IN_HOUR = 60;
 
     public function __construct(
@@ -60,6 +62,7 @@ class PrepareDetailAction
         }
 
         $fallbackDate = $latestBookingDetail?->checkin_date ?? $booking?->booking_date ?? now();
+
         return Carbon::parse($fallbackDate);
     }
 
@@ -81,7 +84,7 @@ class PrepareDetailAction
 
         return $bookingDetails->map(function ($detail) use ($roomId, $booking) {
             return $this->transformBookingDetail($detail, $roomId, $booking);
-        })->filter(fn ($item) => !empty($item['room_id']))->values();
+        })->filter(fn ($item) => ! empty($item['room_id']))->values();
     }
 
     private function transformBookingDetail($detail, ?int $roomId, $booking): array
@@ -181,8 +184,10 @@ class PrepareDetailAction
         return $details
             ->flatMap(function ($detail) {
                 $roomName = $detail->room->name ?? '--';
+
                 return collect($detail->serviceUsages ?? [])->map(function ($usage) use ($roomName) {
                     $lineTotal = ((int) $usage->quantity) * (float) $usage->unit_price;
+
                     return [
                         'room_name' => $roomName,
                         'service_name' => $usage->service->name ?? 'Dịch vụ',
@@ -198,6 +203,7 @@ class PrepareDetailAction
             ->values()
             ->map(function ($item) {
                 unset($item['created_at_sort']);
+
                 return $item;
             });
     }
@@ -210,6 +216,7 @@ class PrepareDetailAction
 
         return collect($selectedRoomDetail?->serviceUsages ?? [])->map(function ($usage) {
             $lineTotal = ((int) $usage->quantity) * (float) $usage->unit_price;
+
             return [
                 'service_name' => $usage->service->name ?? 'Dịch vụ',
                 'quantity' => (int) $usage->quantity,

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\Contracts\RoomTypeServiceInterface;
-use App\Services\Contracts\RoomTypeImageServiceInterface;
 use App\Http\Requests\RoomType\StoreRoomTypeRequest;
+use App\Services\Contracts\RoomTypeImageServiceInterface;
+use App\Services\Contracts\RoomTypeServiceInterface;
 
 /**
  * RoomTypeApiController
@@ -15,7 +15,7 @@ use App\Http\Requests\RoomType\StoreRoomTypeRequest;
 class RoomTypeApiController extends Controller
 {
     public function __construct(
-        private readonly RoomTypeServiceInterface      $roomTypeService,
+        private readonly RoomTypeServiceInterface $roomTypeService,
         private readonly RoomTypeImageServiceInterface $roomTypeImageService
     ) {}
 
@@ -30,14 +30,14 @@ class RoomTypeApiController extends Controller
             $this->roomTypeImageService->attachTempImagesToRoomType($roomType->id);
 
             return response()->json([
-                'success'      => true,
+                'success' => true,
                 'room_type_id' => $roomType->id,
-                'message'      => 'Loại phòng được tạo thành công!',
+                'message' => 'Loại phòng được tạo thành công!',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi khi tạo loại phòng: ' . $e->getMessage(),
+                'message' => 'Lỗi khi tạo loại phòng: '.$e->getMessage(),
             ], 500);
         }
     }

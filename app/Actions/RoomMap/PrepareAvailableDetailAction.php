@@ -32,13 +32,13 @@ class PrepareAvailableDetailAction
 
     private function buildBedDescription($roomType): ?string
     {
-        if (!$roomType) {
+        if (! $roomType) {
             return null;
         }
 
         $beds = trim(
-            (($roomType->double_bed_quantity ?? 0) > 0 ? ($roomType->double_bed_quantity . ' giường đôi ') : '')
-            . (($roomType->single_bed_quantity ?? 0) > 0 ? ($roomType->single_bed_quantity . ' giường đơn') : '')
+            (($roomType->double_bed_quantity ?? 0) > 0 ? ($roomType->double_bed_quantity.' giường đôi ') : '')
+            .(($roomType->single_bed_quantity ?? 0) > 0 ? ($roomType->single_bed_quantity.' giường đơn') : '')
         );
 
         return $beds !== '' ? $beds : null;
@@ -46,7 +46,7 @@ class PrepareAvailableDetailAction
 
     private function buildFacilityNames($roomType): array
     {
-        if (!$roomType) {
+        if (! $roomType) {
             return [];
         }
 

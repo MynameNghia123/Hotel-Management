@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Contracts\RoomTypeServiceInterface;
-use App\Services\Contracts\RoomTypeImageServiceInterface;
 use App\Http\Requests\RoomType\StoreRoomTypeRequest;
 use App\Http\Requests\RoomType\UpdateRoomTypeRequest;
 use App\Http\Traits\PaginationTrait;
+use App\Services\Contracts\RoomTypeImageServiceInterface;
+use App\Services\Contracts\RoomTypeServiceInterface;
 use Illuminate\Http\Request;
 
 class RoomTypeController extends Controller
@@ -14,7 +14,7 @@ class RoomTypeController extends Controller
     use PaginationTrait;
 
     public function __construct(
-        private readonly RoomTypeServiceInterface      $roomTypeService,
+        private readonly RoomTypeServiceInterface $roomTypeService,
         private readonly RoomTypeImageServiceInterface $roomTypeImageService
     ) {}
 
@@ -33,7 +33,7 @@ class RoomTypeController extends Controller
     public function create()
     {
         return view('admin.room-types.create', [
-            'allAmenities'  => $allAmenities,
+            'allAmenities' => $allAmenities,
             'allEquipments' => $allEquipments,
         ] = $this->roomTypeService->prepareDataForCreate());
     }
@@ -60,8 +60,8 @@ class RoomTypeController extends Controller
 
     public function edit($id)
     {
-        return view('admin.room-types.edit',[
-            'allAmenities'  => $allAmenities,
+        return view('admin.room-types.edit', [
+            'allAmenities' => $allAmenities,
             'allEquipments' => $allEquipments,
         ] = $this->roomTypeService->prepareDataForEdit($id));
     }

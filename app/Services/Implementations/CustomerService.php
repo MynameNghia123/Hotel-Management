@@ -10,9 +10,11 @@ class CustomerService implements CustomerServiceInterface
     public function __construct(
         private readonly CustomerRepositoryInterface $customerRepository
     ) {}
+
     public function getDistinctCountries()
     {
         $customers = $this->getAll(); // Gọi repo lấy TẤT CẢ khách hàng
+
         return $customers->pluck('country')->unique()->values();
         // return $this->customerRepository->getDistinctCountries();
     }

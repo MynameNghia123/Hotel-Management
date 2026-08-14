@@ -17,13 +17,15 @@ class CreateBookingActionTest extends TestCase
     use RefreshDatabase;
 
     private CreateBookingAction $action;
+
     private Room $room;
+
     private Customer $customer;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->action = $this->app->make(CreateBookingAction::class);
 
         // Setup base data
@@ -87,8 +89,8 @@ class CreateBookingActionTest extends TestCase
         $this->assertDatabaseHas('booking_details', [
             'booking_id' => $booking->id,
             'room_id' => $this->room->id,
-            'checkin_date' => $checkin . ' 00:00:00', // SQLite stores as datetime string
-            'checkout_date' => $checkout . ' 00:00:00',
+            'checkin_date' => $checkin.' 00:00:00', // SQLite stores as datetime string
+            'checkout_date' => $checkout.' 00:00:00',
         ]);
 
         $this->assertDatabaseHas('rooms', [
