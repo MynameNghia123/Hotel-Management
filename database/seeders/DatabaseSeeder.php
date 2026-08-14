@@ -8,6 +8,11 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Prevent duplicate seeding if data already exists
+        if (\Illuminate\Support\Facades\DB::table('roles')->count() > 0) {
+            $this->command->info('Database is already seeded. Skipping...');
+            return;
+        }
         $this->call([
             // ── Tầng 1: Không có phụ thuộc ───────────────────────
             RoleSeeder::class,
