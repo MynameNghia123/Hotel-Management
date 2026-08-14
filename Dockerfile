@@ -36,4 +36,4 @@ RUN chown -R www-data:www-data /var/www \
 EXPOSE 80
 
 # Start PHP-FPM in background and Nginx in foreground
-CMD sh -c "php-fpm -D && nginx -g 'daemon off;'"
+CMD sh -c "/var/www/scripts/00-laravel-deploy.sh && php-fpm -D && nginx -g 'daemon off;'"
