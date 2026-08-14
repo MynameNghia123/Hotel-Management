@@ -92,8 +92,8 @@ class GeminiService
         // Danh sách model fallback theo ưu tiên
         $models = array_unique([
             $this->model,
-            'gemini-2.0-flash-lite',
-            'gemini-flash-lite-latest',
+            'gemini-3-flash',
+            'gemini-3.5-flash-lite',
             'gemini-flash-latest',
         ]);
 
