@@ -30,6 +30,22 @@ class EloquentSearchRepository implements SearchRepositoryInterface
         $requiredAdultsPerRoom = (int) ceil($requestedAdults / $requestedRooms);
         $requiredChildrenPerRoom = (int) ceil($requestedChildren / $requestedRooms);
 
+        $availableRoomsCondition = function ($roomQuery) use ($checkIn, $checkOut) {
+            $roomQuery
+                ->where('status', '!=', RoomStatus::MAINTENANCE->value)
+                ->whereDoesntHave('bookingDetails', function ($bookingDetailQuery) use ($checkIn, $checkOut) {
+                    $bookingDetailQuery
+                        ->where('checkin_date', '<', $checkOut->copy()->startOfDay())
+                        ->where('checkout_date', '>', $checkIn->copy()->startOfDay())
+                        ->whereHas('booking', function ($bookingQuery) {
+                            $bookingQuery->whereNotIn('status', [
+                                BookingStatus::CANCELLED->value,
+                                BookingStatus::PAID->value,
+                            ]);
+                        });
+                });
+        };
+
         $query = $this->roomTypeModel
             ->newQuery()
             ->with([
@@ -38,21 +54,7 @@ class EloquentSearchRepository implements SearchRepositoryInterface
             ])
             ->withCount([
                 'rooms',
-                'rooms as available_rooms_count' => function ($roomQuery) use ($checkIn, $checkOut) {
-                    $roomQuery
-                        ->where('status', '!=', RoomStatus::MAINTENANCE->value)
-                        ->whereDoesntHave('bookingDetails', function ($bookingDetailQuery) use ($checkIn, $checkOut) {
-                            $bookingDetailQuery
-                                ->where('checkin_date', '<', $checkOut->copy()->startOfDay())
-                                ->where('checkout_date', '>', $checkIn->copy()->startOfDay())
-                                ->whereHas('booking', function ($bookingQuery) {
-                                    $bookingQuery->whereNotIn('status', [
-                                        BookingStatus::CANCELLED->value,
-                                        BookingStatus::PAID->value,
-                                    ]);
-                                });
-                        });
-                },
+                'rooms as available_rooms_count' => $availableRoomsCondition,
             ])
             ->where('is_active', true)
             ->where('adult_quantity', '>=', $requiredAdultsPerRoom)
@@ -61,9 +63,9 @@ class EloquentSearchRepository implements SearchRepositoryInterface
             ->orderBy('name');
 
         if ($strictRoomCount) {
-            $query->having('available_rooms_count', '>=', $requestedRooms);
+            $query->whereHas('rooms', $availableRoomsCondition, '>=', $requestedRooms);
         } else {
-            $query->having('available_rooms_count', '>', 0);
+            $query->whereHas('rooms', $availableRoomsCondition, '>', 0);
         }
 
         return $query->get();
