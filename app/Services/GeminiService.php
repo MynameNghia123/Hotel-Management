@@ -65,10 +65,10 @@ class GeminiService
                     'prompt_length' => strlen($systemPrompt),
                 ]);
 
-                if ($response->status() === 429) {
+                if (in_array($response->status(), [429, 503])) {
                     return 'Hệ thống AI đang bận do nhiều người dùng cùng lúc. Vui lòng thử lại sau vài giây! ⏳';
                 }
-                Log::error($e->getMessage());
+
                 return 'Xin lỗi, tôi đang gặp sự cố kỹ thuật. Vui lòng thử lại sau hoặc liên hệ lễ tân để được hỗ trợ. 🙏';
             }
 
@@ -117,15 +117,15 @@ class GeminiService
 
             $lastResponse = $res;
 
-            // Nếu 429 → chờ rồi thử model tiếp theo
-            if ($res->status() === 429) {
-                Log::warning('Gemini rate limit, trying next model', ['tried' => $model]);
+            // Nếu 429 (Rate limit) hoặc 503 (Overloaded) → chờ rồi thử model tiếp theo
+            if (in_array($res->status(), [429, 503])) {
+                Log::warning('Gemini busy or rate limited, trying next model', ['tried' => $model, 'status' => $res->status()]);
                 sleep(2);
 
                 continue;
             }
 
-            // Lỗi khác (4xx/5xx không phải 429) → dừng
+            // Lỗi khác (ví dụ sai key 400, 403) → dừng
             break;
         }
 
