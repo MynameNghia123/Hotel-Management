@@ -65,7 +65,7 @@ export default defineConfig({
                 'resources/css/admin/customer-edit.css',
                 'resources/css/admin/statistical.css',
                 'resources/css/admin/statisical-revenue.css',
-                'resources/css/admin/statisical-room-efficency.css',
+                'resources/css/admin/statisical-room-efficiency.css',
                 'resources/css/admin/statisical-customers.css',
                 'resources/css/admin/configuration.css',
 
