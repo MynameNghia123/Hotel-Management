@@ -68,7 +68,7 @@ class GeminiService
                 if ($response->status() === 429) {
                     return 'Hệ thống AI đang bận do nhiều người dùng cùng lúc. Vui lòng thử lại sau vài giây! ⏳';
                 }
-
+                Log::error($e->getMessage());
                 return 'Xin lỗi, tôi đang gặp sự cố kỹ thuật. Vui lòng thử lại sau hoặc liên hệ lễ tân để được hỗ trợ. 🙏';
             }
 
