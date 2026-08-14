@@ -79,7 +79,21 @@ export default defineConfig({
                 'resources/js/admin/equipment-types.js',
                 'resources/js/admin/repair-ticket.js',
                 'resources/js/admin/sidebar.js',
-                'resources/js/admin/room-type-edit.js'
+                'resources/js/admin/room-type-edit.js',
+                
+                // --- Missing files added ---
+                'resources/css/admin/amenities-icon-picker.css',
+                'resources/js/admin/amenities-icon-picker.js',
+                'resources/css/admin/customers-show.css',
+                'resources/css/admin/repair-ticket-detail.css',
+                'resources/js/admin/roles-permissions.js',
+                'resources/css/admin/staffs-create.css',
+                'resources/js/admin/staffs-create.js',
+                'resources/css/admin/staffs-index.css',
+                'resources/js/admin/staffs-index.js',
+                'resources/css/client/responsive.css',
+                'resources/js/client/profile.js',
+                'resources/js/client/search.js'
             ],
             refresh: true,
         }),
