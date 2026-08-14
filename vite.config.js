@@ -27,6 +27,7 @@ export default defineConfig({
                  'resources/js/client/app.js',
                  'resources/js/client/animations.js',
                  'resources/js/client/chat.js',
+                 'resources/js/client/homepage.js',
                 // import css admin
                 'resources/css/admin/app.css',
                 'resources/css/admin/rooms.css',
