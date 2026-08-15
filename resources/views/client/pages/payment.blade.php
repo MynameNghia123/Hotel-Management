@@ -48,17 +48,7 @@
                             </div>
                         </label>
 
-                        <!-- Bank Transfer -->
-                        <label class="method-item">
-                            <input type="radio" name="payment_type" value="bank_transfer">
-                            <div class="method-box">
-                                <div class="method-main">
-                                    <i class="fas fa-university"></i>
-                                    <span>Chuyển Khoản Ngân Hàng</span>
-                                </div>
-                                <span class="badget-info">Xử lý trong 24h</span>
-                            </div>
-                        </label>
+                        <!-- Removed Bank Transfer option -->
                     </div>
 
                     <div style="margin-top: 20px; padding: 15px; background: rgba(37, 99, 235, 0.1); border-left: 4px solid #2563eb; border-radius: 8px; font-size: 0.9rem; color: #94a3b8; line-height: 1.5;">
