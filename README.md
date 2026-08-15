@@ -161,6 +161,14 @@ GEMINI_MODEL=gemini-2.5-flash-lite
 > [!IMPORTANT]
 > Sau khi chỉnh sửa file `.env`, bạn bắt buộc phải chạy lệnh `php artisan config:clear` để hệ thống cập nhật cấu hình mới, nếu không AI hoặc VNPAY sẽ báo lỗi kết nối.
 
+### Tài khoản Test VNPAY (Sandbox)
+Khi trải nghiệm chức năng thanh toán, bạn hãy chọn ngân hàng **NCB** và sử dụng thông tin thẻ sau để thanh toán thành công:
+- **Ngân hàng:** `NCB`
+- **Số thẻ:** `9704198526191432198`
+- **Tên chủ thẻ:** `NGUYEN VAN A` (nhập không dấu)
+- **Ngày phát hành:** `07/15`
+- **Mật khẩu OTP:** `123456`
+
 
 **Bước 4: Khởi tạo dữ liệu & Chạy Server**
 ```bash
