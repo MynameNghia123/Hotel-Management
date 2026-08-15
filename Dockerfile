@@ -3,7 +3,7 @@ FROM php:8.2-fpm
 # Install system dependencies (including libpq-dev for PostgreSQL)
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev libicu-dev \
-    nodejs npm libpq-dev nginx \
+    nodejs npm libpq-dev nginx supervisor \
     && docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl gd intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -25,6 +25,7 @@ RUN npm install && npm run build
 # Configure Nginx
 RUN rm -f /etc/nginx/sites-enabled/default
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www \
@@ -35,5 +36,5 @@ RUN chown -R www-data:www-data /var/www \
 # Expose port 80 for the PaaS (Render, Koyeb, etc.)
 EXPOSE 80
 
-# Start PHP-FPM in background and Nginx in foreground
-CMD sh -c "/var/www/scripts/00-laravel-deploy.sh && php-fpm -D && nginx -g 'daemon off;'"
+# Start Supervisor which runs Nginx, PHP-FPM, and Queue Worker
+CMD sh -c "/var/www/scripts/00-laravel-deploy.sh && /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf"
