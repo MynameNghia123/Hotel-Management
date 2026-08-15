@@ -3,14 +3,16 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
         // Prevent duplicate seeding if data already exists
-        if (\Illuminate\Support\Facades\DB::table('roles')->count() > 0) {
+        if (DB::table('roles')->count() > 0) {
             $this->command->info('Database is already seeded. Skipping...');
+
             return;
         }
         $this->call([
